@@ -1,0 +1,177 @@
+﻿using System;
+using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEngine;
+using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
+
+public class GameWorld
+{
+    private TerrainGenerator terrainGenerator;
+
+
+    public Grid floorGrid = new Grid();
+
+    public Grid worldGrid = new Grid();
+
+    List<Entity> entities = new List<Entity>();
+
+
+    public GameWorld(int seed)
+    {
+        terrainGenerator = new TerrainGenerator(seed);
+    }
+
+
+    public void GenerateChunk(int2 position)
+    { 
+        int2 chunkWorldPosition = position * WorldGenerationData.ChunkSize;
+
+        int2 chunkEndPositon = chunkWorldPosition + WorldGenerationData.ChunkSize;
+
+        GenerateRegion(chunkWorldPosition, chunkEndPositon);
+    }
+
+    public void GenerateRegion(int2 startPosition, int2 endPosition)
+    { 
+        //Modify start and end positions to point in positive iteration direction
+        if (startPosition.x > endPosition.x)
+        {
+            (startPosition.x, endPosition.x) = (endPosition.x, startPosition.x); 
+        }
+        if (startPosition.y > endPosition.y)
+        {
+            (startPosition.y, endPosition.y) = (endPosition.y, startPosition.y); 
+        }
+/*
+        // Find the direction to iterate towards
+        int2 size = startPostion - endPosition;
+
+        sbyte xIterationDirection = (sbyte)-MathF.Sign(size.x);
+        sbyte yIterationDirection = (sbyte)-MathF.Sign(size.y);*/
+
+        for (int x = startPosition.x; x < endPosition.x; x++)
+        {
+            for (int y = startPosition.y; y < endPosition.y; y++)
+            {
+                GenerateFloorTile(new int2(x, y));
+            }
+        }
+    }
+
+    public void GenerateFloorTile(int2 position)
+    {
+        FloorTileData newTileData = terrainGenerator.ChooseTileAt(position);
+
+        FloorTile newFloorTile = new(newTileData)
+        {
+            debugName = "DevFloorTile"
+        };
+
+        floorGrid.AddEntity(newFloorTile, position);
+    }
+
+    public void DebugLogLocations()
+    {
+        foreach (var location in floorGrid.grid)
+        {
+            //UnityEngine.Debug.Log($"Location at: {location.Key}  has: {location.Value.entity.debugName}");
+        }
+    }
+}
+
+
+public class TerrainGenerator
+{
+    public int seed = 0;
+
+    public TerrainGenerator(int seed)
+    {
+        this.seed = seed;
+    }
+
+    public FloorTileData ChooseTileAt(int2 position)
+    {
+        ref WorldGenerationData generationData = ref GameManager.Instance.worldGenerationData;
+        // World generation system goes here 
+
+        return generationData.devFloorTile; // Returning tile at index 0 only [DEV]
+    }
+}
+
+
+public class Grid
+{
+    public Dictionary<int2, Location> grid = new Dictionary<int2, Location>();
+
+    public List<Entity> entities = new List<Entity>();
+
+
+    static List<Grid> grids = new List<Grid>();
+
+    public byte id;
+
+    public Grid()
+    {
+        grids.Add(this);
+        id = (byte)(grids[grids.Count - 1].id + 1);
+    }
+
+    public Location AddLocation(int2 position)
+    {
+        if (LocationExists(position)) { return grid[position]; }
+
+        Location newLocation = new Location();
+
+        grid.Add(position, newLocation);
+
+        return newLocation;
+    }
+
+    public bool LocationExists(int2 position)
+    {
+        if (grid.ContainsKey(position))
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    public Location GetLocationAt(int2 position)
+    {
+        if (grid.ContainsKey(position))
+        {
+            return grid[position];
+        }
+        else return null;
+    }
+
+    public void AddEntity(Entity entity, int2 position)
+    {
+        Location location = AddLocation(position);
+
+        location.entity = entity;
+    }
+
+    public Entity GetEntityAt(int2 position)
+    {
+        if (!LocationExists(position)) { return null; }
+
+        if (grid.TryGetValue(position, out Location location))
+        {
+            return location.entity;
+        }
+
+        else return null;
+    }
+}
+
+
+public class Location
+{
+    public int2 position;
+
+    public Grid parentGrid;
+
+    public Entity entity;
+}

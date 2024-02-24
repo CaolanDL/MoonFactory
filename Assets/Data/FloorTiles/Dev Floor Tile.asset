@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 955f6eb5197a0244fa053c16e69f553f, type: 3}
+  m_Name: Dev Floor Tile
+  m_EditorClassIdentifier: 
+  mesh: {fileID: -1006073709486284556, guid: fee55d1944239ad45bf3f53d05b4757d, type: 3}
+  material: {fileID: 3423891614433124838, guid: fee55d1944239ad45bf3f53d05b4757d,
+    type: 3}
