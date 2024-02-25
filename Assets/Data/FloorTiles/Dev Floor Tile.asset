@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Dev Floor Tile
   m_EditorClassIdentifier: 
   mesh: {fileID: -1006073709486284556, guid: fee55d1944239ad45bf3f53d05b4757d, type: 3}
-  material: {fileID: 3423891614433124838, guid: fee55d1944239ad45bf3f53d05b4757d,
-    type: 3}
+  material: {fileID: 2100000, guid: 64718899db594904cb8947f0ffd38ef1, type: 2}
+  chanceToSpawn: 1

@@ -10,8 +10,11 @@ public static class DevFlags
 public class GameManager : MonoBehaviour
 {
     public WorldGenerationData worldGenerationData;
+     
 
     public GameObject mainMenu;
+    public GameObject HUD;
+
 
     private FloorTileRenderer floorTileRenderer;
 
@@ -80,10 +83,11 @@ public class GameManager : MonoBehaviour
         // Start zone is generated
         GenerateStartZone();
         gameWorld.DebugLogLocations();
-         
+
         // Descent vehicle animation plays
 
         // UI startup animation plays
+        Instantiate(HUD, transform);
 
         // Tutorial toggle prompt
 

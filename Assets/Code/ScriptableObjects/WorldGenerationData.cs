@@ -30,7 +30,7 @@ public class WorldGenerationData : ScriptableObject
 
     public static int ChunkSize = 9;
 
-    public static int StartZoneSize = 3;
+    public static int StartZoneSize = 32;
 
     [SerializeField] public List<FloorTileData> floorTiles;
 

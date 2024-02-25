@@ -61,7 +61,7 @@ public class GameWorld
 
     public void GenerateFloorTile(int2 position)
     {
-        FloorTileData newTileData = terrainGenerator.ChooseTileAt(position);
+        (FloorTileData newTileData, int darkness) = terrainGenerator.ChooseTileAt(position);
 
         FloorTile newFloorTile = new(newTileData)
         {
@@ -72,11 +72,8 @@ public class GameWorld
     }
 
     public void DebugLogLocations()
-    {
-        foreach (var location in floorGrid.grid)
-        {
-            //UnityEngine.Debug.Log($"Location at: {location.Key}  has: {location.Value.entity.debugName}");
-        }
+    { 
+        UnityEngine.Debug.Log($"{floorGrid.grid.Count} Grid locations spawned"); 
     }
 }
 
@@ -90,12 +87,15 @@ public class TerrainGenerator
         this.seed = seed;
     }
 
-    public FloorTileData ChooseTileAt(int2 position)
+    public (FloorTileData, int) ChooseTileAt(int2 position)
     {
         ref WorldGenerationData generationData = ref GameManager.Instance.worldGenerationData;
-        // World generation system goes here 
+        // World generation system goes here
+        // 
 
-        return generationData.devFloorTile; // Returning tile at index 0 only [DEV]
+        byte color = (byte) UnityEngine.Random.Range(0, 255);
+
+        return (generationData.devFloorTile, color); // Returning tile at index 0 only [DEV]
     }
 }
 
@@ -146,11 +146,13 @@ public class Grid
         else return null;
     }
 
-    public void AddEntity(Entity entity, int2 position)
+    public Entity AddEntity(Entity entity, int2 position)
     {
         Location location = AddLocation(position);
 
         location.entity = entity;
+
+        return entity;
     }
 
     public Entity GetEntityAt(int2 position)

@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     public float zoom
     {
         get { return _zoom; }
-        set { _zoom = Mathf.Clamp(value, 1, 25); }
+        set { _zoom = Mathf.Clamp(value, 1, 12); }
     }
 
     [Header("Variables")]
@@ -46,13 +46,19 @@ public class CameraController : MonoBehaviour
         InputZoom();
     }
 
+    private Vector2 velocity;
+    private int resistance = 1;
+    private int maxVelocity = 5;
+
     void InputMove()
     {
         Vector2 inputVector = inputActions.CameraControls.WASD.ReadValue<Vector2>();
 
         inputVector = inputVector.normalized * moveSpeed * Time.deltaTime;
 
-        inputVector.x = inputVector.x * 0.666f;
+        velocity += inputVector;
+
+        velocity = velocity;
 
         position +=  (float2) inputVector;
 

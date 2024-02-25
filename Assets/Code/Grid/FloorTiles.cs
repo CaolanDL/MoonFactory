@@ -8,4 +8,6 @@ public class FloorTile : Entity
     {
         this.tileData = tileData;
     }
+
+    byte color = 0;
 }

@@ -7,14 +7,13 @@ public class FloorTileRenderer : MonoBehaviour
 {
     [SerializeField] private CameraController cameraController;
 
+    GameWorld gameWorld;
+
+
     private void Awake()
     {
         cameraController = GetComponent<CameraController>();
     }
-
-
-    GameWorld gameWorld;
-
     public void Tick()
     {
         gameWorld = GameManager.Instance.gameWorld;
@@ -45,10 +44,21 @@ public class FloorTileRenderer : MonoBehaviour
                 DrawTile(tileLocation, floorTile.tileData);
             }
         }
-    }
+    } 
+
+
+    void DrawTile(int2 gridPosition, FloorTileData tileData)
+    {
+        Vector3 worldPosition = new Vector3(gridPosition.x, 0, gridPosition.y);
+
+        //Debug.Log(worldPosition);
+
+        Graphics.DrawMesh(tileData.mesh, worldPosition, quaternion.identity, tileData.material, 0);
+    } 
+
 
     (int2 xVisibleRange, int2 yVisibleRange) GetVisibleRange()
-    { 
+    {
         float2 cameraPosition = cameraController.worldPosition;
 
         float cameraZoom = cameraController.zoom;
@@ -62,12 +72,4 @@ public class FloorTileRenderer : MonoBehaviour
         return (xRangeOut, yRangeOut);
     }
 
-    void DrawTile(int2 gridPosition, FloorTileData tileData)
-    {
-        Vector3 worldPosition = new Vector3(gridPosition.x, 0, gridPosition.y);
-
-        //Debug.Log(worldPosition);
-
-        Graphics.DrawMesh(tileData.mesh, worldPosition, quaternion.identity, tileData.material, 0);
-    }
 }
