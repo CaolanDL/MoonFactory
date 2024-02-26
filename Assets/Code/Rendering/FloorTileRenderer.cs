@@ -59,12 +59,12 @@ public class FloorTileRenderer : MonoBehaviour
 
     (int2 xVisibleRange, int2 yVisibleRange) GetVisibleRange()
     {
-        float2 cameraPosition = cameraController.worldPosition;
+        float2 cameraPosition = new float2(cameraController.position.x, cameraController.position.z);
 
         float cameraZoom = cameraController.zoom;
 
-        int xSize = (int)(7 * cameraZoom); // Need to include screen aspect ratio compensation;
-        int ySize = (int)(7 * cameraZoom); // Currently defaulting to 16:9
+        int xSize = (int)(8 * cameraZoom); // Need to include screen aspect ratio compensation;
+        int ySize = (int)(8 * cameraZoom); // Currently defaulting to 16:9
 
         int2 xRangeOut = new int2((int)cameraPosition.x - xSize / 2, (int)cameraPosition.x + xSize / 2 + 1);
         int2 yRangeOut = new int2((int)cameraPosition.y - ySize / 2, (int)cameraPosition.y + ySize / 2 + 1);

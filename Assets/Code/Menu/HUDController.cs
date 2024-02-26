@@ -1,23 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class HUDController : MonoBehaviour
 {
     [SerializeField] private GameObject BuildMenu;
-    private GameObject activeBuildMenu;
 
-    [SerializeField] private GameObject ScienceMenu;
-    private GameObject activeScienceMenu;
+    [SerializeField] private GameObject ScienceMenu; 
 
     [SerializeField] private GameObject MapMenu;
-    private GameObject activeMapMenu;
+
+
+    private void Start()
+    {
+        BuildMenu.SetActive(false);
+        //ScienceMenu.SetActive(false);
+        //MapMenu.SetActive(false);
+    }
 
     public void BuildButtonPressed()
     {
-        if(activeBuildMenu != null) { return; }
-
-        activeBuildMenu = Instantiate(BuildMenu);
+        ToggleMenu(BuildMenu);
     }
 
     public void CancelButtonPressed()
@@ -33,9 +37,7 @@ public class HUDController : MonoBehaviour
 
     public void ScienceButtonPressed()
     {
-        if (activeScienceMenu != null) { return; }
-
-        activeScienceMenu = Instantiate(ScienceMenu);
+        ToggleMenu(ScienceMenu);
     }
 
 
@@ -46,8 +48,20 @@ public class HUDController : MonoBehaviour
 
     public void MapButtonPressed()
     {
-        if (activeMapMenu != null) { return; }
+        ToggleMenu(MapMenu); 
+    }
 
-        activeMapMenu = Instantiate(MapMenu);
+    public void ToggleMenu(GameObject menu)
+    {
+        if (menu == null) { return; } 
+
+        if (menu.activeInHierarchy)
+        {
+            menu.SetActive(false); 
+        }
+        else
+        {
+            menu.SetActive(true); 
+        }
     }
 }

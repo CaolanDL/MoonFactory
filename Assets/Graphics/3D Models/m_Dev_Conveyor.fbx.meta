@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fee55d1944239ad45bf3f53d05b4757d
+guid: 345b528e1baf21242b76967ef84ee93c
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,7 +7,17 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mat_Dev_FloorTile
+      name: m_DevMaterial
+    second: {fileID: 2100000, guid: c9067e89d5229114da459edce48d621d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_Conveyor
+    second: {fileID: 2100000, guid: c9067e89d5229114da459edce48d621d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_DevMaterial
     second: {fileID: 2100000, guid: 64718899db594904cb8947f0ffd38ef1, type: 2}
   materials:
     materialImportMode: 2
