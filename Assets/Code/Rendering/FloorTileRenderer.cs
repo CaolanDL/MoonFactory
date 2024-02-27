@@ -37,7 +37,10 @@ public class FloorTileRenderer : MonoBehaviour
 
                 FloorTile floorTile = (FloorTile)gameWorld.floorGrid.GetEntityAt(tileLocation);
 
-                if (floorTile == null) { continue; }
+                if (floorTile == null) 
+                {
+                    floorTile = GameManager.Instance.gameWorld.GenerateFloorTile(tileLocation); 
+                }
 
                 //UnityEngine.Debug.Log(gameWorld.floorGrid.GetEntityAt(tileLocation).GetType().ToString()) ;
 

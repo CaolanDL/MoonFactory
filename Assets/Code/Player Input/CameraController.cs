@@ -63,7 +63,9 @@ public class CameraController : MonoBehaviour
     void InputZoom()
     {
         zoom += inputActions.CameraControls.Zoom.ReadValue<float>() * (zoom / 10); //zoomSpeed;
+
         playerCamera.orthographicSize = zoom;
+        playerCamera.transform.localPosition = new Vector3(0, 0, Mathf.Clamp(-zoom*2, -1000, -5));
     }
 
 

@@ -29,8 +29,9 @@ public class WorldGenerationData : ScriptableObject
     #endregion
 
 
-    public static int ChunkSize = 32;
-    public static int StartZoneSize = 256;
+    public static int ChunkSize = 9;
+
+    public static int StartZoneSize = 2;
 
     [SerializeField] public List<FloorTileData> floorTiles;
 

@@ -30,6 +30,12 @@ public class GameWorld
         int2 chunkEndPositon = chunkWorldPosition + WorldGenerationData.ChunkSize;
 
         GenerateRegion(chunkWorldPosition, chunkEndPositon);
+    } 
+
+    public int2 GetChunkAt(int2 position)
+    {
+        int2 unflooredChunkPosition = position / WorldGenerationData.ChunkSize;
+        return new int2(Mathf.FloorToInt(unflooredChunkPosition.x), Mathf.FloorToInt(unflooredChunkPosition.y));
     }
 
     public void GenerateRegion(int2 startPosition, int2 endPosition)
@@ -59,16 +65,17 @@ public class GameWorld
         }
     }
 
-    public void GenerateFloorTile(int2 position)
+    public FloorTile GenerateFloorTile(int2 position)
     {
         (FloorTileData newTileData, int darkness) = terrainGenerator.ChooseTileAt(position);
 
-        FloorTile newFloorTile = new(newTileData)
-        {
-            debugName = "DevFloorTile"
-        };
+        FloorTile newFloorTile = new(newTileData);
 
         floorGrid.AddEntity(newFloorTile, position);
+
+        //Debug.Log($"Generated floor tile at: {position}");
+
+        return newFloorTile;
     }
 
     public void DebugLogLocations()
@@ -95,19 +102,17 @@ public class TerrainGenerator
 
         byte color = (byte) UnityEngine.Random.Range(0, 255);
 
-        return (generationData.devFloorTile, color); // Returning tile at index 0 only [DEV]
+        return (generationData.devFloorTile, color); // Returning tile at index 0 only
     }
 }
 
 
 public class Grid
 {
+    static List<Grid> grids = new List<Grid>();
     public Dictionary<int2, Location> grid = new Dictionary<int2, Location>();
 
-    public List<Entity> entities = new List<Entity>();
-
-
-    static List<Grid> grids = new List<Grid>();
+    public List<Entity> entities = new List<Entity>(); 
 
     public byte id;
 
@@ -121,7 +126,11 @@ public class Grid
     {
         if (LocationExists(position)) { return grid[position]; }
 
-        Location newLocation = new Location();
+        Location newLocation = new Location()
+        {
+            gridId = id,
+            position = position,
+        };
 
         grid.Add(position, newLocation);
 
@@ -173,7 +182,13 @@ public class Location
 {
     public int2 position;
 
-    public Grid parentGrid;
+    public byte gridId;
 
-    public Entity entity;
+    public Entity entity; // 8 bytes
+
+    public int2 GetChunk()
+    {
+        int2 unflooredChunkPosition = position.x / WorldGenerationData.ChunkSize;
+        return new int2(Mathf.FloorToInt(unflooredChunkPosition.x), Mathf.FloorToInt(unflooredChunkPosition.y));
+    }
 }

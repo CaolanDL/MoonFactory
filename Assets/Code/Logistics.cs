@@ -1,6 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public class Item
+{
+    public ResourceData data;
+}
+
+
 public class Resource
 {
     public ResourceData data;
