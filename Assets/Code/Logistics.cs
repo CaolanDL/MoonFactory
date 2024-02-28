@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
-
 
 public class Item
 {
@@ -19,7 +17,7 @@ public class ResourceStack
 
     public int quantity;
 
-    float totalWeight;
+    float weight;
 }
 
 public class Inventory

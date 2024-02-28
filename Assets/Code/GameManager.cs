@@ -9,6 +9,7 @@ public static class DevFlags
 
 public class GameManager : MonoBehaviour
 {
+    public GameWorld gameWorld;
     public WorldGenerationData worldGenerationData;
      
 
@@ -17,10 +18,8 @@ public class GameManager : MonoBehaviour
 
 
     private FloorTileRenderer floorTileRenderer;
-
-
-    public GameWorld gameWorld;
-
+     
+    public ConstructionManager constructionManager;
 
 
     private void Awake()
@@ -79,9 +78,10 @@ public class GameManager : MonoBehaviour
 
         // Create new gameWorld
         gameWorld = new GameWorld(seed);
+        constructionManager = new();
 
         // Start zone is generated
-        GenerateStartZone();
+        //GenerateStartZone();
         gameWorld.DebugLogLocations();
 
         // Descent vehicle animation plays

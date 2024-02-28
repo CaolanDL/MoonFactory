@@ -50,7 +50,7 @@ public class CameraController : MonoBehaviour
 
     void InputMove()
     {
-        Vector2 inputVector = inputActions.CameraControls.WASD.ReadValue<Vector2>();
+        Vector2 inputVector = inputActions.CameraControls.Move.ReadValue<Vector2>();
 
         Vector3 inputVector3 = new Vector3(inputVector.x, 0, inputVector.y);
 
@@ -95,7 +95,7 @@ public class CameraController : MonoBehaviour
         }
 
         // Add player input
-        Vector2 inputVector = inputActions.CameraControls.WASD.ReadValue<Vector2>();
+        Vector2 inputVector = inputActions.CameraControls.Move.ReadValue<Vector2>();
 
         inputVector = inputVector.normalized * deltaAcceleration;
         velocity += new Vector3(inputVector.x, 0, inputVector.y);

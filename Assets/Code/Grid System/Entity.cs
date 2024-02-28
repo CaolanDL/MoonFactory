@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public class Entity
 {
-    public byte gridId; 
+    public byte gridId;
 
     private int2 position;
     private int2 size;
