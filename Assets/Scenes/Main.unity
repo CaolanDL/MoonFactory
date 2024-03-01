@@ -123,41 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &922800767 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5097026221170367744, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-    type: 3}
-  m_PrefabInstance: {fileID: 6023452988525603525}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &931138510 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7753882727360442230, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-    type: 3}
-  m_PrefabInstance: {fileID: 6023452988525603525}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922800767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c908297004003dc4f94ed76382a7f395, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &931138513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922800767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fa6317412949db4ea0df24246ac126e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputState: 2
-  MouseGridPositon:
-    x: 0
-    y: 0
-  cameraController: {fileID: 931138510}
 --- !u!1001 &6023452988525603525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -185,11 +150,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2314389890219916738, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      propertyPath: orthographic size
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2637558899944990924, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
         type: 3}
@@ -286,14 +246,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5389406076703938054, guid: 69a5ee85e8dcd2c459a95afb50f90ce6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5097026221170367744, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 931138513}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69a5ee85e8dcd2c459a95afb50f90ce6, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

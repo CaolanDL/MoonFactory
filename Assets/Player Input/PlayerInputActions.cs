@@ -116,6 +116,94 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ]
         },
         {
+            ""name"": ""Construction Controls"",
+            ""id"": ""add89bcc-454f-4370-a07c-e3238b334ddf"",
+            ""actions"": [
+                {
+                    ""name"": ""Rotate Ghost"",
+                    ""type"": ""Button"",
+                    ""id"": ""c4921403-e006-44a3-8cd9-3230593a8278"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Place Ghost"",
+                    ""type"": ""Button"",
+                    ""id"": ""b335af96-48cd-4d1d-9e69-133f20b74084"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Delete Ghost"",
+                    ""type"": ""Button"",
+                    ""id"": ""35364b0e-2cfd-41f7-8bbc-4344687c649f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Exit Construction Mode"",
+                    ""type"": ""Button"",
+                    ""id"": ""27deb085-3ce8-4fb6-82ef-84f725bc82e7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""49853261-70eb-40b4-92a7-d8f2b6b044cb"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate Ghost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f6bb2177-17f6-4533-a159-f1229dc3a1ce"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Place Ghost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""60680741-a13f-4981-adc7-fedef4856ab1"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Delete Ghost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e2492f8-f646-4af6-844a-120481ccea2a"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit Construction Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""UI Controls"",
             ""id"": ""5be7f4d8-76a5-4849-8dd0-0d49f29dc029"",
             ""actions"": [
@@ -187,6 +275,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_CameraControls = asset.FindActionMap("Camera Controls", throwIfNotFound: true);
         m_CameraControls_Move = m_CameraControls.FindAction("Move", throwIfNotFound: true);
         m_CameraControls_Zoom = m_CameraControls.FindAction("Zoom", throwIfNotFound: true);
+        // Construction Controls
+        m_ConstructionControls = asset.FindActionMap("Construction Controls", throwIfNotFound: true);
+        m_ConstructionControls_RotateGhost = m_ConstructionControls.FindAction("Rotate Ghost", throwIfNotFound: true);
+        m_ConstructionControls_PlaceGhost = m_ConstructionControls.FindAction("Place Ghost", throwIfNotFound: true);
+        m_ConstructionControls_DeleteGhost = m_ConstructionControls.FindAction("Delete Ghost", throwIfNotFound: true);
+        m_ConstructionControls_ExitConstructionMode = m_ConstructionControls.FindAction("Exit Construction Mode", throwIfNotFound: true);
         // UI Controls
         m_UIControls = asset.FindActionMap("UI Controls", throwIfNotFound: true);
         m_UIControls_Click = m_UIControls.FindAction("Click", throwIfNotFound: true);
@@ -303,6 +397,76 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     }
     public CameraControlsActions @CameraControls => new CameraControlsActions(this);
 
+    // Construction Controls
+    private readonly InputActionMap m_ConstructionControls;
+    private List<IConstructionControlsActions> m_ConstructionControlsActionsCallbackInterfaces = new List<IConstructionControlsActions>();
+    private readonly InputAction m_ConstructionControls_RotateGhost;
+    private readonly InputAction m_ConstructionControls_PlaceGhost;
+    private readonly InputAction m_ConstructionControls_DeleteGhost;
+    private readonly InputAction m_ConstructionControls_ExitConstructionMode;
+    public struct ConstructionControlsActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public ConstructionControlsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @RotateGhost => m_Wrapper.m_ConstructionControls_RotateGhost;
+        public InputAction @PlaceGhost => m_Wrapper.m_ConstructionControls_PlaceGhost;
+        public InputAction @DeleteGhost => m_Wrapper.m_ConstructionControls_DeleteGhost;
+        public InputAction @ExitConstructionMode => m_Wrapper.m_ConstructionControls_ExitConstructionMode;
+        public InputActionMap Get() { return m_Wrapper.m_ConstructionControls; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ConstructionControlsActions set) { return set.Get(); }
+        public void AddCallbacks(IConstructionControlsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ConstructionControlsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ConstructionControlsActionsCallbackInterfaces.Add(instance);
+            @RotateGhost.started += instance.OnRotateGhost;
+            @RotateGhost.performed += instance.OnRotateGhost;
+            @RotateGhost.canceled += instance.OnRotateGhost;
+            @PlaceGhost.started += instance.OnPlaceGhost;
+            @PlaceGhost.performed += instance.OnPlaceGhost;
+            @PlaceGhost.canceled += instance.OnPlaceGhost;
+            @DeleteGhost.started += instance.OnDeleteGhost;
+            @DeleteGhost.performed += instance.OnDeleteGhost;
+            @DeleteGhost.canceled += instance.OnDeleteGhost;
+            @ExitConstructionMode.started += instance.OnExitConstructionMode;
+            @ExitConstructionMode.performed += instance.OnExitConstructionMode;
+            @ExitConstructionMode.canceled += instance.OnExitConstructionMode;
+        }
+
+        private void UnregisterCallbacks(IConstructionControlsActions instance)
+        {
+            @RotateGhost.started -= instance.OnRotateGhost;
+            @RotateGhost.performed -= instance.OnRotateGhost;
+            @RotateGhost.canceled -= instance.OnRotateGhost;
+            @PlaceGhost.started -= instance.OnPlaceGhost;
+            @PlaceGhost.performed -= instance.OnPlaceGhost;
+            @PlaceGhost.canceled -= instance.OnPlaceGhost;
+            @DeleteGhost.started -= instance.OnDeleteGhost;
+            @DeleteGhost.performed -= instance.OnDeleteGhost;
+            @DeleteGhost.canceled -= instance.OnDeleteGhost;
+            @ExitConstructionMode.started -= instance.OnExitConstructionMode;
+            @ExitConstructionMode.performed -= instance.OnExitConstructionMode;
+            @ExitConstructionMode.canceled -= instance.OnExitConstructionMode;
+        }
+
+        public void RemoveCallbacks(IConstructionControlsActions instance)
+        {
+            if (m_Wrapper.m_ConstructionControlsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IConstructionControlsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ConstructionControlsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ConstructionControlsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ConstructionControlsActions @ConstructionControls => new ConstructionControlsActions(this);
+
     // UI Controls
     private readonly InputActionMap m_UIControls;
     private List<IUIControlsActions> m_UIControlsActionsCallbackInterfaces = new List<IUIControlsActions>();
@@ -369,6 +533,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
+    }
+    public interface IConstructionControlsActions
+    {
+        void OnRotateGhost(InputAction.CallbackContext context);
+        void OnPlaceGhost(InputAction.CallbackContext context);
+        void OnDeleteGhost(InputAction.CallbackContext context);
+        void OnExitConstructionMode(InputAction.CallbackContext context);
     }
     public interface IUIControlsActions
     {

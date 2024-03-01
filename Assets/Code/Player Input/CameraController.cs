@@ -24,21 +24,21 @@ public class CameraController : MonoBehaviour
     [Header("Object References")]
     public GameObject cameraOrigin;
     public Camera playerCamera;
-    PlayerInputActions inputActions;
+    PlayerInputActions InputActions;
 
     #region Observe Input Actions
     private void Awake()
     {
-        inputActions = new PlayerInputActions();
+        InputActions = new PlayerInputActions();
     }
 
     void OnEnable()
     {
-        inputActions.CameraControls.Enable();
+        InputActions.CameraControls.Enable();
     }
     void OnDisable()
     {
-        inputActions.CameraControls.Disable();
+        InputActions.CameraControls.Disable();
     }
     #endregion
 
@@ -50,7 +50,7 @@ public class CameraController : MonoBehaviour
 
     void InputMove()
     {
-        Vector2 inputVector = inputActions.CameraControls.Move.ReadValue<Vector2>();
+        Vector2 inputVector = InputActions.CameraControls.Move.ReadValue<Vector2>();
 
         Vector3 inputVector3 = new Vector3(inputVector.x, 0, inputVector.y);
 
@@ -62,7 +62,7 @@ public class CameraController : MonoBehaviour
 
     void InputZoom()
     {
-        zoom += inputActions.CameraControls.Zoom.ReadValue<float>() * (zoom / 10); //zoomSpeed;
+        zoom += InputActions.CameraControls.Zoom.ReadValue<float>() * (zoom / 10); //zoomSpeed;
 
         playerCamera.orthographicSize = zoom;
         playerCamera.transform.localPosition = new Vector3(0, 0, Mathf.Clamp(-zoom*2, -1000, -5));
@@ -95,7 +95,7 @@ public class CameraController : MonoBehaviour
         }
 
         // Add player input
-        Vector2 inputVector = inputActions.CameraControls.Move.ReadValue<Vector2>();
+        Vector2 inputVector = InputActions.CameraControls.Move.ReadValue<Vector2>();
 
         inputVector = inputVector.normalized * deltaAcceleration;
         velocity += new Vector3(inputVector.x, 0, inputVector.y);

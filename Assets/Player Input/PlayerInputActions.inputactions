@@ -94,6 +94,94 @@
             ]
         },
         {
+            "name": "Construction Controls",
+            "id": "add89bcc-454f-4370-a07c-e3238b334ddf",
+            "actions": [
+                {
+                    "name": "Rotate Ghost",
+                    "type": "Button",
+                    "id": "c4921403-e006-44a3-8cd9-3230593a8278",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Place Ghost",
+                    "type": "Button",
+                    "id": "b335af96-48cd-4d1d-9e69-133f20b74084",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Delete Ghost",
+                    "type": "Button",
+                    "id": "35364b0e-2cfd-41f7-8bbc-4344687c649f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Exit Construction Mode",
+                    "type": "Button",
+                    "id": "27deb085-3ce8-4fb6-82ef-84f725bc82e7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "49853261-70eb-40b4-92a7-d8f2b6b044cb",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate Ghost",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f6bb2177-17f6-4533-a159-f1229dc3a1ce",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Place Ghost",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "60680741-a13f-4981-adc7-fedef4856ab1",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Delete Ghost",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7e2492f8-f646-4af6-844a-120481ccea2a",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Exit Construction Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "UI Controls",
             "id": "5be7f4d8-76a5-4849-8dd0-0d49f29dc029",
             "actions": [

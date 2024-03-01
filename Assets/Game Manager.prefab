@@ -547,6 +547,7 @@ GameObject:
   - component: {fileID: 9065274673057177581}
   - component: {fileID: 8208045981605999340}
   - component: {fileID: 7753882727360442230}
+  - component: {fileID: 8718522128751908372}
   - component: {fileID: 5389406076703938054}
   m_Layer: 0
   m_Name: Game Manager
@@ -622,6 +623,24 @@ MonoBehaviour:
   zoomSpeed: 0.2
   cameraOrigin: {fileID: 2446764047180186050}
   playerCamera: {fileID: 2314389890219916738}
+--- !u!114 &8718522128751908372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5097026221170367744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa6317412949db4ea0df24246ac126e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputState: 0
+  MouseGridPositon:
+    x: 0
+    y: 0
+  isMouseOverUI: 1
+  cameraController: {fileID: 7753882727360442230}
 --- !u!114 &5389406076703938054
 MonoBehaviour:
   m_ObjectHideFlags: 0

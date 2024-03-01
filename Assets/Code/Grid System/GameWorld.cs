@@ -161,13 +161,13 @@ public class Grid
 
         location.entity = entity;
 
+        entity.position = position;
+
         return entity;
     }
 
     public Entity GetEntityAt(int2 position)
-    {
-        if (!LocationExists(position)) { return null; }
-
+    { 
         if (grid.TryGetValue(position, out Location location))
         {
             return location.entity;
@@ -175,16 +175,31 @@ public class Grid
 
         else return null;
     }
+
+    public bool IsEntityAt(int2 position)
+    { 
+        if (grid.TryGetValue(position, out Location location))
+        {
+            if(location.entity != null)
+            {
+                Debug.Log("Found entity");
+                return true;
+                
+            }
+        }
+
+        return false;
+    }
 }
 
 
-public class Location
+public class Location // Size: 13 bytes
 {
-    public int2 position;
+    public int2 position; // 4 bytes
+     
+    public byte gridId; // 1 bytes
 
-    public byte gridId;
-
-    public Entity entity; // 8 bytes
+    public Entity entity; // 8 bytes 
 
     public int2 GetChunk()
     {

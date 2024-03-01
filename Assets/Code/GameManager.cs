@@ -62,6 +62,9 @@ public class GameManager : MonoBehaviour
         // Update rovers
         // Update Machines
 
+        // Draw Ghosts
+        constructionManager.DrawGhosts();
+
         // Draw Floor tiles
         floorTileRenderer.Tick();
 
@@ -81,7 +84,7 @@ public class GameManager : MonoBehaviour
         constructionManager = new();
 
         // Start zone is generated
-        //GenerateStartZone();
+        GenerateStartZone();
         gameWorld.DebugLogLocations();
 
         // Descent vehicle animation plays

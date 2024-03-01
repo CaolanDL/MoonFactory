@@ -19,7 +19,7 @@ public class HUDController : MonoBehaviour
         //MapMenu.SetActive(false);
     }
 
-    public void BuildButtonPressed()
+    public void BuildMenuButtonPressed()
     {
         ToggleMenu(BuildMenu);
     }

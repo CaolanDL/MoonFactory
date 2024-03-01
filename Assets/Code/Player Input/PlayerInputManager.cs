@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.WSA;
 
@@ -26,17 +27,33 @@ using UnityEngine.WSA;
 
 public class PlayerInputManager : MonoBehaviour
 { 
-    public InputState inputState = InputState.Construction;
+    public InputState inputState = InputState.Default;
 
-    public int2 MouseGridPositon = new(0,0);
+    [SerializeField] public int2 MouseGridPositon = new(0,0); 
 
-    public CameraController cameraController;
+    public bool isMouseOverUI = true;
+
+    [SerializeField] public CameraController cameraController;
+
+    PlayerInputActions inputActions;
 
 
     private void Awake()
     {
+        inputActions = new PlayerInputActions();
+
         cameraController = GetComponent<CameraController>();
     }
+
+    void OnEnable()
+    {
+        inputActions.ConstructionControls.Enable();
+    }
+    void OnDisable()
+    {
+        inputActions.ConstructionControls.Disable();
+    }
+
 
     public enum InputState
     { 
@@ -47,9 +64,24 @@ public class PlayerInputManager : MonoBehaviour
         Bulldoze
     }
 
+    public void ChangeInputState(InputState newInputState)
+    {
+        inputState = newInputState;
+
+        if( inputState == InputState.Construction )
+        {
+            inputActions.ConstructionControls.Enable();
+        }
+    }
+
     private void Update()
     {
-        UpdateMouseGridPosition();
+        isMouseOverUI = EventSystem.current.IsPointerOverGameObject();
+
+        if (!isMouseOverUI)
+        { 
+            UpdateMouseGridPosition();
+        }
 
         switch (inputState)
         {
@@ -91,9 +123,23 @@ public class PlayerInputManager : MonoBehaviour
     {
         HandleCameraControl();
 
-        if(Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current.rightButton.wasPressedThisFrame)
         {
-            //GameManager.Instance.constructionManager.PlaceGhost(MouseGridPositon);
+            inputActions.ConstructionControls.Disable();
+            ChangeInputState(InputState.Default);
+            return;
+        }
+
+        ConstructionManager constructionManager = GameManager.Instance.constructionManager;
+
+        if(isMouseOverUI != true)
+        { 
+            constructionManager.DrawGhostAtMouse(MouseGridPositon);
+        } 
+
+        if (Mouse.current.leftButton.isPressed)
+        {
+            constructionManager.PlaceGhost(MouseGridPositon);
         }
     } 
 
@@ -105,7 +151,7 @@ public class PlayerInputManager : MonoBehaviour
         Ray ray = cameraController.playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 1000f, 6)) //Layer Mask: MouseToGridPosition
+        if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("MouseToGridPosition")))
         {
             mouseWorldPosition = hit.point;
             MouseGridPositon = new int2((int)Mathf.Round(mouseWorldPosition.x), (int)Mathf.Round(mouseWorldPosition.z));

@@ -5,9 +5,11 @@ using UnityEngine;
 [Serializable]
 public class Entity
 {
-    public byte gridId;
+    public byte gridId; // 1 bytes
 
-    private int2 position;
+    public int2 position; // 8 bytes
+
+    /*
     private int2 size;
 
     private int2 centre;
@@ -18,11 +20,25 @@ public class Entity
         get { return _rotation; }
         set { _rotation = value % 4; }
     }
+    */
 
-    public GameObject gameObject;
+    //public GameObject gameObject;
 
     public Entity()
     {
-        centre = position + (size / 2);
+        //centre = position + (size / 2);
     }
+}
+
+
+public class FloorTile : Entity // Size: 9 bytes
+{
+    public FloorTileData tileData; //8 bytes
+
+    public FloorTile(FloorTileData tileData)
+    {
+        this.tileData = tileData;
+    }
+
+    //byte color = 0;
 }
