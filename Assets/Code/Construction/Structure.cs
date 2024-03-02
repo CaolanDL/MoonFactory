@@ -1,12 +1,17 @@
+using System;
+using utils;
+using machines;
 
-using UnityEngine;
 
 public enum StructureType
 {
     None = 0,
-    Crusher
+    Crusher,
+    Conveyor,
+    Merger,
+    Splitter,
+    Hopper
 }
-
 
 public class Structure : Entity
 {
@@ -14,46 +19,78 @@ public class Structure : Entity
 
     public static Structure CreateStructure(StructureType structureType)
     {
-        if(structureType == StructureType.Crusher)
-        {
-            return new Crusher();
-        }
-
-        throw new System.Exception("No structure type enum passed when creating new structure instance"); 
+        return StructureFactory.CreateStructure(GlobalData.Instance.structures.Find(data => data.name == structureType.ToString()));
     }
-}
 
-public class GhostStructure : Entity
-{
-    public StructureData data;
-
-    public GhostStructure(StructureData structureData)
+    /*    public static Structure CreateStructure(StructureType structureType)
     {
-        data = structureData;
-    }
+        switch (structureType)
+        { 
+            case StructureType.Crusher:
+                return new Crusher();
 
-    public void FinishConstruction()
+            case StructureType.Conveyor:
+                return new Conveyor();
+
+            case StructureType.Merger:
+                return new Merger();
+
+            case StructureType.Splitter:
+                return new Splitter();
+
+            case StructureType.Hopper:
+                return new Hopper();
+
+            default: throw new System.Exception("No structure type enum passed when creating new structure instance");
+        } 
+    }*/
+} 
+
+public class StructureFactory
+{ 
+    public static Structure CreateStructure(StructureData structureData)
     {
-        var worldGrid = GameManager.Instance.gameWorld.worldGrid;
+        Type structureType = Type.GetType(structureData.name);
 
-        var thisLocation = worldGrid.GetLocationAt(position);
+        if(structureType != typeof(Structure)) { throw new Exception("Non-structure Type passed to Factory when creating new structure instance"); }
 
-        thisLocation.entity = null; //remove this entity from the worldgrid
+        else return (Structure)Activator.CreateInstance(structureType); 
+    }
+}
+ 
+namespace utils
+{ 
+    public class Conveyor : Machine
+    {
 
-        GameManager.Instance.constructionManager.ghosts.Remove(this);
+    }
 
-        Structure newStructure = Structure.CreateStructure(data.structureType);
+    public class Merger : Machine
+    {
 
-        worldGrid.AddEntity(newStructure, position);
+    }
+
+    public class Splitter : Machine
+    {
+
+    }
+
+    public class Hopper : Machine
+    {
+
     }
 }
 
-public class Machine : Structure
+namespace machines
 {
+    public class Machine : Structure
+    {
 
-}
+    }
 
-public class Crusher : Machine
-{
+    public class Crusher : Machine
+    {
 
-}
+    } 
+} 
+

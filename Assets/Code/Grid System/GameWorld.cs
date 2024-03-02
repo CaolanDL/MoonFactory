@@ -181,10 +181,8 @@ public class Grid
         if (grid.TryGetValue(position, out Location location))
         {
             if(location.entity != null)
-            {
-                Debug.Log("Found entity");
-                return true;
-                
+            { 
+                return true; 
             }
         }
 

@@ -7,13 +7,12 @@ using UnityEngine;
 
 public class WorldGenerationData : ScriptableObject
 {
+    public static WorldGenerationData Instance { get; private set; }
+
     private void OnEnable()
     {
         MakeSingleton();
-    }
-
-    #region Singleton Instanciation Method
-    public static WorldGenerationData Instance { get; private set; }
+    }  
 
     public void MakeSingleton()
     {
@@ -25,8 +24,7 @@ public class WorldGenerationData : ScriptableObject
         {
             Instance = this;
         }
-    }
-    #endregion
+    } 
 
 
     public static int ChunkSize = 9;

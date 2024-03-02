@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class DevFlags
 {
-    public static bool SkipMainMenu = true;
+    public static bool SkipMainMenu = false;
 }
 
 public class GameManager : MonoBehaviour
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     private FloorTileRenderer floorTileRenderer;
      
-    public ConstructionManager constructionManager;
+    [SerializeField] public ConstructionManager constructionManager;
 
 
     private void Awake()

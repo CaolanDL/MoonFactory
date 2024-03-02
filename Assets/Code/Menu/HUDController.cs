@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class HUDController : MonoBehaviour
 {
-    [SerializeField] private GameObject BuildMenu;
+    [SerializeField] private GameObject ConstructionMenu;
 
     [SerializeField] private GameObject ScienceMenu; 
 
@@ -14,14 +14,15 @@ public class HUDController : MonoBehaviour
 
     private void Start()
     {
-        BuildMenu.SetActive(false);
+        ConstructionMenu.SetActive(false);
         //ScienceMenu.SetActive(false);
         //MapMenu.SetActive(false);
     }
 
-    public void BuildMenuButtonPressed()
+    public void ConstructionMenuButtonPressed()
     {
-        ToggleMenu(BuildMenu);
+        ToggleMenu(ConstructionMenu);
+        ConstructionMenu.GetComponent<ConstructionMenuBuilder>().UpdateList();
     }
 
     public void CancelButtonPressed()

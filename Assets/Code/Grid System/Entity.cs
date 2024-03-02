@@ -9,18 +9,18 @@ public class Entity
 
     public int2 position; // 8 bytes
 
-    /*
+
     private int2 size;
 
     private int2 centre;
 
-    private int _rotation;
-    private int rotation
+    private sbyte _rotation;
+    public sbyte rotation
     {
         get { return _rotation; }
-        set { _rotation = value % 4; }
+        set { _rotation = (sbyte)(value % 4); }
     }
-    */
+    
 
     //public GameObject gameObject;
 

@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c959649ace52a934799d95e3909b1b57, type: 3}
-  m_Name: Crusher Data
+  m_Name: Merger
   m_EditorClassIdentifier: 
-  structureType: 1
-  mesh: {fileID: 1157356984485749078, guid: bbf635b0298399046ac78a79cb08b669, type: 3}
-  material: {fileID: 2100000, guid: 64718899db594904cb8947f0ffd38ef1, type: 2}
+  structureType: 3
+  screenname: Belt Merger
+  mesh: {fileID: 8666198329969812070, guid: 492d356d2fb6618479567879f0814ee8, type: 3}
+  sprite: {fileID: 21300000, guid: 47da93cd88acb1b4d983bb182d56d2e0, type: 3}
