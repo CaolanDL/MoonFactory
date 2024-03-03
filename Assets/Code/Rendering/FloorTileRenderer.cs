@@ -46,11 +46,20 @@ public class FloorTileRenderer : MonoBehaviour
 
                 //UnityEngine.Debug.Log(gameWorld.floorGrid.GetEntityAt(tileLocation).GetType().ToString()) ;
 
-                DrawTile(tileLocation, floorTile.tileData);
+                DrawTile(floorTile);
             }
         }
-    } 
+    }
 
+
+    void DrawTile(FloorTile floorTile)
+    {
+        Vector3 worldPosition = new Vector3(floorTile.position.x, 0, floorTile.position.y);
+
+        //Debug.Log(worldPosition);
+
+        Graphics.DrawMesh(floorTile.data.mesh, worldPosition, Quaternion.Euler(0,90 * floorTile.rotation, 0), floorTile.data.material, 0);
+    }
 
     void DrawTile(int2 gridPosition, FloorTileData tileData)
     {

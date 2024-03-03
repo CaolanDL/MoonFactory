@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class DevFlags
 {
-    public static bool SkipMainMenu = false;
+    public static bool SkipMainMenu = true;
 }
 
 public class GameManager : MonoBehaviour
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     private FloorTileRenderer floorTileRenderer;
      
-    [SerializeField] public ConstructionManager constructionManager;
+    [SerializeField] public ConstructionManager ConstructionManager;
 
 
     private void Awake()
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
         // Update Machines
 
         // Draw Ghosts
-        constructionManager.DrawGhosts();
+        ConstructionManager.DrawGhosts();
 
         // Draw Floor tiles
         floorTileRenderer.Tick();
@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
 
         // Create new gameWorld
         gameWorld = new GameWorld(seed);
-        constructionManager = new();
+        ConstructionManager = new();
 
         // Start zone is generated
         GenerateStartZone();

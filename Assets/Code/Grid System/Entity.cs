@@ -33,11 +33,11 @@ public class Entity
 
 public class FloorTile : Entity // Size: 9 bytes
 {
-    public FloorTileData tileData; //8 bytes
+    public FloorTileData data; //8 bytes
 
     public FloorTile(FloorTileData tileData)
     {
-        this.tileData = tileData;
+        this.data = tileData;
     }
 
     //byte color = 0;

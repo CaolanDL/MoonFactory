@@ -4,24 +4,46 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
+enum StructureCategory
+{
+    Logistics,
+    Power,
+    Processing,
+    Manufacturing,
+    Research
+}
+
 
 [CreateAssetMenu(menuName = "MoonFactory/Structure Data")]
 public class StructureData : ScriptableObject
-{
-    public StructureType structureType = StructureType.None;
-
+{ 
     [Space]
 
     public string screenname = string.Empty;
 
-    [Space]
-
-    public Mesh mesh;
     public Sprite sprite;
 
     [Space]
 
+    public Mesh mesh; 
+
+    public List<AdditiveModelData> additiveModels = new();
+
+    [Space]
+
+    public List<int2> inputLocations;
+    public List<int2> outputLocations;
+
+    [Space]
+
     public List<ArrowIndicatorData> arrowIndicators = new();
+
+    [Serializable]
+    public class AdditiveModelData
+    {
+        public Mesh mesh;
+        public Material material;
+    }
 
     [Serializable]
     public class ArrowIndicatorData
@@ -31,8 +53,6 @@ public class StructureData : ScriptableObject
         public Quaternion rotation = Quaternion.identity;
 
         public float size = 1;
-
-        public Color color = new Color(50,255,50) ;
     }
 }
 

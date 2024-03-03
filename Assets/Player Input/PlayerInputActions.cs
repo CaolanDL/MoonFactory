@@ -24,92 +24,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     ""name"": ""PlayerInputActions"",
     ""maps"": [
         {
-            ""name"": ""Camera Controls"",
-            ""id"": ""53f65ddb-9ea1-43b4-bcb1-3e8ac133ddcb"",
+            ""name"": ""Default Controls"",
+            ""id"": ""78cb8385-15cf-4a77-9bdc-d3c4c6b8ca46"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
-                    ""type"": ""Value"",
-                    ""id"": ""60dce67f-8746-4f3b-9ad2-373fb98290c0"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""name"": ""Pick Structure"",
+                    ""type"": ""Button"",
+                    ""id"": ""c49dbca6-541e-4d6e-9518-3cb4ba26ec48"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Zoom"",
-                    ""type"": ""Value"",
-                    ""id"": ""56337558-7f91-4522-b2a6-9568feaaa3ae"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": ""Clamp(min=-1,max=1),Invert"",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
-                    ""name"": """",
-                    ""id"": ""688dd8ce-aba1-4a02-8f3b-84a6f4ea7248"",
-                    ""path"": ""<Mouse>/scroll/y"",
+                    ""name"": ""One Modifier"",
+                    ""id"": ""86050476-2a1d-44c0-8ded-f36592e7a82d"",
+                    ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Zoom"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""a95cb8af-0169-4477-91a0-7295ffc9c9ee"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""Pick Structure"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""up"",
-                    ""id"": ""cb38617f-e643-4607-8ee6-9c2c338be990"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""name"": ""modifier"",
+                    ""id"": ""c3eda2fa-8d62-4572-b6e2-4f08eab30242"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Desktop"",
-                    ""action"": ""Move"",
+                    ""groups"": """",
+                    ""action"": ""Pick Structure"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""down"",
-                    ""id"": ""eb59a2af-3df5-4313-b6db-07ccb918a041"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""name"": ""binding"",
+                    ""id"": ""8b49c0c9-58b6-4967-930f-16a35ccc4262"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Desktop"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""eb62429c-0a5c-4b2b-98d8-a53c69ac67fd"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Desktop"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""ab5d9e96-4bc1-400c-bf0a-a5c8329e4340"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Desktop"",
-                    ""action"": ""Move"",
+                    ""groups"": """",
+                    ""action"": ""Pick Structure"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -204,6 +162,98 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ]
         },
         {
+            ""name"": ""Camera Controls"",
+            ""id"": ""53f65ddb-9ea1-43b4-bcb1-3e8ac133ddcb"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""60dce67f-8746-4f3b-9ad2-373fb98290c0"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Value"",
+                    ""id"": ""56337558-7f91-4522-b2a6-9568feaaa3ae"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": ""Clamp(min=-1,max=1),Invert"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""688dd8ce-aba1-4a02-8f3b-84a6f4ea7248"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""a95cb8af-0169-4477-91a0-7295ffc9c9ee"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""cb38617f-e643-4607-8ee6-9c2c338be990"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""eb59a2af-3df5-4313-b6db-07ccb918a041"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""eb62429c-0a5c-4b2b-98d8-a53c69ac67fd"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ab5d9e96-4bc1-400c-bf0a-a5c8329e4340"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Desktop"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
+        },
+        {
             ""name"": ""UI Controls"",
             ""id"": ""5be7f4d8-76a5-4849-8dd0-0d49f29dc029"",
             ""actions"": [
@@ -271,16 +321,19 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // Camera Controls
-        m_CameraControls = asset.FindActionMap("Camera Controls", throwIfNotFound: true);
-        m_CameraControls_Move = m_CameraControls.FindAction("Move", throwIfNotFound: true);
-        m_CameraControls_Zoom = m_CameraControls.FindAction("Zoom", throwIfNotFound: true);
+        // Default Controls
+        m_DefaultControls = asset.FindActionMap("Default Controls", throwIfNotFound: true);
+        m_DefaultControls_PickStructure = m_DefaultControls.FindAction("Pick Structure", throwIfNotFound: true);
         // Construction Controls
         m_ConstructionControls = asset.FindActionMap("Construction Controls", throwIfNotFound: true);
         m_ConstructionControls_RotateGhost = m_ConstructionControls.FindAction("Rotate Ghost", throwIfNotFound: true);
         m_ConstructionControls_PlaceGhost = m_ConstructionControls.FindAction("Place Ghost", throwIfNotFound: true);
         m_ConstructionControls_DeleteGhost = m_ConstructionControls.FindAction("Delete Ghost", throwIfNotFound: true);
         m_ConstructionControls_ExitConstructionMode = m_ConstructionControls.FindAction("Exit Construction Mode", throwIfNotFound: true);
+        // Camera Controls
+        m_CameraControls = asset.FindActionMap("Camera Controls", throwIfNotFound: true);
+        m_CameraControls_Move = m_CameraControls.FindAction("Move", throwIfNotFound: true);
+        m_CameraControls_Zoom = m_CameraControls.FindAction("Zoom", throwIfNotFound: true);
         // UI Controls
         m_UIControls = asset.FindActionMap("UI Controls", throwIfNotFound: true);
         m_UIControls_Click = m_UIControls.FindAction("Click", throwIfNotFound: true);
@@ -343,59 +396,51 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Camera Controls
-    private readonly InputActionMap m_CameraControls;
-    private List<ICameraControlsActions> m_CameraControlsActionsCallbackInterfaces = new List<ICameraControlsActions>();
-    private readonly InputAction m_CameraControls_Move;
-    private readonly InputAction m_CameraControls_Zoom;
-    public struct CameraControlsActions
+    // Default Controls
+    private readonly InputActionMap m_DefaultControls;
+    private List<IDefaultControlsActions> m_DefaultControlsActionsCallbackInterfaces = new List<IDefaultControlsActions>();
+    private readonly InputAction m_DefaultControls_PickStructure;
+    public struct DefaultControlsActions
     {
         private @PlayerInputActions m_Wrapper;
-        public CameraControlsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_CameraControls_Move;
-        public InputAction @Zoom => m_Wrapper.m_CameraControls_Zoom;
-        public InputActionMap Get() { return m_Wrapper.m_CameraControls; }
+        public DefaultControlsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PickStructure => m_Wrapper.m_DefaultControls_PickStructure;
+        public InputActionMap Get() { return m_Wrapper.m_DefaultControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(CameraControlsActions set) { return set.Get(); }
-        public void AddCallbacks(ICameraControlsActions instance)
+        public static implicit operator InputActionMap(DefaultControlsActions set) { return set.Get(); }
+        public void AddCallbacks(IDefaultControlsActions instance)
         {
-            if (instance == null || m_Wrapper.m_CameraControlsActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_CameraControlsActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
-            @Zoom.started += instance.OnZoom;
-            @Zoom.performed += instance.OnZoom;
-            @Zoom.canceled += instance.OnZoom;
+            if (instance == null || m_Wrapper.m_DefaultControlsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DefaultControlsActionsCallbackInterfaces.Add(instance);
+            @PickStructure.started += instance.OnPickStructure;
+            @PickStructure.performed += instance.OnPickStructure;
+            @PickStructure.canceled += instance.OnPickStructure;
         }
 
-        private void UnregisterCallbacks(ICameraControlsActions instance)
+        private void UnregisterCallbacks(IDefaultControlsActions instance)
         {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
-            @Zoom.started -= instance.OnZoom;
-            @Zoom.performed -= instance.OnZoom;
-            @Zoom.canceled -= instance.OnZoom;
+            @PickStructure.started -= instance.OnPickStructure;
+            @PickStructure.performed -= instance.OnPickStructure;
+            @PickStructure.canceled -= instance.OnPickStructure;
         }
 
-        public void RemoveCallbacks(ICameraControlsActions instance)
+        public void RemoveCallbacks(IDefaultControlsActions instance)
         {
-            if (m_Wrapper.m_CameraControlsActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_DefaultControlsActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(ICameraControlsActions instance)
+        public void SetCallbacks(IDefaultControlsActions instance)
         {
-            foreach (var item in m_Wrapper.m_CameraControlsActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_DefaultControlsActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_CameraControlsActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_DefaultControlsActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public CameraControlsActions @CameraControls => new CameraControlsActions(this);
+    public DefaultControlsActions @DefaultControls => new DefaultControlsActions(this);
 
     // Construction Controls
     private readonly InputActionMap m_ConstructionControls;
@@ -467,6 +512,60 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     }
     public ConstructionControlsActions @ConstructionControls => new ConstructionControlsActions(this);
 
+    // Camera Controls
+    private readonly InputActionMap m_CameraControls;
+    private List<ICameraControlsActions> m_CameraControlsActionsCallbackInterfaces = new List<ICameraControlsActions>();
+    private readonly InputAction m_CameraControls_Move;
+    private readonly InputAction m_CameraControls_Zoom;
+    public struct CameraControlsActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public CameraControlsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_CameraControls_Move;
+        public InputAction @Zoom => m_Wrapper.m_CameraControls_Zoom;
+        public InputActionMap Get() { return m_Wrapper.m_CameraControls; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(CameraControlsActions set) { return set.Get(); }
+        public void AddCallbacks(ICameraControlsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_CameraControlsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_CameraControlsActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Zoom.started += instance.OnZoom;
+            @Zoom.performed += instance.OnZoom;
+            @Zoom.canceled += instance.OnZoom;
+        }
+
+        private void UnregisterCallbacks(ICameraControlsActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Zoom.started -= instance.OnZoom;
+            @Zoom.performed -= instance.OnZoom;
+            @Zoom.canceled -= instance.OnZoom;
+        }
+
+        public void RemoveCallbacks(ICameraControlsActions instance)
+        {
+            if (m_Wrapper.m_CameraControlsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(ICameraControlsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_CameraControlsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_CameraControlsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public CameraControlsActions @CameraControls => new CameraControlsActions(this);
+
     // UI Controls
     private readonly InputActionMap m_UIControls;
     private List<IUIControlsActions> m_UIControlsActionsCallbackInterfaces = new List<IUIControlsActions>();
@@ -529,10 +628,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_DesktopSchemeIndex];
         }
     }
-    public interface ICameraControlsActions
+    public interface IDefaultControlsActions
     {
-        void OnMove(InputAction.CallbackContext context);
-        void OnZoom(InputAction.CallbackContext context);
+        void OnPickStructure(InputAction.CallbackContext context);
     }
     public interface IConstructionControlsActions
     {
@@ -540,6 +638,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnPlaceGhost(InputAction.CallbackContext context);
         void OnDeleteGhost(InputAction.CallbackContext context);
         void OnExitConstructionMode(InputAction.CallbackContext context);
+    }
+    public interface ICameraControlsActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
     }
     public interface IUIControlsActions
     {

@@ -2,92 +2,50 @@
     "name": "PlayerInputActions",
     "maps": [
         {
-            "name": "Camera Controls",
-            "id": "53f65ddb-9ea1-43b4-bcb1-3e8ac133ddcb",
+            "name": "Default Controls",
+            "id": "78cb8385-15cf-4a77-9bdc-d3c4c6b8ca46",
             "actions": [
                 {
-                    "name": "Move",
-                    "type": "Value",
-                    "id": "60dce67f-8746-4f3b-9ad2-373fb98290c0",
-                    "expectedControlType": "Vector2",
+                    "name": "Pick Structure",
+                    "type": "Button",
+                    "id": "c49dbca6-541e-4d6e-9518-3cb4ba26ec48",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Zoom",
-                    "type": "Value",
-                    "id": "56337558-7f91-4522-b2a6-9568feaaa3ae",
-                    "expectedControlType": "Axis",
-                    "processors": "Clamp(min=-1,max=1),Invert",
-                    "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
-                    "name": "",
-                    "id": "688dd8ce-aba1-4a02-8f3b-84a6f4ea7248",
-                    "path": "<Mouse>/scroll/y",
+                    "name": "One Modifier",
+                    "id": "86050476-2a1d-44c0-8ded-f36592e7a82d",
+                    "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Zoom",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "2D Vector",
-                    "id": "a95cb8af-0169-4477-91a0-7295ffc9c9ee",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
+                    "action": "Pick Structure",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
-                    "id": "cb38617f-e643-4607-8ee6-9c2c338be990",
-                    "path": "<Keyboard>/w",
+                    "name": "modifier",
+                    "id": "c3eda2fa-8d62-4572-b6e2-4f08eab30242",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Desktop",
-                    "action": "Move",
+                    "groups": "",
+                    "action": "Pick Structure",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "down",
-                    "id": "eb59a2af-3df5-4313-b6db-07ccb918a041",
-                    "path": "<Keyboard>/s",
+                    "name": "binding",
+                    "id": "8b49c0c9-58b6-4967-930f-16a35ccc4262",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Desktop",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "eb62429c-0a5c-4b2b-98d8-a53c69ac67fd",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Desktop",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "ab5d9e96-4bc1-400c-bf0a-a5c8329e4340",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Desktop",
-                    "action": "Move",
+                    "groups": "",
+                    "action": "Pick Structure",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
@@ -178,6 +136,98 @@
                     "action": "Exit Construction Mode",
                     "isComposite": false,
                     "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Camera Controls",
+            "id": "53f65ddb-9ea1-43b4-bcb1-3e8ac133ddcb",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Value",
+                    "id": "60dce67f-8746-4f3b-9ad2-373fb98290c0",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Zoom",
+                    "type": "Value",
+                    "id": "56337558-7f91-4522-b2a6-9568feaaa3ae",
+                    "expectedControlType": "Axis",
+                    "processors": "Clamp(min=-1,max=1),Invert",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "688dd8ce-aba1-4a02-8f3b-84a6f4ea7248",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "a95cb8af-0169-4477-91a0-7295ffc9c9ee",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "cb38617f-e643-4607-8ee6-9c2c338be990",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "eb59a2af-3df5-4313-b6db-07ccb918a041",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "eb62429c-0a5c-4b2b-98d8-a53c69ac67fd",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "ab5d9e96-4bc1-400c-bf0a-a5c8329e4340",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Desktop",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

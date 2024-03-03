@@ -18,29 +18,28 @@ public class CameraController : MonoBehaviour
 
     [Header("Variables")]
     [SerializeField] private float motionSmoothness = 10;
-    [SerializeField] private float maxSpeed = 5;
-    [SerializeField] private float zoomSpeed = 10;  
+    [SerializeField] private float maxSpeed = 5; 
+    [SerializeField] private float zoomSpeed = 10;
+    [SerializeField] private float zoomScaling = 0.5f;
 
     [Header("Object References")]
     public GameObject cameraOrigin;
     public Camera playerCamera;
-    PlayerInputActions InputActions;
+    public Camera topDownCamera;
 
-    #region Observe Input Actions
-    private void Awake()
-    {
-        InputActions = new PlayerInputActions();
-    }
+
+    PlayerInputActions InputActions;
+     
 
     void OnEnable()
     {
+        InputActions = new PlayerInputActions();
         InputActions.CameraControls.Enable();
     }
     void OnDisable()
     {
         InputActions.CameraControls.Disable();
-    }
-    #endregion
+    } 
 
     private void Update()
     {
@@ -52,11 +51,11 @@ public class CameraController : MonoBehaviour
     {
         Vector2 inputVector = InputActions.CameraControls.Move.ReadValue<Vector2>();
 
-        Vector3 inputVector3 = new Vector3(inputVector.x, 0, inputVector.y);
+        Vector3 inputVector3 = new Vector3(-inputVector.y, 0, inputVector.x);
 
-        velocity = Vector3.Lerp(velocity, inputVector3 * maxSpeed, motionSmoothness * Time.deltaTime);
+        velocity = Vector3.Lerp(velocity, inputVector3 * maxSpeed, motionSmoothness * Time.deltaTime); 
 
-        position += cameraRotation * (velocity * Time.deltaTime * (zoom * 0.5f)) ;
+        position += cameraRotation * (velocity * Time.deltaTime * (zoom * zoomScaling));
         cameraOrigin.transform.position = position;
     } 
 
@@ -65,6 +64,7 @@ public class CameraController : MonoBehaviour
         zoom += InputActions.CameraControls.Zoom.ReadValue<float>() * (zoom / 10); //zoomSpeed;
 
         playerCamera.orthographicSize = zoom;
+        topDownCamera.orthographicSize = zoom;
         playerCamera.transform.localPosition = new Vector3(0, 0, Mathf.Clamp(-zoom*2, -1000, -5));
     }
 

@@ -71,7 +71,7 @@ public class GameWorld
 
         FloorTile newFloorTile = new(newTileData);
 
-        floorGrid.AddEntity(newFloorTile, position);
+        floorGrid.AddEntity(newFloorTile, position, (sbyte) Random.Range(0,3));
 
         //Debug.Log($"Generated floor tile at: {position}");
 
@@ -109,7 +109,7 @@ public class TerrainGenerator
 
 public class Grid
 {
-    static List<Grid> grids = new List<Grid>();
+    private static List<Grid> grids = new List<Grid>();
     public Dictionary<int2, Location> grid = new Dictionary<int2, Location>();
 
     public List<Entity> entities = new List<Entity>(); 
@@ -120,6 +120,11 @@ public class Grid
     {
         grids.Add(this);
         id = (byte)(grids[grids.Count - 1].id + 1);
+    }
+
+    public static Grid GetGrid(byte id)
+    {
+        return grids.Find(x => x.id == id);
     }
 
     public Location AddLocation(int2 position)
@@ -157,13 +162,32 @@ public class Grid
 
     public Entity AddEntity(Entity entity, int2 position)
     {
+        return AddEntity(entity, position, 0); 
+    }
+
+    public Entity AddEntity(Entity entity, int2 position, sbyte rotation)
+    {
         Location location = AddLocation(position);
 
         location.entity = entity;
 
         entity.position = position;
 
+        entity.rotation = rotation;
+
         return entity;
+    }
+
+    /*    public Entity RemoveEntity(Entity entity)
+        { 
+        }
+    */
+
+    public Entity RemoveEntity(int2 position)
+    {
+        if (grid.ContainsKey(position) != true) { return null; }
+          
+        return grid[position].RemoveEntity(); 
     }
 
     public Entity GetEntityAt(int2 position)
@@ -203,5 +227,13 @@ public class Location // Size: 13 bytes
     {
         int2 unflooredChunkPosition = position.x / WorldGenerationData.ChunkSize;
         return new int2(Mathf.FloorToInt(unflooredChunkPosition.x), Mathf.FloorToInt(unflooredChunkPosition.y));
+    }
+
+    public Entity RemoveEntity()
+    {
+        var entityToRemove = entity;
+        Grid.GetGrid(gridId).entities.Remove(entity);
+        entity = null;
+        return entityToRemove;
     }
 }

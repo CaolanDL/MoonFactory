@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c959649ace52a934799d95e3909b1b57, type: 3}
   m_Name: Conveyor
   m_EditorClassIdentifier: 
-  structureType: 2
   screenname: Conveyor Belt
-  mesh: {fileID: -7681513528253052755, guid: 345b528e1baf21242b76967ef84ee93c, type: 3}
   sprite: {fileID: 21300000, guid: e43ca0dfd30bea442a1fd4bc72f0bc61, type: 3}
+  mesh: {fileID: 534601995681146736, guid: 1d48e8f8386ab6b488b72028b59c19a6, type: 3}
+  additiveModels:
+  - mesh: {fileID: 8654884093285089175, guid: 8626fe02b00017f4ab3ae100f81fa2be, type: 3}
+    material: {fileID: 2100000, guid: c9067e89d5229114da459edce48d621d, type: 2}
   arrowIndicators:
-  - relativePosition: {x: 0, y: 0.202, z: -0.653}
+  - relativePosition: {x: 0, y: 0, z: -0.75}
     rotation: {x: 0, y: 0, z: 0, w: 1}
     size: 0.25
-    color: {r: 0.20705767, g: 0.9339623, b: 0.24019511, a: 0}
-  - relativePosition: {x: 0, y: 0.202, z: 0.653}
+  - relativePosition: {x: 0, y: 0, z: 0.75}
     rotation: {x: 0, y: 0, z: 0, w: 1}
     size: 0.25
-    color: {r: 0.20705767, g: 0.9339623, b: 0.24019511, a: 0}

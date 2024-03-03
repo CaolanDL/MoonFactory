@@ -27,7 +27,7 @@ public class BuildStructureButton : MonoBehaviour
 
         gameManager.GetComponent<PlayerInputManager>().ChangeInputState(PlayerInputManager.InputState.Default);
 
-        gameManager.constructionManager.StartPlacingGhosts(structureData);
+        gameManager.ConstructionManager.StartPlacingGhosts(structureData);
 
         gameManager.GetComponent<PlayerInputManager>().ChangeInputState(PlayerInputManager.InputState.Construction);
     }

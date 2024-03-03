@@ -26,10 +26,10 @@ using UnityEngine.WSA;
 
 
 public class PlayerInputManager : MonoBehaviour
-{ 
+{
     public InputState inputState = InputState.Default;
 
-    [SerializeField] public int2 MouseGridPositon = new(0,0); 
+    [SerializeField] public int2 MouseGridPositon = new(0, 0);
 
     public bool isMouseOverUI = true;
 
@@ -47,16 +47,21 @@ public class PlayerInputManager : MonoBehaviour
 
     void OnEnable()
     {
+        inputActions.DefaultControls.Enable();
+
         inputActions.ConstructionControls.Enable();
     }
+
     void OnDisable()
     {
+        inputActions.DefaultControls.Disable();
+
         inputActions.ConstructionControls.Disable();
     }
 
 
     public enum InputState
-    { 
+    {
         Default,
         Menu,
         Construction,
@@ -67,11 +72,6 @@ public class PlayerInputManager : MonoBehaviour
     public void ChangeInputState(InputState newInputState)
     {
         inputState = newInputState;
-
-        if( inputState == InputState.Construction )
-        {
-            inputActions.ConstructionControls.Enable();
-        }
     }
 
     private void Update()
@@ -79,14 +79,14 @@ public class PlayerInputManager : MonoBehaviour
         isMouseOverUI = EventSystem.current.IsPointerOverGameObject();
 
         if (!isMouseOverUI)
-        { 
+        {
             UpdateMouseGridPosition();
         }
 
         switch (inputState)
         {
             default:
-                break; 
+                break;
 
             case InputState.Default:
                 HandleDefaultInput();
@@ -116,8 +116,25 @@ public class PlayerInputManager : MonoBehaviour
     {
         HandleCameraControl();
 
-        
-    }  
+        if (inputActions.DefaultControls.PickStructure.WasPressedThisFrame())
+        {
+            Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
+
+            if (entity != null)
+            {
+                if (entity.GetType() == typeof(StructureGhost))
+                {
+                    ChangeInputState(InputState.Construction);
+                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((StructureGhost)entity).data);
+                }
+                if (entity.GetType().IsSubclassOf(typeof(Structure)))
+                { 
+                    ChangeInputState(InputState.Construction);
+                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((Structure)entity).data);
+                } 
+            }
+        }
+    }
 
     public void HandleConstructionInput()
     {
@@ -125,15 +142,14 @@ public class PlayerInputManager : MonoBehaviour
 
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
-            inputActions.ConstructionControls.Disable();
             ChangeInputState(InputState.Default);
             return;
         }
 
-        ConstructionManager constructionManager = GameManager.Instance.constructionManager;
+        ConstructionManager constructionManager = GameManager.Instance.ConstructionManager;
 
-        if(isMouseOverUI != true)
-        { 
+        if (isMouseOverUI != true)
+        {
             constructionManager.DrawGhostAtMouse(MouseGridPositon);
         }
 
@@ -146,7 +162,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             constructionManager.PlaceGhost(MouseGridPositon);
         }
-    } 
+    }
 
 
     public void UpdateMouseGridPosition()
