@@ -154,7 +154,7 @@ public class PlayerInputManager : MonoBehaviour
         if (inputActions.ConstructionControls.RotateGhost.WasPressedThisFrame())
         {
             constructionManager.RotateGhost(1);
-        }
+        } 
 
         if (inputActions.ConstructionControls.PlaceGhost.IsPressed())
         {

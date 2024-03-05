@@ -22,6 +22,8 @@ public class ConstructionManager
         set { ghostRotation = (sbyte)(value % 4); }
     }
 
+    int2 dragPlacementOrigin = new();
+
     public void DrawGhosts()
     {
         if (ghosts.Count != 0)
@@ -101,10 +103,10 @@ public class ConstructionManager
     public void StartPlacingGhosts(StructureData structureData)
     {
         newGhostData = structureData;
-    }
+    } 
 
     public void PlaceGhost(int2 position)
-    {
+    { 
         var worldGrid = GameManager.Instance.gameWorld.worldGrid;
 
         if (worldGrid.IsEntityAt(position)) return;

@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-enum StructureCategory
+public enum StructureCategory
 {
     Logistics,
     Power,
     Processing,
     Manufacturing,
-    Research
+    Science
 }
 
 
@@ -21,12 +21,17 @@ public class StructureData : ScriptableObject
 
     public string screenname = string.Empty;
 
+    public StructureCategory category;
+
     public Sprite sprite;
 
-    [SerializeField] public GameObject displayObject;  
+    [SerializeField] public GameObject displayObject;
+
+    [Space(25)]
 
     public List<int2> inputLocations;
     public List<int2> outputLocations;
+
 
 
     [Space, Header("Ghost Data")]
@@ -36,6 +41,7 @@ public class StructureData : ScriptableObject
     public List<GhostModels> ghostModels = new(); 
 
     public List<ArrowIndicatorData> arrowIndicators = new();
+
 
 
 

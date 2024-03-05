@@ -10,7 +10,7 @@ public class Entity
 
     public int2 position; // 8 bytes
 
-    private byte2 size = new(1,1);
+    private byte2 size = new(1, 1);
 
     private byte2 centre
     {
@@ -21,9 +21,9 @@ public class Entity
     public sbyte rotation
     {
         get { return _rotation; }
-        set { _rotation = (sbyte)(value % 4); }
+        set { _rotation = (sbyte)((value % 4 + 4) % 4); } // Dont even ask
     }
-    
+
 
     //public GameObject gameObject;
 

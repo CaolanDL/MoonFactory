@@ -1,11 +1,9 @@
+using ExtensionMethods;
 using System; 
 using System.Collections.Generic;
 using System.Reflection;
 using Unity.Mathematics;
-using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
-using UnityEngine.Tilemaps;
-using static UnityEditor.LightingExplorerTableColumn;
+using UnityEngine; 
 
 public abstract class Structure : Entity
 {
@@ -33,7 +31,9 @@ public abstract class Structure : Entity
 
     public virtual void Constructed()
     {
+        GameObject newDisplayGameObject = UnityEngine.Object.Instantiate(data.displayObject, position.ToVector3(), rotation.ToQuaternion(), GameManager.Instance.transform);
 
+        displayObject = newDisplayGameObject.GetComponent<DisplayObject>();
     }
 }
 

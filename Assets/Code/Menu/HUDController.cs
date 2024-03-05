@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HUDController : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class HUDController : MonoBehaviour
     {
         ToggleMenu(ConstructionMenu);
         ConstructionMenu.GetComponent<ConstructionMenuBuilder>().UpdateList();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
 
     public void CancelButtonPressed()
