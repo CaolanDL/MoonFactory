@@ -5,18 +5,15 @@ using UnityEngine.UIElements;
 
 public class FloorTileRenderer : MonoBehaviour
 {
-    [SerializeField] private CameraController cameraController;
-
-    GameWorld gameWorld;
-
+    [SerializeField] private CameraController cameraController;  
 
     private void Awake()
     {
-        cameraController = GetComponent<CameraController>();
+        cameraController = GetComponent<CameraController>();  
     }
+
     public void Tick()
     {
-        gameWorld = GameManager.Instance.gameWorld;
         DrawVisibleFloorTiles();
     }
 
@@ -35,8 +32,7 @@ public class FloorTileRenderer : MonoBehaviour
 
                 //Debug.Log($"Drawing Floor Tiles at: {x}, {y}");
 
-                FloorTile floorTile = (FloorTile)gameWorld.floorGrid.GetEntityAt(tileLocation);
-
+                FloorTile floorTile = (FloorTile)GameManager.Instance.gameWorld.floorGrid.GetEntityAt(tileLocation); 
 
                 // Generate new floor tiles
                 if (floorTile == null) 
@@ -58,7 +54,7 @@ public class FloorTileRenderer : MonoBehaviour
 
         //Debug.Log(worldPosition);
 
-        Graphics.DrawMesh(floorTile.data.mesh, worldPosition, Quaternion.Euler(0,90 * floorTile.rotation, 0), floorTile.data.material, 0);
+        Graphics.DrawMesh(floorTile.data.mesh, worldPosition, Quaternion.Euler(0,90 * floorTile.rotation, 0), GlobalData.Instance.mat_Tile, 0);
     }
 
     void DrawTile(int2 gridPosition, FloorTileData tileData)
@@ -67,7 +63,7 @@ public class FloorTileRenderer : MonoBehaviour
 
         //Debug.Log(worldPosition);
 
-        Graphics.DrawMesh(tileData.mesh, worldPosition, quaternion.identity, tileData.material, 0);
+        Graphics.DrawMesh(tileData.mesh, worldPosition, quaternion.identity, GlobalData.Instance.mat_Tile, 0);
     } 
 
 

@@ -9,9 +9,16 @@ public class DebugUI : MonoBehaviour
     public TextMeshPro TileCounter;
     public TextMeshPro RoverCounter;
 
-      
+    private int FPS;
+
+
+    private void Update()
+    {
+        FPS = (int)(1.0f / Time.smoothDeltaTime);
+    }
+
     private void FixedUpdate()
     {
-        FPSCounter.text = "FPS " + ((int) (1.0f / Time.deltaTime)).ToString();
+        FPSCounter.text = $"FPS {FPS}";
     }
 }

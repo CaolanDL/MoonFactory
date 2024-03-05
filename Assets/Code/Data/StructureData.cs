@@ -16,30 +16,31 @@ enum StructureCategory
 
 [CreateAssetMenu(menuName = "MoonFactory/Structure Data")]
 public class StructureData : ScriptableObject
-{ 
-    [Space]
+{
+    [Header("Structure Details")]
 
     public string screenname = string.Empty;
 
     public Sprite sprite;
 
-    [Space]
-
-    public Mesh mesh; 
-
-    public List<AdditiveModelData> additiveModels = new();
-
-    [Space]
+    [SerializeField] public GameObject displayObject;  
 
     public List<int2> inputLocations;
     public List<int2> outputLocations;
 
-    [Space]
+
+    [Space, Header("Ghost Data")]
+
+    public Mesh ghostMesh; 
+
+    public List<GhostModels> ghostModels = new(); 
 
     public List<ArrowIndicatorData> arrowIndicators = new();
 
+
+
     [Serializable]
-    public class AdditiveModelData
+    public class GhostModels
     {
         public Mesh mesh;
         public Material material;

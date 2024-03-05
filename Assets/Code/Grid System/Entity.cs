@@ -1,6 +1,7 @@
 ﻿using System;
-using Unity.Mathematics;
 using UnityEngine;
+using DataStructs;
+using Unity.Mathematics;
 
 [Serializable]
 public class Entity
@@ -9,10 +10,12 @@ public class Entity
 
     public int2 position; // 8 bytes
 
+    private byte2 size = new(1,1);
 
-    private int2 size;
-
-    private int2 centre;
+    private byte2 centre
+    {
+        get { return new byte2(size.x / 2, size.y / 2); }
+    }
 
     private sbyte _rotation;
     public sbyte rotation
@@ -29,7 +32,6 @@ public class Entity
         //centre = position + (size / 2);
     }
 }
-
 
 public class FloorTile : Entity // Size: 9 bytes
 {

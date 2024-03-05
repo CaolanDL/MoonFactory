@@ -14,18 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenname: Belt Merger
   sprite: {fileID: 21300000, guid: 47da93cd88acb1b4d983bb182d56d2e0, type: 3}
-  mesh: {fileID: 2436021630831504931, guid: 492d356d2fb6618479567879f0814ee8, type: 3}
-  additiveModels: []
+  displayObject: {fileID: 0}
+  inputLocations: []
+  outputLocations: []
+  ghostMesh: {fileID: 0}
+  ghostModels: []
   arrowIndicators:
-  - relativePosition: {x: -1, y: 0, z: 0}
+  - relativePosition: {x: -1, y: 0.1, z: 0}
     rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
     size: 0.25
-  - relativePosition: {x: 1, y: 0, z: 0}
+  - relativePosition: {x: 1, y: 0.1, z: 0}
     rotation: {x: 0, y: -0.70710677, z: 0, w: 0.70710677}
     size: 0.25
-  - relativePosition: {x: 0, y: 0, z: -1}
+  - relativePosition: {x: 0, y: 0.1, z: -1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
     size: 0.25
-  - relativePosition: {x: 0, y: 0, z: 1}
+  - relativePosition: {x: 0, y: 0.1, z: 1}
     rotation: {x: 0, y: 0, z: 0, w: 1}
     size: 0.25

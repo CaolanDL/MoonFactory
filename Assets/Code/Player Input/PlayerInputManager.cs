@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using Unity.Mathematics;
+﻿using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.WSA;
+using UnityEngine.InputSystem; 
 
 #region Input Example Comment
 // Input Example:

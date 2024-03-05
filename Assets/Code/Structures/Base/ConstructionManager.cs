@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using ExtensionMethods;
 using UnityEngine.UIElements;
 
 [Serializable]
@@ -27,65 +28,73 @@ public class ConstructionManager
         { 
             foreach (StructureGhost ghost in ghosts)
             {
-                var matrix = CreateTransformMatrix(ghost.position, ghost.rotation);
+                var matrix = MatrixConstruction.CreateTransformMatrix(ghost.position, ghost.rotation);
 
-                Graphics.DrawMesh(ghost.data.mesh, matrix, GlobalData.Instance.mat_ghost, 0);
+                Graphics.DrawMesh(ghost.data.ghostMesh, matrix, GlobalData.Instance.mat_Ghost, 0);
+
+                foreach (StructureData.GhostModels ghostModel in ghost.data.ghostModels)
+                {
+                    Graphics.DrawMesh(ghostModel.mesh, matrix, ghostModel.material, 0);
+                }
             }
         }
-        // Development Only > Replace with animation gameobjects
+        /*// Development Only > Replace with animation gameobjects
         foreach (Structure structure in Structure.structures)
         {
-            var matrix = CreateTransformMatrix(structure.position, structure.rotation); 
+            var matrix = MatrixConstruction.CreateTransformMatrix(structure.position, structure.rotation); 
 
-            Graphics.DrawMesh(structure.data.mesh, matrix, GlobalData.Instance.mat_DevUniversal, 0);
+            Graphics.DrawMesh(structure.data.ghostMesh, matrix, GlobalData.Instance.mat_DevUniversal, 0);
 
-            foreach(StructureData.AdditiveModelData additiveModel in structure.data.additiveModels)
+            foreach(StructureData.GhostModels additiveModel in structure.data.ghostModels)
             {
                 Graphics.DrawMesh(additiveModel.mesh, matrix, additiveModel.material, 0); 
             }
-        }
-
-        Matrix4x4 CreateTransformMatrix(int2 location, sbyte rotation)
-        {
-            return Matrix4x4.TRS
-            (
-                new Vector3(location.x, 0, location.y),
-                Quaternion.Euler(0, 90 * rotation, 0),
-                Vector3.one
-            );
-        }
+        } */
     }
 
     public void DrawGhostAtMouse(int2 position)
     {
-        Material ghostMaterial = GlobalData.Instance.mat_ghost;
+        Material activeGhostMaterial = GlobalData.Instance.mat_Ghost;
 
         if (GameManager.Instance.gameWorld.worldGrid.IsEntityAt(position))
         {
-            ghostMaterial = GlobalData.Instance.mat_ghostBlocked;
+            activeGhostMaterial = GlobalData.Instance.mat_GhostBlocked;
+        } 
+
+        var matrix = MatrixConstruction.CreateTransformMatrix(position, ghostRotation); 
+
+        Graphics.DrawMesh(newGhostData.ghostMesh, matrix, activeGhostMaterial, 0);
+
+        foreach (StructureData.GhostModels ghostModel in newGhostData.ghostModels)
+        {
+            Material materialToDraw = ghostModel.material;
+            if(ghostModel.material == GlobalData.Instance.mat_Ghost)
+            {
+                materialToDraw = activeGhostMaterial; 
+            }
+            Graphics.DrawMesh(ghostModel.mesh, matrix, materialToDraw, 0);
         }
 
-        Quaternion _rotation = Quaternion.Euler(0, 90 * GhostRotation, 0);
 
         Vector3 _position = new Vector3(position.x, 0, position.y);
 
-        Graphics.DrawMesh(newGhostData.mesh, _position, _rotation, ghostMaterial, 0);
+        Quaternion _rotation = Quaternion.Euler(0, 90 * GhostRotation, 0);
 
         // Draw indicator arrows
-        foreach(var arrow in newGhostData.arrowIndicators)
+        foreach (var arrow in newGhostData.arrowIndicators)
         {
             Quaternion arrowRotation = (arrow.rotation * _rotation).normalized;
 
             Vector3 arrowPosition = (_rotation * arrow.relativePosition) + _position;
 
-            Matrix4x4 matrix = Matrix4x4.TRS
+            Matrix4x4 _matrix = Matrix4x4.TRS
             (
                 arrowPosition,
                 arrowRotation,
                 Vector3.one * arrow.size
             ); 
 
-            Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, matrix, GlobalData.Instance.mat_ArrowIndicator, 0);
+            Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicator, 0);
         }
     }
 

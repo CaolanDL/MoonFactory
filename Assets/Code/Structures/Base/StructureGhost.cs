@@ -20,5 +20,7 @@ public class StructureGhost : Entity
         worldGrid.AddEntity(newStructure, position, rotation);
 
         GameManager.Instance.ConstructionManager.ghosts.Remove(this);
+
+        newStructure.Constructed();
     }
 }

@@ -11,6 +11,11 @@ public class GlobalData : ScriptableObject
         MakeSingleton();
     }
 
+    private void OnValidate()
+    {
+        MakeSingleton();
+    }  
+
     public void MakeSingleton()
     {
         if (Instance != null && Instance != this)
@@ -27,8 +32,10 @@ public class GlobalData : ScriptableObject
     public Material mat_DevUniversal;
 
     [Header("Global Materials")]
-    public Material mat_ghost;
-    public Material mat_ghostBlocked;
+    public Material mat_Ghost;
+    public Material mat_GhostBlocked;
+
+    public Material mat_Tile;
 
     [Header("Indicator Arrow Data")]
     public Mesh m_ArrowIndicator;

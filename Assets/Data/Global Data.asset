@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Global Data
   m_EditorClassIdentifier: 
   mat_DevUniversal: {fileID: 2100000, guid: 64718899db594904cb8947f0ffd38ef1, type: 2}
-  mat_ghost: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}
-  mat_ghostBlocked: {fileID: 2100000, guid: 265dc20729eb93941adae5f1e3edfc43, type: 2}
+  mat_Ghost: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}
+  mat_GhostBlocked: {fileID: 2100000, guid: 265dc20729eb93941adae5f1e3edfc43, type: 2}
+  mat_Tile: {fileID: 2100000, guid: cc2dddc32720bcc44bef8ca8b288603d, type: 2}
   m_ArrowIndicator: {fileID: 2782774259527958836, guid: 663b6f19701347045b5c7419e615dd8e,
     type: 3}
   mat_ArrowIndicator: {fileID: 2100000, guid: 4b9e2c61465009f40aea2ed8207c9764, type: 2}

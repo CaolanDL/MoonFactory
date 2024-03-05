@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class WorldGenerationData : ScriptableObject
 {
+    #region Make Singleton
     public static WorldGenerationData Instance { get; private set; }
 
     private void OnEnable()
@@ -24,14 +25,14 @@ public class WorldGenerationData : ScriptableObject
         {
             Instance = this;
         }
-    } 
+    }
+    #endregion 
 
+    [SerializeField] public List<FloorTileData> floorTiles;
 
     public static int ChunkSize = 9;
 
     public static int StartZoneSize = 9;
 
-    [SerializeField] public List<FloorTileData> floorTiles;
-
-    [SerializeField] public FloorTileData devFloorTile;
+    public float GenerationScalar = 9; 
 }

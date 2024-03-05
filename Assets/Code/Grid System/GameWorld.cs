@@ -7,14 +7,14 @@ using Random = UnityEngine.Random;
 
 public class GameWorld
 {
-    private TerrainGenerator terrainGenerator;
-
-
     public Grid floorGrid = new Grid();
 
     public Grid worldGrid = new Grid();
 
     List<Entity> entities = new List<Entity>();
+
+
+    private TerrainGenerator terrainGenerator;
 
 
     public GameWorld(int seed)
@@ -24,13 +24,13 @@ public class GameWorld
 
 
     public void GenerateChunk(int2 position)
-    { 
+    {
         int2 chunkWorldPosition = position * WorldGenerationData.ChunkSize;
 
         int2 chunkEndPositon = chunkWorldPosition + WorldGenerationData.ChunkSize;
 
         GenerateRegion(chunkWorldPosition, chunkEndPositon);
-    } 
+    }
 
     public int2 GetChunkAt(int2 position)
     {
@@ -39,22 +39,22 @@ public class GameWorld
     }
 
     public void GenerateRegion(int2 startPosition, int2 endPosition)
-    { 
+    {
         //Modify start and end positions to point in positive iteration direction
         if (startPosition.x > endPosition.x)
         {
-            (startPosition.x, endPosition.x) = (endPosition.x, startPosition.x); 
+            (startPosition.x, endPosition.x) = (endPosition.x, startPosition.x);
         }
         if (startPosition.y > endPosition.y)
         {
-            (startPosition.y, endPosition.y) = (endPosition.y, startPosition.y); 
+            (startPosition.y, endPosition.y) = (endPosition.y, startPosition.y);
         }
-/*
-        // Find the direction to iterate towards
-        int2 size = startPostion - endPosition;
+        /*
+                // Find the direction to iterate towards
+                int2 size = startPostion - endPosition;
 
-        sbyte xIterationDirection = (sbyte)-MathF.Sign(size.x);
-        sbyte yIterationDirection = (sbyte)-MathF.Sign(size.y);*/
+                sbyte xIterationDirection = (sbyte)-MathF.Sign(size.x);
+                sbyte yIterationDirection = (sbyte)-MathF.Sign(size.y);*/
 
         for (int x = startPosition.x; x < endPosition.x; x++)
         {
@@ -67,11 +67,11 @@ public class GameWorld
 
     public FloorTile GenerateFloorTile(int2 position)
     {
-        (FloorTileData newTileData, int darkness) = terrainGenerator.ChooseTileAt(position);
+        FloorTileData newTileData = terrainGenerator.ChooseTileAt(position);
 
         FloorTile newFloorTile = new(newTileData);
 
-        floorGrid.AddEntity(newFloorTile, position, (sbyte) Random.Range(0,3));
+        floorGrid.AddEntity(newFloorTile, position, (sbyte)Random.Range(0, 3));
 
         //Debug.Log($"Generated floor tile at: {position}");
 
@@ -79,30 +79,8 @@ public class GameWorld
     }
 
     public void DebugLogLocations()
-    { 
-        UnityEngine.Debug.Log($"{floorGrid.grid.Count} Grid locations spawned"); 
-    }
-}
-
-
-public class TerrainGenerator
-{
-    public int seed = 0;
-
-    public TerrainGenerator(int seed)
     {
-        this.seed = seed;
-    }
-
-    public (FloorTileData, int) ChooseTileAt(int2 position)
-    {
-        ref WorldGenerationData generationData = ref GameManager.Instance.worldGenerationData;
-        // World generation system goes here
-        // 
-
-        byte color = (byte) UnityEngine.Random.Range(0, 255);
-
-        return (generationData.devFloorTile, color); // Returning tile at index 0 only
+        UnityEngine.Debug.Log($"{floorGrid.grid.Count} Grid locations spawned");
     }
 }
 
@@ -112,7 +90,7 @@ public class Grid
     private static List<Grid> grids = new List<Grid>();
     public Dictionary<int2, Location> grid = new Dictionary<int2, Location>();
 
-    public List<Entity> entities = new List<Entity>(); 
+    public List<Entity> entities = new List<Entity>();
 
     public byte id;
 
@@ -162,7 +140,7 @@ public class Grid
 
     public Entity AddEntity(Entity entity, int2 position)
     {
-        return AddEntity(entity, position, 0); 
+        return AddEntity(entity, position, 0);
     }
 
     public Entity AddEntity(Entity entity, int2 position, sbyte rotation)
@@ -186,12 +164,12 @@ public class Grid
     public Entity RemoveEntity(int2 position)
     {
         if (grid.ContainsKey(position) != true) { return null; }
-          
-        return grid[position].RemoveEntity(); 
+
+        return grid[position].RemoveEntity();
     }
 
     public Entity GetEntityAt(int2 position)
-    { 
+    {
         if (grid.TryGetValue(position, out Location location))
         {
             return location.entity;
@@ -201,12 +179,12 @@ public class Grid
     }
 
     public bool IsEntityAt(int2 position)
-    { 
+    {
         if (grid.TryGetValue(position, out Location location))
         {
-            if(location.entity != null)
-            { 
-                return true; 
+            if (location.entity != null)
+            {
+                return true;
             }
         }
 
@@ -218,7 +196,7 @@ public class Grid
 public class Location // Size: 13 bytes
 {
     public int2 position; // 4 bytes
-     
+
     public byte gridId; // 1 bytes
 
     public Entity entity; // 8 bytes 
