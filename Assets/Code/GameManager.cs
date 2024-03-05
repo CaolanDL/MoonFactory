@@ -8,10 +8,11 @@ public static class DevFlags
 }
 
 public class GameManager : MonoBehaviour
-{
-    public GameWorld gameWorld;
-    public WorldGenerationData worldGenerationData;
-     
+{ 
+    [SerializeField] public WorldGenerationData worldGenerationData;
+    [SerializeField] public GlobalData globalData;
+
+    public GameWorld gameWorld; 
 
     public GameObject mainMenu;
     public GameObject HUD;
@@ -25,6 +26,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         MakeSingleton();
+
+        globalData.MakeSingleton();
+        worldGenerationData.MakeSingleton();
 
         floorTileRenderer = GetComponent<FloorTileRenderer>();
     }
