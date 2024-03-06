@@ -8,20 +8,23 @@ public static class DevFlags
 }
 
 public class GameManager : MonoBehaviour
-{ 
-    [SerializeField] public WorldGenerationData worldGenerationData;
+{
+    [Header("Global Data Blocks")]
     [SerializeField] public GlobalData globalData;
+    [SerializeField] public WorldGenerationData worldGenerationData; 
 
-    public GameWorld gameWorld; 
-
+    [Header("UI Prefabs")]
     public GameObject mainMenu;
     public GameObject HUD;
+    public GameObject MobilePlatformWarning;
 
+    //
 
-    private FloorTileRenderer floorTileRenderer;
-     
-    [SerializeField] public ConstructionManager ConstructionManager;
+    public GameWorld gameWorld;
 
+    private FloorTileRenderer floorTileRenderer; 
+
+    public ConstructionManager ConstructionManager;
 
     private void Awake()
     {
@@ -37,6 +40,8 @@ public class GameManager : MonoBehaviour
     {
         if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); return; }
 
+        if (Application.isMobilePlatform) { Instantiate(MobilePlatformWarning); return; }
+         
         Instantiate(mainMenu, transform);
     }
 

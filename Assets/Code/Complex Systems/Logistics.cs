@@ -74,8 +74,8 @@ namespace Logistics
                 if (conveyorInfront.rotation == rotation.Rotate(2)) return;
 
                 if (conveyorInfront.lastConveyor != null) return;
-                 
-                if(conveyorInfront.rotation == rotation.Rotate(0))
+
+                if (conveyorInfront.rotation == rotation.Rotate(0))
                 {
                     conveyorInfront.SetConfig(Config.Straight);
                 }
@@ -87,6 +87,24 @@ namespace Logistics
                 {
                     conveyorInfront.SetConfig(Config.RightTurn);
                 }
+                else
+                {
+                    return;
+                }
+
+                conveyorInfront.lastConveyor = this;
+                this.nextConveyor = conveyorInfront;
+
+                if (lastConveyor != null)
+                {
+                    // Call Merge on conveyorInfront.parentChain passing parentChain & conveyorInfront
+                }
+                else
+                {
+                    // Call AddConveyor on conveyorInfront.parentChain
+
+                } 
+
             }
 
             // Try to add any conveyors facing me
@@ -100,37 +118,36 @@ namespace Logistics
                 Entity leftNeighbor = GetNeighbor(-1);
                 Entity rearNeighbor = GetNeighbor(-2);   
 
-                if (TryEntityForConnection(rearNeighbor, 0)) { SetConfig(Config.Straight); }
-                else if (TryEntityForConnection(leftNeighbor, +1)) { SetConfig(Config.LeftTurn); }
-                else if (TryEntityForConnection(rightNeighbor, -1)) { SetConfig(Config.RightTurn); }
+                if (IsConveyorFacingMe(rearNeighbor, 0)) { SetConfig(Config.Straight); }
+                else if (IsConveyorFacingMe(leftNeighbor, +1)) { SetConfig(Config.LeftTurn); }
+                else if (IsConveyorFacingMe(rightNeighbor, -1)) { SetConfig(Config.RightTurn); }
+                else { return; }
 
-                bool TryEntityForConnection(Entity entity, sbyte rotationFactor)
+                conveyorFacingMe.nextConveyor = this;
+                lastConveyor = conveyorFacingMe;
+                 
+                if (nextConveyor != null)
                 {
-                    if(entity == null) { return false; }
-                     
+                    // Call Merge on conveyorInfront.parentChain passing parentChain & conveyorInfront
+                }
+                else
+                {
+                    // Call AddConveyor on conveyorInfront.parentChain
+                } 
+
+                bool IsConveyorFacingMe(Entity entity, sbyte rotationFactor)
+                {
+                    if (entity == null) { return false; }
+
                     if (entity.GetType() == typeof(Conveyor) &&
                     entity.rotation == rotation.Rotate(rotationFactor) &&
                     ((Conveyor)entity).nextConveyor == null)
                     {
-                        conveyorFacingMe = ((Conveyor)entity);
-                        conveyorFacingMe.nextConveyor = this;
-                        lastConveyor = conveyorFacingMe;
+                        conveyorFacingMe = ((Conveyor)entity); 
                         return true;
                     }
                     return false;
                 } 
-
-                if (conveyorFacingMe != null)
-                {  
-                    if (nextConveyor != null)
-                    {
-                        // Call Merge on conveyorInfront.parentChain passing parentChain & conveyorInfront
-                    }
-                    else
-                    {
-                        // Call AddConveyor on conveyorInfront.parentChain
-                    }
-                }  
 
                 /*                Entity entityInfront = worldGrid.GetEntityAt(positionInfront);
 

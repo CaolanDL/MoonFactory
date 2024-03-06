@@ -715,12 +715,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9636465da8303d47885900e6ef46da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  globalData: {fileID: 11400000, guid: be1b4d32d012ef048a07fe318b66aaed, type: 2}
   worldGenerationData: {fileID: 11400000, guid: a1e8410657a03ac4891b982a1ddfb03f,
     type: 2}
-  globalData: {fileID: 11400000, guid: be1b4d32d012ef048a07fe318b66aaed, type: 2}
   mainMenu: {fileID: 6591914507216965253, guid: f3ceeb9026ae29b4e89afbbf9125e3fe,
     type: 3}
   HUD: {fileID: 5208321704792210768, guid: da97c697ec104794f97b769a51c7df26, type: 3}
+  MobilePlatformWarning: {fileID: 2846562734260813511, guid: a1694f366d031164b83db085eeb65076,
+    type: 3}
   ConstructionManager:
     newGhostData: {fileID: 0}
     ghostMaterial: {fileID: 0}
