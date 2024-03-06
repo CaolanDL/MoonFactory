@@ -47,9 +47,7 @@ namespace Logistics
 
         private void TryAddConnections()
         {
-            var worldGrid = GameManager.Instance.gameWorld.worldGrid;
-
-            int2 positionInfront = position + rotation.ToInt2();
+            var worldGrid = GameManager.Instance.gameWorld.worldGrid; 
 
             TryConveyorInfront();
 
@@ -59,14 +57,15 @@ namespace Logistics
 
             Entity GetNeighbor(sbyte rotationFactor)
             {
-                return worldGrid.GetEntityAt(position + (rotation.Rotate(rotationFactor)).ToInt2());
-            } 
-            
+                //Entity _entity = worldGrid.GetEntityAt(position + rotation.Rotate(rotationFactor).ToInt2());
+                //if (_entity != null) { Debug.Log($"{_entity} rotation: {_entity.rotation}"); } 
+                return worldGrid.GetEntityAt(position + rotation.Rotate(rotationFactor).ToInt2());
+            }  
 
             // Try to add any conveyors I am facing
             void TryConveyorInfront()
             {
-                Entity entityInfront = worldGrid.GetEntityAt(positionInfront);
+                Entity entityInfront = GetNeighbor(0);
 
                 if (entityInfront is null || entityInfront.GetType() != typeof(Conveyor)) return;
 
@@ -75,15 +74,18 @@ namespace Logistics
                 if (conveyorInfront.rotation == rotation.Rotate(2)) return;
 
                 if (conveyorInfront.lastConveyor != null) return;
-
-                switch (conveyorInfront.rotation - rotation)
+                 
+                if(conveyorInfront.rotation == rotation.Rotate(0))
                 {
-                    case +1:
-                        conveyorInfront.SetConfig(Config.RightTurn); break;
-                    case -1:
-                        conveyorInfront.SetConfig(Config.LeftTurn); break;
-                    default:
-                        conveyorInfront.SetConfig(Config.Straight); break;
+                    conveyorInfront.SetConfig(Config.Straight);
+                }
+                else if (conveyorInfront.rotation == rotation.Rotate(-1))
+                {
+                    conveyorInfront.SetConfig(Config.LeftTurn);
+                }
+                else if (conveyorInfront.rotation == rotation.Rotate(+1))
+                {
+                    conveyorInfront.SetConfig(Config.RightTurn);
                 }
             }
 
