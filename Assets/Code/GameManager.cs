@@ -4,7 +4,15 @@ using UnityEngine;
 
 public static class DevFlags
 {
+#if UNITY_EDITOR
+
     public static bool SkipMainMenu = true;
+
+#else
+
+    public static bool SkipMainMenu = false;
+
+#endif
 }
 
 public class GameManager : MonoBehaviour
@@ -41,8 +49,8 @@ public class GameManager : MonoBehaviour
         if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); return; }
 
         if (Application.isMobilePlatform) { Instantiate(MobilePlatformWarning); return; }
-         
-        Instantiate(mainMenu, transform);
+
+        OpenMainMenu();
     }
 
     #region Singleton Instanciation
@@ -81,6 +89,7 @@ public class GameManager : MonoBehaviour
     }
 
 
+
     public void CreateNewGame(string saveName)
     {
         // User input save file name
@@ -107,6 +116,11 @@ public class GameManager : MonoBehaviour
 
         // Enable player input
 
+    }
+
+    public void OpenMainMenu()
+    {
+        Instantiate(mainMenu, transform);
     }
 
     void ExitToMenu()

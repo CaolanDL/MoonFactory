@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 7181921930901169478}
   - component: {fileID: 7724527693394229905}
   - component: {fileID: 7533643580579401551}
+  - component: {fileID: 2753811594937833711}
   m_Layer: 0
   m_Name: Mobile Platform Warning
   m_TagString: Untagged
@@ -314,6 +315,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2753811594937833711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846562734260813511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f67e7bdd041bfb4188597ae9cd58601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7718927030079164792
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,7 +447,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 35438162914893865}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2753811594937833711}
+        m_TargetAssemblyTypeName: MobilePlatformWarning, Assembly-CSharp
+        m_MethodName: Continue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7827782983277578692
 GameObject:
   m_ObjectHideFlags: 0
