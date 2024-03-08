@@ -30,9 +30,7 @@ public class StructureData : ScriptableObject
     [Space(25)]
 
     public List<int2> inputLocations;
-    public List<int2> outputLocations;
-
-
+    public List<int2> outputLocations;  
 
     [Space, Header("Ghost Data")]
 

@@ -28,6 +28,14 @@ public abstract class Structure : Entity
         return null;
     }  
 
+    public static void TickAllStructures()
+    {
+        foreach (var structure in structures)
+        {
+            structure.Tick();
+        }
+    }
+
     public void Constructed()
     {
         GameObject newDisplayGameObject = UnityEngine.Object.Instantiate(data.displayObject, position.ToVector3(), rotation.ToQuaternion(), GameManager.Instance.transform);
@@ -38,6 +46,16 @@ public abstract class Structure : Entity
     }
 
     public virtual void OnConstructed()
+    {
+
+    }
+
+    public void Tick()
+    {
+        OnTick();
+    }
+
+    public virtual void OnTick()
     {
 
     }

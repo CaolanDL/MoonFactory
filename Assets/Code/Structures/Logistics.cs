@@ -4,6 +4,7 @@ using UnityEngine;
 
 using ExtensionMethods;
 using static UnityEditor.Progress;
+using System.Linq;
 
 public enum Attempt
 {
@@ -19,14 +20,26 @@ namespace Logistics
 
         public void UpdateChains()
         {
+            foreach(Chain chain in chains)
+            {
+                chain.wasUpdatedThisTick = false;
+            }
 
+            foreach(Chain chain in chains)
+            {
+                if (chain.wasUpdatedThisTick) continue;
+
+                chain.Update();
+
+                chain.wasUpdatedThisTick = true;
+            }
         }
     }
 
     public class Chain
     {
-        public List<Conveyor> conveyors;
-        public List<Item> items;
+        public List<Conveyor> conveyors = new();
+        public List<Item> items = new();
 
         int chainCapacity { get { return conveyorCapacity * conveyors.Count; } }
         int chainLength { get { return Conveyor.Length * conveyors.Count; } }
@@ -35,13 +48,14 @@ namespace Logistics
 
         static int speed = 1;
 
-        bool wasUpdatedThisTick;
+        public bool wasUpdatedThisTick;
         bool ChainAtCapacity { get { return items.Count >= conveyorCapacity; } }
 
 
         public Chain()
         {
             ChainManager.chains.Add(this);
+            Debug.Log("New chain created");
         }
 
         public void Update()
@@ -83,11 +97,6 @@ namespace Logistics
 
                 items[i].UpdateWorldPosition(this);
             }
-        } // Done
-
-        void UpdateChainData()
-        {
-
         }
 
         public bool TryTransferLastItem()
@@ -109,24 +118,47 @@ namespace Logistics
             return true;
         }
 
-        public void AddConveyor(Conveyor conveyorToAdd, Conveyor connectingConveyor)
+        public void AddConveyor(Conveyor newConveyor, Conveyor existingConveyor)
         {
-            if (conveyors.IndexOf(connectingConveyor) == 0)
+            if (conveyors.IndexOf(existingConveyor) == 0)
             {
-
+                conveyors.Insert(0, newConveyor);
             }
-            if (conveyors.IndexOf(connectingConveyor) == conveyors.Count)
+            if (conveyors.IndexOf(existingConveyor) == conveyors.Count)
             {
-
+                conveyors.Add(newConveyor);
             }
         }
 
-        public void RemoveConveyor()
+        public void RemoveConveyor(Conveyor conveyor)
         {
+            DeleteItemsOnConveyor(conveyor);
 
+            if (conveyors.IndexOf(conveyor) == 0 || conveyors.IndexOf(conveyor) == conveyors.Count-1)
+            {
+                conveyors.Remove(conveyor);
+            }
+            else
+            {
+                Split(conveyor);
+            }
         }
 
-        public void Split()
+        void DeleteItemsOnConveyor(Conveyor conveyor)
+        {
+            List<Item> itemsToDelete = new();
+
+            foreach (var item in items.Where(i => i.GetConveyor(this) == conveyor))
+            {
+                itemsToDelete.Add(item);
+            }
+            foreach (var item in itemsToDelete)
+            {
+                items.Remove(item);
+            }
+        }
+
+        public void Split(Conveyor conveyor)
         {
 
         }
@@ -172,7 +204,7 @@ namespace Logistics
 
             if (parentChain == null)
             {
-                Chain newChain = new Chain();
+                parentChain = new Chain();
             }
 
             return;
@@ -182,6 +214,12 @@ namespace Logistics
                 //Entity _entity = worldGrid.GetEntityAt(position + rotation.Rotate(rotationFactor).ToInt2());
                 //if (_entity != null) { Debug.Log($"{_entity} rotation: {_entity.rotation}"); } 
                 return worldGrid.GetEntityAt(position + rotation.Rotate(rotationFactor).ToInt2());
+            }
+
+            void JoinChainOf(Conveyor otherConveyor)
+            {
+                otherConveyor.parentChain.AddConveyor(this, otherConveyor);
+                parentChain = otherConveyor.parentChain;
             }
 
             // Try to add any conveyors I am facing
@@ -223,8 +261,7 @@ namespace Logistics
                 }
                 else
                 {
-                    // Call AddConveyor on conveyorInfront.parentChain
-
+                    JoinChainOf(conveyorInfront);
                 }
 
             }
@@ -254,7 +291,7 @@ namespace Logistics
                 }
                 else
                 {
-                    // Call AddConveyor on conveyorInfront.parentChain
+                    JoinChainOf(conveyorFacingMe);
                 }
 
                 bool IsConveyorFacingMe(Entity entity, sbyte rotationFactor)
@@ -334,9 +371,14 @@ namespace Logistics
         float2 worldPosition;
 
 
+        public Conveyor GetConveyor(Chain chain)
+        {
+            return chain.conveyors[distance / Conveyor.Length];
+        } 
+
         public void UpdateWorldPosition(Chain chain)
         {
-            Conveyor currentConveyor = chain.conveyors[distance / Conveyor.Length];
+            Conveyor currentConveyor = GetConveyor(chain);
 
             int distanceOnConveyor = distance % Conveyor.Length;
 
@@ -363,29 +405,6 @@ namespace Logistics
 
             worldPosition = positionOnConveyor.ToFloat2() + currentConveyor.position;
         }
-    }
 
-    public class Resource
-    {
-        public ResourceData data;
-    }
-
-    public class ResourceStack
-    {
-        public Resource resource;
-
-        public int quantity;
-
-        float weight;
-    }
-
-    public class Inventory
-    {
-        public List<ResourceStack> stacks;
-
-        public int maxWeight;
-        public int totalWeight;
-        bool atCapacity;
-    }
-
+    } 
 }

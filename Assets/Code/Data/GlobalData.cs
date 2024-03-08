@@ -42,6 +42,8 @@ public class GlobalData : ScriptableObject
     public Material mat_ArrowIndicator;
 
 
-    [Header("Structure Registry")]
+    [Header("Registry")]
     public List<StructureData> structures;
+ 
+    public List<ResourceData> resources;
 }

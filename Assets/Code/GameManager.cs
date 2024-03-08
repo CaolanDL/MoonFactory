@@ -82,9 +82,9 @@ public class GameManager : MonoBehaviour
         //Read Player inputs
 
         // Update Conveyors
-        // Update electrical systems
         // Update rovers
         // Update Machines
+        Structure.TickAllStructures();
 
         // Draw Ghosts
         ConstructionManager.DrawGhosts();
