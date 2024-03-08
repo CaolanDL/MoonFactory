@@ -13,6 +13,13 @@ public enum StructureCategory
     Science
 }
 
+[Serializable]
+public class PositionAndRotation
+{
+    public int2 position = new();
+
+    public sbyte rotation = new();
+}
 
 [CreateAssetMenu(menuName = "MoonFactory/Structure Data")]
 public class StructureData : ScriptableObject
@@ -29,8 +36,8 @@ public class StructureData : ScriptableObject
 
     [Space(25)]
 
-    public List<int2> inputLocations;
-    public List<int2> outputLocations;  
+    public List<PositionAndRotation> inputs;
+    public List<PositionAndRotation> outputs;  
 
     [Space, Header("Ghost Data")]
 
@@ -58,6 +65,6 @@ public class StructureData : ScriptableObject
         public Quaternion rotation = Quaternion.identity;
 
         public float size = 1;
-    }
+    } 
 }
 

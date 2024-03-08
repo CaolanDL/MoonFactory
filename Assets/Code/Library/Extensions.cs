@@ -53,9 +53,9 @@ namespace ExtensionMethods
         // https://sushanta1991.blogspot.com/2016/08/how-to-rotate-2d-vector-in-unity.html
         public static Vector2 Rotate(this Vector2 i, float angle)
         {
-            float radian = angle * Mathf.Deg2Rad;
-            float _x = i.x * Mathf.Cos(angle) - i.y * Mathf.Sin(angle);
-            float _y = i.x * Mathf.Sin(angle) + i.y * Mathf.Cos(angle);
+            float radian = -angle * Mathf.Deg2Rad;
+            float _x = i.x * Mathf.Cos(radian) - i.y * Mathf.Sin(radian);
+            float _y = i.x * Mathf.Sin(radian) + i.y * Mathf.Cos(radian);
             return new Vector2(_x, _y); 
         }
 

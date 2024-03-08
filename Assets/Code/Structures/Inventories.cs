@@ -24,7 +24,7 @@ public class Inventory
 {
     public Entity parentEntity;
 
-    public List<ResourceStack> stacks;
+    public List<ResourceStack> stacks = new();
 
     public int maxWeight;
     public int totalWeight;
@@ -84,17 +84,17 @@ public class Inventory
         }
     }
 
-    ResourceStack GetStack(ResourceData resource)
+    public ResourceStack GetStack(ResourceData resource)
     {
         return stacks.Find(i => i.resource == resource);
     }
 
-    public void RemoveResource(Resource resource, int quantity)
+    public void RemoveResource(ResourceData resource, int quantity)
     {
 
     }
 
-    public void ClearInventory(Resource resource, int quantity)
+    public void ClearInventory(ResourceData resource, int quantity)
     {
 
     }

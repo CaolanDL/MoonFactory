@@ -9,13 +9,21 @@ public abstract class Structure : Entity
 {
     public static List<Structure> structures = new List<Structure>(); 
 
-    public StructureData data;
+    public StructureData structureData;
 
-    private string name { get; }
+    private string name { get; } 
 
+    public DisplayObject displayObject = null; 
 
-    public DisplayObject displayObject = null;
+    public void Initialise ()
+    {
+        OnInitialise();
+    } 
 
+    public virtual void OnInitialise()
+    {
+
+    }
 
     public static Structure GetStructure(int2 position)
     {
@@ -38,7 +46,7 @@ public abstract class Structure : Entity
 
     public void Constructed()
     {
-        GameObject newDisplayGameObject = UnityEngine.Object.Instantiate(data.displayObject, position.ToVector3(), rotation.ToQuaternion(), GameManager.Instance.transform);
+        GameObject newDisplayGameObject = UnityEngine.Object.Instantiate(structureData.displayObject, position.ToVector3(), rotation.ToQuaternion(), GameManager.Instance.transform);
 
         displayObject = newDisplayGameObject.GetComponent<DisplayObject>();
 
@@ -97,9 +105,11 @@ public static class StructureFactory
 
     public static Structure CreateStructure(StructureData structureData)
     {
-        Structure newStructure = (Structure)Activator.CreateInstance(sTypeRegistry[structureData.name]); 
+        Structure newStructure = (Structure)Activator.CreateInstance(sTypeRegistry[structureData.name]);
+        
+        newStructure.structureData = structureData;
 
-        newStructure.data = structureData;
+        newStructure.Initialise();
 
         Structure.structures.Add(newStructure);
 

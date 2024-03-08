@@ -2,9 +2,8 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-using ExtensionMethods;
-using static UnityEditor.Progress;
-using System.Linq;
+using ExtensionMethods; 
+using System.Linq;  
 
 public enum Attempt
 {
@@ -14,11 +13,75 @@ public enum Attempt
 
 namespace Logistics
 {
+    public class Item
+    {
+        public static int Size = Conveyor.Length / 4;
+
+        public ResourceData data; 
+
+        public int distance;
+
+        public float2 worldPosition;
+
+        public short rotation;
+        public short Rotation
+        {
+            get { return rotation; }
+            set { rotation = (short)((value % 360 + 360) % 360); }
+        }
+
+        public Item(ResourceData resourceData)
+        {
+            data = resourceData;
+            Debug.Log("item created");
+        }
+
+        public int distanceOnConveyor
+        {
+            get { return (distance) % (Conveyor.Length); }
+        }
+
+        public Conveyor GetConveyor(Chain chain)
+        {
+            if(distance < Conveyor.Length) { return chain.conveyors[0]; }
+            //return chain.conveyors[distance - distanceOnConveyor  / Conveyor.Length];
+            return chain.conveyors[Mathf.CeilToInt( (distance) / (float) Conveyor.Length)-1];
+        }
+
+        public void UpdateWorldPosition(Chain chain)
+        {
+            Conveyor currentConveyor = GetConveyor(chain);
+
+            float normalisedDistanceOnConveyor = (float)distanceOnConveyor / Conveyor.Length; // Resolution of 0-255 as byte, probably premature optimisation but lets go with it (pray to C this doesnt destroy me)
+
+            Vector2 positionOnConveyor = new();
+
+            sbyte turnFactor = (sbyte)(currentConveyor.turnConfig == Conveyor.TurnConfig.Straight
+                || normalisedDistanceOnConveyor < Conveyor.TurnStartOffset ? 0 : currentConveyor.turnConfig == Conveyor.TurnConfig.LeftTurn ? -1 : +1); // Yeah dont ask, its setting turn offset based on the turn configuration of the current belt
+
+            if (currentConveyor.turnConfig == Conveyor.TurnConfig.Straight)
+            {
+                positionOnConveyor = new Vector2(0, normalisedDistanceOnConveyor);
+                Rotation = (short)(currentConveyor.rotation * 90);
+            }
+            /*else
+            {
+                // See notion circle math page. Christ, I am tired. 
+                // We are basically rotating an (0.5,0) vector around an axis by the normalised distance to achieve a curve.
+                positionOnConveyor = new Vector2(0.5f, 0 + Conveyor.TurnStartOffset).RotateAround(new Vector2(0.5f, 0.5f), currentConveyor.rotation * 90);
+
+                positionOnConveyor = positionOnConveyor.RotateAround(Vector2.zero.RotateAround(new Vector2(0.5f, 0.5f), currentConveyor.rotation * 90), (normalisedDistanceOnConveyor / sbyte.MaxValue) - (Conveyor.TurnStartOffset * 2 / sbyte.MaxValue));
+
+            } */
+            worldPosition = (positionOnConveyor - (Vector2.up / 2)).Rotate(90 * currentConveyor.rotation) + currentConveyor.position.ToVector2();
+        }
+    }
+
     public class ChainManager
     {
         public static List<Chain> chains = new();
 
-        public void UpdateChains()
+        public static void UpdateChains()
         {
             foreach(Chain chain in chains)
             {
@@ -41,15 +104,15 @@ namespace Logistics
         public List<Conveyor> conveyors = new();
         public List<Item> items = new();
 
-        int chainCapacity { get { return conveyorCapacity * conveyors.Count; } }
-        int chainLength { get { return Conveyor.Length * conveyors.Count; } }
+        public int chainCapacity { get { return conveyorCapacity * conveyors.Count; } }
+        public int chainLength { get { return Conveyor.Length * conveyors.Count; } }
  
         static int conveyorCapacity = Conveyor.Length / Item.Size;
 
-        static int speed = 1;
+        static int speed = 2;
 
         public bool wasUpdatedThisTick;
-        bool ChainAtCapacity { get { return items.Count >= conveyorCapacity; } }
+        bool ChainAtCapacity { get { return items.Count >= chainCapacity; } }
 
 
         public Chain()
@@ -60,6 +123,8 @@ namespace Logistics
 
         public void Update()
         {
+            TryTransferLastItem();
+
             IterateItems();
 
             wasUpdatedThisTick = true;
@@ -69,33 +134,43 @@ namespace Logistics
         {
             // TryTransferLastItem()
 
-            if (items.Count == chainCapacity || items.Count == 0) return;
+            if (items.Count == 0)  { return; }
 
-            if (items[0].distance! < chainLength)
+            int lastItemIndex = items.Count - 1;
+
+            if (items[lastItemIndex].distance < chainLength)
             {
-                items[0].distance += speed;
-                if (items[0].distance > chainLength)
+                items[lastItemIndex].distance += speed;
+
+                if (items[lastItemIndex].distance >= chainLength)
                 {
-                    items[0].distance = chainLength;
+                    items[lastItemIndex].distance = chainLength-1;
                     TryTransferLastItem();
                 }
-                items[0].UpdateWorldPosition(this);
             }
 
-            for (int i = items.Count - 1; i > 0; i--)
+            for (int i = items.Count - 2; i >= 0; i--)
             {
                 int nextItemStart = items[i + 1].distance - Item.Size;
 
-                if (items[i].distance! < nextItemStart) continue;
+                if (items[i].distance >= nextItemStart) continue;
 
-                items[i].distance += speed;
+                items[i].distance += speed; 
 
                 if (items[i].distance > nextItemStart)
                 {
                     items[i].distance = nextItemStart;
-                }
+                } 
+            }
 
-                items[i].UpdateWorldPosition(this);
+            UpdateItemPositions();
+        }
+
+        void UpdateItemPositions()
+        {
+            foreach (Item item in items)
+            {
+                item.UpdateWorldPosition(this);
             }
         }
 
@@ -109,25 +184,29 @@ namespace Logistics
 
         }
 
-        public bool TryAddFirstItem(Item item)
+        public bool TryAddFirstItem(ResourceData resourceData)
         {
-            if (ChainAtCapacity || items[0].distance <= Item.Size) return false;
+            if (ChainAtCapacity) return false;
 
-            items.Insert(0, item); // Prepend Item
+            if(items.Count != 0 && items[0].distance <= Item.Size) { return false; }
+
+            var newItem = new Item(resourceData);
+
+            items.Insert(0, newItem); // Prepend Item
+
+            newItem.UpdateWorldPosition(this); // Brute force update its position. You should figure out why the execution order allows items to default to 0,0 on first frame. 
 
             return true;
         }
 
-        public void AddConveyor(Conveyor newConveyor, Conveyor existingConveyor)
+        public void PrependConveyor(Conveyor newConveyor)
         {
-            if (conveyors.IndexOf(existingConveyor) == 0)
-            {
-                conveyors.Insert(0, newConveyor);
-            }
-            if (conveyors.IndexOf(existingConveyor) == conveyors.Count)
-            {
-                conveyors.Add(newConveyor);
-            }
+            conveyors.Insert(0, newConveyor); 
+        }
+
+        public void AppendConveyor(Conveyor newConveyor)
+        { 
+            conveyors.Add(newConveyor); 
         }
 
         public void RemoveConveyor(Conveyor conveyor)
@@ -171,9 +250,9 @@ namespace Logistics
 
     public class Conveyor : Machine
     {
-        public static int Length = 5;
+        public static int Length = 60 * 20;
 
-        public static int TurnStartOffset = byte.MaxValue / 8;
+        public static int TurnStartOffset = 0;//byte.MaxValue / 8;
 
         public Chain parentChain;
 
@@ -205,6 +284,7 @@ namespace Logistics
             if (parentChain == null)
             {
                 parentChain = new Chain();
+                parentChain.conveyors.Add(this);
             }
 
             return;
@@ -214,13 +294,7 @@ namespace Logistics
                 //Entity _entity = worldGrid.GetEntityAt(position + rotation.Rotate(rotationFactor).ToInt2());
                 //if (_entity != null) { Debug.Log($"{_entity} rotation: {_entity.rotation}"); } 
                 return worldGrid.GetEntityAt(position + rotation.Rotate(rotationFactor).ToInt2());
-            }
-
-            void JoinChainOf(Conveyor otherConveyor)
-            {
-                otherConveyor.parentChain.AddConveyor(this, otherConveyor);
-                parentChain = otherConveyor.parentChain;
-            }
+            } 
 
             // Try to add any conveyors I am facing
             void TryConveyorInfront()
@@ -261,7 +335,8 @@ namespace Logistics
                 }
                 else
                 {
-                    JoinChainOf(conveyorInfront);
+                    conveyorInfront.parentChain.PrependConveyor(this);
+                    parentChain = conveyorInfront.parentChain; 
                 }
 
             }
@@ -291,7 +366,8 @@ namespace Logistics
                 }
                 else
                 {
-                    JoinChainOf(conveyorFacingMe);
+                    conveyorFacingMe.parentChain.AppendConveyor(this);
+                    parentChain = conveyorFacingMe.parentChain; 
                 }
 
                 bool IsConveyorFacingMe(Entity entity, sbyte rotationFactor)
@@ -348,63 +424,84 @@ namespace Logistics
             }
         }
 
-        bool TryAddItem(Item item)
+        // BROKEN
+        public bool TryAddItem(Item item)
         {
             return false;
-        }
+/*            bool success = false;
 
-        Item GetFirstItem()
-        {
-            return null;
-        } 
-    }
+            //firstItemOnConveyor = first Item in parentChain.items where item.parentConveyor == this
+            var itemsOnConveyor = GetItemsOnConveyor();
 
-    public class Item
-    {
-        public static int Size = 1;
+            var firstItemOnConveyor = itemsOnConveyor.Count > 0 ? itemsOnConveyor[0] : null;
 
-        public ResourceData data;
+            int conveyorDistanceOnChain = GetDistanceOnChain();
 
-
-        public int distance;
-
-        float2 worldPosition;
-
-
-        public Conveyor GetConveyor(Chain chain)
-        {
-            return chain.conveyors[distance / Conveyor.Length];
-        } 
-
-        public void UpdateWorldPosition(Chain chain)
-        {
-            Conveyor currentConveyor = GetConveyor(chain);
-
-            int distanceOnConveyor = distance % Conveyor.Length;
-
-            byte normalisedDistanceOnConveyor = (byte)(distanceOnConveyor / Conveyor.Length); // Resolution of 0-255 as byte, probably premature optimisation but lets go with it (pray to C this doesnt destroy me)
-
-            Vector2 positionOnConveyor = new();
-
-            sbyte turnFactor = (sbyte)(currentConveyor.turnConfig == Conveyor.TurnConfig.Straight
-                || normalisedDistanceOnConveyor < Conveyor.TurnStartOffset ? 0 : currentConveyor.turnConfig == Conveyor.TurnConfig.LeftTurn ? -1 : +1); // Yeah dont ask, its setting turn offset based on the turn configuration of the current belt
-
-            if (currentConveyor.turnConfig == Conveyor.TurnConfig.Straight || normalisedDistanceOnConveyor < Conveyor.TurnStartOffset || normalisedDistanceOnConveyor > byte.MaxValue - Conveyor.TurnStartOffset)
+            if (firstItemOnConveyor == null)
             {
-                positionOnConveyor = new Vector2(0.5f, normalisedDistanceOnConveyor / byte.MaxValue).RotateAround(new Vector2(0.5f, 0.5f), currentConveyor.rotation + turnFactor * 90);
+                for (var i = parentChain.items.Count-1; i >= -1; i--)
+                {
+                    if (parentChain.items.Count == 0 || i == -1) { }
+                    else if (parentChain.items[i].distance < conveyorDistanceOnChain)
+                    {
+                        parentChain.items.Insert(i+1, item);
+                        item.distance = conveyorDistanceOnChain;
+                        success = true;
+                        break;
+                    }
+                    if (i == -1)
+                    {
+                        parentChain.items.Add(item);
+                        item.distance = conveyorDistanceOnChain;
+                        success = true;
+                        break;
+                    }
+                } 
+            }
+            else if (firstItemOnConveyor.distanceOnConveyor > Item.Size)
+            {
+                parentChain.items.Insert(parentChain.items.IndexOf(firstItemOnConveyor) - 1, item);
+                item.distance = conveyorDistanceOnChain;
+                success = true;
             }
             else
             {
-                // See notion circle math page. Christ, I am tired. 
-                // We are basically rotating an (0.5,0) vector around an axis by the normalised distance to achieve a curve.
-                positionOnConveyor = new Vector2(0.5f, 0 + Conveyor.TurnStartOffset).RotateAround(new Vector2(0.5f, 0.5f), currentConveyor.rotation * 90);
-
-                positionOnConveyor = positionOnConveyor.RotateAround(Vector2.zero.RotateAround(new Vector2(0.5f, 0.5f), currentConveyor.rotation * 90), (normalisedDistanceOnConveyor / sbyte.MaxValue) - (Conveyor.TurnStartOffset * 2 / sbyte.MaxValue));
-
+                return false;
             }
 
-            worldPosition = positionOnConveyor.ToFloat2() + currentConveyor.position;
+            Debug.Log(success);
+
+            return success;*/
         }
 
-    } 
+        int GetDistanceOnChain()
+        {
+            return parentChain.conveyors.IndexOf(this) * Length; 
+        }
+
+        List<Item> GetItemsOnConveyor()
+        {
+            List<Item> itemsOnConveyor = new List<Item>();
+
+            int distanceOnChain = GetDistanceOnChain();
+
+            foreach (var item in parentChain.items)
+            {
+                if(item.distance < distanceOnChain - 1)
+                {
+                    continue;
+                }
+                if(item.GetConveyor(parentChain) == this)
+                {
+                    itemsOnConveyor.Add(item);
+                }
+                if (item.distance > distanceOnChain + Length++)
+                {
+                    break;
+                }
+            }
+
+            return itemsOnConveyor;
+        } 
+    }
 }

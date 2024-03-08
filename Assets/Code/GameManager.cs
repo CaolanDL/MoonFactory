@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logistics;
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -37,7 +38,8 @@ public class GameManager : MonoBehaviour
 
     public GameWorld gameWorld;
 
-    private FloorTileRenderer floorTileRenderer; 
+    private FloorTileRenderer floorTileRenderer;
+    private ItemRenderer itemRenderer;
 
     public ConstructionManager ConstructionManager;
 
@@ -49,6 +51,7 @@ public class GameManager : MonoBehaviour
         worldGenerationData.MakeSingleton();
 
         floorTileRenderer = GetComponent<FloorTileRenderer>();
+        itemRenderer = GetComponent<ItemRenderer>();
     }
 
     private void Start()
@@ -82,6 +85,7 @@ public class GameManager : MonoBehaviour
         //Read Player inputs
 
         // Update Conveyors
+        ChainManager.UpdateChains();
         // Update rovers
         // Update Machines
         Structure.TickAllStructures();
@@ -91,6 +95,7 @@ public class GameManager : MonoBehaviour
 
         // Draw Floor tiles
         floorTileRenderer.Tick();
+        itemRenderer.Tick();
 
         // Draw Items
     } 

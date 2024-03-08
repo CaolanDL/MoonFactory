@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class FloorTileRenderer : MonoBehaviour
 {
-    [SerializeField] private CameraController cameraController;  
+    private CameraController cameraController;  
 
     private void Awake()
     {
