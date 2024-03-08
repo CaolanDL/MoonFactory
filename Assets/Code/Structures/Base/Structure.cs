@@ -26,14 +26,20 @@ public abstract class Structure : Entity
         }
 
         return null;
-    } 
+    }  
 
-
-    public virtual void Constructed()
+    public void Constructed()
     {
         GameObject newDisplayGameObject = UnityEngine.Object.Instantiate(data.displayObject, position.ToVector3(), rotation.ToQuaternion(), GameManager.Instance.transform);
 
         displayObject = newDisplayGameObject.GetComponent<DisplayObject>();
+
+        OnConstructed();
+    }
+
+    public virtual void OnConstructed()
+    {
+
     }
 }
 

@@ -1,6 +1,6 @@
 ﻿using Unity.Mathematics;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.UIElements;
 /*using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 using Vector2 = UnityEngine.Vector2;
@@ -31,6 +31,41 @@ namespace ExtensionMethods
             return new int2((int)i.x, (int)i.y);
         }
     }
+
+    public static class VectorExtensions
+    {
+        public static float2 ToFloat2(this Vector3 i)
+        {
+            return new float2(i.x, i.z);
+        }
+
+        public static float2 ToFloat2(this Vector2 i)
+        {
+            return new float2(i.x, i.y);
+        }
+
+
+        public static Vector3 RotateAround(this Vector3 i, Vector3 Pivot, Quaternion quaternion)
+        {
+            return quaternion * (i - Pivot) + Pivot;
+        }
+
+        // https://sushanta1991.blogspot.com/2016/08/how-to-rotate-2d-vector-in-unity.html
+        public static Vector2 Rotate(this Vector2 i, float angle)
+        {
+            float radian = angle * Mathf.Deg2Rad;
+            float _x = i.x * Mathf.Cos(angle) - i.y * Mathf.Sin(angle);
+            float _y = i.x * Mathf.Sin(angle) + i.y * Mathf.Cos(angle);
+            return new Vector2(_x, _y); 
+        }
+
+        public static Vector2 RotateAround(this Vector2 i, Vector2 Pivot, float angle)
+        {
+            return (i - Pivot).Rotate(angle) + Pivot;
+        }
+    } 
+
+
 
     public static class SbyteRotationConversions
     {

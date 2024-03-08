@@ -15,6 +15,13 @@ public static class DevFlags
 #endif
 }
 
+public delegate void OnGameExit(); 
+
+public delegate void OnSaveLoad();
+
+public delegate void OnStartNewGame(); 
+
+
 public class GameManager : MonoBehaviour
 {
     [Header("Global Data Blocks")]
@@ -86,9 +93,7 @@ public class GameManager : MonoBehaviour
         floorTileRenderer.Tick();
 
         // Draw Items
-    }
-
-
+    } 
 
     public void CreateNewGame(string saveName)
     {
@@ -102,7 +107,7 @@ public class GameManager : MonoBehaviour
         ConstructionManager = new();
 
         // Start zone is generated
-        GenerateStartZone();
+        gameWorld.GenerateStartZone();
         gameWorld.DebugLogLocations();
 
         // Descent vehicle animation plays
@@ -141,22 +146,5 @@ public class GameManager : MonoBehaviour
         // Display save icon
         // Serialize Game Data
         // Remove saving icon
-    }
-
-
-
-    void GenerateStartZone()
-    {
-        int size = WorldGenerationData.StartZoneSize;
-
-        int halfSize = size / 2; 
- 
-        for (int xChunk = -halfSize; xChunk < halfSize+1; xChunk++)
-        {
-            for (int yChunk = -halfSize; yChunk < halfSize+1; yChunk++)
-            {
-                gameWorld.GenerateChunk(new int2(xChunk, yChunk));
-            }
-        }
-    }
+    } 
 }

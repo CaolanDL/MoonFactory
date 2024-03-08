@@ -82,6 +82,25 @@ public class GameWorld
     {
         UnityEngine.Debug.Log($"{floorGrid.grid.Count} Grid locations spawned");
     }
+
+
+    ////
+    ///   Sequencing
+
+    public void GenerateStartZone()
+    {
+        int size = WorldGenerationData.StartZoneSize;
+
+        int halfSize = size / 2;
+
+        for (int xChunk = -halfSize; xChunk < halfSize + 1; xChunk++)
+        {
+            for (int yChunk = -halfSize; yChunk < halfSize + 1; yChunk++)
+            {
+                GenerateChunk(new int2(xChunk, yChunk));
+            }
+        }
+    }
 }
 
 
