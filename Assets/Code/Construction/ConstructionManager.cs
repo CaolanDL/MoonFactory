@@ -102,6 +102,7 @@ public class ConstructionManager
 
     public void StartPlacingGhosts(StructureData structureData)
     {
+        ghostRotation = 0;
         newGhostData = structureData;
     } 
 
