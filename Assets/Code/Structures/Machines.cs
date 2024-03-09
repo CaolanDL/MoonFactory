@@ -24,13 +24,18 @@ public class Machine : Structure
 
         if (entityAtLocation == null) { return false; }
 
+        if(inventory.GetQuantityOf(resource) == 0) { return false; }
+
         // Output to first conveyor in chain.
         if (entityAtLocation.GetType() == typeof(Conveyor))
         {
             if (entityAtLocation.rotation == outputTransform.rotation.Rotate(rotation))
             {
-                if (((Conveyor)entityAtLocation).parentChain.TryAddFirstItem(resource)) inventory.RemoveResource(resource, 1);
-                return true;
+                if (((Conveyor)entityAtLocation).parentChain.TryAddFirstItem(resource))
+                {
+                    inventory.RemoveResource(resource, 1);
+                    return true;
+                }
             } 
         }
         else if (entityAtLocation.GetType().IsSubclassOf(typeof(Machine)))
@@ -55,14 +60,29 @@ public class DebugOutput : Machine
     {
         resource = GameManager.Instance.globalData.resources[0];
 
-        OutputInventories[0].maxWeight = 100;
+        OutputInventories[0].maxWeight = 1; 
 
         FillInventory();
     }
 
+    int outDelayMod = (int)(1f / Time.fixedDeltaTime);
+
+    int outDelayLoop;
+    int OutDelayLoop
+    {
+        get { return outDelayLoop; }
+        set { outDelayLoop = value % outDelayMod; }
+    }
+
     public override void OnTick()
     {
-        TryOutputItem(OutputInventories[0].GetStack(resource).resource, OutputInventories[0], structureData.outputs[0]);
+        OutDelayLoop += 1;
+
+        if(OutDelayLoop != 0) { return; }
+
+        FillInventory();
+
+        TryOutputItem(resource, OutputInventories[0], structureData.outputs[0]);
     }
 
     void FillInventory()
@@ -72,5 +92,7 @@ public class DebugOutput : Machine
         var n = onlyInventory.GetMaxAcceptable(resource);
 
         onlyInventory.TryAddResource(resource, n);
+
+        //Debug.Log(onlyInventory.GetQuantityOf(resource));
     }
 }

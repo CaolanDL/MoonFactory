@@ -83,13 +83,7 @@ public class GameManager : MonoBehaviour
     {
         if(gameWorld == null) { return; }
         //Read Player inputs
-
-        // Update Conveyors
-        ChainManager.UpdateChains();
-        // Update rovers
-        // Update Machines
-        Structure.TickAllStructures();
-
+         
         // Draw Ghosts
         ConstructionManager.DrawGhosts();
 
@@ -98,7 +92,16 @@ public class GameManager : MonoBehaviour
         itemRenderer.Tick();
 
         // Draw Items
-    } 
+    }
+
+    private void FixedUpdate()
+    {
+        // Update Conveyors 
+        ChainManager.UpdateChains();
+        // Update rovers
+        // Update Machines
+        Structure.TickAllStructures();
+    }
 
     public void CreateNewGame(string saveName)
     {

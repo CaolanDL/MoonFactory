@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c959649ace52a934799d95e3909b1b57, type: 3}
+  m_Name: Splitter
+  m_EditorClassIdentifier: 
+  screenname: Splitter
+  category: 0
+  sprite: {fileID: 21300000, guid: 47da93cd88acb1b4d983bb182d56d2e0, type: 3}
+  displayObject: {fileID: 8149189864003149576, guid: 18c2f04116f1a3f4c8d9f5b3eea2e1fb,
+    type: 3}
+  inputs:
+  - position:
+      x: 0
+      y: -1
+    rotation: 0
+  outputs:
+  - position:
+      x: 0
+      y: 1
+    rotation: 0
+  - position:
+      x: 1
+      y: 0
+    rotation: -90
+  - position:
+      x: -1
+      y: 0
+    rotation: 90
+  ghostMesh: {fileID: -5453171864532947714, guid: 32d12d17e8bd7904fa20ce3cd6740947,
+    type: 3}
+  ghostModels: []
+  arrowIndicators:
+  - relativePosition: {x: -1, y: 0.1, z: 0}
+    rotation: {x: 0, y: 0.70710677, z: 0, w: -0.70710677}
+    size: 0.25
+  - relativePosition: {x: 1, y: 0.1, z: 0}
+    rotation: {x: 0, y: 0.70710677, z: 0, w: 0.70710677}
+    size: 0.25
+  - relativePosition: {x: 0, y: 0.1, z: -1}
+    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+    size: 0.25
+  - relativePosition: {x: 0, y: 0.1, z: 1}
+    rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+    size: 0.25

@@ -752,7 +752,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c75c73b6fe5a7c4a8f9c778dcf3d605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VerticalOffset: 0.25
+  VerticalOffset: 0.2
+  serialItems: []
 --- !u!114 &7753882727360442230
 MonoBehaviour:
   m_ObjectHideFlags: 0

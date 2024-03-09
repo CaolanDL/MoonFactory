@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b4225abd3e55f45ae5d93361d4d61b, type: 3}
   m_Name: Global Data
   m_EditorClassIdentifier: 
-  mat_DevUniversal: {fileID: 2100000, guid: 64718899db594904cb8947f0ffd38ef1, type: 2}
+  mat_DevUniversal: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
+  Gizmo: {fileID: 5429665806620753192, guid: 55ea8a76b1ff83b40b6d9c65dcef5039, type: 3}
   mat_Ghost: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}
   mat_GhostBlocked: {fileID: 2100000, guid: 265dc20729eb93941adae5f1e3edfc43, type: 2}
   mat_Tile: {fileID: 2100000, guid: cc2dddc32720bcc44bef8ca8b288603d, type: 2}
@@ -23,6 +24,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7722152ffd1341b438e76a1ede5271d2, type: 2}
   - {fileID: 11400000, guid: e5cee4b2782509448899faa220fc5e72, type: 2}
   - {fileID: 11400000, guid: 58b5fbc4f046ec8469e39c24ece9d2a1, type: 2}
+  - {fileID: 11400000, guid: c77bbfc548c4c86428081b6fa8ab6910, type: 2}
   - {fileID: 11400000, guid: dcdec8d0a3941b444bbe5f6ae58b6316, type: 2}
   resources:
   - {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}

@@ -80,7 +80,7 @@ public class GameWorld
 
     public void DebugLogLocations()
     {
-        UnityEngine.Debug.Log($"{floorGrid.grid.Count} Grid locations spawned");
+        //UnityEngine.Debug.Log($"{floorGrid.grid.Count} Grid locations spawned");
     }
 
 

@@ -37,7 +37,7 @@ public class ItemRenderer : MonoBehaviour
                      //itemPosition.y > xVisibleRange.x && itemPosition.y < xVisibleRange.y)
                 {
                     serialItems.Add(new SerialItem(item.worldPosition, item.distance, chain.items.IndexOf(item)));
-                    DrawItem(item, item.worldPosition, item.GetConveyor(chain).rotation); 
+                    DrawItem(item, item.worldPosition, item.Rotation); 
                 }
             }
         }
@@ -46,11 +46,11 @@ public class ItemRenderer : MonoBehaviour
     }
 
 
-    void DrawItem(Item item, Vector2 position, sbyte rotation)
+    void DrawItem(Item item, Vector2 position, short rotation)
     {
         Vector3 worldPosition = new Vector3(position.x, VerticalOffset, position.y); 
 
-        Graphics.DrawMesh(item.data.mesh, worldPosition, Quaternion.Euler(0, 90 * rotation, 0), GlobalData.Instance.mat_DevUniversal, 0);
+        Graphics.DrawMesh(item.data.mesh, worldPosition, Quaternion.Euler(0, rotation, 0), GlobalData.Instance.mat_DevUniversal, 0);
     } 
 
 

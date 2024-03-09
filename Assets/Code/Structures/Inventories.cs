@@ -18,6 +18,17 @@ public class ResourceStack
     {
         this.resource = resource;
     }
+
+    public void ReduceBy(int quantity)
+    {
+        this.quantity -= quantity;
+        weight -= resource.weight * quantity;
+    }
+
+    public void IncreaseBy(int quantity)
+    {
+
+    }
 }
 
 public class Inventory
@@ -26,8 +37,8 @@ public class Inventory
 
     public List<ResourceStack> stacks = new();
 
-    public int maxWeight;
-    public int totalWeight;
+    public int maxWeight = 1;
+    public int totalWeight = 0;
 
     int availableCapacity
     {
@@ -41,11 +52,17 @@ public class Inventory
 
     public int GetMaxAcceptable(ResourceData resource)
     {
+        return (int)MathF.Floor(availableCapacity / resource.weight);
+    }
+
+
+    public int GetQuantityOf(ResourceData resource)
+    {
         var stack = GetStack(resource);
 
-        if(stack == null) { return maxWeight / resource.weight; }
+        if (stack == null) { return  0; } 
 
-        return (int)MathF.Floor(availableCapacity / resource.weight);
+        return GetStack(resource).quantity;
     }
 
     public bool TryAddResource(ResourceData resource, int quantity)
@@ -91,7 +108,18 @@ public class Inventory
 
     public void RemoveResource(ResourceData resource, int quantity)
     {
+        var stack = GetStack(resource) ?? throw new Exception("Attempted to remove non existant resource from inventory");
 
+        if(stack.quantity - quantity <  0) { throw new Exception("Attempted to remove more resources from an invenotry than exist"); }
+
+        stack.ReduceBy(quantity);
+
+        totalWeight -= resource.weight * quantity;
+        
+        if(stack.quantity <= 0)
+        {
+            stacks.Remove(stack);
+        } 
     }
 
     public void ClearInventory(ResourceData resource, int quantity)

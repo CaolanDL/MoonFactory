@@ -14,13 +14,4 @@ public class Hopper : Machine
     public Hopper() { }
 
 }
-
-
-
-
-// Delete Me
-public class Widget : Machine
-{
-  
-}
-
+ 
