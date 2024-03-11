@@ -27,8 +27,7 @@ namespace Logistics
             {
                 Iterator++;
                 if (TransferAnythingRandom(InputInventories[Iterator], OutputInventories[0]))
-                {
-                    Iterator++;
+                { 
                     break;
                 }
             }
