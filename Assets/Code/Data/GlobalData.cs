@@ -28,8 +28,9 @@ public class GlobalData : ScriptableObject
         }
     }
 
-    [Header("Development Assets")]
+    [Header("Universal Assets")]
     public Material mat_DevUniversal;
+
     public Mesh Gizmo;
 
     [Header("Global Materials")]
@@ -38,10 +39,12 @@ public class GlobalData : ScriptableObject
 
     public Material mat_Tile;
 
-    [Header("Indicator Arrow Data")]
+    [Header("Gizmos")]
     public Mesh m_ArrowIndicator;
     public Material mat_ArrowIndicator;
 
+    public Mesh m_TileGizmo;
+    public Material mat_PulsingGizmo;
 
     [Header("Registry")]
     public List<StructureData> structures;

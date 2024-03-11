@@ -1,6 +1,4 @@
-﻿using Logistics;
-using System;
-using Unity.Mathematics;
+﻿using Logistics; 
 using UnityEngine;
 
 public static class DevFlags
@@ -89,9 +87,12 @@ public class GameManager : MonoBehaviour
 
         // Draw Floor tiles
         floorTileRenderer.Tick();
-        itemRenderer.Tick();
 
         // Draw Items
+        itemRenderer.Tick();
+
+        // Call Frame Update on Structures
+        Structure.FrameUpdateAllStructures();
     }
 
     private void FixedUpdate()

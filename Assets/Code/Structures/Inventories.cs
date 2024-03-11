@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System; 
+using System.Collections.Generic; 
 
 public class ResourceStack
 {
@@ -41,7 +39,7 @@ public class Inventory
 
     public int maxItems = int.MaxValue;
     public int totalItems = 0;
-    public int maxWeight = 1;
+    public int maxWeight = int.MaxValue;
     public int totalWeight = 0;
 
     int AvailableCapacityByWeight
@@ -85,6 +83,19 @@ public class Inventory
         if (stack == null) { return 0; }
 
         return GetStack(resource).quantity;
+    }
+
+    public ResourceData GetResourceAtIndex(int index)
+    {
+        int stackIndex = 0;
+
+        for(int i = 0; i <= index; i++)
+        {
+            if(i > stacks[stackIndex].quantity) { stackIndex++; } 
+            if( i == index ) { return stacks[stackIndex].resource; }
+        }
+
+        return null;
     }
 
     public ResourceData GetRandomResource()

@@ -1,12 +1,9 @@
-
-using System;
+ 
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using ExtensionMethods;
-using UnityEngine.UIElements;
+using ExtensionMethods; 
 
-[Serializable]
 public class ConstructionManager
 {
     public StructureData newGhostData;

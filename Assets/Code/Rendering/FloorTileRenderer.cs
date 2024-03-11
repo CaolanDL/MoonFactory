@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using Unity.Mathematics;
-using UnityEngine;
-using UnityEngine.UIElements;
+﻿using Unity.Mathematics;
+using UnityEngine; 
 
 public class FloorTileRenderer : MonoBehaviour
 {
@@ -28,9 +26,7 @@ public class FloorTileRenderer : MonoBehaviour
             for (int y = yVisibleRange.x; y < yVisibleRange.y; y++)
             {
 
-                int2 tileLocation = new int2(x, y);
-
-                //Debug.Log($"Drawing Floor Tiles at: {x}, {y}");
+                int2 tileLocation = new int2(x, y); 
 
                 FloorTile floorTile = (FloorTile)GameManager.Instance.gameWorld.floorGrid.GetEntityAt(tileLocation); 
 
@@ -39,9 +35,7 @@ public class FloorTileRenderer : MonoBehaviour
                 {
                     floorTile = GameManager.Instance.gameWorld.GenerateFloorTile(tileLocation);
                 }
-
-                //UnityEngine.Debug.Log(gameWorld.floorGrid.GetEntityAt(tileLocation).GetType().ToString()) ;
-
+                  
                 DrawTile(floorTile);
             }
         }
@@ -51,17 +45,13 @@ public class FloorTileRenderer : MonoBehaviour
     void DrawTile(FloorTile floorTile)
     {
         Vector3 worldPosition = new Vector3(floorTile.position.x, 0, floorTile.position.y);
-
-        //Debug.Log(worldPosition);
-
+         
         Graphics.DrawMesh(floorTile.data.mesh, worldPosition, Quaternion.Euler(0,90 * floorTile.rotation, 0), GlobalData.Instance.mat_Tile, 0);
     }
 
     void DrawTile(int2 gridPosition, FloorTileData tileData)
     {
-        Vector3 worldPosition = new Vector3(gridPosition.x, 0, gridPosition.y);
-
-        //Debug.Log(worldPosition);
+        Vector3 worldPosition = new Vector3(gridPosition.x, 0, gridPosition.y); 
 
         Graphics.DrawMesh(tileData.mesh, worldPosition, quaternion.identity, GlobalData.Instance.mat_Tile, 0);
     } 

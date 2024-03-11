@@ -1,25 +1,29 @@
-﻿using System.Collections;
+﻿using System; 
 using System.Collections.Generic;
 using UnityEngine;
  
 public class DisplayObject : MonoBehaviour
 {
-    public Entity parentEntity;
+    [NonSerialized] public Entity parentEntity;
 
-    public List<GameObject> models;
+    public List<GameObject> primaryModels;
 
-    public GameObject activeModel;
+    [NonSerialized] public GameObject activeModel;
+
+    public List<GameObject> additiveModels;
 
     private void Awake()
     {
-        foreach (var model in models)
+        foreach (var model in primaryModels)
         {
             model.SetActive(false); 
         }
 
-        models[0].SetActive(true);
+        if (primaryModels.Count == 0) { return; }
 
-        activeModel = models[0];
+        primaryModels[0].SetActive(true);
+
+        activeModel = primaryModels[0];
     }
 
     public void ChangeAnimation(string animationName)
@@ -29,12 +33,12 @@ public class DisplayObject : MonoBehaviour
 
     public void SetActiveModel(string modelName)
     {
-        foreach (var model in models)
+        foreach (var model in primaryModels)
         {
             model.SetActive(false);
         }
 
-        foreach (var model in models)
+        foreach (var model in primaryModels)
         {
             if(model.name == modelName)
             {

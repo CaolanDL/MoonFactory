@@ -1,4 +1,7 @@
 using UnityEngine;
+using Unity.Mathematics;
+
+using ExtensionMethods;
 
 namespace Logistics
 {
@@ -68,7 +71,55 @@ namespace Logistics
 
     public class Hopper : Machine
     {
-        public Hopper() { }
+        public static int maxItems = 40;
+        public static int renderGap = 4;
+
+        public Inventory inputInventory;
+        public Inventory ouputInventory;
+
+        public void OnConstruct()
+        {
+            inputInventory = InputInventories[0];
+            ouputInventory = OutputInventories[0];
+
+            ouputInventory.maxItems = maxItems;
+            ouputInventory.maxWeight = int.MaxValue;
+        }
+
+        public override void OnTick()
+        { 
+            TransferAnythingRandom(InputInventories[0], OutputInventories[0]);
+            TryOutputAnything(OutputInventories[0], structureData.outputs[0]);
+        }
+
+
+        // This item rendering could be modified to update an array OnItemRecieved and OnItemOutput to reduce per frame overhead
+        public override void OnFrameUpdate()
+        {
+            if (OutputInventories[0].totalItems > 0)
+            {
+                for (int i = 0; i < OutputInventories[0].totalItems; i += renderGap)
+                {
+                    var n =  i / renderGap;
+                    DrawResourceAtIndex(n);
+                }
+            }
+
+            void DrawResourceAtIndex(int i)
+            {
+                float verticalOffset = ((i / 4) * 0.25f);
+
+                Graphics.DrawMesh(
+                    OutputInventories[0].GetResourceAtIndex(i).mesh,
+                    transform.position.ToVector3()
+                    + (Vector3.up * (i / 4) * 0.1f)
+                    + (Vector3.up * 0.1f)
+                    + (Vector2.up.Rotate(i % 4 * 90 + 45).ToWorldspaceV3() * 0.15f),
+                    Quaternion.Euler(0, i * 11.5f, 0),
+                    GlobalData.Instance.mat_DevUniversal,
+                    0); ; ;
+            }
+        }
     }
 
     public class Silo : Hopper

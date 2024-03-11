@@ -76,33 +76,37 @@ public class PlayerInputManager : MonoBehaviour
     {
         isMouseOverUI = EventSystem.current.IsPointerOverGameObject();
 
-        if (!isMouseOverUI)
+        if(GameManager.Instance.gameWorld != null )
         {
-            UpdateMouseGridPosition();
-        }
+            if (!isMouseOverUI)
+            {
+                UpdateMouseGridPosition();
+                RenderGizmoAtMouseTile();
+            }
 
-        switch (inputState)
-        {
-            default:
-                break;
+            switch (inputState)
+            {
+                default:
+                    break;
 
-            case InputState.Default:
-                HandleDefaultInput();
-                break;
+                case InputState.Default:
+                    HandleDefaultInput();
+                    break;
 
-            case InputState.Menu:
-                break;
+                case InputState.Menu:
+                    break;
 
-            case InputState.Construction:
-                HandleConstructionInput();
-                break;
+                case InputState.Construction:
+                    HandleConstructionInput();
+                    break;
 
-            case InputState.Cancel:
-                break;
+                case InputState.Cancel:
+                    break;
 
-            case InputState.Bulldoze:
-                break;
-        }
+                case InputState.Bulldoze:
+                    break;
+            }
+        }  
     }
 
     public void HandleCameraControl()
@@ -148,7 +152,7 @@ public class PlayerInputManager : MonoBehaviour
 
         if (isMouseOverUI != true)
         {
-            constructionManager.DrawGhostAtMouse(MouseGridPositon);
+            constructionManager.DrawGhostAtMouse(MouseGridPositon); 
 
             if (inputActions.ConstructionControls.PlaceGhost.IsPressed())
             {
@@ -175,5 +179,10 @@ public class PlayerInputManager : MonoBehaviour
             mouseWorldPosition = hit.point;
             MouseGridPositon = new int2((int)Mathf.Round(mouseWorldPosition.x), (int)Mathf.Round(mouseWorldPosition.z));
         }
+    }
+
+    public void RenderGizmoAtMouseTile()
+    {
+        Graphics.DrawMesh(GlobalData.Instance.m_TileGizmo, new TinyTransform(MouseGridPositon, 0).ToMatrix(), GlobalData.Instance.mat_PulsingGizmo, 0);
     }
 }

@@ -44,6 +44,14 @@ public abstract class Structure : Entity
         }
     }
 
+    public static void FrameUpdateAllStructures()
+    {
+        foreach (var structure in structures)
+        {
+            structure.FrameUpdate();
+        }
+    }
+
     public void Constructed()
     {
         GameObject newDisplayGameObject = UnityEngine.Object.Instantiate(structureData.displayObject, position.ToVector3(), rotation.ToQuaternion(), GameManager.Instance.transform);
@@ -64,6 +72,17 @@ public abstract class Structure : Entity
     }
 
     public virtual void OnTick()
+    {
+
+    }
+
+
+    public void FrameUpdate()
+    {
+        OnFrameUpdate();
+    }
+
+    public virtual void OnFrameUpdate()
     {
 
     }

@@ -33,16 +33,14 @@ public class ItemRenderer : MonoBehaviour
         {
             foreach(Item item in chain.items)
             { 
-                if (true) //itemPosition.x > xVisibleRange.x && itemPosition.x < xVisibleRange.y &&
-                     //itemPosition.y > xVisibleRange.x && itemPosition.y < xVisibleRange.y)
+                if (true)  
                 {
                     serialItems.Add(new SerialItem(item.worldPosition, item.distance, chain.items.IndexOf(item)));
                     DrawItem(item, item.worldPosition, item.Rotation); 
                 }
             }
         }
-
-        //Debug.Log($"Items Rendered: {itemsRendered}");
+         
     }
 
 
@@ -50,6 +48,7 @@ public class ItemRenderer : MonoBehaviour
     {
         Vector3 worldPosition = new Vector3(position.x, VerticalOffset, position.y); 
 
+        // You should migrate to Graphics.RenderMesh as this function is now obsolete.
         Graphics.DrawMesh(item.data.mesh, worldPosition, Quaternion.Euler(0, rotation, 0), GlobalData.Instance.mat_DevUniversal, 0);
     } 
 

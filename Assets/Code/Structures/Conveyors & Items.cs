@@ -3,8 +3,7 @@ using Unity.Mathematics;
 using UnityEngine;
 
 using ExtensionMethods;
-using System.Linq;
-using UnityEngine.UIElements;
+using System.Linq; 
 
 public enum Attempt
 {
@@ -75,8 +74,7 @@ namespace Logistics
             else
             {
                 float turnFactor = currentConveyor.turnConfig == Conveyor.TurnConfig.LeftTurn ? +90f : -90f; // Setting turn offset based on the turn configuration of the current belt 
-
-                //Debug.Log($"normalisedDistanceOnConveyor {normalisedDistanceOnConveyor}");
+                 
 
                 if (normalisedDistanceOnConveyor <= Conveyor.TurnStartOffset)
                 {
@@ -103,10 +101,7 @@ namespace Logistics
 
                     float remapNormalDistance = math.remap(0f + Conveyor.TurnStartOffset, 1f - Conveyor.TurnStartOffset, 0f, 1f, normalisedDistanceOnConveyor);
 
-                    float normalRotation = remapNormalDistance * -turnFactor;
-
-                    //Debug.Log($"turnOrigin {turnOrigin.ToString()}");
-                    //Debug.Log($"normalRotation {normalRotation}");
+                    float normalRotation = remapNormalDistance * -turnFactor; 
 
                     positionOnConveyor = new Vector2(0, Conveyor.TurnStartOffset).RotateAround(turnOrigin, normalRotation);
 

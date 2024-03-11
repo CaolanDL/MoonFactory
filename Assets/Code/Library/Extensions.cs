@@ -52,6 +52,11 @@ namespace ExtensionMethods
             return new float2(i.x, i.y);
         }
 
+        public static Vector3 ToWorldspaceV3(this Vector2 i)
+        {
+            return new Vector3(i.x, 0, i.y);
+        }
+
 
         public static Vector3 RotateAround(this Vector3 i, Vector3 Pivot, Quaternion quaternion)
         {

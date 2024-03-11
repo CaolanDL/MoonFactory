@@ -17,6 +17,12 @@ public struct TinyTransform
         set { _rotation = (sbyte)((value % 4 + 4) % 4); }  
     }
 
+    public TinyTransform(int2 position)
+    {
+        this.position = position; 
+        _rotation = 0; 
+    }
+
     public TinyTransform(int2 position, sbyte rotation)  
     {
         this.position = position;
