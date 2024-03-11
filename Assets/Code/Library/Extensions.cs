@@ -1,15 +1,15 @@
 ﻿using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
+
 /*using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 using Vector2 = UnityEngine.Vector2;
 */
 
-
 namespace ExtensionMethods
 {
-    public static class Int2ToVectorExtensions
+    public static class Int2Extensions
     {
         public static Vector3 ToVector3(this int2 i)
         {
@@ -29,6 +29,14 @@ namespace ExtensionMethods
         public static int2 ToInt2(this Vector3 i)
         {
             return new int2((int)i.x, (int)i.y);
+        }
+
+        public static int2 Rotate(this int2 i, sbyte rotation)
+        {
+            float radian = -rotation * 90 * Mathf.Deg2Rad;
+            int _x = Mathf.RoundToInt(i.x * Mathf.Cos(radian) - i.y * Mathf.Sin(radian));
+            int _y = Mathf.RoundToInt(i.x * Mathf.Sin(radian) + i.y * Mathf.Cos(radian));
+            return new int2(_x, _y);
         }
     }
 
@@ -53,19 +61,17 @@ namespace ExtensionMethods
         // https://sushanta1991.blogspot.com/2016/08/how-to-rotate-2d-vector-in-unity.html
         public static Vector2 Rotate(this Vector2 i, float angle)
         {
-            float radian = angle * Mathf.Deg2Rad;
-            float _x = i.x * Mathf.Cos(angle) - i.y * Mathf.Sin(angle);
-            float _y = i.x * Mathf.Sin(angle) + i.y * Mathf.Cos(angle);
-            return new Vector2(_x, _y); 
+            float radian = -angle * Mathf.Deg2Rad;
+            float _x = i.x * Mathf.Cos(radian) - i.y * Mathf.Sin(radian);
+            float _y = i.x * Mathf.Sin(radian) + i.y * Mathf.Cos(radian);
+            return new Vector2(_x, _y);
         }
 
         public static Vector2 RotateAround(this Vector2 i, Vector2 Pivot, float angle)
         {
             return (i - Pivot).Rotate(angle) + Pivot;
         }
-    } 
-
-
+    }
 
     public static class SbyteRotationConversions
     {

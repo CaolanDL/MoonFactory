@@ -30,6 +30,7 @@ public class GlobalData : ScriptableObject
 
     [Header("Development Assets")]
     public Material mat_DevUniversal;
+    public Mesh Gizmo;
 
     [Header("Global Materials")]
     public Material mat_Ghost;

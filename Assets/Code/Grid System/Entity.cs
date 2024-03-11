@@ -1,35 +1,42 @@
-﻿using System;
-using UnityEngine;
+﻿using System; 
 using DataStructs;
+using ExtensionMethods;
 using Unity.Mathematics;
 
 [Serializable]
 public class Entity
 {
-    public byte gridId; // 1 bytes
+    public TinyTransform transform;
 
-    public int2 position; // 8 bytes
+    public byte gridId;
+
+    public int2 position
+    {
+        get { return transform.position; }
+        set { transform.position = value; }
+    } 
+     
+    public sbyte rotation
+    {
+        get { return transform.rotation; }
+        set { transform.rotation = value; }
+    }
 
     private byte2 size = new(1, 1);
 
     private byte2 centre
     {
         get { return new byte2(size.x / 2, size.y / 2); }
-    }
-
-    private sbyte _rotation;
-    public sbyte rotation
-    {
-        get { return _rotation; }
-        set { _rotation = (sbyte)((value % 4 + 4) % 4); } // Dont even ask
-    }
-
-
-    //public GameObject gameObject;
-
+    }  
+     
     public Entity()
     {
-        //centre = position + (size / 2);
+         
+    }
+
+    public Entity GetNeighbor(sbyte rotationFactor)
+    { 
+        return GameManager.Instance.gameWorld.worldGrid.GetEntityAt(position + rotation.Rotate(rotationFactor).ToInt2());
     }
 }
 
@@ -40,7 +47,5 @@ public class FloorTile : Entity // Size: 9 bytes
     public FloorTile(FloorTileData tileData)
     {
         this.data = tileData;
-    }
-
-    //byte color = 0;
+    } 
 }

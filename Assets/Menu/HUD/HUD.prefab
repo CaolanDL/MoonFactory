@@ -395,7 +395,7 @@ GameObject:
   - component: {fileID: 2907983841388268563}
   - component: {fileID: 210644381416232836}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Logistics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -443,7 +443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.22700001, g: 0.22700001, b: 0.22700001, a: 1}
+  m_Color: {r: 0.13333334, g: 0.19607845, b: 0.16862746, a: 0.5019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -499,7 +499,7 @@ GameObject:
   - component: {fileID: 4277267497232721322}
   - component: {fileID: 7844731565466455302}
   m_Layer: 5
-  m_Name: Panel (1)
+  m_Name: Processing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -547,7 +547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.22700001, g: 0.22700001, b: 0.22700001, a: 1}
+  m_Color: {r: 0.16470589, g: 0.1254902, b: 0.098039225, a: 0.5019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -986,7 +986,7 @@ GameObject:
   - component: {fileID: 1488448683897134558}
   - component: {fileID: 5268672160382126226}
   m_Layer: 5
-  m_Name: Panel (3)
+  m_Name: Power
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1034,7 +1034,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.22700001, g: 0.22700001, b: 0.22700001, a: 1}
+  m_Color: {r: 0.3207547, g: 0.2863341, b: 0.18307225, a: 0.5019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1777,7 +1777,7 @@ GameObject:
   - component: {fileID: 4001671862938538499}
   - component: {fileID: 6765483651249564527}
   m_Layer: 5
-  m_Name: Panel (2)
+  m_Name: Manufacturing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1825,7 +1825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.22700001, g: 0.22700001, b: 0.22700001, a: 1}
+  m_Color: {r: 0.121568635, g: 0.08235294, b: 0.14509805, a: 0.5019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2014,7 +2014,7 @@ GameObject:
   - component: {fileID: 7331236618093472156}
   - component: {fileID: 5055461230833269445}
   m_Layer: 5
-  m_Name: Panel (4)
+  m_Name: Science
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2062,7 +2062,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.22700001, g: 0.22700001, b: 0.22700001, a: 1}
+  m_Color: {r: 0.13203096, g: 0.1828077, b: 0.21698111, a: 0.5019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

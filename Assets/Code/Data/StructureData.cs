@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
-using UnityEngine;
+﻿using System; 
+using System.Collections.Generic; 
+using UnityEngine;  
 
 public enum StructureCategory
 {
@@ -11,8 +9,7 @@ public enum StructureCategory
     Processing,
     Manufacturing,
     Science
-}
-
+} 
 
 [CreateAssetMenu(menuName = "MoonFactory/Structure Data")]
 public class StructureData : ScriptableObject
@@ -29,8 +26,8 @@ public class StructureData : ScriptableObject
 
     [Space(25)]
 
-    public List<int2> inputLocations;
-    public List<int2> outputLocations;  
+    public List<TinyTransform> inputs;
+    public List<TinyTransform> outputs;  
 
     [Space, Header("Ghost Data")]
 
@@ -38,10 +35,7 @@ public class StructureData : ScriptableObject
 
     public List<GhostModels> ghostModels = new(); 
 
-    public List<ArrowIndicatorData> arrowIndicators = new();
-
-
-
+    public List<ArrowIndicatorData> arrowIndicators = new(); 
 
     [Serializable]
     public class GhostModels
@@ -58,6 +52,6 @@ public class StructureData : ScriptableObject
         public Quaternion rotation = Quaternion.identity;
 
         public float size = 1;
-    }
+    } 
 }
 

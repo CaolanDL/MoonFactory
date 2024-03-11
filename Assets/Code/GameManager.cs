@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logistics;
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -37,7 +38,8 @@ public class GameManager : MonoBehaviour
 
     public GameWorld gameWorld;
 
-    private FloorTileRenderer floorTileRenderer; 
+    private FloorTileRenderer floorTileRenderer;
+    private ItemRenderer itemRenderer;
 
     public ConstructionManager ConstructionManager;
 
@@ -49,6 +51,7 @@ public class GameManager : MonoBehaviour
         worldGenerationData.MakeSingleton();
 
         floorTileRenderer = GetComponent<FloorTileRenderer>();
+        itemRenderer = GetComponent<ItemRenderer>();
     }
 
     private void Start()
@@ -80,20 +83,25 @@ public class GameManager : MonoBehaviour
     {
         if(gameWorld == null) { return; }
         //Read Player inputs
-
-        // Update Conveyors
-        // Update rovers
-        // Update Machines
-        Structure.TickAllStructures();
-
+         
         // Draw Ghosts
         ConstructionManager.DrawGhosts();
 
         // Draw Floor tiles
         floorTileRenderer.Tick();
+        itemRenderer.Tick();
 
         // Draw Items
-    } 
+    }
+
+    private void FixedUpdate()
+    {
+        // Update Conveyors 
+        ChainManager.UpdateChains();
+        // Update rovers
+        // Update Machines
+        Structure.TickAllStructures();
+    }
 
     public void CreateNewGame(string saveName)
     {
@@ -107,8 +115,7 @@ public class GameManager : MonoBehaviour
         ConstructionManager = new();
 
         // Start zone is generated
-        gameWorld.GenerateStartZone();
-        gameWorld.DebugLogLocations();
+        gameWorld.GenerateStartZone(); 
 
         // Descent vehicle animation plays
 
