@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Unity.Mathematics;
-using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine; 
+
 using Random = UnityEngine.Random;
 
 public class GameWorld
@@ -41,20 +40,8 @@ public class GameWorld
     public void GenerateRegion(int2 startPosition, int2 endPosition)
     {
         //Modify start and end positions to point in positive iteration direction
-        if (startPosition.x > endPosition.x)
-        {
-            (startPosition.x, endPosition.x) = (endPosition.x, startPosition.x);
-        }
-        if (startPosition.y > endPosition.y)
-        {
-            (startPosition.y, endPosition.y) = (endPosition.y, startPosition.y);
-        }
-        /*
-                // Find the direction to iterate towards
-                int2 size = startPostion - endPosition;
-
-                sbyte xIterationDirection = (sbyte)-MathF.Sign(size.x);
-                sbyte yIterationDirection = (sbyte)-MathF.Sign(size.y);*/
+        if (startPosition.x > endPosition.x) { (startPosition.x, endPosition.x) = (endPosition.x, startPosition.x); }
+        if (startPosition.y > endPosition.y) { (startPosition.y, endPosition.y) = (endPosition.y, startPosition.y); } 
 
         for (int x = startPosition.x; x < endPosition.x; x++)
         {
@@ -71,18 +58,10 @@ public class GameWorld
 
         FloorTile newFloorTile = new(newTileData);
 
-        floorGrid.AddEntity(newFloorTile, position, (sbyte)Random.Range(0, 3));
-
-        //Debug.Log($"Generated floor tile at: {position}");
+        floorGrid.AddEntity(newFloorTile, position, (sbyte)Random.Range(0, 3)); 
 
         return newFloorTile;
-    }
-
-    public void DebugLogLocations()
-    {
-        //UnityEngine.Debug.Log($"{floorGrid.grid.Count} Grid locations spawned");
-    }
-
+    } 
 
     ////
     ///   Sequencing
@@ -154,7 +133,7 @@ public class Grid
         {
             return grid[position];
         }
-        else return null;
+        else return Location.empty;
     }
 
     public Entity AddEntity(Entity entity, int2 position)
@@ -174,12 +153,7 @@ public class Grid
 
         return entity;
     }
-
-    /*    public Entity RemoveEntity(Entity entity)
-        { 
-        }
-    */
-
+     
     public Entity RemoveEntity(int2 position)
     {
         if (grid.ContainsKey(position) != true) { return null; }
@@ -219,6 +193,8 @@ public class Location // Size: 13 bytes
     public byte gridId; // 1 bytes
 
     public Entity entity; // 8 bytes 
+
+    public static Location empty = new Location();
 
     public int2 GetChunk()
     {

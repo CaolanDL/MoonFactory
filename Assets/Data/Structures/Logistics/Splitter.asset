@@ -21,20 +21,20 @@ MonoBehaviour:
   - position:
       x: 0
       y: -1
-    rotation: 0
+    _rotation: 0
   outputs:
   - position:
       x: 0
       y: 1
-    rotation: 0
+    _rotation: 0
   - position:
       x: 1
       y: 0
-    rotation: -90
+    _rotation: 1
   - position:
       x: -1
       y: 0
-    rotation: 90
+    _rotation: -1
   ghostMesh: {fileID: -5453171864532947714, guid: 32d12d17e8bd7904fa20ce3cd6740947,
     type: 3}
   ghostModels: []

@@ -40,18 +40,6 @@ public class ConstructionManager
                 }
             }
         }
-        /*// Development Only > Replace with animation gameobjects
-        foreach (Structure structure in Structure.structures)
-        {
-            var matrix = MatrixConstruction.CreateTransformMatrix(structure.position, structure.rotation); 
-
-            Graphics.DrawMesh(structure.data.ghostMesh, matrix, GlobalData.Instance.mat_DevUniversal, 0);
-
-            foreach(StructureData.GhostModels additiveModel in structure.data.ghostModels)
-            {
-                Graphics.DrawMesh(additiveModel.mesh, matrix, additiveModel.material, 0); 
-            }
-        } */
     }
 
     public void DrawGhostAtMouse(int2 position)

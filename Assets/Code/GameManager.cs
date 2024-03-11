@@ -115,8 +115,7 @@ public class GameManager : MonoBehaviour
         ConstructionManager = new();
 
         // Start zone is generated
-        gameWorld.GenerateStartZone();
-        gameWorld.DebugLogLocations();
+        gameWorld.GenerateStartZone(); 
 
         // Descent vehicle animation plays
 

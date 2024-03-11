@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
- 
+using System.ComponentModel;
+
 public class ResourceStack
 {
     public ResourceData resource;
@@ -37,49 +39,105 @@ public class Inventory
 
     public List<ResourceStack> stacks = new();
 
+    public int maxItems = int.MaxValue;
+    public int totalItems = 0;
     public int maxWeight = 1;
     public int totalWeight = 0;
 
-    int availableCapacity
+    int AvailableCapacityByWeight
     {
-        get { return maxWeight - totalWeight; } 
+        get { return maxWeight - totalWeight; }
     }
 
-    bool atCapacity
+    int AvailableCapacityByCount
+    {
+        get { return maxItems - totalItems; }
+    }
+
+    bool AtCapacitytByWeight
     {
         get { return totalWeight >= maxWeight; }
-    } 
+    }
+
+    bool AtCapacityByCount
+    {
+        get { return totalItems >= maxItems; }
+    }
 
     public int GetMaxAcceptable(ResourceData resource)
     {
-        return (int)MathF.Floor(availableCapacity / resource.weight);
-    }
+        int nByWeight = (int)MathF.Floor(AvailableCapacityByWeight / resource.weight); 
 
+        if (nByWeight < AvailableCapacityByCount)
+        {
+            return nByWeight;
+        }
+        else
+        {
+            return AvailableCapacityByCount;
+        } 
+    }
 
     public int GetQuantityOf(ResourceData resource)
     {
         var stack = GetStack(resource);
 
-        if (stack == null) { return  0; } 
+        if (stack == null) { return 0; }
 
         return GetStack(resource).quantity;
     }
 
-    public bool TryAddResource(ResourceData resource, int quantity)
+    public ResourceData GetRandomResource()
     {
-        if(atCapacity) { return false; }
+        if (stacks.Count == 0)
+        {
+            return null;
+        }
+
+        int stackIndex = 0;
+        if (stacks.Count > 1)
+        {
+            stackIndex = UnityEngine.Random.Range(0, stacks.Count - 1);
+        }
+
+        return stacks[stackIndex].resource;
+    }
+
+    public bool TryAddResource(ResourceData resource, int quantity)
+    { 
+        if (resource == null) return false;
+
+        if (AtCapacitytByWeight || AtCapacityByCount) return false;
 
         AddStackIfNoneExist(resource);
 
         var stack = GetStack(resource);
 
-        if (totalWeight  +(resource.weight * stack.quantity) > maxWeight) { throw new System.Exception($" Attempted to exceed maximum inventory capacity on {parentEntity}"); }
+        if (totalWeight + (resource.weight * stack.quantity) > maxWeight) { throw new System.Exception($" Attempted to exceed maximum inventory capacity on {parentEntity}"); }
 
         stack.quantity += quantity;
 
-        totalWeight += resource.weight * quantity; 
+        totalWeight += resource.weight * quantity;
+        totalItems += quantity;
 
         return true;
+    }
+
+    public void RemoveResource(ResourceData resource, int quantity)
+    {
+        var stack = GetStack(resource) ?? throw new Exception("Attempted to remove non existant resource from inventory");
+
+        if (stack.quantity - quantity < 0) { throw new Exception("Attempted to remove more resources from an invenotry than exist"); }
+
+        stack.ReduceBy(quantity);
+
+        totalWeight -= resource.weight * quantity;
+        totalItems -= quantity;
+
+        if (stack.quantity <= 0)
+        {
+            stacks.Remove(stack);
+        }
     }
 
     void AddStackIfNoneExist(ResourceData resource)
@@ -96,31 +154,15 @@ public class Inventory
         }
 
         if (!resourceTypePresent)
-        { 
-            stacks.Add(new ResourceStack(resource)); 
+        {
+            stacks.Add(new ResourceStack(resource));
         }
     }
 
     public ResourceStack GetStack(ResourceData resource)
     {
         return stacks.Find(i => i.resource == resource);
-    }
-
-    public void RemoveResource(ResourceData resource, int quantity)
-    {
-        var stack = GetStack(resource) ?? throw new Exception("Attempted to remove non existant resource from inventory");
-
-        if(stack.quantity - quantity <  0) { throw new Exception("Attempted to remove more resources from an invenotry than exist"); }
-
-        stack.ReduceBy(quantity);
-
-        totalWeight -= resource.weight * quantity;
-        
-        if(stack.quantity <= 0)
-        {
-            stacks.Remove(stack);
-        } 
-    }
+    } 
 
     public void ClearInventory(ResourceData resource, int quantity)
     {

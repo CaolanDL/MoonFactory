@@ -149,17 +149,17 @@ public class PlayerInputManager : MonoBehaviour
         if (isMouseOverUI != true)
         {
             constructionManager.DrawGhostAtMouse(MouseGridPositon);
+
+            if (inputActions.ConstructionControls.PlaceGhost.IsPressed())
+            {
+                constructionManager.PlaceGhost(MouseGridPositon);
+            }
         }
 
         if (inputActions.ConstructionControls.RotateGhost.WasPressedThisFrame())
         {
             constructionManager.RotateGhost(1);
-        } 
-
-        if (inputActions.ConstructionControls.PlaceGhost.IsPressed())
-        {
-            constructionManager.PlaceGhost(MouseGridPositon);
-        }
+        }  
     }
 
 
