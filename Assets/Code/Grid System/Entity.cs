@@ -22,9 +22,9 @@ public class Entity
         set { transform.rotation = value; }
     }
 
-    private byte2 size = new(1, 1);
+    public byte2 size = new(1, 1);
 
-    private byte2 centre
+    public byte2 centre
     {
         get { return new byte2(size.x / 2, size.y / 2); }
     }  

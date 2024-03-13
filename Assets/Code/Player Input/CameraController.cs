@@ -22,6 +22,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float zoomSpeed = 10;
     [SerializeField] private float zoomScaling = 0.5f;
 
+    [SerializeField] private float zoomPositionMultiplier = 3f;
+    [SerializeField] private float zoomPositionOffset = 0.5f;
+
     [Header("Object References")]
     public GameObject cameraOrigin;
     public Camera playerCamera;
@@ -66,7 +69,7 @@ public class CameraController : MonoBehaviour
         playerCamera.orthographicSize = zoom;
         topDownCamera.orthographicSize = zoom+1;
 
-        playerCamera.transform.localPosition = new Vector3(0, 0, Mathf.Clamp(-zoom*2, -1000, -5));
+        playerCamera.transform.localPosition = new Vector3(0, 0, Mathf.Clamp(-zoom * zoomPositionMultiplier - zoomPositionOffset, -1000, -5));
     }
 
 

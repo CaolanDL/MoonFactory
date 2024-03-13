@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DataStructs;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine; 
 
@@ -141,17 +142,24 @@ public class Grid
         return AddEntity(entity, position, 0);
     }
 
+    static byte2 singleTileSize = new byte2(1, 1);
+
     public Entity AddEntity(Entity entity, int2 position, sbyte rotation)
     {
-        Location location = AddLocation(position);
+        if (entity.size.Equals(singleTileSize))
+        {
 
-        location.entity = entity;
 
-        entity.position = position;
+            Location location = AddLocation(position);
 
-        entity.rotation = rotation;
+            location.entity = entity;
 
-        return entity;
+            entity.position = position;
+
+            entity.rotation = rotation;
+
+            return entity;
+        }
     }
      
     public Entity RemoveEntity(int2 position)

@@ -1,5 +1,6 @@
 ﻿using System; 
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using UnityEngine;
 
 public class ResourceStack
 {
@@ -118,7 +119,10 @@ public class Inventory
     { 
         if (resource == null) return false;
 
-        if (AtCapacitytByWeight || AtCapacityByCount) return false;
+        if (AtCapacitytByWeight || AtCapacityByCount)
+        { 
+            return false;
+        }
 
         AddStackIfNoneExist(resource);
 

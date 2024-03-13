@@ -70,18 +70,20 @@ namespace Logistics
 
     public class Hopper : Machine
     {
-        public static int maxItems = 40;
+        public static int maxItems = 10;
         public static int renderGap = 4;
 
         public Inventory inputInventory;
         public Inventory ouputInventory;
 
-        public void OnConstruct()
+        public override void OnConstructed()
         {
             inputInventory = InputInventories[0];
             ouputInventory = OutputInventories[0];
 
-            ouputInventory.maxItems = maxItems;
+            inputInventory.maxItems = 1;
+
+            ouputInventory.maxItems = maxItems; 
             ouputInventory.maxWeight = int.MaxValue;
         }
 

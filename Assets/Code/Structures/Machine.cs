@@ -156,9 +156,14 @@ public class Machine : Structure
     {
         var resource = inventoryFrom.GetRandomResource();
 
+        if(resource == null) return false;
+
+        if(inventoryTo.GetMaxAcceptable(resource) == 0) return false;
+
         if (inventoryTo.TryAddResource(resource, 1))
         {
-            inventoryFrom.RemoveResource(resource, 1);
+            inventoryFrom.RemoveResource(resource, 1); 
+            Debug.Log(inventoryTo.totalItems);
             return true;
         }
         return false;

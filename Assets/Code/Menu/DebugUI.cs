@@ -1,3 +1,4 @@
+using Logistics;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,12 +6,25 @@ using UnityEngine;
 
 public class DebugUI : MonoBehaviour
 {
-    public TextMeshProUGUI FPSCounter;
-    public TextMeshPro ItemCounter;
-    public TextMeshPro RoverCounter;
+    [SerializeField] GameObject VerticalLayout;
+    [SerializeField] GameObject TextLinePrefab;
 
-    private int FPS;
+    int FPS;
+    TextMeshProUGUI FPSCounter;
 
+    int itemCount;
+    TextMeshProUGUI ItemCounter;
+
+    TextMeshProUGUI RoverCounter;
+
+    private void Start()
+    {
+        FPSCounter = NewTextLine();
+        ItemCounter = NewTextLine();
+        RoverCounter = NewTextLine(); 
+    }
+
+    TextMeshProUGUI NewTextLine() { return Instantiate(TextLinePrefab, VerticalLayout.transform).GetComponent<TextMeshProUGUI>(); }
 
     private void Update()
     {
@@ -21,6 +35,8 @@ public class DebugUI : MonoBehaviour
     {
         FPSCounter.text = $"FPS {FPS}";
 
-
+        itemCount = 0;
+        foreach (Chain chain in ChainManager.chains) itemCount += chain.items.Count;
+        ItemCounter.text = $"Items: {itemCount}";
     }
 }
