@@ -17,7 +17,7 @@ public class StructureGhost : Entity
          
         Structure newStructure = StructureFactory.CreateStructure(data);
 
-        worldGrid.AddEntity(newStructure, position, rotation);
+        worldGrid.TryAddEntity(newStructure, position, rotation);
 
         GameManager.Instance.ConstructionManager.ghosts.Remove(this);
 

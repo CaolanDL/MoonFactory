@@ -17,6 +17,7 @@ public abstract class Structure : Entity
 
     public void Initialise ()
     {
+        base.size = new DataStructs.byte2(structureData.size.x, structureData.size.y); 
         OnInitialise();
     } 
 
@@ -58,7 +59,14 @@ public abstract class Structure : Entity
 
         displayObject = newDisplayGameObject.GetComponent<DisplayObject>();
 
+        ConnectOuputs();
+
         OnConstructed();
+    }
+
+    public virtual void ConnectOuputs()
+    {
+
     }
 
     public virtual void OnConstructed()
@@ -134,20 +142,4 @@ public static class StructureFactory
 
         return newStructure;
     }
-
-/*
-    public static Structure CreateStructure(StructureData structureData)
-    {
-        Type structureType = Type.GetType(structureData.name);
-
-        if(structureType.IsSubclassOf(typeof(Structure)) != true) { throw new Exception("Non-structure Type passed to Factory when creating new structure instance"); }
-
-        Structure newStructure = (Structure)Activator.CreateInstance(structureType);
-
-        newStructure.data = structureData;
-
-        Structure.structures.Add(newStructure); 
-
-        return newStructure; 
-    }*/
 } 

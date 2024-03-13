@@ -14,6 +14,15 @@ public class DisplayObject : MonoBehaviour
 
     private void Awake()
     {
+        if (primaryModels.Count == 0)
+        {
+            primaryModels.Add(GetComponentInChildren<MeshRenderer>().gameObject);
+        }
+        if(primaryModels[0] == null)
+        {
+            primaryModels[0] = GetComponentInChildren<MeshRenderer>().gameObject;
+        }
+
         foreach (var model in primaryModels)
         {
             model.SetActive(false); 

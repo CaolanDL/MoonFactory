@@ -55,7 +55,8 @@ public struct TinyTransform
 }
 
 namespace DataStructs
-{ 
+{
+    [Serializable]
     public struct byte2
     {
         public byte x;

@@ -330,6 +330,8 @@ namespace Logistics
         public Conveyor nextConveyor;
         public Conveyor lastConveyor;
 
+        public int2 inputPosition;
+
         public TurnConfig turnConfig = new();
 
         public enum TurnConfig
@@ -340,8 +342,10 @@ namespace Logistics
         }
 
         public override void OnConstructed()
-        {
-            TryAddConnections();
+        { 
+            inputPosition = new int2(0, -1).Rotate(rotation) + position;
+
+            TryAddConnections(); 
         }
 
         private void TryAddConnections()
@@ -500,7 +504,7 @@ namespace Logistics
             }
         }
 
-        private void SetRotationConfig(TurnConfig config)
+        public void SetRotationConfig(TurnConfig config)
         {
             if (this.turnConfig == config) { return; }
 
@@ -509,14 +513,17 @@ namespace Logistics
             if (config == 0)
             {
                 displayObject.SetActiveModel("Default");
+                inputPosition = new int2(0, -1).Rotate(rotation) + position;
             }
             if (config == TurnConfig.LeftTurn)
             {
                 displayObject.SetActiveModel("Left Turn");
+                inputPosition = new int2(0, -1).Rotate((sbyte)(rotation + 1)) + position;
             }
             if (config == TurnConfig.RightTurn)
             {
                 displayObject.SetActiveModel("Right Turn");
+                inputPosition = new int2(0, -1).Rotate((sbyte)(rotation - 1)) + position    ;
             }
         }
 

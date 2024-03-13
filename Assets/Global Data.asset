@@ -19,7 +19,10 @@ MonoBehaviour:
   mat_Tile: {fileID: 2100000, guid: cc2dddc32720bcc44bef8ca8b288603d, type: 2}
   m_ArrowIndicator: {fileID: 2782774259527958836, guid: 663b6f19701347045b5c7419e615dd8e,
     type: 3}
-  mat_ArrowIndicator: {fileID: 2100000, guid: 4b9e2c61465009f40aea2ed8207c9764, type: 2}
+  mat_ArrowIndicatorInput: {fileID: 2100000, guid: 4b9e2c61465009f40aea2ed8207c9764,
+    type: 2}
+  mat_ArrowIndicatorOutput: {fileID: 2100000, guid: aaf3dad24ffc8d140b2f1fd51c084db7,
+    type: 2}
   m_TileGizmo: {fileID: -2103533393138579091, guid: 2ebadecb188dadc47996c84639d8d254,
     type: 3}
   mat_PulsingGizmo: {fileID: 2100000, guid: 9e0f6bc44e9809f4b9132213d36fb8bd, type: 2}
@@ -34,5 +37,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dcdec8d0a3941b444bbe5f6ae58b6316, type: 2}
   - {fileID: 11400000, guid: e4220eed1553bfa4aa68e9d8db6f6483, type: 2}
   - {fileID: 11400000, guid: bb023c760e2e063448bd2f9626024247, type: 2}
+  - {fileID: 11400000, guid: ba7911751a17bb848a8bcdd9f6636096, type: 2}
+  - {fileID: 11400000, guid: 56cfcdadb2ddaa94fa5449d9835dce4c, type: 2}
   resources:
   - {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}

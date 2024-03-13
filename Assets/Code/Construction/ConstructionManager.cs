@@ -16,7 +16,7 @@ public class ConstructionManager
     [SerializeField] sbyte GhostRotation
     {
         get { return ghostRotation; }
-        set { ghostRotation = (sbyte)(value % 4); }
+        set { ghostRotation = (sbyte)((value % 4 + 4) % 4); }
     }
 
     int2 dragPlacementOrigin = new();
@@ -62,26 +62,22 @@ public class ConstructionManager
             Graphics.DrawMesh(ghostModel.mesh, matrix, materialToDraw, 0);
         }
 
-
-        Vector3 _position = new Vector3(position.x, 0, position.y);
-
-        Quaternion _rotation = Quaternion.Euler(0, 90 * GhostRotation, 0);
-
         // Draw indicator arrows
-        foreach (var arrow in newGhostData.arrowIndicators)
+        foreach (StructureData.ArrowIndicatorData arrow in newGhostData.arrowIndicators)
         {
-            Quaternion arrowRotation = (arrow.rotation * _rotation).normalized;
+            Quaternion _rotation = Quaternion.Euler(0, (arrow.rotation + GhostRotation) * 90, 0);
 
-            Vector3 arrowPosition = (_rotation * arrow.relativePosition) + _position;
+            Vector3 _position = (GhostRotation.ToQuaternion() * arrow.relativePosition) + position.ToVector3();
 
             Matrix4x4 _matrix = Matrix4x4.TRS
             (
-                arrowPosition,
-                arrowRotation,
+                _position,
+                _rotation,
                 Vector3.one * arrow.size
-            ); 
+            );
 
-            Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicator, 0);
+            if (arrow.IsInput) Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicatorInput, 0);
+            else Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicatorOutput, 0); 
         }
     }
 
@@ -93,17 +89,15 @@ public class ConstructionManager
 
     public void PlaceGhost(int2 position)
     { 
-        var worldGrid = GameManager.Instance.gameWorld.worldGrid;
-
-        if (worldGrid.IsEntityAt(position)) return;
+        var worldGrid = GameManager.Instance.gameWorld.worldGrid; 
 
         StructureGhost newGhostStructure = new(newGhostData);
 
-        ghosts.Add(newGhostStructure); 
-
-        worldGrid.AddEntity(newGhostStructure, position, ghostRotation);
-
-        newGhostStructure.FinishConstruction(); // Immediately finish building the structure on placement. Should be replaced with rover construction logic ASAP.
+        if (worldGrid.TryAddEntity(newGhostStructure, position, ghostRotation) != null)
+        {
+            ghosts.Add(newGhostStructure);
+            newGhostStructure.FinishConstruction(); // Immediately finish building the structure on placement. Should be replaced with rover construction logic ASAP.
+        }
     }  
 
     public void RotateGhost(sbyte direction)

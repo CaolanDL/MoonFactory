@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
     public float zoom
     {
         get { return _zoom; }
-        set { _zoom = Mathf.Clamp(value, 1, 12); }
+        set { _zoom = Mathf.Clamp(value, 2, 12); }
     }
 
     static Quaternion cameraRotation = Quaternion.Euler(new Vector3(0, 45, 0));

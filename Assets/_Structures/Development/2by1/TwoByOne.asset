@@ -10,36 +10,36 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c959649ace52a934799d95e3909b1b57, type: 3}
-  m_Name: Crusher
+  m_Name: TwoByOne
   m_EditorClassIdentifier: 
-  screenname: Crusher
-  description: Used to crush resources into powders and sands.
+  screenname: Large Machine
+  description: 
   category: 2
-  sprite: {fileID: 21300000, guid: ed523b0a9dc2cfa4082dddcb54e6247d, type: 3}
-  displayObject: {fileID: 8149189864003149576, guid: 9310981c07d5a0f4786f3bd978497be9,
+  sprite: {fileID: 21300000, guid: d01bff78cab752049a84d23d98385148, type: 3}
+  displayObject: {fileID: 919132149155446097, guid: 8d062e919489906409b18a9617b504f6,
     type: 3}
   size:
     x: 1
-    y: 1
+    y: 2
   inputs:
   - position:
       x: 0
       y: -1
     _rotation: 0
+  - position:
+      x: 1
+      y: 1
+    _rotation: -1
+  - position:
+      x: 1
+      y: 0
+    _rotation: -1
   outputs:
   - position:
       x: 0
-      y: 1
+      y: 2
     _rotation: 0
-  ghostMesh: {fileID: 1157356984485749078, guid: f41f1ddebd7b6ca468b14487854065c1,
+  ghostMesh: {fileID: 1364898912797516875, guid: 8d062e919489906409b18a9617b504f6,
     type: 3}
   ghostModels: []
-  arrowIndicators:
-  - relativePosition: {x: 0, y: 0, z: -1}
-    rotation: 0
-    size: 0.25
-    IsInput: 1
-  - relativePosition: {x: 0, y: 0, z: 1}
-    rotation: 0
-    size: 0.25
-    IsInput: 0
+  arrowIndicators: []

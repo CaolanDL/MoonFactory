@@ -1,5 +1,7 @@
-﻿using System; 
-using System.Collections.Generic; 
+﻿using DataStructs;
+using System; 
+using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;  
 
 public enum StructureCategory
@@ -27,6 +29,8 @@ public class StructureData : ScriptableObject
 
     [SerializeField] public GameObject displayObject;
 
+    [SerializeField] public int2 size = new(1,1);
+
     [Space(25)]
 
     public List<TinyTransform> inputs;
@@ -52,9 +56,11 @@ public class StructureData : ScriptableObject
     {
         public Vector3 relativePosition = new();
 
-        public Quaternion rotation = Quaternion.identity;
+        public sbyte rotation = 0;
 
         public float size = 1;
+
+        public bool IsInput = true;
     } 
 }
 

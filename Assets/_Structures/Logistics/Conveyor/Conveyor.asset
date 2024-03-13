@@ -18,6 +18,9 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: e43ca0dfd30bea442a1fd4bc72f0bc61, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: 9113a848d1855db4b9cab3a65391ec84,
     type: 3}
+  size:
+    x: 1
+    y: 1
   inputs: []
   outputs: []
   ghostMesh: {fileID: 0}
@@ -28,8 +31,10 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: c9067e89d5229114da459edce48d621d, type: 2}
   arrowIndicators:
   - relativePosition: {x: 0, y: 0.1, z: -0.75}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
+    rotation: 0
     size: 0.25
+    IsInput: 1
   - relativePosition: {x: 0, y: 0.1, z: 0.75}
-    rotation: {x: 0, y: 0, z: 0, w: 1}
+    rotation: 0
     size: 0.25
+    IsInput: 0

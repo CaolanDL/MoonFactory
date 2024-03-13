@@ -10,6 +10,39 @@ public class Machine : Structure
     public List<Inventory> InputInventories = new();
     public List<Inventory> OutputInventories = new();
 
+    public override void ConnectOuputs()
+    {
+        foreach (var output in structureData.outputs)
+        {
+            var offsetPosition = output.position.Rotate(rotation) + position;
+            var offsetRotation = output.rotation.Rotate(rotation);
+
+            var entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(offsetPosition);
+
+            if (entity == null) continue;
+
+            if(entity.GetType() == typeof(Conveyor))
+            {
+                var conveyor = (Conveyor)entity;
+
+                if (conveyor.parentChain.conveyors[0] != conveyor) { continue; }
+
+                if (conveyor.rotation == offsetRotation)
+                {
+                    conveyor.SetRotationConfig(Conveyor.TurnConfig.Straight);
+                }
+                else if(conveyor.rotation == offsetRotation.Rotate(1))
+                {
+                    conveyor.SetRotationConfig(Conveyor.TurnConfig.RightTurn);
+                }
+                else if (conveyor.rotation == offsetRotation.Rotate(-1))
+                {
+                    conveyor.SetRotationConfig(Conveyor.TurnConfig.LeftTurn);
+                }
+            }
+        }
+    } 
+
     public override void OnInitialise()
     {
         for (int i = 0; i < structureData.inputs.Count; i++) { InputInventories.Add(new()); }
@@ -33,6 +66,8 @@ public class Machine : Structure
 
             if (conveyor.parentChain.conveyors.IndexOf(conveyor) == 0)//entityAtLocation.rotation == outputTransform.rotation.Rotate(rotation))
             {
+                if (conveyor.inputPosition.Equals(position) == false) return false;
+
                 if (conveyor.parentChain.TryAddFirstItem(resource))
                 {
                     inventory.RemoveResource(resource, 1);
@@ -163,7 +198,7 @@ public class Machine : Structure
         if (inventoryTo.TryAddResource(resource, 1))
         {
             inventoryFrom.RemoveResource(resource, 1); 
-            Debug.Log(inventoryTo.totalItems);
+            //Debug.Log(inventoryTo.totalItems);
             return true;
         }
         return false;

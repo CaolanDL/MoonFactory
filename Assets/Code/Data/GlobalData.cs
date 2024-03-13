@@ -41,7 +41,8 @@ public class GlobalData : ScriptableObject
 
     [Header("Gizmos")]
     public Mesh m_ArrowIndicator;
-    public Material mat_ArrowIndicator;
+    public Material mat_ArrowIndicatorInput;
+    public Material mat_ArrowIndicatorOutput;
 
     public Mesh m_TileGizmo;
     public Material mat_PulsingGizmo;

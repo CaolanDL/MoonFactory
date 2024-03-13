@@ -1,4 +1,5 @@
 ﻿using DataStructs;
+using ExtensionMethods;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine; 
@@ -59,7 +60,7 @@ public class GameWorld
 
         FloorTile newFloorTile = new(newTileData);
 
-        floorGrid.AddEntity(newFloorTile, position, (sbyte)Random.Range(0, 3)); 
+        floorGrid.TryAddEntity(newFloorTile, position, (sbyte)Random.Range(0, 3)); 
 
         return newFloorTile;
     } 
@@ -139,27 +140,48 @@ public class Grid
 
     public Entity AddEntity(Entity entity, int2 position)
     {
-        return AddEntity(entity, position, 0);
+        return TryAddEntity(entity, position, 0);
     }
 
     static byte2 singleTileSize = new byte2(1, 1);
 
-    public Entity AddEntity(Entity entity, int2 position, sbyte rotation)
-    {
+    public Entity TryAddEntity(Entity entity, int2 position, sbyte rotation)
+    { 
         if (entity.size.Equals(singleTileSize))
-        {
-
-
+        { 
             Location location = AddLocation(position);
+
+            if (IsEntityAt(position)) return null;
 
             location.entity = entity;
 
             entity.position = position;
 
-            entity.rotation = rotation;
-
-            return entity;
+            entity.rotation = rotation; 
         }
+
+        else
+        {
+            for(int x = 0; x < entity.size.x; x++)
+            {
+                for (int y = 0; y < entity.size.y; y++)
+                {
+                    var offsetPosition = position + (new int2(x, y).Rotate(rotation));
+
+                    Location location = AddLocation(offsetPosition);
+
+                    if (IsEntityAt(offsetPosition)) return null;
+
+                    location.entity = entity; 
+                }
+            }
+
+            entity.position = position;
+
+            entity.rotation = rotation;
+        }
+
+        return entity;
     }
      
     public Entity RemoveEntity(int2 position)
