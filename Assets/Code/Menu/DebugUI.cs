@@ -6,7 +6,7 @@ using UnityEngine;
 public class DebugUI : MonoBehaviour
 {
     public TextMeshProUGUI FPSCounter;
-    public TextMeshPro TileCounter;
+    public TextMeshPro ItemCounter;
     public TextMeshPro RoverCounter;
 
     private int FPS;
@@ -20,5 +20,7 @@ public class DebugUI : MonoBehaviour
     private void FixedUpdate()
     {
         FPSCounter.text = $"FPS {FPS}";
+
+
     }
 }

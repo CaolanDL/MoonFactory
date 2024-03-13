@@ -46,6 +46,9 @@ public class GlobalData : ScriptableObject
     public Mesh m_TileGizmo;
     public Material mat_PulsingGizmo;
 
+    [Header("Tool Tips")]
+    public GameObject BuildButtonTooltip;
+
     [Header("Registry")]
     public List<StructureData> structures;
  

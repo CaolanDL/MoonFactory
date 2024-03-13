@@ -231,7 +231,7 @@ namespace Logistics
             {
                 Machine otherMachine = (Machine)entityToTransferTo;
 
-                if (otherMachine.TryInputItem(lastItem.data, lastConveyor.transform - otherMachine.transform))
+                if (otherMachine.TryInputItem(lastItem.data, lastConveyor.transform))
                 {
                     items.Remove(lastItem);
                     return true;
@@ -419,21 +419,30 @@ namespace Logistics
                 if (IsConveyorFacingMe(rearNeighbor, 0)) { SetRotationConfig(TurnConfig.Straight); }
                 else if (IsConveyorFacingMe(leftNeighbor, +1)) { SetRotationConfig(TurnConfig.LeftTurn); }
                 else if (IsConveyorFacingMe(rightNeighbor, -1)) { SetRotationConfig(TurnConfig.RightTurn); }
+
+                else if (IsMachineOuputFacingMe(rearNeighbor)) { SetRotationConfig(TurnConfig.Straight); }
+                else if (IsMachineOuputFacingMe(leftNeighbor)) { SetRotationConfig(TurnConfig.LeftTurn); }
+                else if (IsMachineOuputFacingMe(rightNeighbor)) { SetRotationConfig(TurnConfig.RightTurn); }
+
                 else { return; }
 
-                conveyorFacingMe.nextConveyor = this;
-                lastConveyor = conveyorFacingMe;
+                if(conveyorFacingMe != null)
+                { 
+                    conveyorFacingMe.nextConveyor = this;
+                    lastConveyor = conveyorFacingMe; 
 
-                if (nextConveyor != null)
-                {
-                    // Call Merge on conveyorInfront.parentChain passing parentChain & conveyorInfront
-                    conveyorFacingMe.parentChain.MergeWith(parentChain, true);
-                }
-                else
-                {
-                    conveyorFacingMe.parentChain.AppendConveyor(this);
-                    parentChain = conveyorFacingMe.parentChain;
-                }
+                    if (nextConveyor != null)
+                    {
+                        // Call Merge on conveyorInfront.parentChain passing parentChain & conveyorInfront
+                        conveyorFacingMe.parentChain.MergeWith(parentChain, true);
+                    }
+                    else
+                    {
+                        conveyorFacingMe.parentChain.AppendConveyor(this);
+                        parentChain = conveyorFacingMe.parentChain;
+                    }
+                }  
+
 
                 bool IsConveyorFacingMe(Entity entity, sbyte rotationFactor)
                 {
@@ -445,6 +454,26 @@ namespace Logistics
                     {
                         conveyorFacingMe = ((Conveyor)entity);
                         return true;
+                    }
+                    return false;
+                }
+
+                bool IsMachineOuputFacingMe(Entity entity)
+                {
+                    if (entity == null) { return false; }
+
+                    if (entity.GetType().IsSubclassOf(typeof(Machine)))
+                    {
+                        var machine = (Machine)entity;
+                        if (machine.structureData.outputs.Count == 0) return false;
+
+                        foreach( var output in machine.structureData.outputs)
+                        {
+                            if (((output).position.Rotate(machine.rotation) + machine.position).Equals( position ))
+                            {
+                                return true;
+                            }
+                        } 
                     }
                     return false;
                 }

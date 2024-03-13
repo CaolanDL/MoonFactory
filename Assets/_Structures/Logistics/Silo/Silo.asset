@@ -16,8 +16,16 @@ MonoBehaviour:
   category: 0
   sprite: {fileID: 0}
   displayObject: {fileID: 0}
-  inputs: []
-  outputs: []
+  inputs:
+  - position:
+      x: 0
+      y: 0
+    _rotation: 0
+  outputs:
+  - position:
+      x: 0
+      y: 0
+    _rotation: 0
   ghostMesh: {fileID: 0}
   ghostModels: []
   arrowIndicators: []

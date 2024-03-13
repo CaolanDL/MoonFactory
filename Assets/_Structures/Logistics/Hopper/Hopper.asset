@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Hopper
   m_EditorClassIdentifier: 
   screenname: Hopper
+  description: A storage unit accessable by rovers.
   category: 0
   sprite: {fileID: 21300000, guid: 93a6becbb387d4c4fa5b4f7e0aa0f09c, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: 5e040a63923a4394f961f0cc0018b79c,

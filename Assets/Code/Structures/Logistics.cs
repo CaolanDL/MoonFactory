@@ -139,7 +139,6 @@ namespace Logistics
             FillInventory();
         }
 
-
         static float OutputInterval = 0.5f;
         int outDelayMod = (int)(1f / Time.fixedDeltaTime * OutputInterval);
 

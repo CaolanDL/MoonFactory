@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Splitter
   m_EditorClassIdentifier: 
   screenname: Splitter
+  description: Takes one input and splits it into three outputs.
   category: 0
-  sprite: {fileID: 21300000, guid: 47da93cd88acb1b4d983bb182d56d2e0, type: 3}
+  sprite: {fileID: 21300000, guid: 5d4e53ae786cb4344a6e7d18affed74a, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: 18c2f04116f1a3f4c8d9f5b3eea2e1fb,
     type: 3}
   inputs:

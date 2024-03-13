@@ -18,6 +18,9 @@ public class StructureData : ScriptableObject
 
     public string screenname = string.Empty;
 
+    [Multiline]
+    public string description = string.Empty;
+
     public StructureCategory category;
 
     public Sprite sprite;

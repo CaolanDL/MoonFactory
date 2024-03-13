@@ -17,6 +17,8 @@ public struct TinyTransform
         set { _rotation = (sbyte)((value % 4 + 4) % 4); }  
     }
 
+    public static TinyTransform empty = new TinyTransform();
+
     public TinyTransform(int2 position)
     {
         this.position = position; 
@@ -33,6 +35,7 @@ public struct TinyTransform
 
     /// <summary> Only adds the position, takes the rotation from lhs </summary> 
     public static TinyTransform operator + (TinyTransform lhs, TinyTransform rhs) => new TinyTransform(new int2(lhs.position.x + rhs.position.x, lhs.position.y + rhs.position.y), lhs.rotation);
+    /// <summary> Only subtracts the position, takes the rotation from lhs </summary> 
     public static TinyTransform operator - (TinyTransform lhs, TinyTransform rhs) => new TinyTransform(new int2(lhs.position.x - rhs.position.x, lhs.position.y - rhs.position.y), lhs.rotation);
 
     public bool Equals(TinyTransform other)

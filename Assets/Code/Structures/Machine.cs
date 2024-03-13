@@ -14,7 +14,7 @@ public class Machine : Structure
     {
         for (int i = 0; i < structureData.inputs.Count; i++) { InputInventories.Add(new()); }
         for (int i = 0; i < structureData.outputs.Count; i++) { OutputInventories.Add(new()); }
-    }
+    }  
 
     public bool TryOutputItem(ResourceData resource, Inventory inventory, TinyTransform outputTransform)
     {
@@ -29,9 +29,11 @@ public class Machine : Structure
         // Output to first conveyor in chain.
         if (entityAtLocation.GetType() == typeof(Conveyor))
         {
-            if (entityAtLocation.rotation == outputTransform.rotation.Rotate(rotation))
+            var conveyor = (Conveyor)entityAtLocation;
+
+            if (conveyor.parentChain.conveyors.IndexOf(conveyor) == 0)//entityAtLocation.rotation == outputTransform.rotation.Rotate(rotation))
             {
-                if (((Conveyor)entityAtLocation).parentChain.TryAddFirstItem(resource))
+                if (conveyor.parentChain.TryAddFirstItem(resource))
                 {
                     inventory.RemoveResource(resource, 1);
                     OnItemOutput();
@@ -42,7 +44,7 @@ public class Machine : Structure
         else if (entityAtLocation.GetType().IsSubclassOf(typeof(Machine)))
         {
             Machine otherMachine = (Machine)entityAtLocation;
-            TinyTransform offsetOutputTransform = new TinyTransform(outputTransform.position - outputTransform.rotation.ToInt2(), outputTransform.rotation);
+            TinyTransform offsetOutputTransform = new TinyTransform(outputTransform.position - outputTransform.rotation.ToInt2() + position, outputTransform.rotation.Rotate(rotation));
 
             if (otherMachine.TryInputItem(resource, offsetOutputTransform))
             {
@@ -69,9 +71,15 @@ public class Machine : Structure
     {
         int invIndex = -1;
 
+        TinyTransform relativeInputTransform = (inputTransform - transform);
+
+        relativeInputTransform.rotation += rotation;
+
+        relativeInputTransform.position = relativeInputTransform.position.Rotate((sbyte)-rotation); 
+
         foreach (var input in structureData.inputs)
         {
-            if (input.position.Equals(inputTransform.position.Rotate(rotation)))
+            if (input.position.Equals(relativeInputTransform.position))
             {
                 invIndex = structureData.inputs.IndexOf(input);
                 break;
