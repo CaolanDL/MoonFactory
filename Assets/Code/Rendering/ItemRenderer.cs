@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+
+using ExtensionMethods;
  
 public class ItemRenderer : MonoBehaviour
 {
@@ -31,9 +33,19 @@ public class ItemRenderer : MonoBehaviour
 
         foreach (Chain chain in ChainManager.chains)
         {
-            foreach(Item item in chain.items)
+            bool shouldRender = false;
+            foreach (Conveyor conveyor in chain.conveyors) // Check to see if any conveyor within the chain is within the visible range
+            {
+                if (conveyor.position.WithinRange(xVisibleRange) && conveyor.position.y.WithinRange(yVisibleRange))
+                {
+                    shouldRender = true;
+                    break;
+                }
+            }
+            if (shouldRender == false) continue;
+            foreach(Item item in chain.items) // Render any item that is within the visible range
             { 
-                if (true)  
+                if (item.worldPosition.x.WithinRange(xVisibleRange) && item.worldPosition.y.WithinRange(yVisibleRange))  
                 {
                     serialItems.Add(new SerialItem(item.worldPosition, item.distance, chain.items.IndexOf(item)));
                     DrawItem(item, item.worldPosition, item.Rotation); 

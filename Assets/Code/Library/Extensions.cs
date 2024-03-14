@@ -137,4 +137,12 @@ namespace ExtensionMethods
             );
         }
     }
+
+    public static class IntExtensions
+    {
+        public static bool WithinRange(this int i, int2 range)
+        {
+            return (i > range.x, i < range.y)
+        }
+    }
 }

@@ -10,7 +10,7 @@ public struct TinyTransform
 {
     [SerializeField] public int2 position; // 8 bytes 
 
-    [SerializeField] private sbyte _rotation;
+    [SerializeField] private sbyte _rotation; // 1 byte
     public sbyte rotation
     {
         get { return _rotation; }
@@ -57,7 +57,7 @@ public struct TinyTransform
 namespace DataStructs
 {
     [Serializable]
-    public struct byte2
+    public struct byte2 // 2 bytes
     {
         public byte x;
         public byte y;

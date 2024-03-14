@@ -216,9 +216,9 @@ public class Grid
 }
 
 
-public class Location // Size: 13 bytes
+public class Location // Size: 17 bytes
 {
-    public int2 position; // 4 bytes
+    public int2 position; // 8 bytes
 
     public byte gridId; // 1 bytes
 

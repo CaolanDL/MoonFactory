@@ -4,11 +4,11 @@ using ExtensionMethods;
 using Unity.Mathematics;
 
 [Serializable]
-public class Entity
+public class Entity // 12 bytes
 {
-    public TinyTransform transform;
+    public TinyTransform transform; // 9 bytes
 
-    public byte gridId;
+    public byte gridId; // 1 byte
 
     public int2 position
     {
@@ -22,7 +22,7 @@ public class Entity
         set { transform.rotation = value; }
     }
 
-    public byte2 size = new(1, 1);
+    public byte2 size = new(1, 1); // 2 bytes
 
     public byte2 centre
     {
