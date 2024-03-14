@@ -32,16 +32,16 @@ public class ResourceStack
     }
 }
 
-public class Inventory
+public class Inventory // 56 bytes
 {
-    public Entity parentEntity;
+    public Entity parentEntity; // 8 bytes
 
-    public List<ResourceStack> stacks = new();
+    public List<ResourceStack> stacks = new(); // Min 32 bytes
 
-    public int maxItems = int.MaxValue;
-    public int totalItems = 0;
-    public int maxWeight = int.MaxValue;
-    public int totalWeight = 0;
+    public int maxItems = int.MaxValue; // 4 bytes
+    public int totalItems = 0; // 4 bytes
+    public int maxWeight = int.MaxValue; // 4 bytes
+    public int totalWeight = 0; // 4 bytes
 
     int AvailableCapacityByWeight
     {
