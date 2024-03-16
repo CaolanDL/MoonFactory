@@ -186,6 +186,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 7753882727360442230, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
+        type: 3}
+      propertyPath: maxZoom
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7753882727360442230, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
+        type: 3}
+      propertyPath: minZoom
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8754063972972500991, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
+        type: 3}
+      propertyPath: VerticalOffset
+      value: 0.21
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using Unity.Mathematics;
-using UnityEngine; 
+using UnityEngine;
 
 public class FloorTileRenderer : MonoBehaviour
-{ 
+{
     private Dictionary<FloorTileData, CachedMatrixArray> matrixArrays = new();
 
-    CachedMatrixArray _matrixArray; 
+    CachedMatrixArray _matrixArray;
 
     static int maxCachedArrays = 16;
 
@@ -15,12 +15,12 @@ public class FloorTileRenderer : MonoBehaviour
     private CameraController cameraController;
 
     RenderParams renderParams;
-     
+
     private void Awake()
     {
         cameraController = GetComponent<CameraController>();
 
-        renderParams = new RenderParams(GameManager.Instance.GlobalData.mat_Tile);  
+        renderParams = new RenderParams(GameManager.Instance.GlobalData.mat_Tile);
     }
 
     public void Init()
@@ -30,7 +30,7 @@ public class FloorTileRenderer : MonoBehaviour
             if (matrixArrays.ContainsKey(tileData)) { continue; }
 
             matrixArrays.Add(tileData, new CachedMatrixArray(maxCachedArrays));
-        } 
+        }
     }
 
     public void Tick()
@@ -53,8 +53,10 @@ public class FloorTileRenderer : MonoBehaviour
 
 
     void DrawVisibleFloorTiles()
-    { 
-        (xVisibleRange, yVisibleRange) = cameraController.GetVisibleRange();
+    {
+        var VisibleRange = cameraController.GetLocalVisibleRange();
+
+        int2 camGridPos = cameraController.CameraGridPosition;
 
         gameWorld = GameManager.Instance.gameWorld;
 
@@ -62,20 +64,25 @@ public class FloorTileRenderer : MonoBehaviour
 
         tilesRenderedThisFrame = 0;
 
-        for (int x = xVisibleRange.x; x < xVisibleRange.y; x++)
+        for (int x = VisibleRange.x; x < VisibleRange.y; x++)
         {
-            for (int y = yVisibleRange.x; y < yVisibleRange.y; y++)
+            for (int y = VisibleRange.x; y < VisibleRange.y; y++)
             {
-                (tileLocation.x, tileLocation.y) = (x, y); 
+                for (int j = 0; j < 2; j++)
+                { 
+                    (tileLocation.x, tileLocation.y) = (camGridPos.x + (x - y + j) , camGridPos.y + (y + x + 1) );
 
-                currentFloorTile = (FloorTile)gameWorld.floorGrid.GetEntityAt(tileLocation); 
+                    //(tileLocation.x, tileLocation.y) = (camGridPos.x, camGridPos.y);
 
-                if (currentFloorTile == null) { continue; }
+                    currentFloorTile = (FloorTile)gameWorld.floorGrid.GetEntityAt(tileLocation);
 
-                //DrawTile(currentFloorTile); //Deprecated
+                    if (currentFloorTile == null) { continue; }
 
-                QueueTile();
-                tilesRenderedThisFrame++;
+                    //DrawTile(currentFloorTile); //Deprecated
+
+                    QueueTile();
+                    tilesRenderedThisFrame++;
+                } 
             }
         }
 
@@ -86,13 +93,13 @@ public class FloorTileRenderer : MonoBehaviour
     }
 
     void RenderTiles()
-    {  
+    {
         foreach (FloorTileData tileData in matrixArrays.Keys)
         {
             _matrixArray = matrixArrays[tileData];
 
-            for(int chunkIndex = 0; chunkIndex < maxCachedArrays; chunkIndex++)
-            { 
+            for (int chunkIndex = 0; chunkIndex < maxCachedArrays; chunkIndex++)
+            {
                 if (chunkIndex == _matrixArray.chunkIndex)
                 {
                     Graphics.DrawMeshInstanced(tileData.mesh, 0, GlobalData.Instance.mat_Tile, _matrixArray.matrices[chunkIndex], _matrixArray.itemIndex);
@@ -110,10 +117,10 @@ public class FloorTileRenderer : MonoBehaviour
 
     void QueueTile()
     {
-        if (currentFloorTile == null) return; 
+        if (currentFloorTile == null) return;
 
         matrixArrays[currentFloorTile.data].QueueMatrix(currentFloorTile.transform.ToMatrix());
-    }  
+    }
 
     // Deprecated
 
@@ -127,7 +134,7 @@ public class FloorTileRenderer : MonoBehaviour
         Vector3 worldPosition = new Vector3(gridPosition.x, 0, gridPosition.y);
 
         Graphics.DrawMesh(tileData.mesh, worldPosition, quaternion.identity, GlobalData.Instance.mat_Tile, 0);
-    } 
+    }
 
 }
 

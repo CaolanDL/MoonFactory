@@ -28,30 +28,33 @@ public class GlobalData : ScriptableObject
         }
     }
 
-    [Header("Universal Assets")]
-    public Material mat_DevUniversal;
 
-    public Mesh Gizmo;
+    [Header("Registry")]
+    public List<StructureData> structures;
+ 
+    public List<ResourceData> resources;
+
+    public List<CraftingFormula> craftingFormulas; 
+
+
+    [Header("Tool Tips")]
+    public GameObject BuildButtonTooltip;
 
     [Header("Global Materials")]
+    public Material mat_DevUniversal;
+    [Space]
     public Material mat_Ghost;
     public Material mat_GhostBlocked;
-
+    [Space]
     public Material mat_Tile;
 
     [Header("Gizmos")]
     public Mesh m_ArrowIndicator;
     public Material mat_ArrowIndicatorInput;
     public Material mat_ArrowIndicatorOutput;
-
+    [Space]
     public Mesh m_TileGizmo;
     public Material mat_PulsingGizmo;
-
-    [Header("Tool Tips")]
-    public GameObject BuildButtonTooltip;
-
-    [Header("Registry")]
-    public List<StructureData> structures;
- 
-    public List<ResourceData> resources; 
+    [Space]
+    public Mesh Gizmo;
 }

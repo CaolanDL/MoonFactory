@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd942bfc70745c14eb6fe084aefa422c, type: 3}
-  m_Name: Crushed Regolith
+  m_Name: Regolith
   m_EditorClassIdentifier: 
-  description: 
-  sprite: {fileID: 0}
-  mesh: {fileID: 0}
-  material: {fileID: 0}
+  description: A sandy, sharp, soil-like substance that covers the lunar surface.
+  resourceCategory: 0
+  mesh: {fileID: -6129970598602713262, guid: 7a67a274b3b824a459cfe0fe16853c8e, type: 3}
+  material: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
+  weight: 1

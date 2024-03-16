@@ -12,22 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b4225abd3e55f45ae5d93361d4d61b, type: 3}
   m_Name: Global Data
   m_EditorClassIdentifier: 
-  mat_DevUniversal: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
-  Gizmo: {fileID: 5429665806620753192, guid: 55ea8a76b1ff83b40b6d9c65dcef5039, type: 3}
-  mat_Ghost: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}
-  mat_GhostBlocked: {fileID: 2100000, guid: 265dc20729eb93941adae5f1e3edfc43, type: 2}
-  mat_Tile: {fileID: 2100000, guid: cc2dddc32720bcc44bef8ca8b288603d, type: 2}
-  m_ArrowIndicator: {fileID: 2782774259527958836, guid: 663b6f19701347045b5c7419e615dd8e,
-    type: 3}
-  mat_ArrowIndicatorInput: {fileID: 2100000, guid: 4b9e2c61465009f40aea2ed8207c9764,
-    type: 2}
-  mat_ArrowIndicatorOutput: {fileID: 2100000, guid: aaf3dad24ffc8d140b2f1fd51c084db7,
-    type: 2}
-  m_TileGizmo: {fileID: -2103533393138579091, guid: 2ebadecb188dadc47996c84639d8d254,
-    type: 3}
-  mat_PulsingGizmo: {fileID: 2100000, guid: 9e0f6bc44e9809f4b9132213d36fb8bd, type: 2}
-  BuildButtonTooltip: {fileID: 1213213408029545927, guid: e1402c0125a47d747b7fd68bb941f9f5,
-    type: 3}
   structures:
   - {fileID: 11400000, guid: 7722152ffd1341b438e76a1ede5271d2, type: 2}
   - {fileID: 11400000, guid: e5cee4b2782509448899faa220fc5e72, type: 2}
@@ -40,4 +24,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ba7911751a17bb848a8bcdd9f6636096, type: 2}
   - {fileID: 11400000, guid: 56cfcdadb2ddaa94fa5449d9835dce4c, type: 2}
   resources:
+  - {fileID: 11400000, guid: 846496dfeac5afa4781a190aff293cc6, type: 2}
   - {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+  craftingFormulas:
+  - {fileID: 11400000, guid: b8da668976bbbba4fa5765a237b3f820, type: 2}
+  BuildButtonTooltip: {fileID: 1213213408029545927, guid: e1402c0125a47d747b7fd68bb941f9f5,
+    type: 3}
+  mat_DevUniversal: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
+  mat_Ghost: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}
+  mat_GhostBlocked: {fileID: 2100000, guid: 265dc20729eb93941adae5f1e3edfc43, type: 2}
+  mat_Tile: {fileID: 2100000, guid: cc2dddc32720bcc44bef8ca8b288603d, type: 2}
+  m_ArrowIndicator: {fileID: 2782774259527958836, guid: 663b6f19701347045b5c7419e615dd8e,
+    type: 3}
+  mat_ArrowIndicatorInput: {fileID: 2100000, guid: 4b9e2c61465009f40aea2ed8207c9764,
+    type: 2}
+  mat_ArrowIndicatorOutput: {fileID: 2100000, guid: aaf3dad24ffc8d140b2f1fd51c084db7,
+    type: 2}
+  m_TileGizmo: {fileID: -2103533393138579091, guid: 2ebadecb188dadc47996c84639d8d254,
+    type: 3}
+  mat_PulsingGizmo: {fileID: 2100000, guid: 9e0f6bc44e9809f4b9132213d36fb8bd, type: 2}
+  Gizmo: {fileID: 5429665806620753192, guid: 55ea8a76b1ff83b40b6d9c65dcef5039, type: 3}

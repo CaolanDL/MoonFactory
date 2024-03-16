@@ -169,4 +169,9 @@ namespace ExtensionMethods
             return (i > range.x && i < range.y);
         }
     }
+
+    public static class QuaternionExtensions
+    {
+        public static Quaternion MinusFortyFive = Quaternion.Euler(0, -45, 0);
+    } 
 }

@@ -32,7 +32,7 @@ public class GameWorld
     {
         int2 tileLocation;
 
-        (var xVisibleRange, var yVisibleRange) = GameManager.Instance.cameraController.GetVisibleRange();
+        (var xVisibleRange, var yVisibleRange) = GameManager.Instance.cameraController.GetDiamondVisibleRange();
 
         for (int x = xVisibleRange.x; x < xVisibleRange.y; x++)
         {

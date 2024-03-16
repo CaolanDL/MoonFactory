@@ -1,13 +1,13 @@
 using Unity.Mathematics;
-using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine; 
+using ExtensionMethods;
 
 public class CameraController : MonoBehaviour
 {
     public Vector3 position;
     private Vector3 velocity;
 
-    private float _zoom = 2;
+    private float _zoom = 0;
     public float zoom
     {
         get { return _zoom; }
@@ -53,7 +53,9 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
         InputZoom();
-        InputMove(); 
+        InputMove();
+
+        UpdateCameraGridPosition();
     }
 
     void InputMove()
@@ -79,7 +81,7 @@ public class CameraController : MonoBehaviour
     }
 
 
-    public (int2 xVisibleRange, int2 yVisibleRange) GetVisibleRange()
+    public (int2 xVisibleRange, int2 yVisibleRange) GetDiamondVisibleRange()
     {
         float2 cameraPosition = new float2(position.x, position.z);
 
@@ -94,6 +96,30 @@ public class CameraController : MonoBehaviour
         return (xRangeOut, yRangeOut);
     }
 
+    public int2 GetLocalVisibleRange()
+    { 
+        float cameraZoom = zoom;
+
+        int Size = (int)(1.5 * cameraZoom + 2); 
+
+        return new int2(-Size, Size);
+    }
+
+    public int2 CameraGridPosition = new();
+
+    public void UpdateCameraGridPosition()
+    { 
+        Vector2 screenMiddle = new Vector2(playerCamera.scaledPixelWidth / 2, playerCamera.scaledPixelHeight / 2);
+
+        Ray ray = playerCamera.ScreenPointToRay(screenMiddle);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("MouseToGridPosition")))
+        {
+            Vector3 cameraWorldPosition = hit.point;
+            CameraGridPosition = new int2((int)Mathf.Round(cameraWorldPosition.x), (int)Mathf.Round(cameraWorldPosition.z));
+        }
+    }
 
     // !! Deprecated !! //
     private float resistance = 1;

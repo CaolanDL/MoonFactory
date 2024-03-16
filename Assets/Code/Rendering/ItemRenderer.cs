@@ -15,7 +15,7 @@ public class ItemRenderer : MonoBehaviour
 
     int matrixArraysPerResource = 48;
 
-    [SerializeField] public float VerticalOffset = 0.25f;
+    private float VerticalOffset = 0.205f;
 
 
     private CameraController cameraController;
@@ -44,7 +44,7 @@ public class ItemRenderer : MonoBehaviour
 
     void DrawVisibleItems()
     {
-        (xVisibleRange, yVisibleRange) = cameraController.GetVisibleRange(); 
+        (xVisibleRange, yVisibleRange) = cameraController.GetDiamondVisibleRange(); 
 
         foreach (Chain chain in ChainManager.chains)
         {
@@ -83,12 +83,12 @@ public class ItemRenderer : MonoBehaviour
             {
                 if (chunkIndex == _matrixArray.chunkIndex)
                 {
-                    Graphics.DrawMeshInstanced(resourceData.mesh, 0, GlobalData.Instance.mat_DevUniversal, _matrixArray.matrices[chunkIndex], _matrixArray.itemIndex);
+                    Graphics.DrawMeshInstanced(resourceData.mesh, 0, resourceData.material, _matrixArray.matrices[chunkIndex], _matrixArray.itemIndex);
                     break;
                 }
                 else
                 {
-                    Graphics.DrawMeshInstanced(resourceData.mesh, 0, GlobalData.Instance.mat_DevUniversal, _matrixArray.matrices[chunkIndex]);
+                    Graphics.DrawMeshInstanced(resourceData.mesh, 0, resourceData.material, _matrixArray.matrices[chunkIndex]);
                 }
             }
 

@@ -14,7 +14,7 @@ public class ResourceData : ScriptableObject
     public ResourceCategory resourceCategory;
 
     [Header("Rendering")]
-    public Sprite sprite;
+    //public Sprite sprite;
     public Mesh mesh;
     public Material material;
 
