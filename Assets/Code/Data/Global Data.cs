@@ -7,7 +7,9 @@ using static UnityEngine.GraphicsBuffer;
 [CreateAssetMenu(menuName = "MoonFactory/Singletons/Global Data")]
 public class GlobalData : ScriptableObject
 { 
-    public static GlobalData Instance { get; private set; } 
+    public static GlobalData Instance { get; private set; }
+
+    [SerializeField] public PlayerInputActions inputActions;
 
     [Header("Registry")]
     public List<StructureData> structures;
@@ -21,8 +23,7 @@ public class GlobalData : ScriptableObject
     [Header("Tool Tips")]
     public GameObject BuildButtonTooltip;
 
-    [Header("Interfaces")]
-    public GameObject GenericInterface;
+    [Header("Interfaces")] 
     public GameObject MachineInterface;
 
 

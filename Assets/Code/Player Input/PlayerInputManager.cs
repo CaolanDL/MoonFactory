@@ -33,12 +33,11 @@ public class PlayerInputManager : MonoBehaviour
 
     [SerializeField] public CameraController cameraController;
 
-    PlayerInputActions inputActions;
-
+    public PlayerInputActions inputActions; 
 
     private void Awake()
     {
-        inputActions = new PlayerInputActions();
+        inputActions = new PlayerInputActions(); 
 
         cameraController = GetComponent<CameraController>();
     }
@@ -145,7 +144,7 @@ public class PlayerInputManager : MonoBehaviour
             { 
                 if (entity.GetType().IsSubclassOf(typeof(Structure)))
                 {
-                    ((Structure)entity).Clicked();
+                    ((Structure)entity).Clicked(Input.mousePosition);
                 }
             }
         }

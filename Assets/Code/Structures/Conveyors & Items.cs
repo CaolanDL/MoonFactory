@@ -150,7 +150,7 @@ namespace Logistics
 
         static int conveyorCapacity = Conveyor.Length / Item.Size;
 
-        static int speed = 8;
+        static int speed = 1;
 
         public bool wasUpdatedThisTick;
         bool ChainAtCapacity { get { return items.Count >= chainCapacity; } }
@@ -318,7 +318,7 @@ namespace Logistics
         }
     }
 
-    public class Conveyor : Machine
+    public class Conveyor : Structure
     {
         public static int Length = 60;
 

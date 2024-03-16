@@ -52,14 +52,14 @@ public class Machine : Structure
         for (int i = 0; i < structureData.outputs.Count; i++) { OutputInventories.Add(new()); }
     }  
 
-    public override void OnClicked()
+    public override void OnClicked(Vector3 mousePosition)
     {
-        GameManager.Instance.HUDController.OpenMachineInterface(this);
+        OpenInterface(mousePosition);
     }
 
-    public void OpenInterface()
-    {
-
+    public void OpenInterface(Vector3 mousePosition)
+    { 
+        GameManager.Instance.HUDController.OpenMachineInterface(this, mousePosition);
     }
 
     public bool TryOutputItem(ResourceData resource, Inventory inventory, TinyTransform outputTransform)

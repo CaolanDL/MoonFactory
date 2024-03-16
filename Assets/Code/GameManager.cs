@@ -1,6 +1,7 @@
 ﻿using Logistics;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public static class DevFlags
 {
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
     public FloorTileRenderer floorTileRenderer;
     public ItemRenderer itemRenderer; 
     public CameraController cameraController;
+    public PlayerInputManager playerInputManager;
 
     private void Awake()
     {
@@ -53,7 +55,8 @@ public class GameManager : MonoBehaviour
         GlobalData.MakeSingleton();
         worldGenerationData.MakeSingleton(); 
 
-        cameraController = GetComponent<CameraController>(); 
+        cameraController = GetComponent<CameraController>();
+        playerInputManager = GetComponent<PlayerInputManager>();
 
         floorTileRenderer = GetComponent<FloorTileRenderer>();
         floorTileRenderer.Init();

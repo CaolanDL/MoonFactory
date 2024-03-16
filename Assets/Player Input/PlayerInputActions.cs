@@ -338,6 +338,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PointDelta"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""45a19f9b-4bcb-490a-9874-19fade2dcb81"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -384,6 +393,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Point"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2cacb1c5-f056-4542-83d3-0502ac5ade63"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -425,6 +445,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UIControls = asset.FindActionMap("UI Controls", throwIfNotFound: true);
         m_UIControls_Click = m_UIControls.FindAction("Click", throwIfNotFound: true);
         m_UIControls_Point = m_UIControls.FindAction("Point", throwIfNotFound: true);
+        m_UIControls_PointDelta = m_UIControls.FindAction("PointDelta", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -666,12 +687,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IUIControlsActions> m_UIControlsActionsCallbackInterfaces = new List<IUIControlsActions>();
     private readonly InputAction m_UIControls_Click;
     private readonly InputAction m_UIControls_Point;
+    private readonly InputAction m_UIControls_PointDelta;
     public struct UIControlsActions
     {
         private @PlayerInputActions m_Wrapper;
         public UIControlsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Click => m_Wrapper.m_UIControls_Click;
         public InputAction @Point => m_Wrapper.m_UIControls_Point;
+        public InputAction @PointDelta => m_Wrapper.m_UIControls_PointDelta;
         public InputActionMap Get() { return m_Wrapper.m_UIControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -687,6 +710,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Point.started += instance.OnPoint;
             @Point.performed += instance.OnPoint;
             @Point.canceled += instance.OnPoint;
+            @PointDelta.started += instance.OnPointDelta;
+            @PointDelta.performed += instance.OnPointDelta;
+            @PointDelta.canceled += instance.OnPointDelta;
         }
 
         private void UnregisterCallbacks(IUIControlsActions instance)
@@ -697,6 +723,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Point.started -= instance.OnPoint;
             @Point.performed -= instance.OnPoint;
             @Point.canceled -= instance.OnPoint;
+            @PointDelta.started -= instance.OnPointDelta;
+            @PointDelta.performed -= instance.OnPointDelta;
+            @PointDelta.canceled -= instance.OnPointDelta;
         }
 
         public void RemoveCallbacks(IUIControlsActions instance)
@@ -744,5 +773,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         void OnClick(InputAction.CallbackContext context);
         void OnPoint(InputAction.CallbackContext context);
+        void OnPointDelta(InputAction.CallbackContext context);
     }
 }

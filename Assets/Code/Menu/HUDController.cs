@@ -23,16 +23,18 @@ public class HUDController : MonoBehaviour
         //MapMenu.SetActive(false);
     } 
 
-    public void OpenMachineInterface(Machine machine)
+    public void OpenMachineInterface(Machine machine, Vector3 screenPosition)
     {
+        if(activeInterface != null) { return; }
+
         activeInterface = Instantiate(GlobalData.Instance.MachineInterface, transform);
+        activeInterface.GetComponent<MachineInterface>().Init(machine, screenPosition + (Vector3.right * 20));
     } 
 
     public void CloseActiveInterface()
     {
-
-    }
-
+        activeInterface = null;
+    } 
 
     // Menu Buttons //
      

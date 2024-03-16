@@ -96,10 +96,15 @@ public abstract class Structure : Entity
 
     public void Clicked()
     {
-        OnClicked();
+        Clicked(Vector3.zero);
     }
 
-    public virtual void OnClicked()
+    public void Clicked(Vector3 mousePosition)
+    {
+        OnClicked(mousePosition);
+    }
+
+    public virtual void OnClicked(Vector3 mousePosition)
     {
 
     }
