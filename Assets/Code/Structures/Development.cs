@@ -18,7 +18,7 @@ public class DebugOutput : Machine
         FillInventory();
     }
 
-    static float OutputInterval = 0.4f;
+    static float OutputInterval = 0.1f;
     int outDelayMod = (int)(1f / Time.fixedDeltaTime * OutputInterval);
 
     int outDelayLoop;

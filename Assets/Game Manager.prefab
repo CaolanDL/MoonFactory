@@ -567,7 +567,7 @@ Transform:
   - {fileID: 8077082405876866472}
   - {fileID: 6985755207687298605}
   - {fileID: 6927341652014228582}
-  - {fileID: 5805676172964998288}
+  - {fileID: 8998092667739159706}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9065274673057177581
@@ -618,7 +618,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c75c73b6fe5a7c4a8f9c778dcf3d605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VerticalOffset: 0.2
+  itemsRenderedThisFrame: 0
 --- !u!114 &7753882727360442230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,13 +636,16 @@ MonoBehaviour:
   maxSpeed: 6
   zoomSpeed: 0.2
   zoomMotionScaling: 0.5
-  minZoom: 2
-  maxZoom: 15
+  minZoom: 1
+  maxZoom: 20
   zoomPositionMultiplier: 3
   zoomPositionOffset: 5
   cameraOrigin: {fileID: 2446764047180186050}
   playerCamera: {fileID: 2314389890219916738}
   topDownCamera: {fileID: 822781968339276617}
+  CameraGridPosition:
+    x: 0
+    y: 0
 --- !u!114 &8718522128751908372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -861,7 +864,7 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!1001 &7779248901087521572
+--- !u!1001 &5168781671688829742
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -877,37 +880,12 @@ PrefabInstance:
     - target: {fileID: 2388117094326814471, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 110.7479
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2388117094326814471, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 62.5709
-      objectReference: {fileID: 0}
-    - target: {fileID: 2388117094326814471, guid: 6778086d57e5fe042a437210573861ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 55.37378
-      objectReference: {fileID: 0}
-    - target: {fileID: 2388117094326814471, guid: 6778086d57e5fe042a437210573861ac,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -31.285522
-      objectReference: {fileID: 0}
-    - target: {fileID: 2638829709471817685, guid: 6778086d57e5fe042a437210573861ac,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 0.8509804
-      objectReference: {fileID: 0}
-    - target: {fileID: 3189998641774554011, guid: 6778086d57e5fe042a437210573861ac,
-        type: 3}
-      propertyPath: m_UiScaleMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3189998641774554011, guid: 6778086d57e5fe042a437210573861ac,
-        type: 3}
-      propertyPath: m_MatchWidthOrHeight
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4279710545569662900, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}
@@ -1014,9 +992,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6778086d57e5fe042a437210573861ac, type: 3}
---- !u!224 &5805676172964998288 stripped
+--- !u!224 &8998092667739159706 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4279710545569662900, guid: 6778086d57e5fe042a437210573861ac,
     type: 3}
-  m_PrefabInstance: {fileID: 7779248901087521572}
+  m_PrefabInstance: {fileID: 5168781671688829742}
   m_PrefabAsset: {fileID: 0}

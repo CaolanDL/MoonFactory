@@ -9,11 +9,11 @@ using ExtensionMethods;
  
 public class ItemRenderer : MonoBehaviour
 {  
-    private Dictionary<ResourceData, CachedMatrixArray> matrixArrays = new();
+    private Dictionary<ResourceData, ChunkedMatrixArray> matrixArrays = new();
 
-    CachedMatrixArray _matrixArray;
+    ChunkedMatrixArray _matrixArray;
 
-    int matrixArraysPerResource = 48;
+    int matrixArraysPerResource = 68;
 
     private float VerticalOffset = 0.205f;
 
@@ -31,7 +31,7 @@ public class ItemRenderer : MonoBehaviour
         {
             if (matrixArrays.ContainsKey(data)) { continue; }
 
-            matrixArrays.Add(data, new CachedMatrixArray(matrixArraysPerResource));
+            matrixArrays.Add(data, new ChunkedMatrixArray());
         }
     }
 
@@ -42,9 +42,12 @@ public class ItemRenderer : MonoBehaviour
 
     int2 xVisibleRange; int2 yVisibleRange;
 
+    public int itemsRenderedThisFrame = 0;
+
     void DrawVisibleItems()
     {
-        (xVisibleRange, yVisibleRange) = cameraController.GetDiamondVisibleRange(); 
+        (xVisibleRange, yVisibleRange) = cameraController.GetDiamondVisibleRange();
+        itemsRenderedThisFrame = 0;
 
         foreach (Chain chain in ChainManager.chains)
         {
@@ -64,7 +67,7 @@ public class ItemRenderer : MonoBehaviour
                 {
                     //serialItems.Add(new SerialItem(item.worldPosition, item.distance, chain.items.IndexOf(item)));
                     //DrawItem(item, item.worldPosition, item.Rotation); 
-
+                    itemsRenderedThisFrame++;
                     QueueItem(item) ;
                 }
             }

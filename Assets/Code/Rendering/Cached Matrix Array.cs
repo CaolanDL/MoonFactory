@@ -1,25 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class CachedMatrixArray
+public class ChunkedMatrixArray
 {
     public List<Matrix4x4[]> matrices;
 
     public byte chunkIndex = 0;
-    public int itemIndex = 0;
+    public int itemIndex = 0; 
 
-    public int maxChunks;
-
-    public CachedMatrixArray(int maxChunks)
-    {
-        this.maxChunks = maxChunks;
-
+    public ChunkedMatrixArray()
+    { 
         matrices = new();
 
-        for (int i = 0; i < maxChunks; i++)
-        {
-            matrices.Add(new Matrix4x4[1024]);
-        }
+        CacheNewArray();
     }
 
     public void QueueMatrix(Matrix4x4 matrix)
@@ -32,7 +25,17 @@ public class CachedMatrixArray
         {
             chunkIndex++;
             itemIndex = 0;
+
+            if(chunkIndex > matrices.Count - 1)
+            {
+                CacheNewArray();
+            }
         }
+    }
+
+    void CacheNewArray()
+    {
+        matrices.Add(new Matrix4x4[1024]);
     }
 
     public void Reset()

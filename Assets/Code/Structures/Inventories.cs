@@ -43,6 +43,9 @@ public class Inventory // 56 bytes
     public int maxWeight = int.MaxValue; // 4 bytes
     public int totalWeight = 0; // 4 bytes
 
+    public int maxTypes = int.MaxValue; // 4 bytes
+    public int totalTypes = 0; // 4 bytes
+
     int AvailableCapacityByWeight
     {
         get { return maxWeight - totalWeight; }
@@ -61,6 +64,11 @@ public class Inventory // 56 bytes
     bool AtCapacityByCount
     {
         get { return totalItems >= maxItems; }
+    }
+
+    bool AtMaxTypes
+    {
+        get { return totalTypes >= maxTypes; }
     }
 
     public int GetMaxAcceptable(ResourceData resource)
@@ -119,7 +127,7 @@ public class Inventory // 56 bytes
     { 
         if (resource == null) return false;
 
-        if (AtCapacitytByWeight || AtCapacityByCount)
+        if (AtCapacitytByWeight || AtCapacityByCount || AtMaxTypes)
         { 
             return false;
         }
@@ -152,6 +160,7 @@ public class Inventory // 56 bytes
         if (stack.quantity <= 0)
         {
             stacks.Remove(stack);
+            totalTypes--;
         }
     }
 
@@ -171,6 +180,7 @@ public class Inventory // 56 bytes
         if (!resourceTypePresent)
         {
             stacks.Add(new ResourceStack(resource));
+            totalTypes++;
         }
     }
 

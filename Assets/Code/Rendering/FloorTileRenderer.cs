@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class FloorTileRenderer : MonoBehaviour
 {
-    private Dictionary<FloorTileData, CachedMatrixArray> matrixArrays = new();
+    private Dictionary<FloorTileData, ChunkedMatrixArray> matrixArrays = new();
 
-    CachedMatrixArray _matrixArray;
+    ChunkedMatrixArray _matrixArray;
 
     static int maxCachedArrays = 16;
 
@@ -29,7 +29,7 @@ public class FloorTileRenderer : MonoBehaviour
         {
             if (matrixArrays.ContainsKey(tileData)) { continue; }
 
-            matrixArrays.Add(tileData, new CachedMatrixArray(maxCachedArrays));
+            matrixArrays.Add(tileData, new ChunkedMatrixArray());
         }
     }
 

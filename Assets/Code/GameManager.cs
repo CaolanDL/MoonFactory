@@ -7,7 +7,7 @@ public static class DevFlags
 #if UNITY_EDITOR
 
     public static bool SkipMainMenu = true;
-    public static bool Benchmark = false;
+    public static bool Benchmark = true;
 
 #else
 
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
     {
         if(DevFlags.Benchmark == true)
         {
-            CreateNewGame("DevGame"); BuildCPUBenchmark(128, 64) ; return;
+            CreateNewGame("DevGame"); BuildCPUBenchmark(200, 100) ; return;
         }
 
         if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); return; }

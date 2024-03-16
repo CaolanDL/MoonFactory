@@ -10,6 +10,9 @@ public class Machine : Structure
     public List<Inventory> InputInventories = new();
     public List<Inventory> OutputInventories = new();
 
+    /// <summary> Crafting Forumula index in use </summary>
+    public byte activeCFIndex; 
+
     public override void ConnectOuputs()
     {
         foreach (var output in structureData.outputs)
@@ -201,6 +204,101 @@ public class Machine : Structure
             //Debug.Log(inventoryTo.totalItems);
             return true;
         }
+        return false;
+    }
+
+    public void SetActiveCF(CraftingFormula craftingFormula)
+    {
+        activeCFIndex = (byte)structureData.CraftingFormulas.IndexOf(craftingFormula);
+    }
+
+    public bool TryCraft()
+    {
+        if(InputInventories.Count == 0) return false;  
+
+        // Check if input inventories are empty
+        bool inventoriesEmpty = true;
+        foreach(var inventory in InputInventories) { if(inventory.totalItems > 0) { inventoriesEmpty = false; } }
+        if(inventoriesEmpty) return false;  
+
+        // Get the current crafting formula
+        CraftingFormula cf = structureData.CraftingFormulas[activeCFIndex];
+
+        if (cf == null) return false;
+        if (cf.OutputResources.Count > OutputInventories.Count) { throw new Exception("Crafting formula outputs exceed outputs available on structure"); }
+
+        // Check if any output inventories are full
+        for (int i = 0; i < cf.OutputResources.Count; i++)
+        {
+            if(OutputInventories[i].GetMaxAcceptable(cf.OutputResources[i].resource) < cf.OutputResources[i].quantity)
+            {
+                return false;
+            }
+        } 
+
+        // Create a dictionary of input fulfilment requirements
+        Dictionary<ResourceQuantity, bool> fullfilmentRegister = new Dictionary<ResourceQuantity, bool>();
+
+        // Loop through inventories, adding & toggling entries in fullfilment register if resource quantity is in an input inventory
+        foreach(ResourceQuantity resourceQuantity in cf.InputResources)
+        {
+            fullfilmentRegister.Add(resourceQuantity, false);
+
+            bool hasResourceQuanity = false;
+            foreach(Inventory inventory in InputInventories)
+            {
+                if(inventory.GetQuantityOf(resourceQuantity.resource) >= resourceQuantity.quantity)
+                {
+                    hasResourceQuanity = true;
+                    break;
+                }
+            }
+            if (hasResourceQuanity) { fullfilmentRegister[resourceQuantity] = true; }
+        }
+
+        // Exit crafting if resource requirements not met
+        foreach (var keyValuePair in fullfilmentRegister)
+        {
+            if (keyValuePair.Value == false) return false; 
+        } 
+
+/*        foreach (ResourceQuantity resourceQuantity in cf.InputResources)
+        {
+            fullfilmentRegister.Add(resourceQuantity, false);
+
+            bool hasResourceQuanity = false;
+            foreach (Inventory inventory in InputInventories)
+            {
+                if (inventory.GetQuantityOf(resourceQuantity.resource) >= resourceQuantity.quantity)
+                {
+                    hasResourceQuanity = true;
+                    break;
+                }
+            }
+            if (hasResourceQuanity) { fullfilmentRegister[resourceQuantity] = true; } 
+        }*/
+
+        // Remove resources from input inventories
+        foreach (Inventory inventory in InputInventories)
+        {
+            if (inventory.totalItems == 0) { continue; }
+
+            foreach (var keyValuePair in fullfilmentRegister)
+            {
+                if (inventory.GetQuantityOf(keyValuePair.Key.resource) >= keyValuePair.Key.quantity)
+                {
+                    inventory.RemoveResource(keyValuePair.Key.resource, keyValuePair.Key.quantity);
+                    fullfilmentRegister.Remove(keyValuePair.Key);
+                }
+            } 
+        }
+
+        // Add output resources to output inventories
+        for(int i = 0; i < cf.OutputResources.Count; i++)
+        {
+            OutputInventories[i].TryAddResource(cf.OutputResources[i].resource, cf.OutputResources[i].quantity);
+        } 
+
         return false;
     }
 }

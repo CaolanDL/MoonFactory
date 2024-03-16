@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8920644353593226480}
   - component: {fileID: 7982989326125183623}
   - component: {fileID: 6711470070364438235}
-  - component: {fileID: 6694021866580204339}
   m_Layer: 5
   m_Name: Grid Box
   m_TagString: Untagged
@@ -101,23 +100,3 @@ MonoBehaviour:
   m_Spacing: {x: 8, y: 16}
   m_Constraint: 1
   m_ConstraintCount: 2
---- !u!114 &6694021866580204339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2552110446049137612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1

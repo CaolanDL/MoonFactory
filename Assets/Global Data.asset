@@ -30,6 +30,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b8da668976bbbba4fa5765a237b3f820, type: 2}
   BuildButtonTooltip: {fileID: 1213213408029545927, guid: e1402c0125a47d747b7fd68bb941f9f5,
     type: 3}
+  GenericInterface: {fileID: 1452811590041402077, guid: d77cb25f11f3a2845b9f516ccaa47783,
+    type: 3}
   mat_DevUniversal: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
   mat_Ghost: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}
   mat_GhostBlocked: {fileID: 2100000, guid: 265dc20729eb93941adae5f1e3edfc43, type: 2}

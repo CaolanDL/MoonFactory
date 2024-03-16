@@ -12,8 +12,9 @@ public class DebugUI : MonoBehaviour
     int FPS;
     TextMeshProUGUI FPSCounter;
 
-    int itemCount;
-    TextMeshProUGUI ItemCounter;
+    int itemInWorldCount;
+    TextMeshProUGUI ItemsInWorldCounter;   
+    TextMeshProUGUI ItemsRenderedThisFrameCounter;
 
     int tileInWorldCount;
     TextMeshProUGUI TileInWorldCounter;
@@ -23,7 +24,8 @@ public class DebugUI : MonoBehaviour
     private void Start()
     {
         FPSCounter = NewTextLine();
-        ItemCounter = NewTextLine();
+        ItemsInWorldCounter = NewTextLine();
+        ItemsRenderedThisFrameCounter = NewTextLine();
         TileInWorldCounter = NewTextLine();
         TileOnScreenCounter = NewTextLine();
     }
@@ -39,11 +41,13 @@ public class DebugUI : MonoBehaviour
     {
         FPSCounter.text = $"FPS {FPS}";
 
-        itemCount = 0;
-        foreach (Chain chain in ChainManager.chains) itemCount += chain.items.Count;
-        ItemCounter.text = $"Items: {itemCount}";
+        itemInWorldCount = 0;
+        foreach (Chain chain in ChainManager.chains) itemInWorldCount += chain.items.Count;
+        ItemsInWorldCounter.text = $"Items in world: {itemInWorldCount}";
 
-        if(GameManager.Instance.gameWorld != null)
+        ItemsRenderedThisFrameCounter.text = $"Items rendered this frame: {GameManager.Instance.itemRenderer.itemsRenderedThisFrame}";
+
+        if (GameManager.Instance.gameWorld != null)
         {
             tileInWorldCount = GameManager.Instance.gameWorld.floorGrid.grid.Count;
         }
@@ -52,6 +56,6 @@ public class DebugUI : MonoBehaviour
         {
             tileOnScreenCount = GameManager.Instance.floorTileRenderer.tilesRenderedThisFrame;
         }
-        TileOnScreenCounter.text = $"Tiles on screen: {tileOnScreenCount}";
+        TileOnScreenCounter.text = $"Tiles rendered this frame: {tileOnScreenCount}";
     }
 }
