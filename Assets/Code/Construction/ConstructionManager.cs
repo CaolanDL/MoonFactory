@@ -63,7 +63,7 @@ public class ConstructionManager
         }
 
         // Draw indicator arrows
-        foreach (StructureData.ArrowIndicatorData arrow in newGhostData.arrowIndicators)
+/*        foreach (StructureData.ArrowIndicatorData arrow in newGhostData.arrowIndicators)
         {
             continue;
             Quaternion _rotation = Quaternion.Euler(0, (arrow.rotation + GhostRotation) * 90, 0);
@@ -79,7 +79,7 @@ public class ConstructionManager
 
             if (arrow.IsInput) Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicatorInput, 0);
             else Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicatorOutput, 0);
-        }
+        }*/
 
         foreach (TinyTransform input in newGhostData.inputs)
         {

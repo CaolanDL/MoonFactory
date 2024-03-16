@@ -590,6 +590,8 @@ MonoBehaviour:
   HUD: {fileID: 5208321704792210768, guid: da97c697ec104794f97b769a51c7df26, type: 3}
   MobilePlatformWarning: {fileID: 2846562734260813511, guid: a1694f366d031164b83db085eeb65076,
     type: 3}
+  floorTileRenderer: {fileID: 0}
+  itemRenderer: {fileID: 0}
   cameraController: {fileID: 0}
 --- !u!114 &8208045981605999340
 MonoBehaviour:
@@ -603,6 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8c47ea9e82c8f74c8ec741cd22cc545, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tilesRenderedThisFrame: 0
 --- !u!114 &8754063972972500991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,7 +619,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VerticalOffset: 0.2
-  serialItems: []
 --- !u!114 &7753882727360442230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,7 +636,7 @@ MonoBehaviour:
   maxSpeed: 6
   zoomSpeed: 0.2
   zoomMotionScaling: 0.5
-  minZoom: 3
+  minZoom: 2
   maxZoom: 15
   zoomPositionMultiplier: 3
   zoomPositionOffset: 5

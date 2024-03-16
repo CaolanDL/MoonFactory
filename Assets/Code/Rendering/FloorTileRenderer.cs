@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using Unity.Mathematics;
-using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.Tilemaps;
+using UnityEngine; 
 
 public class FloorTileRenderer : MonoBehaviour
 { 

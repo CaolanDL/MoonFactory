@@ -21,8 +21,16 @@ MonoBehaviour:
   size:
     x: 1
     y: 1
-  inputs: []
-  outputs: []
+  inputs:
+  - position:
+      x: 0
+      y: 1
+    _rotation: 0
+  outputs:
+  - position:
+      x: 0
+      y: -1
+    _rotation: 0
   ghostMesh: {fileID: 0}
   ghostModels:
   - mesh: {fileID: 534601995681146736, guid: 1d48e8f8386ab6b488b72028b59c19a6, type: 3}

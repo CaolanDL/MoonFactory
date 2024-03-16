@@ -42,7 +42,7 @@ public class StructureData : ScriptableObject
 
     public List<GhostModels> ghostModels = new(); 
 
-    public List<ArrowIndicatorData> arrowIndicators = new(); 
+    //public List<ArrowIndicatorData> arrowIndicators = new(); 
 
     [Serializable]
     public class GhostModels
@@ -50,7 +50,7 @@ public class StructureData : ScriptableObject
         public Mesh mesh;
         public Material material;
     }
-
+/*
     [Serializable]
     public class ArrowIndicatorData
     {
@@ -61,6 +61,6 @@ public class StructureData : ScriptableObject
         public float size = 1;
 
         public bool IsInput = true;
-    } 
+    } */
 }
 
