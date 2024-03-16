@@ -1,4 +1,5 @@
-﻿using Unity.Mathematics;
+﻿using System;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -72,6 +73,24 @@ namespace ExtensionMethods
             return new Vector2(_x, _y);
         }
 
+        public static Vector2 FastRotate(this Vector2 i, float radians)
+        {   
+            return new Vector2(xRotate(), yRotate());
+
+            float xRotate()
+            {
+                return  i.x * Mathf.Cos(radians) - i.y * Mathf.Sin(radians);
+            }
+
+            float yRotate()
+            {
+                return i.x * Mathf.Sin(radians) + i.y * Mathf.Cos(radians);
+            }
+
+            float _x = i.x * Mathf.Cos(radians) - i.y * Mathf.Sin(radians);
+            float _y = i.x * Mathf.Sin(radians) + i.y * Mathf.Cos(radians);
+        }
+
         public static Vector2 RotateAround(this Vector2 i, Vector2 Pivot, float angle)
         {
             return (i - Pivot).Rotate(angle) + Pivot;
@@ -138,11 +157,16 @@ namespace ExtensionMethods
         }
     }
 
-    public static class IntExtensions
+    public static class WithinRangeExtensions
     {
         public static bool WithinRange(this int i, int2 range)
         {
-            return (i > range.x, i < range.y)
+            return (i > range.x && i < range.y);
+        }
+
+        public static bool WithinRange(this float i, int2 range)
+        {
+            return (i > range.x && i < range.y);
         }
     }
 }

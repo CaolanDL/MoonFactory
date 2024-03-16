@@ -11,17 +11,23 @@ public class CameraController : MonoBehaviour
     public float zoom
     {
         get { return _zoom; }
-        set { _zoom = Mathf.Clamp(value, 2, 12); }
+        set { _zoom = Mathf.Clamp(value, minZoom, maxZoom); }
     }
 
     static Quaternion cameraRotation = Quaternion.Euler(new Vector3(0, 45, 0));
 
-    [Header("Variables")]
+    [Header("Movement")]
     [SerializeField] private float motionSmoothness = 10;
-    [SerializeField] private float maxSpeed = 5; 
-    [SerializeField] private float zoomSpeed = 10;
-    [SerializeField] private float zoomScaling = 0.5f;
+    [SerializeField] private float maxSpeed = 5;
 
+    [Header("Zoom")]
+    [SerializeField] private float zoomSpeed = 10;
+    [SerializeField] private float zoomMotionScaling = 0.5f;
+    [Space]
+    [SerializeField] private float minZoom = 2;
+    [SerializeField] private float maxZoom = 15;
+
+    [Space]
     [SerializeField] private float zoomPositionMultiplier = 3f;
     [SerializeField] private float zoomPositionOffset = 0.5f;
 
@@ -58,7 +64,7 @@ public class CameraController : MonoBehaviour
 
         velocity = Vector3.Lerp(velocity, inputVector3 * maxSpeed, motionSmoothness * Time.deltaTime); 
 
-        position += cameraRotation * (velocity * Time.deltaTime * (zoom * zoomScaling));
+        position += cameraRotation * (velocity * Time.deltaTime * (zoom * zoomMotionScaling));
         cameraOrigin.transform.position = position;
     } 
 
@@ -70,6 +76,22 @@ public class CameraController : MonoBehaviour
         topDownCamera.orthographicSize = zoom+1;
 
         playerCamera.transform.localPosition = new Vector3(0, 0, Mathf.Clamp(-zoom * zoomPositionMultiplier - zoomPositionOffset, -1000, -5));
+    }
+
+
+    public (int2 xVisibleRange, int2 yVisibleRange) GetVisibleRange()
+    {
+        float2 cameraPosition = new float2(position.x, position.z);
+
+        float cameraZoom = zoom;
+
+        int xSize = (int)(8 * cameraZoom); // Need to include screen aspect ratio compensation;
+        int ySize = (int)(8 * cameraZoom); // Currently defaulting to 16:9
+
+        int2 xRangeOut = new int2((int)cameraPosition.x - xSize / 2, (int)cameraPosition.x + xSize / 2 + 1);
+        int2 yRangeOut = new int2((int)cameraPosition.y - ySize / 2, (int)cameraPosition.y + ySize / 2 + 1);
+
+        return (xRangeOut, yRangeOut);
     }
 
 

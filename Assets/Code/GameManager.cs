@@ -1,4 +1,5 @@
-﻿using Logistics; 
+﻿using Logistics;
+using Unity.Mathematics;
 using UnityEngine;
 
 public static class DevFlags
@@ -6,6 +7,7 @@ public static class DevFlags
 #if UNITY_EDITOR
 
     public static bool SkipMainMenu = true;
+    public static bool Benchmark = false;
 
 #else
 
@@ -24,7 +26,7 @@ public delegate void OnStartNewGame();
 public class GameManager : MonoBehaviour
 {
     [Header("Global Data Blocks")]
-    [SerializeField] public GlobalData globalData;
+    [SerializeField] public GlobalData GlobalData;
     [SerializeField] public WorldGenerationData worldGenerationData; 
 
     [Header("UI Prefabs")]
@@ -36,24 +38,36 @@ public class GameManager : MonoBehaviour
 
     public GameWorld gameWorld;
 
-    private FloorTileRenderer floorTileRenderer;
-    private ItemRenderer itemRenderer;
+    public FloorTileRenderer floorTileRenderer;
+    public ItemRenderer itemRenderer;
 
     public ConstructionManager ConstructionManager;
+
+    public CameraController cameraController;
 
     private void Awake()
     {
         MakeSingleton();
 
-        globalData.MakeSingleton();
+        cameraController = GetComponent<CameraController>();
+
+        GlobalData.MakeSingleton();
         worldGenerationData.MakeSingleton();
 
         floorTileRenderer = GetComponent<FloorTileRenderer>();
+        floorTileRenderer.Init();
+
         itemRenderer = GetComponent<ItemRenderer>();
+        itemRenderer.Init();
     }
 
     private void Start()
     {
+        if(DevFlags.Benchmark == true)
+        {
+            CreateNewGame("DevGame"); BuildCPUBenchmark(256, 64) ; return;
+        }
+
         if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); return; }
 
         if (Application.isMobilePlatform) { Instantiate(MobilePlatformWarning); return; }
@@ -97,11 +111,13 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        gameWorld.OnFixedUpdate();
+
         // Update Conveyors 
         ChainManager.UpdateChains();
         // Update rovers
         // Update Machines
-        Structure.TickAllStructures();
+        Structure.TickAllStructures(); 
     }
 
     public void CreateNewGame(string saveName)
@@ -139,6 +155,8 @@ public class GameManager : MonoBehaviour
     void ExitToMenu()
     {
         // Save game to file
+        // Unload gameworld
+        // Destroy HUD
         // Load main menu scene
     }
 
@@ -146,6 +164,10 @@ public class GameManager : MonoBehaviour
     {
         // user input save file name or selects from menu
         // begin deserialization of data
+        // Load an empty gameWorld
+        // Populate with entities from save file
+        // Load HUD
+        // Enable player input
     }
 
     void SaveGame()
@@ -154,5 +176,27 @@ public class GameManager : MonoBehaviour
         // Display save icon
         // Serialize Game Data
         // Remove saving icon
-    } 
+    }
+
+    // DEVELOPMENT // 
+
+    void BuildCPUBenchmark(int width, int length)
+    {
+        StructureData debugOutput = GetStructureData("DebugOutput");
+
+        StructureData conveyor = GetStructureData("Conveyor");
+
+        StructureData GetStructureData(string name) { return GlobalData.structures.Find(structure => structure.name == name); }
+
+
+        for (int x = 0; x < width; x++)
+        {
+            ConstructionManager.ForceSpawnStructure(new int2(x, 0), 0, debugOutput);
+
+            for(int y = 1; y < length; y++)
+            {
+                ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor);
+            }
+        }
+    }
 }

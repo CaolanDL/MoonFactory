@@ -70,7 +70,7 @@ namespace Logistics
 
     public class Hopper : Machine
     {
-        public static int maxItems = 10;
+        public static int maxItems = 48;
         public static int renderGap = 4;
 
         public Inventory inputInventory;

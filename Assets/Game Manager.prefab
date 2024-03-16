@@ -448,7 +448,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -582,7 +582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9636465da8303d47885900e6ef46da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  globalData: {fileID: 11400000, guid: be1b4d32d012ef048a07fe318b66aaed, type: 2}
+  GlobalData: {fileID: 11400000, guid: be1b4d32d012ef048a07fe318b66aaed, type: 2}
   worldGenerationData: {fileID: 11400000, guid: a1e8410657a03ac4891b982a1ddfb03f,
     type: 2}
   mainMenu: {fileID: 6591914507216965253, guid: f3ceeb9026ae29b4e89afbbf9125e3fe,
@@ -590,6 +590,7 @@ MonoBehaviour:
   HUD: {fileID: 5208321704792210768, guid: da97c697ec104794f97b769a51c7df26, type: 3}
   MobilePlatformWarning: {fileID: 2846562734260813511, guid: a1694f366d031164b83db085eeb65076,
     type: 3}
+  cameraController: {fileID: 0}
 --- !u!114 &8208045981605999340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -632,7 +633,11 @@ MonoBehaviour:
   motionSmoothness: 10
   maxSpeed: 6
   zoomSpeed: 0.2
-  zoomScaling: 0.5
+  zoomMotionScaling: 0.5
+  minZoom: 3
+  maxZoom: 15
+  zoomPositionMultiplier: 3
+  zoomPositionOffset: 5
   cameraOrigin: {fileID: 2446764047180186050}
   playerCamera: {fileID: 2314389890219916738}
   topDownCamera: {fileID: 822781968339276617}
@@ -880,12 +885,12 @@ PrefabInstance:
     - target: {fileID: 2388117094326814471, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 55.3738
+      value: 55.37378
       objectReference: {fileID: 0}
     - target: {fileID: 2388117094326814471, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -31.2855
+      value: -31.285522
       objectReference: {fileID: 0}
     - target: {fileID: 2638829709471817685, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}

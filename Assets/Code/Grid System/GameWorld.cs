@@ -21,8 +21,33 @@ public class GameWorld
     public GameWorld(int seed)
     {
         terrainGenerator = new TerrainGenerator(seed);
+    } 
+
+    public void OnFixedUpdate()
+    {
+        AddNewVisibleTiles();
     }
 
+    public void AddNewVisibleTiles()
+    {
+        int2 tileLocation;
+
+        (var xVisibleRange, var yVisibleRange) = GameManager.Instance.cameraController.GetVisibleRange();
+
+        for (int x = xVisibleRange.x; x < xVisibleRange.y; x++)
+        {
+            for (int y = yVisibleRange.x; y < yVisibleRange.y; y++)
+            {
+                (tileLocation.x, tileLocation.y) = (x, y);
+
+                // Generate new floor tiles
+                if (GameManager.Instance.gameWorld.floorGrid.grid.ContainsKey(tileLocation) == false)
+                {
+                    GameManager.Instance.gameWorld.GenerateFloorTile(tileLocation);
+                }
+            }
+        }
+    } 
 
     public void GenerateChunk(int2 position)
     {

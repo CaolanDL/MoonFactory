@@ -11,14 +11,14 @@ public class DebugOutput : Machine
 
     public override void OnConstructed()
     {
-        resource = GameManager.Instance.globalData.resources[0];
+        resource = GameManager.Instance.GlobalData.resources[0];
 
         OutputInventories[0].maxWeight = 1;
 
         FillInventory();
     }
 
-    static float OutputInterval = 0.5f;
+    static float OutputInterval = 0.4f;
     int outDelayMod = (int)(1f / Time.fixedDeltaTime * OutputInterval);
 
     int outDelayLoop;

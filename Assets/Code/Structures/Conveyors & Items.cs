@@ -3,13 +3,7 @@ using Unity.Mathematics;
 using UnityEngine;
 
 using ExtensionMethods;
-using System.Linq; 
-
-public enum Attempt
-{
-    Success,
-    Fail
-}
+using System.Linq;  
 
 namespace Logistics
 {
@@ -48,20 +42,27 @@ namespace Logistics
             return chain.conveyors[index];
         }
 
+
+
+        static Conveyor currentConveyor;            
+        static float normalisedDistanceOnConveyor;  
+        static Vector2 positionOnConveyor;          
+        static float turnFactor;                    
+        static float remapNormalDistance;
+        static float normalRotation;
+
         public void UpdateWorldPosition(Chain chain)
         {
-            Conveyor currentConveyor = GetConveyor(chain);
+            currentConveyor = GetConveyor(chain);
 
-            float normalisedDistanceOnConveyor = (float)distanceOnConveyor / Conveyor.Length;
+            normalisedDistanceOnConveyor = (float)distanceOnConveyor / Conveyor.Length;
 
             Vector2 linearPositionCalc()
             {
-                return new Vector2(0, normalisedDistanceOnConveyor) - (Vector2.up / 2);
+                return new Vector2(0, normalisedDistanceOnConveyor - 0.5f);
             }
 
             Rotation = 0;//(short)(currentConveyor.rotation * 90);
-
-            Vector2 positionOnConveyor;
 
             // Item path of straight conveyors
             if (currentConveyor.turnConfig == Conveyor.TurnConfig.Straight)
@@ -73,7 +74,7 @@ namespace Logistics
             // Item path of curved conveyors. This could probably do with some refactoring and optimisations but heyho it works.
             else
             {
-                float turnFactor = currentConveyor.turnConfig == Conveyor.TurnConfig.LeftTurn ? +90f : -90f; // Setting turn offset based on the turn configuration of the current belt 
+                turnFactor = currentConveyor.turnConfig == Conveyor.TurnConfig.LeftTurn ? +90f : -90f; // Setting turn offset based on the turn configuration of the current belt 
                  
 
                 if (normalisedDistanceOnConveyor <= Conveyor.TurnStartOffset)
@@ -99,9 +100,9 @@ namespace Logistics
                         turnOrigin = new Vector2(0.5f - Conveyor.TurnStartOffset, Conveyor.TurnStartOffset);
                     }
 
-                    float remapNormalDistance = math.remap(0f + Conveyor.TurnStartOffset, 1f - Conveyor.TurnStartOffset, 0f, 1f, normalisedDistanceOnConveyor);
+                    remapNormalDistance = math.remap(0f + Conveyor.TurnStartOffset, 1f - Conveyor.TurnStartOffset, 0f, 1f, normalisedDistanceOnConveyor);
 
-                    float normalRotation = remapNormalDistance * -turnFactor; 
+                    normalRotation = remapNormalDistance * -turnFactor; 
 
                     positionOnConveyor = new Vector2(0, Conveyor.TurnStartOffset).RotateAround(turnOrigin, normalRotation);
 
@@ -109,9 +110,7 @@ namespace Logistics
 
                     positionOnConveyor = positionOnConveyor.Rotate(turnFactor);
 
-                    Rotation = (short)(currentConveyor.rotation * 90 + turnFactor + normalRotation);
-
-                    Vector2 gizmoLocation = (turnOrigin - (Vector2.up / 2)).Rotate(90 * currentConveyor.rotation + turnFactor) + currentConveyor.position.ToVector2();
+                    Rotation = (short)(currentConveyor.rotation * 90 + turnFactor + normalRotation); 
                 }
             }
 
@@ -151,7 +150,7 @@ namespace Logistics
 
         static int conveyorCapacity = Conveyor.Length / Item.Size;
 
-        static int speed = 1;
+        static int speed = 10;
 
         public bool wasUpdatedThisTick;
         bool ChainAtCapacity { get { return items.Count >= chainCapacity; } }

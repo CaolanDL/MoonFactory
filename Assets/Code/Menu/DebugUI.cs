@@ -15,13 +15,17 @@ public class DebugUI : MonoBehaviour
     int itemCount;
     TextMeshProUGUI ItemCounter;
 
-    TextMeshProUGUI RoverCounter;
+    int tileInWorldCount;
+    TextMeshProUGUI TileInWorldCounter;
+    int tileOnScreenCount;
+    TextMeshProUGUI TileOnScreenCounter;
 
     private void Start()
     {
         FPSCounter = NewTextLine();
         ItemCounter = NewTextLine();
-        RoverCounter = NewTextLine(); 
+        TileInWorldCounter = NewTextLine();
+        TileOnScreenCounter = NewTextLine();
     }
 
     TextMeshProUGUI NewTextLine() { return Instantiate(TextLinePrefab, VerticalLayout.transform).GetComponent<TextMeshProUGUI>(); }
@@ -38,5 +42,16 @@ public class DebugUI : MonoBehaviour
         itemCount = 0;
         foreach (Chain chain in ChainManager.chains) itemCount += chain.items.Count;
         ItemCounter.text = $"Items: {itemCount}";
+
+        if(GameManager.Instance.gameWorld != null)
+        {
+            tileInWorldCount = GameManager.Instance.gameWorld.floorGrid.grid.Count;
+        }
+        TileInWorldCounter.text = $"Tiles in world: {tileInWorldCount}";
+        if (GameManager.Instance.gameWorld != null)
+        {
+            tileOnScreenCount = GameManager.Instance.floorTileRenderer.tilesRenderedThisFrame;
+        }
+        TileOnScreenCounter.text = $"Tiles on screen: {tileOnScreenCount}";
     }
 }

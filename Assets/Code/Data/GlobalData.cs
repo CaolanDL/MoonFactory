@@ -53,5 +53,5 @@ public class GlobalData : ScriptableObject
     [Header("Registry")]
     public List<StructureData> structures;
  
-    public List<ResourceData> resources;
+    public List<ResourceData> resources; 
 }

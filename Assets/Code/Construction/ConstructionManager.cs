@@ -46,18 +46,18 @@ public class ConstructionManager
         if (GameManager.Instance.gameWorld.worldGrid.IsEntityAt(position))
         {
             activeGhostMaterial = GlobalData.Instance.mat_GhostBlocked;
-        } 
+        }
 
-        var matrix = MatrixConstruction.CreateTransformMatrix(position, ghostRotation); 
+        var matrix = MatrixConstruction.CreateTransformMatrix(position, ghostRotation);
 
         Graphics.DrawMesh(newGhostData.ghostMesh, matrix, activeGhostMaterial, 0);
 
         foreach (StructureData.GhostModels ghostModel in newGhostData.ghostModels)
         {
             Material materialToDraw = ghostModel.material;
-            if(ghostModel.material == GlobalData.Instance.mat_Ghost)
+            if (ghostModel.material == GlobalData.Instance.mat_Ghost)
             {
-                materialToDraw = activeGhostMaterial; 
+                materialToDraw = activeGhostMaterial;
             }
             Graphics.DrawMesh(ghostModel.mesh, matrix, materialToDraw, 0);
         }
@@ -65,6 +65,7 @@ public class ConstructionManager
         // Draw indicator arrows
         foreach (StructureData.ArrowIndicatorData arrow in newGhostData.arrowIndicators)
         {
+            continue;
             Quaternion _rotation = Quaternion.Euler(0, (arrow.rotation + GhostRotation) * 90, 0);
 
             Vector3 _position = (GhostRotation.ToQuaternion() * arrow.relativePosition) + position.ToVector3();
@@ -77,11 +78,35 @@ public class ConstructionManager
             );
 
             if (arrow.IsInput) Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicatorInput, 0);
-            else Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicatorOutput, 0); 
+            else Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicatorOutput, 0);
+        }
+
+        foreach (TinyTransform input in newGhostData.inputs)
+        {
+            Matrix4x4 _matrix = Matrix4x4.TRS
+            (
+                (input.position.Rotate(ghostRotation) + position).ToVector3() + (Vector3.up * 0.2f),
+                input.rotation.Rotate(ghostRotation).ToQuaternion(),
+                Vector3.one * 0.2f
+            );
+
+            Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicatorInput, 0);
+        }
+
+        foreach (TinyTransform output in newGhostData.outputs)
+        { 
+            Matrix4x4 _matrix = Matrix4x4.TRS
+            (
+                (output.position.Rotate(ghostRotation) + position).ToVector3() + (Vector3.up * 0.2f),
+                output.rotation.Rotate(ghostRotation).ToQuaternion(),
+                Vector3.one * 0.2f
+            );
+
+            Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicatorOutput, 0);
         }
     }
 
-    public void StartPlacingGhosts(StructureData structureData)
+        public void StartPlacingGhosts(StructureData structureData)
     {
         ghostRotation = 0;
         newGhostData = structureData;
@@ -103,5 +128,22 @@ public class ConstructionManager
     public void RotateGhost(sbyte direction)
     { 
         GhostRotation += direction;
+    }
+
+
+    /// <summary>
+    /// Force a structure to spawn at a location. Development use only.
+    /// </summary> 
+    public void ForceSpawnStructure(int2 position, sbyte rotation, StructureData structureData)
+    {
+        var worldGrid = GameManager.Instance.gameWorld.worldGrid;
+
+        worldGrid.RemoveEntity(position);
+
+        Structure newStructure = StructureFactory.CreateStructure(structureData);
+
+        worldGrid.TryAddEntity(newStructure, position, rotation); 
+
+        newStructure.Constructed(); 
     }
 } 

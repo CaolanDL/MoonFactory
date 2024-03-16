@@ -1,13 +1,38 @@
-﻿using Unity.Mathematics;
-using UnityEngine; 
+﻿using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Tilemaps;
 
 public class FloorTileRenderer : MonoBehaviour
-{
-    private CameraController cameraController;  
+{ 
+    private Dictionary<FloorTileData, CachedMatrixArray> matrixArrays = new();
 
+    CachedMatrixArray _matrixArray; 
+
+    static int maxCachedArrays = 16;
+
+    public int tilesRenderedThisFrame = 0;
+
+    private CameraController cameraController;
+
+    RenderParams renderParams;
+     
     private void Awake()
     {
-        cameraController = GetComponent<CameraController>();  
+        cameraController = GetComponent<CameraController>();
+
+        renderParams = new RenderParams(GameManager.Instance.GlobalData.mat_Tile);  
+    }
+
+    public void Init()
+    {
+        foreach (FloorTileData tileData in WorldGenerationData.Instance.floorTiles)
+        {
+            if (matrixArrays.ContainsKey(tileData)) { continue; }
+
+            matrixArrays.Add(tileData, new CachedMatrixArray(maxCachedArrays));
+        } 
     }
 
     public void Tick()
@@ -15,61 +40,97 @@ public class FloorTileRenderer : MonoBehaviour
         DrawVisibleFloorTiles();
     }
 
+    // Cached instanced to improve garbage collection perf
+
+    GameWorld gameWorld;
+
+    FloorTile currentFloorTile;
+
+
+    int2 tileLocation;
+
+    int2 xVisibleRange;
+
+    int2 yVisibleRange;
+
 
     void DrawVisibleFloorTiles()
-    {
-        (int2 xVisibleRange, int2 yVisibleRange) = GetVisibleRange();
+    { 
+        (xVisibleRange, yVisibleRange) = cameraController.GetVisibleRange();
 
+        gameWorld = GameManager.Instance.gameWorld;
+
+        tileLocation = new int2();
+
+        tilesRenderedThisFrame = 0;
 
         for (int x = xVisibleRange.x; x < xVisibleRange.y; x++)
         {
             for (int y = yVisibleRange.x; y < yVisibleRange.y; y++)
             {
+                (tileLocation.x, tileLocation.y) = (x, y); 
 
-                int2 tileLocation = new int2(x, y); 
+                currentFloorTile = (FloorTile)gameWorld.floorGrid.GetEntityAt(tileLocation); 
 
-                FloorTile floorTile = (FloorTile)GameManager.Instance.gameWorld.floorGrid.GetEntityAt(tileLocation); 
+                if (currentFloorTile == null) { continue; }
 
-                // Generate new floor tiles
-                if (floorTile == null) 
-                {
-                    floorTile = GameManager.Instance.gameWorld.GenerateFloorTile(tileLocation);
-                }
-                  
-                DrawTile(floorTile);
+                //DrawTile(currentFloorTile); //Deprecated
+
+                QueueTile();
+                tilesRenderedThisFrame++;
             }
+        }
+
+        if (matrixArrays.Count > 0)
+        {
+            RenderTiles();
         }
     }
 
+    void RenderTiles()
+    {  
+        foreach (FloorTileData tileData in matrixArrays.Keys)
+        {
+            _matrixArray = matrixArrays[tileData];
+
+            for(int chunkIndex = 0; chunkIndex < maxCachedArrays; chunkIndex++)
+            { 
+                if (chunkIndex == _matrixArray.chunkIndex)
+                {
+                    Graphics.DrawMeshInstanced(tileData.mesh, 0, GlobalData.Instance.mat_Tile, _matrixArray.matrices[chunkIndex], _matrixArray.itemIndex);
+                    break;
+                }
+                else
+                {
+                    Graphics.DrawMeshInstanced(tileData.mesh, 0, GlobalData.Instance.mat_Tile, _matrixArray.matrices[chunkIndex]);
+                }
+            }
+
+            _matrixArray.Reset();
+        }
+    }
+
+    void QueueTile()
+    {
+        if (currentFloorTile == null) return; 
+
+        matrixArrays[currentFloorTile.data].QueueMatrix(currentFloorTile.transform.ToMatrix());
+    }  
+
+    // Deprecated
 
     void DrawTile(FloorTile floorTile)
     {
-        Vector3 worldPosition = new Vector3(floorTile.position.x, 0, floorTile.position.y);
-         
-        Graphics.DrawMesh(floorTile.data.mesh, worldPosition, Quaternion.Euler(0,90 * floorTile.rotation, 0), GlobalData.Instance.mat_Tile, 0);
+        Graphics.RenderMesh(renderParams, floorTile.data.mesh, 0, floorTile.transform.ToMatrix());
     }
 
     void DrawTile(int2 gridPosition, FloorTileData tileData)
     {
-        Vector3 worldPosition = new Vector3(gridPosition.x, 0, gridPosition.y); 
+        Vector3 worldPosition = new Vector3(gridPosition.x, 0, gridPosition.y);
 
         Graphics.DrawMesh(tileData.mesh, worldPosition, quaternion.identity, GlobalData.Instance.mat_Tile, 0);
     } 
 
-
-    (int2 xVisibleRange, int2 yVisibleRange) GetVisibleRange()
-    {
-        float2 cameraPosition = new float2(cameraController.position.x, cameraController.position.z);
-
-        float cameraZoom = cameraController.zoom;
-
-        int xSize = (int)(8 * cameraZoom); // Need to include screen aspect ratio compensation;
-        int ySize = (int)(8 * cameraZoom); // Currently defaulting to 16:9
-
-        int2 xRangeOut = new int2((int)cameraPosition.x - xSize / 2, (int)cameraPosition.x + xSize / 2 + 1);
-        int2 yRangeOut = new int2((int)cameraPosition.y - ySize / 2, (int)cameraPosition.y + ySize / 2 + 1);
-
-        return (xRangeOut, yRangeOut);
-    }
-
 }
+
+
