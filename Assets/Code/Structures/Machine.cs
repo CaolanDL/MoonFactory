@@ -52,6 +52,16 @@ public class Machine : Structure
         for (int i = 0; i < structureData.outputs.Count; i++) { OutputInventories.Add(new()); }
     }  
 
+    public override void OnClicked()
+    {
+        GameManager.Instance.HUDController.OpenMachineInterface(this);
+    }
+
+    public void OpenInterface()
+    {
+
+    }
+
     public bool TryOutputItem(ResourceData resource, Inventory inventory, TinyTransform outputTransform)
     {
         var worldGrid = GameManager.Instance.gameWorld.worldGrid;

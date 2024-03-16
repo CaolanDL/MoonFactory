@@ -136,6 +136,19 @@ public class PlayerInputManager : MonoBehaviour
                 } 
             }
         }
+
+        if (inputActions.DefaultControls.Select.WasPressedThisFrame())
+        {
+            Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
+
+            if (entity != null)
+            { 
+                if (entity.GetType().IsSubclassOf(typeof(Structure)))
+                {
+                    ((Structure)entity).Clicked();
+                }
+            }
+        }
     }
 
     public void HandleConstructionInput()

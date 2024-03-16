@@ -35,6 +35,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""dd69b364-8546-4a05-82f6-5bc8c5a0539b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -70,6 +79,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Pick Structure"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b921ba43-5ddb-4f26-ac88-83358cf2a250"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -390,6 +410,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         // Default Controls
         m_DefaultControls = asset.FindActionMap("Default Controls", throwIfNotFound: true);
         m_DefaultControls_PickStructure = m_DefaultControls.FindAction("Pick Structure", throwIfNotFound: true);
+        m_DefaultControls_Select = m_DefaultControls.FindAction("Select", throwIfNotFound: true);
         // Construction Controls
         m_ConstructionControls = asset.FindActionMap("Construction Controls", throwIfNotFound: true);
         m_ConstructionControls_RotateGhost = m_ConstructionControls.FindAction("Rotate Ghost", throwIfNotFound: true);
@@ -466,11 +487,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_DefaultControls;
     private List<IDefaultControlsActions> m_DefaultControlsActionsCallbackInterfaces = new List<IDefaultControlsActions>();
     private readonly InputAction m_DefaultControls_PickStructure;
+    private readonly InputAction m_DefaultControls_Select;
     public struct DefaultControlsActions
     {
         private @PlayerInputActions m_Wrapper;
         public DefaultControlsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @PickStructure => m_Wrapper.m_DefaultControls_PickStructure;
+        public InputAction @Select => m_Wrapper.m_DefaultControls_Select;
         public InputActionMap Get() { return m_Wrapper.m_DefaultControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -483,6 +506,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PickStructure.started += instance.OnPickStructure;
             @PickStructure.performed += instance.OnPickStructure;
             @PickStructure.canceled += instance.OnPickStructure;
+            @Select.started += instance.OnSelect;
+            @Select.performed += instance.OnSelect;
+            @Select.canceled += instance.OnSelect;
         }
 
         private void UnregisterCallbacks(IDefaultControlsActions instance)
@@ -490,6 +516,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PickStructure.started -= instance.OnPickStructure;
             @PickStructure.performed -= instance.OnPickStructure;
             @PickStructure.canceled -= instance.OnPickStructure;
+            @Select.started -= instance.OnSelect;
+            @Select.performed -= instance.OnSelect;
+            @Select.canceled -= instance.OnSelect;
         }
 
         public void RemoveCallbacks(IDefaultControlsActions instance)
@@ -697,6 +726,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public interface IDefaultControlsActions
     {
         void OnPickStructure(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
     }
     public interface IConstructionControlsActions
     {

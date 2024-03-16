@@ -23,7 +23,7 @@ public class GlobalData : ScriptableObject
 
     [Header("Interfaces")]
     public GameObject GenericInterface;
-
+    public GameObject MachineInterface;
 
 
     [Space(32), Header("Global Materials")]
@@ -33,6 +33,7 @@ public class GlobalData : ScriptableObject
     public Material mat_GhostBlocked;
     [Space]
     public Material mat_Tile;
+
 
     [Header("Gizmos")]
     public Mesh m_ArrowIndicator;

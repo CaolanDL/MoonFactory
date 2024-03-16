@@ -82,8 +82,7 @@ public abstract class Structure : Entity
     public virtual void OnTick()
     {
 
-    }
-
+    } 
 
     public void FrameUpdate()
     {
@@ -91,6 +90,16 @@ public abstract class Structure : Entity
     }
 
     public virtual void OnFrameUpdate()
+    {
+
+    }
+
+    public void Clicked()
+    {
+        OnClicked();
+    }
+
+    public virtual void OnClicked()
     {
 
     }

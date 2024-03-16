@@ -15,11 +15,8 @@ public enum StructureCategory
 
 [CreateAssetMenu(menuName = "MoonFactory/Structure Data")]
 public class StructureData : ScriptableObject
-{
-
-
-    [Header("Structure Details")]
-
+{ 
+    [Header("Structure Details")] 
     public string screenname = string.Empty;
 
     [Multiline]

@@ -34,25 +34,26 @@ public class GameManager : MonoBehaviour
     public GameObject HUD;
     public GameObject MobilePlatformWarning;
 
-    //
-
+    // Gameplay Objects
     public GameWorld gameWorld;
-
-    public FloorTileRenderer floorTileRenderer;
-    public ItemRenderer itemRenderer;
-
     public ConstructionManager ConstructionManager;
 
+    // Menu Instances
+    public HUDController HUDController;
+
+    // Manager Components
+    public FloorTileRenderer floorTileRenderer;
+    public ItemRenderer itemRenderer; 
     public CameraController cameraController;
 
     private void Awake()
     {
-        MakeSingleton();
-
-        cameraController = GetComponent<CameraController>();
+        MakeSingleton(); 
 
         GlobalData.MakeSingleton();
-        worldGenerationData.MakeSingleton();
+        worldGenerationData.MakeSingleton(); 
+
+        cameraController = GetComponent<CameraController>(); 
 
         floorTileRenderer = GetComponent<FloorTileRenderer>();
         floorTileRenderer.Init();
@@ -137,7 +138,7 @@ public class GameManager : MonoBehaviour
         // Descent vehicle animation plays
 
         // UI startup animation plays
-        Instantiate(HUD, transform);
+        HUDController = Instantiate(HUD, transform).GetComponent<HUDController>();
 
         // Tutorial toggle prompt
 
