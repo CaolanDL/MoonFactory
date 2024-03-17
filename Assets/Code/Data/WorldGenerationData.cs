@@ -28,7 +28,13 @@ public class WorldGenerationData : ScriptableObject
     }
     #endregion 
 
-    [SerializeField] public List<FloorTileData> floorTiles;
+    [SerializeField] public List<FloorTileData> topographyTiles;
+     
+    [SerializeField] public List<FloorTileData> randomTiles;
+
+    [SerializeField] public List<FloorTileData> craterTiles;
+
+    [SerializeField] public List<FloorTileData> rubbleTiles;
 
     public static int ChunkSize = 9;
 

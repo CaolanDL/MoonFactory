@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 955f6eb5197a0244fa053c16e69f553f, type: 3}
-  m_Name: Tile Crater Multi
+  m_Name: Crater Small
   m_EditorClassIdentifier: 
-  mesh: {fileID: 7207042440977335412, guid: 0c9d5d349e820954e8156c5844624517, type: 3}
+  mesh: {fileID: 8351614226674932877, guid: 0b697313cdbf26444be35f9b3ec7de1f, type: 3}
   chanceToSpawn: 1

@@ -11,7 +11,7 @@ public class DisplayObject : MonoBehaviour
     [NonSerialized] public GameObject activeModel;
     public List<GameObject> additiveModels;
 
-    public Dictionary<string, GameObject> particleSystems;
+    public Dictionary<string, GameObject> particleSystems = new();
 
     // Component References //
     public Animator animator;
@@ -42,22 +42,15 @@ public class DisplayObject : MonoBehaviour
 
         activeModel = primaryModels[0];
 
-        animator = GetComponentInChildren<Animator>();
-
-        if(animator != null)
-        {
-            animator.Rebind();
-        } 
+        animator = GetComponentInChildren<Animator>(); 
          
         var particleSystemComponents = GetComponentsInChildren<ParticleSystem>();
 
         foreach (ParticleSystem component in particleSystemComponents)
-        { 
-            Debug.Log(component.name);
-
+        {  
             particleSystems.Add(component.gameObject.name, component.gameObject);
 
-            gameObject.SetActive(false);
+            component.gameObject.SetActive(false);
         }
     }
 

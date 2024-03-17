@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 955f6eb5197a0244fa053c16e69f553f, type: 3}
-  m_Name: Tile Rubble Low
+  m_Name: Low Lands 2
   m_EditorClassIdentifier: 
-  mesh: {fileID: 6962631206604061219, guid: ef1a11b105329444d88956bde7612ce3, type: 3}
+  mesh: {fileID: 4327754820878182548, guid: 1a0322fe66883e1428b8ef4e66401857, type: 3}
   chanceToSpawn: 1

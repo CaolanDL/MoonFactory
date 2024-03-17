@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 955f6eb5197a0244fa053c16e69f553f, type: 3}
-  m_Name: Tile Crater Small
+  m_Name: Regolith 4
   m_EditorClassIdentifier: 
-  mesh: {fileID: 8351614226674932877, guid: 0b697313cdbf26444be35f9b3ec7de1f, type: 3}
+  mesh: {fileID: -3973980098813932784, guid: cd8ddac93620fd048afe6af46c316a84, type: 3}
   chanceToSpawn: 1

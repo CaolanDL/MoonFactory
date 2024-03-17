@@ -23,6 +23,8 @@ public class Crusher : Machine
         TryBeginCrafting(); 
 
         TickCrafting();
+
+        TryOutputAnything(0);
     }
 
     public override void OnBeginCrafting()

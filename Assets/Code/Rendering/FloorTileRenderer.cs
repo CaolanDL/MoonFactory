@@ -25,7 +25,7 @@ public class FloorTileRenderer : MonoBehaviour
 
     public void Init()
     {
-        foreach (FloorTileData tileData in WorldGenerationData.Instance.floorTiles)
+        foreach (FloorTileData tileData in WorldGenerationData.Instance.topographyTiles)
         {
             if (matrixArrays.ContainsKey(tileData)) { continue; }
 

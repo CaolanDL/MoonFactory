@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 955f6eb5197a0244fa053c16e69f553f, type: 3}
-  m_Name: Tile Regolith 2
+  m_Name: Low Lands 1
   m_EditorClassIdentifier: 
-  mesh: {fileID: 4480045068955685560, guid: aa4cc1f7f9d48354a99780f360c32ab8, type: 3}
+  mesh: {fileID: -7473441829178645329, guid: 2ad9dcea58ceae64bb19d8719723f6a8, type: 3}
   chanceToSpawn: 1

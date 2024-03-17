@@ -25,7 +25,7 @@ public class HUDController : MonoBehaviour
 
     public void OpenMachineInterface(Machine machine, Vector3 screenPosition)
     {
-        if(activeInterface != null) { return; }
+        if(activeInterface != null) { CloseActiveInterface(); }
 
         activeInterface = Instantiate(GlobalData.Instance.MachineInterface, transform);
         activeInterface.GetComponent<MachineInterface>().Init(machine, screenPosition + (Vector3.right * 20));
@@ -33,6 +33,7 @@ public class HUDController : MonoBehaviour
 
     public void CloseActiveInterface()
     {
+        Destroy(activeInterface);
         activeInterface = null;
     } 
 

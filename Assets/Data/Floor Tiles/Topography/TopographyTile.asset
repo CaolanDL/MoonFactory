@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 955f6eb5197a0244fa053c16e69f553f, type: 3}
-  m_Name: Tile Regolith 4
+  m_Name: TopographyTile
   m_EditorClassIdentifier: 
-  mesh: {fileID: -3973980098813932784, guid: cd8ddac93620fd048afe6af46c316a84, type: 3}
+  mesh: {fileID: -4899235256840409934, guid: 561dde630624c1f4d8c1a78df3719a4e, type: 3}
   chanceToSpawn: 1

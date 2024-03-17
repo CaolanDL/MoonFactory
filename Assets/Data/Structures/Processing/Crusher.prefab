@@ -4860,7 +4860,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7234652762017356274}
+  - {fileID: 4156003957075518121}
   - {fileID: 37717458779009961}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4877,10 +4877,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   primaryModels:
-  - {fileID: 8011190118275056456}
+  - {fileID: 3667837993095985171}
   additiveModels: []
   animator: {fileID: 0}
---- !u!1001 &7200164153668582937
+--- !u!1001 &4478740670800446786
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -4950,28 +4950,22 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f41f1ddebd7b6ca468b14487854065c1,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7234216517286573528}
+      addedObject: {fileID: 8281045380295894715}
   m_SourcePrefab: {fileID: 100100000, guid: f41f1ddebd7b6ca468b14487854065c1, type: 3}
---- !u!4 &7234652762017356274 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f41f1ddebd7b6ca468b14487854065c1,
-    type: 3}
-  m_PrefabInstance: {fileID: 7200164153668582937}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8011190118275056456 stripped
+--- !u!1 &3667837993095985171 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f41f1ddebd7b6ca468b14487854065c1,
     type: 3}
-  m_PrefabInstance: {fileID: 7200164153668582937}
+  m_PrefabInstance: {fileID: 4478740670800446786}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &7234216517286573528
+--- !u!95 &8281045380295894715
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8011190118275056456}
+  m_GameObject: {fileID: 3667837993095985171}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 487e8809c1d4d664fb859dc0000a1b78, type: 2}
@@ -4985,3 +4979,9 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &4156003957075518121 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f41f1ddebd7b6ca468b14487854065c1,
+    type: 3}
+  m_PrefabInstance: {fileID: 4478740670800446786}
+  m_PrefabAsset: {fileID: 0}
