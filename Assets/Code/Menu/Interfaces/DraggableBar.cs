@@ -47,23 +47,22 @@ public class DraggableBar : UIMouseHover
 
 
 
-            // Replace this with unity value clamping
-            if (rectTransform.rect.position.x < 0)
+            // Clamp interface position to screen bounds
+            if (rectTransform.anchoredPosition.x < 0)
             {
-                rectTransform.rect.position.Set(0, rectTransform.position.y);
+                rectTransform.anchoredPosition = new Vector3(0, rectTransform.anchoredPosition.y, 0);
             }
-            if (rectTransform.rect.position.y < 0)
+            if (rectTransform.anchoredPosition.y < 0)
             {
-                rectTransform.rect.position.Set(rectTransform.position.x, 0);
+                rectTransform.anchoredPosition = new Vector3(rectTransform.anchoredPosition.x, 20, 0);
+            } 
+            if (rectTransform.anchoredPosition.x > 1920)
+            {
+                rectTransform.anchoredPosition = new Vector3(1860, rectTransform.anchoredPosition.y, 0);
             }
-
-            if (rectTransform.rect.position.x > 1920)
+            if (rectTransform.anchoredPosition.y > 1080)
             {
-                rectTransform.rect.position.Set(1900, rectTransform.position.y);
-            }
-            if (rectTransform.rect.position.y > 1080)
-            {
-                rectTransform.rect.position.Set(rectTransform.position.x, 1060);
+                rectTransform.anchoredPosition = new Vector3(rectTransform.anchoredPosition.x, 1080, 0);
             }
         }
     }

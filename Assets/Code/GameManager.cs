@@ -8,7 +8,7 @@ public static class DevFlags
 #if UNITY_EDITOR
 
     public static bool SkipMainMenu = true;
-    public static bool Benchmark = true;
+    public static bool Benchmark = false;
 
 #else
 

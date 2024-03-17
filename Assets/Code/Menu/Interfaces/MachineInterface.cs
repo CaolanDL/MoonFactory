@@ -14,7 +14,7 @@ public class MachineInterface : ModularInterface
 
         structureData = machine.structureData;
 
-        SetDetails(structureData.sprite, structureData.name, structureData.description);
+        SetDetails(structureData.sprite, structureData.screenname, structureData.description);
 
         transform.position = screenPosition;
     }

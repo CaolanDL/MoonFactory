@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour
     public Vector3 position;
     private Vector3 velocity;
 
-    private float _zoom = 0;
+    private float _zoom = 3;
     public float zoom
     {
         get { return _zoom; }
