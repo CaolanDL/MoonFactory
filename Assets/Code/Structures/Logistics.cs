@@ -32,7 +32,7 @@ namespace Logistics
                 }
             }
 
-            TryOutputAnything(OutputInventories[0], structureData.outputs[0]);
+            TryOutputAnything(0);
         }
     }
 
@@ -59,7 +59,7 @@ namespace Logistics
                 TransferAnythingRandom(InputInventories[0], OutputInventories[Iterator]);
                 Iterator++;
 
-                if (TryOutputAnything(OutputInventories[Iterator], structureData.outputs[Iterator]))
+                if (TryOutputAnything(Iterator))
                 { 
                     Iterator++;
                     break;
@@ -90,7 +90,7 @@ namespace Logistics
         public override void OnTick()
         { 
             TransferAnythingRandom(InputInventories[0], OutputInventories[0]);
-            TryOutputAnything(OutputInventories[0], structureData.outputs[0]);
+            TryOutputAnything(0);
         }
 
 
@@ -107,17 +107,17 @@ namespace Logistics
             }
 
             void DrawResourceAtIndex(int i)
-            {
-                float verticalOffset = ((i / 4) * 0.25f);
+            { 
+                ResourceData resource = OutputInventories[0].GetResourceAtIndex(i);
 
                 Graphics.DrawMesh(
-                    OutputInventories[0].GetResourceAtIndex(i).mesh,
+                    resource.mesh,
                     transform.position.ToVector3()
                     + (Vector3.up * (i / 4) * 0.1f)
                     + (Vector3.up * 0.1f)
                     + (Vector2.up.Rotate(i % 4 * 90 + 45).ToWorldspaceV3() * 0.15f),
                     Quaternion.Euler(0, i * 11.5f, 0),
-                    GlobalData.Instance.mat_DevUniversal,
+                    resource.material,
                     0); ; ;
             }
         }

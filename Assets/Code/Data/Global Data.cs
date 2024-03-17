@@ -50,11 +50,13 @@ public class GlobalData : ScriptableObject
     private void OnEnable()
     {
         MakeSingleton();
+        UpdateStructureCFAssignment();
     }
 
     private void OnValidate()
     {
         MakeSingleton();
+        UpdateStructureCFAssignment();
     }
 
     public void MakeSingleton()

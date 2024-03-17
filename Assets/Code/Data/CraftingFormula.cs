@@ -7,7 +7,7 @@ public class CraftingFormula : ScriptableObject
 {
     [Tooltip("Machine crafted in")] public StructureData machine;
 
-    [Tooltip("Duration in Ticks")] public int duration;
+    [Tooltip("Duration in Ticks (s*50)")] public short duration;
 
     [SerializeField] public List<ResourceQuantity> InputResources;
 

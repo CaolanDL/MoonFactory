@@ -6,11 +6,19 @@ public class DisplayObject : MonoBehaviour
 {
     [NonSerialized] public Entity parentEntity;
 
+    // Serialized Fields // 
     public List<GameObject> primaryModels;
-
     [NonSerialized] public GameObject activeModel;
-
     public List<GameObject> additiveModels;
+
+    public Dictionary<string, GameObject> particleSystems;
+
+    // Component References //
+    public Animator animator;
+
+    // Animation Data //
+    private string activeAnimation;
+
 
     private void Awake()
     {
@@ -33,11 +41,36 @@ public class DisplayObject : MonoBehaviour
         primaryModels[0].SetActive(true);
 
         activeModel = primaryModels[0];
+
+        animator = GetComponentInChildren<Animator>();
+
+        if(animator != null)
+        {
+            animator.Rebind();
+        } 
+         
+        var particleSystemComponents = GetComponentsInChildren<ParticleSystem>();
+
+        foreach (ParticleSystem component in particleSystemComponents)
+        { 
+            Debug.Log(component.name);
+
+            particleSystems.Add(component.gameObject.name, component.gameObject);
+
+            gameObject.SetActive(false);
+        }
     }
 
-    public void ChangeAnimation(string animationName)
+    public void PlayAnimationOnce(string animationName)
     {
 
+    }
+
+    public void SetLoopingAnimation(string animationName)
+    {
+        if(animator == null) { return; }
+
+        animator.Play(animationName); 
     }
 
     public void SetActiveModel(string modelName)
@@ -56,9 +89,16 @@ public class DisplayObject : MonoBehaviour
         }
     }
 
-    public void PlayParticleEffect()
+    public void PlayParticleEffect(string name)
     {
+        if (particleSystems.ContainsKey(name) == false) { return; }
+        particleSystems[name].SetActive(true);
+    }
 
+    public void StopParticleEffect(string name)
+    {
+        if(particleSystems.ContainsKey(name) == false) { return; }
+        particleSystems[name].SetActive(false);
     }
 
     public void PlaySound()

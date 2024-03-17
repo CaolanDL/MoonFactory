@@ -24,13 +24,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ba7911751a17bb848a8bcdd9f6636096, type: 2}
   - {fileID: 11400000, guid: 56cfcdadb2ddaa94fa5449d9835dce4c, type: 2}
   resources:
-  - {fileID: 11400000, guid: 846496dfeac5afa4781a190aff293cc6, type: 2}
   - {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+  - {fileID: 11400000, guid: 846496dfeac5afa4781a190aff293cc6, type: 2}
   craftingFormulas:
   - {fileID: 11400000, guid: b8da668976bbbba4fa5765a237b3f820, type: 2}
   BuildButtonTooltip: {fileID: 1213213408029545927, guid: e1402c0125a47d747b7fd68bb941f9f5,
-    type: 3}
-  GenericInterface: {fileID: 1452811590041402077, guid: d77cb25f11f3a2845b9f516ccaa47783,
     type: 3}
   MachineInterface: {fileID: 1452811590041402077, guid: 149121bacb169494991421cd7979e39d,
     type: 3}

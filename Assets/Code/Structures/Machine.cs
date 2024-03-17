@@ -10,9 +10,6 @@ public class Machine : Structure
     public List<Inventory> InputInventories = new();
     public List<Inventory> OutputInventories = new();
 
-    /// <summary> Crafting Forumula index in use </summary>
-    public byte activeCFIndex; 
-
     public override void ConnectOuputs()
     {
         foreach (var output in structureData.outputs)
@@ -24,7 +21,7 @@ public class Machine : Structure
 
             if (entity == null) continue;
 
-            if(entity.GetType() == typeof(Conveyor))
+            if (entity.GetType() == typeof(Conveyor))
             {
                 var conveyor = (Conveyor)entity;
 
@@ -34,7 +31,7 @@ public class Machine : Structure
                 {
                     conveyor.SetRotationConfig(Conveyor.TurnConfig.Straight);
                 }
-                else if(conveyor.rotation == offsetRotation.Rotate(1))
+                else if (conveyor.rotation == offsetRotation.Rotate(1))
                 {
                     conveyor.SetRotationConfig(Conveyor.TurnConfig.RightTurn);
                 }
@@ -44,13 +41,13 @@ public class Machine : Structure
                 }
             }
         }
-    } 
+    }
 
     public override void OnInitialise()
     {
         for (int i = 0; i < structureData.inputs.Count; i++) { InputInventories.Add(new()); }
         for (int i = 0; i < structureData.outputs.Count; i++) { OutputInventories.Add(new()); }
-    }  
+    } 
 
     public override void OnClicked(Vector3 mousePosition)
     {
@@ -58,9 +55,12 @@ public class Machine : Structure
     }
 
     public void OpenInterface(Vector3 mousePosition)
-    { 
+    {
         GameManager.Instance.HUDController.OpenMachineInterface(this, mousePosition);
     }
+
+
+    // Input Output //
 
     public bool TryOutputItem(ResourceData resource, Inventory inventory, TinyTransform outputTransform)
     {
@@ -98,6 +98,9 @@ public class Machine : Structure
             {
                 inventory.RemoveResource(resource, 1);
                 OnItemOutput();
+
+                TryBeginCrafting();
+
                 return true;
             }
         }
@@ -105,9 +108,14 @@ public class Machine : Structure
         return false;
     }
 
-    public bool TryOutputAnything(Inventory inventory, TinyTransform outputTransform)
+    public bool TryOutputItem(ResourceData resource, int outputIndex)
     {
-        return TryOutputItem(inventory.GetRandomResource(), inventory, outputTransform);
+        return TryOutputItem(resource, OutputInventories[outputIndex], structureData.outputs[outputIndex]);
+    }
+
+    public bool TryOutputAnything(int outputIndex)
+    {
+        return TryOutputItem(OutputInventories[outputIndex].GetRandomResource(), outputIndex);
     }
 
     public virtual void OnItemOutput()
@@ -123,7 +131,7 @@ public class Machine : Structure
 
         relativeInputTransform.rotation += rotation;
 
-        relativeInputTransform.position = relativeInputTransform.position.Rotate((sbyte)-rotation); 
+        relativeInputTransform.position = relativeInputTransform.position.Rotate((sbyte)-rotation);
 
         foreach (var input in structureData.inputs)
         {
@@ -145,6 +153,9 @@ public class Machine : Structure
         if (inputInventory.TryAddResource(resource, 1))
         {
             OnItemInput();
+
+            TryBeginCrafting();
+
             return true;
         }
 
@@ -155,6 +166,9 @@ public class Machine : Structure
     {
 
     }
+
+
+    // Inventory Management //
 
     public bool TryTransferAllOrNothing(Inventory inventoryFrom, Inventory inventoryTo, ResourceData resource, int quantity)
     {
@@ -204,32 +218,82 @@ public class Machine : Structure
     {
         var resource = inventoryFrom.GetRandomResource();
 
-        if(resource == null) return false;
+        if (resource == null) return false;
 
-        if(inventoryTo.GetMaxAcceptable(resource) == 0) return false;
+        if (inventoryTo.GetMaxAcceptable(resource) == 0) return false;
 
         if (inventoryTo.TryAddResource(resource, 1))
         {
-            inventoryFrom.RemoveResource(resource, 1); 
+            inventoryFrom.RemoveResource(resource, 1);
             //Debug.Log(inventoryTo.totalItems);
             return true;
         }
         return false;
     }
 
-    public void SetActiveCF(CraftingFormula craftingFormula)
+
+    // Crafting //
+
+    /// <summary> Crafting Forumula index in use </summary>
+    public byte activeCFIndex = 0;
+
+    byte newCFIndex = 0;
+
+    public short craftingCountdown = 0;
+
+    public bool isCrafting = false;
+
+    public bool isCrafter = false;
+
+
+    public void SetNewCF(CraftingFormula craftingFormula)
     {
-        activeCFIndex = (byte)structureData.CraftingFormulas.IndexOf(craftingFormula);
+        newCFIndex = (byte)structureData.CraftingFormulas.IndexOf(craftingFormula);
     }
 
-    public bool TryCraft()
+    void TryUpdateCF()
     {
-        if(InputInventories.Count == 0) return false;  
+        if (activeCFIndex != newCFIndex)
+        {
+            activeCFIndex = newCFIndex;
+
+            UpdateCFVariables(structureData.CraftingFormulas[activeCFIndex]);
+        }
+    }
+
+    void UpdateCFVariables(CraftingFormula cf)
+    {
+        craftingCountdown = cf.duration;
+    }
+
+    public void TickCrafting()
+    {
+        if (isCrafting)
+        {
+            craftingCountdown--;
+
+            if (craftingCountdown < 0)
+            {
+                FinishCrafting();
+            }
+        }
+    }
+
+    public bool TryBeginCrafting()
+    {
+        if (isCrafter == false) { return false; }
+
+        if (isCrafting) return false;
+
+        TryUpdateCF();
+
+        if (InputInventories.Count == 0) return false;
+        if (OutputInventories.Count == 0) return false;
 
         // Check if input inventories are empty
         bool inventoriesEmpty = true;
-        foreach(var inventory in InputInventories) { if(inventory.totalItems > 0) { inventoriesEmpty = false; } }
-        if(inventoriesEmpty) return false;  
+        foreach (var inventory in InputInventories) { if (inventory.totalItems > 0) { inventoriesEmpty = false; break; } }
+        if (inventoriesEmpty) return false;
 
         // Get the current crafting formula
         CraftingFormula cf = structureData.CraftingFormulas[activeCFIndex];
@@ -240,39 +304,17 @@ public class Machine : Structure
         // Check if any output inventories are full
         for (int i = 0; i < cf.OutputResources.Count; i++)
         {
-            if(OutputInventories[i].GetMaxAcceptable(cf.OutputResources[i].resource) < cf.OutputResources[i].quantity)
+            if (OutputInventories[i].GetMaxAcceptable(cf.OutputResources[i].resource) < cf.OutputResources[i].quantity)
             {
                 return false;
             }
-        } 
+        }
 
         // Create a dictionary of input fulfilment requirements
         Dictionary<ResourceQuantity, bool> fullfilmentRegister = new Dictionary<ResourceQuantity, bool>();
 
         // Loop through inventories, adding & toggling entries in fullfilment register if resource quantity is in an input inventory
-        foreach(ResourceQuantity resourceQuantity in cf.InputResources)
-        {
-            fullfilmentRegister.Add(resourceQuantity, false);
-
-            bool hasResourceQuanity = false;
-            foreach(Inventory inventory in InputInventories)
-            {
-                if(inventory.GetQuantityOf(resourceQuantity.resource) >= resourceQuantity.quantity)
-                {
-                    hasResourceQuanity = true;
-                    break;
-                }
-            }
-            if (hasResourceQuanity) { fullfilmentRegister[resourceQuantity] = true; }
-        }
-
-        // Exit crafting if resource requirements not met
-        foreach (var keyValuePair in fullfilmentRegister)
-        {
-            if (keyValuePair.Value == false) return false; 
-        } 
-
-/*        foreach (ResourceQuantity resourceQuantity in cf.InputResources)
+        foreach (ResourceQuantity resourceQuantity in cf.InputResources)
         {
             fullfilmentRegister.Add(resourceQuantity, false);
 
@@ -285,30 +327,95 @@ public class Machine : Structure
                     break;
                 }
             }
-            if (hasResourceQuanity) { fullfilmentRegister[resourceQuantity] = true; } 
-        }*/
+            if (hasResourceQuanity) { fullfilmentRegister[resourceQuantity] = true; }
+        }
+
+        // Exit crafting if resource requirements not met
+        foreach (var keyValuePair in fullfilmentRegister)
+        {
+            if (keyValuePair.Value == false) return false;
+        }
+
+        /*        foreach (ResourceQuantity resourceQuantity in cf.InputResources)
+                {
+                    fullfilmentRegister.Add(resourceQuantity, false);
+
+                    bool hasResourceQuanity = false;
+                    foreach (Inventory inventory in InputInventories)
+                    {
+                        if (inventory.GetQuantityOf(resourceQuantity.resource) >= resourceQuantity.quantity)
+                        {
+                            hasResourceQuanity = true;
+                            break;
+                        }
+                    }
+                    if (hasResourceQuanity) { fullfilmentRegister[resourceQuantity] = true; } 
+                }*/
 
         // Remove resources from input inventories
         foreach (Inventory inventory in InputInventories)
         {
             if (inventory.totalItems == 0) { continue; }
 
+            List<ResourceQuantity> resourcesToRemoveFromRegister = new();
+
             foreach (var keyValuePair in fullfilmentRegister)
             {
                 if (inventory.GetQuantityOf(keyValuePair.Key.resource) >= keyValuePair.Key.quantity)
                 {
                     inventory.RemoveResource(keyValuePair.Key.resource, keyValuePair.Key.quantity);
-                    fullfilmentRegister.Remove(keyValuePair.Key);
+
+                    resourcesToRemoveFromRegister.Add(keyValuePair.Key);
                 }
-            } 
+            }
+
+            foreach (var key in resourcesToRemoveFromRegister)
+            {
+                fullfilmentRegister.Remove(key);
+            }
         }
 
+        craftingCountdown = cf.duration;
+        isCrafting = true;
+
+        OnBeginCrafting();
+
+        return true;
+    }
+
+    public virtual void OnBeginCrafting()
+    {
+
+    }
+
+    public void FinishCrafting()
+    {
+        // Get the current crafting formula
+        CraftingFormula cf = structureData.CraftingFormulas[activeCFIndex];
+
         // Add output resources to output inventories
-        for(int i = 0; i < cf.OutputResources.Count; i++)
+        for (int i = 0; i < cf.OutputResources.Count; i++)
         {
             OutputInventories[i].TryAddResource(cf.OutputResources[i].resource, cf.OutputResources[i].quantity);
-        } 
+            TryOutputAnything(i);
+        }
 
-        return false;
+        isCrafting = false;
+
+        OnCraft();
+
+        if (TryBeginCrafting()) return;
+
+        OnStopCrafting();
+    }
+
+    public virtual void OnCraft()
+    {
+
+    }
+
+    public virtual void OnStopCrafting()
+    {
+
     }
 }

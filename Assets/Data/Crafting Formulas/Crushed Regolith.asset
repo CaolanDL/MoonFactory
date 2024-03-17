@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Crushed Regolith
   m_EditorClassIdentifier: 
   machine: {fileID: 11400000, guid: 7722152ffd1341b438e76a1ede5271d2, type: 2}
-  duration: 25
+  duration: 120
   InputResources:
   - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
-    quantity: 1
+    quantity: 2
   OutputResources:
   - resource: {fileID: 11400000, guid: 846496dfeac5afa4781a190aff293cc6, type: 2}
-    quantity: 2
+    quantity: 1

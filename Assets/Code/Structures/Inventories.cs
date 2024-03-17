@@ -127,12 +127,14 @@ public class Inventory // 56 bytes
     { 
         if (resource == null) return false;
 
-        if (AtCapacitytByWeight || AtCapacityByCount || AtMaxTypes)
+        if (AtCapacitytByWeight || AtCapacityByCount)
         { 
             return false;
         }
 
-        AddStackIfNoneExist(resource);
+        if(GetStack(resource) == null && AtMaxTypes) return false;
+
+        TryAddStack(resource);
 
         var stack = GetStack(resource);
 
@@ -164,7 +166,7 @@ public class Inventory // 56 bytes
         }
     }
 
-    void AddStackIfNoneExist(ResourceData resource)
+    void TryAddStack(ResourceData resource)
     {
         bool resourceTypePresent = false;
 
@@ -180,7 +182,7 @@ public class Inventory // 56 bytes
         if (!resourceTypePresent)
         {
             stacks.Add(new ResourceStack(resource));
-            totalTypes++;
+            totalTypes++; 
         }
     }
 
