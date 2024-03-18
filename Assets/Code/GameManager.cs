@@ -28,12 +28,8 @@ public class GameManager : MonoBehaviour
 {
     [Header("Global Data Blocks")]
     [SerializeField] public GlobalData GlobalData;
-    [SerializeField] public WorldGenerationData worldGenerationData; 
-
-    [Header("UI Prefabs")]
-    public GameObject mainMenu;
-    public GameObject HUD;
-    public GameObject MobilePlatformWarning;
+    [SerializeField] public TerrainGenerationData worldGenerationData;
+    [SerializeField] public MenuData menuData;
 
     // Gameplay Objects
     public GameWorld gameWorld;
@@ -53,7 +49,8 @@ public class GameManager : MonoBehaviour
         MakeSingleton(); 
 
         GlobalData.MakeSingleton();
-        worldGenerationData.MakeSingleton(); 
+        worldGenerationData.MakeSingleton();
+        menuData.MakeSingleton();
 
         cameraController = GetComponent<CameraController>();
         playerInputManager = GetComponent<PlayerInputManager>();
@@ -69,12 +66,12 @@ public class GameManager : MonoBehaviour
     {
         if(DevFlags.Benchmark == true)
         {
-            CreateNewGame("DevGame"); BuildCPUBenchmark(200, 100) ; return;
+            CreateNewGame("DevGame"); BuildCPUBenchmark(120, 60) ; return;
         }
 
         if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); return; }
 
-        if (Application.isMobilePlatform) { Instantiate(MobilePlatformWarning); return; }
+        if (Application.isMobilePlatform) { Instantiate(menuData.MobilePlatformWarning); return; }
 
         OpenMainMenu();
     }
@@ -141,7 +138,7 @@ public class GameManager : MonoBehaviour
         // Descent vehicle animation plays
 
         // UI startup animation plays
-        HUDController = Instantiate(HUD, transform).GetComponent<HUDController>();
+        HUDController = Instantiate(menuData.HUD, transform).GetComponent<HUDController>();
 
         // Tutorial toggle prompt
 
@@ -153,7 +150,7 @@ public class GameManager : MonoBehaviour
 
     public void OpenMainMenu()
     {
-        Instantiate(mainMenu, transform);
+        Instantiate(menuData.mainMenu, transform);
     }
 
     void ExitToMenu()

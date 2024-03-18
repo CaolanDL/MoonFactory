@@ -585,14 +585,12 @@ MonoBehaviour:
   GlobalData: {fileID: 11400000, guid: be1b4d32d012ef048a07fe318b66aaed, type: 2}
   worldGenerationData: {fileID: 11400000, guid: a1e8410657a03ac4891b982a1ddfb03f,
     type: 2}
-  mainMenu: {fileID: 6591914507216965253, guid: f3ceeb9026ae29b4e89afbbf9125e3fe,
-    type: 3}
-  HUD: {fileID: 5208321704792210768, guid: da97c697ec104794f97b769a51c7df26, type: 3}
-  MobilePlatformWarning: {fileID: 2846562734260813511, guid: a1694f366d031164b83db085eeb65076,
-    type: 3}
+  menuData: {fileID: 11400000, guid: fef9a16f6097abf41ba6a2acaba9d475, type: 2}
+  HUDController: {fileID: 0}
   floorTileRenderer: {fileID: 0}
   itemRenderer: {fileID: 0}
   cameraController: {fileID: 0}
+  playerInputManager: {fileID: 0}
 --- !u!114 &8208045981605999340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -886,6 +884,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2388117094326814471, guid: 6778086d57e5fe042a437210573861ac,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2638829709471817685, guid: 6778086d57e5fe042a437210573861ac,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.6039216
       objectReference: {fileID: 0}
     - target: {fileID: 4279710545569662900, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}

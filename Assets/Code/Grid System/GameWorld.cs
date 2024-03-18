@@ -51,16 +51,16 @@ public class GameWorld
 
     public void GenerateChunk(int2 position)
     {
-        int2 chunkWorldPosition = position * WorldGenerationData.ChunkSize;
+        int2 chunkWorldPosition = position * TerrainGenerationData.ChunkSize;
 
-        int2 chunkEndPositon = chunkWorldPosition + WorldGenerationData.ChunkSize;
+        int2 chunkEndPositon = chunkWorldPosition + TerrainGenerationData.ChunkSize;
 
         GenerateRegion(chunkWorldPosition, chunkEndPositon);
     }
 
     public int2 GetChunkAt(int2 position)
     {
-        int2 unflooredChunkPosition = position / WorldGenerationData.ChunkSize;
+        int2 unflooredChunkPosition = position / TerrainGenerationData.ChunkSize;
         return new int2(Mathf.FloorToInt(unflooredChunkPosition.x), Mathf.FloorToInt(unflooredChunkPosition.y));
     }
 
@@ -81,7 +81,7 @@ public class GameWorld
 
     public FloorTile GenerateFloorTile(int2 position)
     {
-        FloorTileData newTileData = terrainGenerator.ChooseTileAt(position);
+        FloorTileData newTileData = terrainGenerator.GenerateTileAt(position);
 
         FloorTile newFloorTile = new(newTileData);
 
@@ -95,7 +95,7 @@ public class GameWorld
 
     public void GenerateStartZone()
     {
-        int size = WorldGenerationData.StartZoneSize;
+        int size = TerrainGenerationData.StartZoneSize;
 
         int halfSize = size / 2;
 
@@ -253,7 +253,7 @@ public class Location // Size: 17 bytes
 
     public int2 GetChunk()
     {
-        int2 unflooredChunkPosition = position.x / WorldGenerationData.ChunkSize;
+        int2 unflooredChunkPosition = position.x / TerrainGenerationData.ChunkSize;
         return new int2(Mathf.FloorToInt(unflooredChunkPosition.x), Mathf.FloorToInt(unflooredChunkPosition.y));
     }
 

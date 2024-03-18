@@ -13,7 +13,7 @@ public class HUDController : MonoBehaviour
     [SerializeField] private GameObject MapMenu;
 
 
-    private GameObject activeInterface;
+    public MachineInterface activeMachineInterface;
 
 
     private void Start()
@@ -23,18 +23,20 @@ public class HUDController : MonoBehaviour
         //MapMenu.SetActive(false);
     } 
 
-    public void OpenMachineInterface(Machine machine, Vector3 screenPosition)
+    public bool OpenMachineInterface(Machine machine, Vector3 screenPosition)
     {
-        if(activeInterface != null) { CloseActiveInterface(); }
+        if(activeMachineInterface != null) { CloseMachineInterface(); }
 
-        activeInterface = Instantiate(GlobalData.Instance.MachineInterface, transform);
-        activeInterface.GetComponent<MachineInterface>().Init(machine, screenPosition + (Vector3.right * 20));
+        activeMachineInterface = Instantiate(MenuData.Instance.MachineInterface, transform).GetComponent<MachineInterface>();
+        activeMachineInterface.Init(machine, screenPosition + (Vector3.right * 20));
+
+        return true;
     } 
 
-    public void CloseActiveInterface()
+    public void CloseMachineInterface()
     {
-        Destroy(activeInterface);
-        activeInterface = null;
+        Destroy(activeMachineInterface.gameObject);
+        activeMachineInterface = null;
     } 
 
     // Menu Buttons //

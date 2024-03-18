@@ -20,13 +20,6 @@ public class GlobalData : ScriptableObject
     public List<CraftingFormula> craftingFormulas; 
 
 
-    [Header("Tool Tips")]
-    public GameObject BuildButtonTooltip;
-
-    [Header("Interfaces")] 
-    public GameObject MachineInterface;
-
-
     [Space(32), Header("Global Materials")]
     public Material mat_DevUniversal;
     [Space]

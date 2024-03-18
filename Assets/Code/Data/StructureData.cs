@@ -29,6 +29,8 @@ public class StructureData : ScriptableObject
     [Space(20)]
     [SerializeField] public int2 size = new(1, 1);
 
+    public List<ResourceQuantity> requiredResources = new();
+
     public List<CraftingFormula> CraftingFormulas = new();
 
     public List<TinyTransform> inputs;

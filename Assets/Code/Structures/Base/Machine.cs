@@ -10,6 +10,21 @@ public class Machine : Structure
     public List<Inventory> InputInventories = new();
     public List<Inventory> OutputInventories = new();
 
+    public override void OnInitialise()
+    {
+        for (int i = 0; i < structureData.inputs.Count; i++) { InputInventories.Add(new()); }
+        for (int i = 0; i < structureData.outputs.Count; i++) { OutputInventories.Add(new()); }
+    } 
+
+    public override void OnClicked(Vector3 mousePosition)
+    {
+        OpenInterface(mousePosition);
+    }
+
+
+    // Input Output //
+    #region Input Output
+
     public override void ConnectOuputs()
     {
         foreach (var output in structureData.outputs)
@@ -43,25 +58,6 @@ public class Machine : Structure
         }
     }
 
-    public override void OnInitialise()
-    {
-        for (int i = 0; i < structureData.inputs.Count; i++) { InputInventories.Add(new()); }
-        for (int i = 0; i < structureData.outputs.Count; i++) { OutputInventories.Add(new()); }
-    } 
-
-    public override void OnClicked(Vector3 mousePosition)
-    {
-        OpenInterface(mousePosition);
-    }
-
-    public void OpenInterface(Vector3 mousePosition)
-    {
-        GameManager.Instance.HUDController.OpenMachineInterface(this, mousePosition);
-    }
-
-
-    // Input Output //
-
     public bool TryOutputItem(ResourceData resource, Inventory inventory, TinyTransform outputTransform)
     {
         var worldGrid = GameManager.Instance.gameWorld.worldGrid;
@@ -84,7 +80,9 @@ public class Machine : Structure
                 if (conveyor.parentChain.TryAddFirstItem(resource))
                 {
                     inventory.RemoveResource(resource, 1);
-                    OnItemOutput();
+                    ItemOutput();
+
+
                     return true;
                 }
             }
@@ -97,9 +95,7 @@ public class Machine : Structure
             if (otherMachine.TryInputItem(resource, offsetOutputTransform))
             {
                 inventory.RemoveResource(resource, 1);
-                OnItemOutput();
-
-                TryBeginCrafting();
+                ItemOutput(); 
 
                 return true;
             }
@@ -116,6 +112,14 @@ public class Machine : Structure
     public bool TryOutputAnything(int outputIndex)
     {
         return TryOutputItem(OutputInventories[outputIndex].GetRandomResource(), outputIndex);
+    }
+
+    private void ItemOutput()
+    {
+        TryBeginCrafting();
+        TryUpdateInterface(); 
+
+        OnItemOutput();
     }
 
     public virtual void OnItemOutput()
@@ -152,9 +156,7 @@ public class Machine : Structure
 
         if (inputInventory.TryAddResource(resource, 1))
         {
-            OnItemInput();
-
-            TryBeginCrafting();
+            ItemInput(); 
 
             return true;
         }
@@ -162,13 +164,23 @@ public class Machine : Structure
         return false;
     }
 
+    void ItemInput()
+    {
+        TryBeginCrafting();
+        TryUpdateInterface();
+
+        OnItemInput();
+    }
+
     public virtual void OnItemInput()
     {
 
     }
 
+    #endregion
 
     // Inventory Management //
+    #region Inventory Management
 
     public bool TryTransferAllOrNothing(Inventory inventoryFrom, Inventory inventoryTo, ResourceData resource, int quantity)
     {
@@ -231,8 +243,10 @@ public class Machine : Structure
         return false;
     }
 
+    #endregion
 
     // Crafting //
+    #region Crafting
 
     /// <summary> Crafting Forumula index in use </summary>
     public byte activeCFIndex = 0;
@@ -418,4 +432,41 @@ public class Machine : Structure
     {
 
     }
+
+    #endregion
+
+
+    #region Interface Handling
+
+    bool isInterfaceOpen = false; 
+    static MachineInterface activeInterface;
+
+    public void OpenInterface(Vector3 mousePosition)
+    {
+        var success = GameManager.Instance.HUDController.OpenMachineInterface(this, mousePosition);
+
+        if (success) 
+        { 
+            isInterfaceOpen = true;
+            activeInterface = GameManager.Instance.HUDController.activeMachineInterface;
+        }
+
+        TryUpdateInterface();
+    }
+
+    public void OnInterfaceClosed()
+    {
+        isInterfaceOpen = false;
+    }
+
+
+    void TryUpdateInterface()
+    {
+        if(isInterfaceOpen)
+        {
+            activeInterface.UpdateInventoryElements();
+        }
+    } 
+
+    #endregion
 }

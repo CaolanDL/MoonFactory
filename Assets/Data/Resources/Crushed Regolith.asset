@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Crushed Lunar Regolith
   resourceCategory: 0
-  sprite: {fileID: 0}
   mesh: {fileID: 1445429886155621308, guid: 95a0d8821b59970409df8e03c7531820, type: 3}
   material: {fileID: 2100000, guid: d4b15d8446ac0184e9b62b3ab2446d28, type: 2}
+  sprite: {fileID: 21300000, guid: e12ce026e5c35df44a9551d9ed09c066, type: 3}
   weight: 1

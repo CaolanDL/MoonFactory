@@ -18,6 +18,8 @@ public class ResourceData : ScriptableObject
     public Mesh mesh;
     public Material material;
 
+    public Sprite sprite;
+
     [Header("Details")]
     public byte weight = 1;
 }

@@ -136,8 +136,10 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
 
-        if (inputActions.DefaultControls.Select.WasPressedThisFrame())
+        else if (inputActions.DefaultControls.Select.WasPressedThisFrame())
         {
+            if(isMouseOverUI) { return; }
+
             Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
 
             if (entity != null)

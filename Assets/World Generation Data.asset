@@ -13,14 +13,31 @@ MonoBehaviour:
   m_Name: World Generation Data
   m_EditorClassIdentifier: 
   topographyTiles:
-  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: 3cb2b84529a0d5444b1a704266ed80e0, type: 2}
+  - {fileID: 11400000, guid: 3cb2b84529a0d5444b1a704266ed80e0, type: 2}
+  - {fileID: 11400000, guid: 3cb2b84529a0d5444b1a704266ed80e0, type: 2}
+  - {fileID: 11400000, guid: 277796b4701c4404499a4d60d4a9de1b, type: 2}
+  - {fileID: 11400000, guid: 277796b4701c4404499a4d60d4a9de1b, type: 2}
+  - {fileID: 11400000, guid: 6a4afd595266f19428c3eca2d0028606, type: 2}
+  - {fileID: 11400000, guid: 6a4afd595266f19428c3eca2d0028606, type: 2}
+  - {fileID: 11400000, guid: 6a4afd595266f19428c3eca2d0028606, type: 2}
+  - {fileID: 11400000, guid: 6b1d199043455c247b0e3e9053cfd820, type: 2}
+  - {fileID: 11400000, guid: 6b1d199043455c247b0e3e9053cfd820, type: 2}
+  - {fileID: 11400000, guid: 6a4afd595266f19428c3eca2d0028606, type: 2}
+  - {fileID: 11400000, guid: 6a4afd595266f19428c3eca2d0028606, type: 2}
+  - {fileID: 11400000, guid: 277796b4701c4404499a4d60d4a9de1b, type: 2}
+  - {fileID: 11400000, guid: 277796b4701c4404499a4d60d4a9de1b, type: 2}
+  - {fileID: 11400000, guid: 277796b4701c4404499a4d60d4a9de1b, type: 2}
+  - {fileID: 11400000, guid: 3cb2b84529a0d5444b1a704266ed80e0, type: 2}
   randomTiles:
   - {fileID: 11400000, guid: a393b3834f68f3b4cbe11b53e2c5a7ae, type: 2}
   - {fileID: 11400000, guid: e140b97ea8391f446b5ca77b3209159c, type: 2}
   - {fileID: 11400000, guid: 1aac03e781935924fa0317c30499eb3a, type: 2}
+  - {fileID: 11400000, guid: 12c75e7876602c14bb2230592895551e, type: 2}
+  - {fileID: 11400000, guid: 0ae1db4cb3f507a43a9f416bb112f970, type: 2}
   craterTiles:
   - {fileID: 11400000, guid: 3cb2b84529a0d5444b1a704266ed80e0, type: 2}
   rubbleTiles:
   - {fileID: 11400000, guid: 12c75e7876602c14bb2230592895551e, type: 2}
   - {fileID: 11400000, guid: 0ae1db4cb3f507a43a9f416bb112f970, type: 2}
-  GenerationScalar: 4.77
+  GenerationScalar: 13.2

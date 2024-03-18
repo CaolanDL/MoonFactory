@@ -16,7 +16,7 @@ public class ModularInterface : MonoBehaviour
     {
         Canvas.ForceUpdateCanvases();
     }
-
+     
     public void SetDetails(Sprite sprite, string name, string description)
     {
         spriteImage.sprite = sprite; 
@@ -27,7 +27,12 @@ public class ModularInterface : MonoBehaviour
 
     public void CloseInterface()
     {
-        GameManager.Instance.HUDController.CloseActiveInterface();
-        Destroy(gameObject);
+        OnCloseInterface();
+        GameManager.Instance.HUDController.CloseMachineInterface(); 
+    }
+
+    public virtual void OnCloseInterface()
+    {
+
     }
 }
