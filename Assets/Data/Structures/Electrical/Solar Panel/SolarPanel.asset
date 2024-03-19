@@ -15,7 +15,7 @@ MonoBehaviour:
   screenname: Photovoltaic Panel
   description: Also known as a <i>Solar Panel</i>, this device converts sunlight
     into electricity.
-  category: 0
+  category: 1
   sprite: {fileID: 21300000, guid: 86801fe4497f94c4dbe523886542bfe9, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: 805b7a2ebf862fd449dbc4a7de5cd553,
     type: 3}

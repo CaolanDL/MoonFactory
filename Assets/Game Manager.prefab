@@ -550,6 +550,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2637558899944990924}
   - component: {fileID: 9065274673057177581}
+  - component: {fileID: 7716157231332598764}
   - component: {fileID: 8208045981605999340}
   - component: {fileID: 8754063972972500991}
   - component: {fileID: 7753882727360442230}
@@ -597,11 +598,28 @@ MonoBehaviour:
   worldGenerationData: {fileID: 11400000, guid: a1e8410657a03ac4891b982a1ddfb03f,
     type: 2}
   menuData: {fileID: 11400000, guid: fef9a16f6097abf41ba6a2acaba9d475, type: 2}
+  RoverManager: {fileID: 0}
   HUDController: {fileID: 0}
   floorTileRenderer: {fileID: 0}
   itemRenderer: {fileID: 0}
   cameraController: {fileID: 0}
   playerInputManager: {fileID: 0}
+--- !u!114 &7716157231332598764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5097026221170367744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5cb9bf9aef0cf14bbb68cd4a8705554, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roverDisplayObjectPrefab: {fileID: 8158448350561381558, guid: b33ece2ce7546a748a8def74c8e2bc8e,
+    type: 3}
+  widgetDisplayObjectPrefab: {fileID: 8158448350561381558, guid: bef058f0a29930a49ba2cdf6da5a3726,
+    type: 3}
 --- !u!114 &8208045981605999340
 MonoBehaviour:
   m_ObjectHideFlags: 0

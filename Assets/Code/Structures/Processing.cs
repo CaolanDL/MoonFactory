@@ -7,7 +7,7 @@ public class Crusher : Machine
 
         isCrafter = true;
 
-        OutputInventories[0].maxItems = 5; 
+        OutputInventories[0].maxItems = 10; 
         OutputInventories[0].maxTypes = 1;
 
         InputInventories[0].maxItems = 5; 
@@ -49,7 +49,7 @@ public class MagneticSeperator : Machine
         OutputInventories[0].maxItems = 10; 
         OutputInventories[0].maxTypes = 1;
 
-        InputInventories[0].maxItems = 2; 
+        InputInventories[0].maxItems = 24; 
         InputInventories[0].maxTypes = 1;
     }
 
@@ -62,5 +62,15 @@ public class MagneticSeperator : Machine
         TickCrafting();
 
         TryOutputAnything(0);
+    }
+
+    public override void OnBeginCrafting()
+    { 
+        displayObject.PlayParticleEffect("BeltParticles");
+    }
+
+    public override void OnStopCrafting()
+    { 
+        displayObject.StopParticleEffect("BeltParticles");
     }
 }

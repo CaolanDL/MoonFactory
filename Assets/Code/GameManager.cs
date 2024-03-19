@@ -8,7 +8,8 @@ public static class DevFlags
 #if UNITY_EDITOR
 
     public static bool SkipMainMenu = true;
-    public static bool Benchmark = false;
+    public static bool Benchmark = false; 
+    public static bool AutoSpawnRover = true;
 
 #else
 
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
     // Gameplay Objects
     public GameWorld gameWorld;
     public ConstructionManager ConstructionManager;
+    public RoverManager RoverManager;
 
     // Menu Instances
     public HUDController HUDController;
@@ -50,7 +52,9 @@ public class GameManager : MonoBehaviour
 
         GlobalData.MakeSingleton();
         worldGenerationData.MakeSingleton();
-        menuData.MakeSingleton();
+        menuData.MakeSingleton(); 
+
+        RoverManager = GetComponent<RoverManager>();
 
         cameraController = GetComponent<CameraController>();
         playerInputManager = GetComponent<PlayerInputManager>();
@@ -65,16 +69,15 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         #if UNITY_EDITOR
-        if(DevFlags.Benchmark == true)
-        {
-            CreateNewGame("DevGame"); BuildCPUBenchmark(32) ; return;
-        } 
-        #endif
+        if(DevFlags.Benchmark == true) { CreateNewGame("DevGame"); BuildCPUBenchmark(32) ; return; }
+
+        if (DevFlags.AutoSpawnRover) { CreateNewGame("DevGame"); AutoSpawnRover(); return; }
 
         if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); return; }
+#endif
 
         if (Application.isMobilePlatform) { Instantiate(menuData.MobilePlatformWarning); return; }
-
+          
         OpenMainMenu();
     }
 
@@ -121,6 +124,7 @@ public class GameManager : MonoBehaviour
         // Update Conveyors 
         ChainManager.UpdateChains();
         // Update rovers
+        RoverManager.TickRovers();
         // Update Machines
         Structure.TickAllStructures(); 
     }
@@ -134,7 +138,7 @@ public class GameManager : MonoBehaviour
 
         // Create new gameWorld
         gameWorld = new GameWorld(seed);
-        ConstructionManager = new();
+        ConstructionManager = new(); 
 
         // Start zone is generated
         gameWorld.GenerateStartZone(); 
@@ -217,5 +221,11 @@ public class GameManager : MonoBehaviour
             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
         }
     }
+
+    void AutoSpawnRover()
+    {
+        RoverManager.SpawnNewRover(new int2(0,0));
+    }
+
 #endif
 }

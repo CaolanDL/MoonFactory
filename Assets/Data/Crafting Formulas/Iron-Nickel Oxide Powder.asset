@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Iron-Nickel Oxide Powder
   m_EditorClassIdentifier: 
   machine: {fileID: 11400000, guid: e12383a5d96bb5445a5c255c33453301, type: 2}
-  duration: 60
+  duration: 180
   sprite: {fileID: 21300000, guid: 7cf4792e0d13d014e8734fc4a4d01a01, type: 3}
   InputResources:
   - resource: {fileID: 11400000, guid: 846496dfeac5afa4781a190aff293cc6, type: 2}
-    quantity: 2
+    quantity: 4
   OutputResources:
   - resource: {fileID: 11400000, guid: 1bee85d2bcca951439eee9b1f3f790e1, type: 2}
     quantity: 1
