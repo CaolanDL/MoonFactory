@@ -3,21 +3,21 @@ using UnityEngine;
 
 public class ChunkedMatrixArray
 {
-    public List<Matrix4x4[]> matrices;
+    public List<Matrix4x4[]> matriceChunks;
 
     public byte chunkIndex = 0;
     public int itemIndex = 0; 
 
     public ChunkedMatrixArray()
     { 
-        matrices = new();
+        matriceChunks = new();
 
         CacheNewArray();
     }
 
     public void QueueMatrix(Matrix4x4 matrix)
     {
-        matrices[chunkIndex][itemIndex] = matrix;
+        matriceChunks[chunkIndex][itemIndex] = matrix;
 
         itemIndex++;
 
@@ -26,7 +26,7 @@ public class ChunkedMatrixArray
             chunkIndex++;
             itemIndex = 0;
 
-            if(chunkIndex > matrices.Count - 1)
+            if(chunkIndex > matriceChunks.Count - 1)
             {
                 CacheNewArray();
             }
@@ -35,7 +35,7 @@ public class ChunkedMatrixArray
 
     void CacheNewArray()
     {
-        matrices.Add(new Matrix4x4[1024]);
+        matriceChunks.Add(new Matrix4x4[1024]);
     }
 
     public void Reset()

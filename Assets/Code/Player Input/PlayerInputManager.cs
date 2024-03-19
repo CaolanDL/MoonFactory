@@ -185,7 +185,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         Vector3 mouseWorldPosition = Vector3.zero;
 
-        Ray ray = cameraController.playerCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = cameraController.activeMainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("MouseToGridPosition")))

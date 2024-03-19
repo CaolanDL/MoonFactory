@@ -1,6 +1,9 @@
 using Unity.Mathematics;
-using UnityEngine; 
+using UnityEngine;
 using ExtensionMethods;
+using UnityEngine.VFX;
+using System.Linq.Expressions;
+using System;
 
 public class CameraController : MonoBehaviour
 {
@@ -14,7 +17,7 @@ public class CameraController : MonoBehaviour
         set { _zoom = Mathf.Clamp(value, minZoom, maxZoom); }
     }
 
-    static Quaternion cameraRotation = Quaternion.Euler(new Vector3(0, 45, 0));
+    static Quaternion isoCameraRotation = Quaternion.Euler(new Vector3(0, -45, 0));
 
     [Header("Movement")]
     [SerializeField] private float motionSmoothness = 10;
@@ -31,14 +34,20 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float zoomPositionMultiplier = 3f;
     [SerializeField] private float zoomPositionOffset = 0.5f;
 
+    private bool InIsometricView = true;
+    [NonSerialized] public Camera activeMainCamera;
+
     [Header("Object References")]
     public GameObject cameraOrigin;
-    public Camera playerCamera;
-    public Camera topDownCamera;
 
+    public Camera isometricMainCamera;
+    public Camera topDownMainCamera;
+
+    public Camera isometricViewportCamera;
+    public Camera topDownViewportCamera;
 
     PlayerInputActions InputActions;
-     
+
 
     void OnEnable()
     {
@@ -48,7 +57,12 @@ public class CameraController : MonoBehaviour
     void OnDisable()
     {
         InputActions.CameraControls.Disable();
-    } 
+    }
+
+    private void Awake()
+    {
+        activeMainCamera = isometricMainCamera;
+    }
 
     private void Update()
     {
@@ -58,26 +72,59 @@ public class CameraController : MonoBehaviour
         UpdateCameraGridPosition();
     }
 
+    public void SwapViews()
+    {
+        bool boolSwitch = isometricMainCamera.gameObject.activeSelf;
+
+        InIsometricView = !boolSwitch;
+
+        isometricMainCamera.gameObject.SetActive(!boolSwitch);
+        topDownMainCamera.gameObject.SetActive(boolSwitch);
+
+        isometricViewportCamera.gameObject.SetActive(boolSwitch);
+        topDownViewportCamera.gameObject.SetActive(!boolSwitch);
+
+        if (InIsometricView)
+        {
+            activeMainCamera = isometricMainCamera;
+        }
+        else
+        {
+            activeMainCamera = topDownMainCamera;
+        }
+    }
+
     void InputMove()
     {
         Vector2 inputVector = InputActions.CameraControls.Move.ReadValue<Vector2>();
 
-        Vector3 inputVector3 = new Vector3(-inputVector.y, 0, inputVector.x);
+        Vector3 inputVector3 = new Vector3(inputVector.x, 0, inputVector.y);
 
-        velocity = Vector3.Lerp(velocity, inputVector3 * maxSpeed, motionSmoothness * Time.deltaTime); 
+        velocity = Vector3.Lerp(velocity, inputVector3 * maxSpeed, motionSmoothness * Time.deltaTime);
 
-        position += cameraRotation * (velocity * Time.deltaTime * (zoom * zoomMotionScaling));
+        if (InIsometricView) { position += isoCameraRotation * (velocity * Time.deltaTime * (zoom * zoomMotionScaling)); }
+        else { position += (velocity * Time.deltaTime * (zoom * zoomMotionScaling)); }
+
         cameraOrigin.transform.position = position;
-    } 
+    }
 
     void InputZoom()
     {
         zoom += InputActions.CameraControls.Zoom.ReadValue<float>() * (zoom / 10); //zoomSpeed;
 
-        playerCamera.orthographicSize = zoom;
-        topDownCamera.orthographicSize = zoom+1;
+        isometricMainCamera.orthographicSize = zoom;
+        isometricViewportCamera.orthographicSize = zoom;
 
-        playerCamera.transform.localPosition = new Vector3(0, 0, Mathf.Clamp(-zoom * zoomPositionMultiplier - zoomPositionOffset, -1000, -5));
+        topDownViewportCamera.orthographicSize = zoom + 1;
+        topDownMainCamera.orthographicSize = zoom + 1;
+
+        var zoomPos = Mathf.Clamp(-zoom * zoomPositionMultiplier - zoomPositionOffset, -1000, -5);
+
+        isometricMainCamera.transform.localPosition = new Vector3(0, 0, zoomPos);
+        isometricViewportCamera.transform.localPosition = new Vector3(0, 0, zoomPos);
+
+        topDownViewportCamera.transform.localPosition = new Vector3(0, -zoomPos, 0);
+        topDownMainCamera.transform.localPosition = new Vector3(0, -zoomPos, 0);
     }
 
 
@@ -97,10 +144,10 @@ public class CameraController : MonoBehaviour
     }
 
     public int2 GetLocalVisibleRange()
-    { 
+    {
         float cameraZoom = zoom;
 
-        int Size = (int)(1.5 * cameraZoom + 2); 
+        int Size = (int)(1.5 * cameraZoom + 2);
 
         return new int2(-Size, Size);
     }
@@ -108,10 +155,10 @@ public class CameraController : MonoBehaviour
     public int2 CameraGridPosition = new();
 
     public void UpdateCameraGridPosition()
-    { 
-        Vector2 screenMiddle = new Vector2(playerCamera.scaledPixelWidth / 2, playerCamera.scaledPixelHeight / 2);
+    {
+        Vector2 screenMiddle = new Vector2(isometricMainCamera.scaledPixelWidth / 2, isometricMainCamera.scaledPixelHeight / 2);
 
-        Ray ray = playerCamera.ScreenPointToRay(screenMiddle);
+        Ray ray = isometricMainCamera.ScreenPointToRay(screenMiddle);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("MouseToGridPosition")))
@@ -124,7 +171,7 @@ public class CameraController : MonoBehaviour
     // !! Deprecated !! //
     private float resistance = 1;
     void InputMove2()
-    { 
+    {
         float deltaResistance = resistance * maxSpeed * Time.deltaTime;
         float deltaAcceleration = motionSmoothness * maxSpeed * Time.deltaTime;
 
@@ -136,7 +183,7 @@ public class CameraController : MonoBehaviour
         else
         {
             velocity = ShortenVector(velocity, deltaResistance);
-        } 
+        }
 
         Vector3 ShortenVector(Vector3 vector, float length)
         {
@@ -173,7 +220,7 @@ public class CameraController : MonoBehaviour
         }
 
         // Update camera position
-        position += cameraRotation * (velocity/100);
+        position += isoCameraRotation * (velocity / 100);
         cameraOrigin.transform.position = position;
     }
 }

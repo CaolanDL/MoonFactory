@@ -13,19 +13,27 @@ MonoBehaviour:
   m_Name: Silo
   m_EditorClassIdentifier: 
   screenname: Silo
+  description: A larger version of the Hopper. Good for long term storage and larger
+    factories.
   category: 0
-  sprite: {fileID: 0}
-  displayObject: {fileID: 0}
+  sprite: {fileID: 21300000, guid: d11b3580c2c19cf4aad59a8eeb690abb, type: 3}
+  displayObject: {fileID: 919132149155446097, guid: b472c7b23e548b94abfc74c112b29335,
+    type: 3}
+  size:
+    x: 1
+    y: 1
+  requiredResources: []
+  CraftingFormulas: []
   inputs:
   - position:
       x: 0
-      y: 0
+      y: -1
     _rotation: 0
   outputs:
   - position:
       x: 0
-      y: 0
+      y: 1
     _rotation: 0
-  ghostMesh: {fileID: 0}
+  ghostMesh: {fileID: -2664605628696090635, guid: b472c7b23e548b94abfc74c112b29335,
+    type: 3}
   ghostModels: []
-  arrowIndicators: []

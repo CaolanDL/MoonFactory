@@ -12,7 +12,7 @@ public static class DevFlags
 
 #else
 
-    public static bool SkipMainMenu = false;
+    public static bool SkipMainMenu = false; 
 
 #endif
 }
@@ -64,10 +64,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        #if UNITY_EDITOR
         if(DevFlags.Benchmark == true)
         {
-            CreateNewGame("DevGame"); BuildCPUBenchmark(120, 60) ; return;
-        }
+            CreateNewGame("DevGame"); BuildCPUBenchmark(32) ; return;
+        } 
+        #endif
 
         if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); return; }
 
@@ -112,6 +114,8 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (gameWorld == null) { return; }
+
         gameWorld.OnFixedUpdate();
 
         // Update Conveyors 
@@ -181,23 +185,37 @@ public class GameManager : MonoBehaviour
 
     // DEVELOPMENT // 
 
-    void BuildCPUBenchmark(int width, int length)
+#if UNITY_EDITOR
+
+    void BuildCPUBenchmark(int width)
     {
         StructureData debugOutput = GetStructureData("DebugOutput");
 
         StructureData conveyor = GetStructureData("Conveyor");
 
-        StructureData GetStructureData(string name) { return GlobalData.structures.Find(structure => structure.name == name); }
+        StructureData crusher = GetStructureData("Crusher");
+
+        StructureData magSep = GetStructureData("MagneticSeperator");
 
 
-        for (int x = 0; x < width; x++)
+        StructureData GetStructureData(string name) { return GlobalData.structures.Find(structure => structure.name == name); } 
+
+        for (int x = 0; x < width; x += 2)
         {
-            ConstructionManager.ForceSpawnStructure(new int2(x, 0), 0, debugOutput);
+            var y = 0;
+            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, debugOutput); y++;
 
-            for(int y = 1; y < length; y++)
-            {
-                ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor);
-            }
+            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
+
+            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, crusher); y++;
+
+            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
+
+            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, magSep); y++;
+
+            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
+            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
         }
     }
+#endif
 }

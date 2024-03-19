@@ -70,14 +70,14 @@ namespace Logistics
 
     public class Hopper : Machine
     {
-        public static int maxItems = 48;
-        public static int renderGap = 4;
+        public static int maxItems = 16;
+        public static int renderGap = 1;
 
         public Inventory inputInventory;
         public Inventory ouputInventory;
 
         public override void OnConstructed()
-        {
+        {  
             inputInventory = InputInventories[0];
             ouputInventory = OutputInventories[0];
 
@@ -125,7 +125,18 @@ namespace Logistics
 
     public class Silo : Hopper
     {
+        public static new int maxItems = 64;
 
+        public override void OnConstructed()
+        {
+            inputInventory = InputInventories[0];
+            ouputInventory = OutputInventories[0];
+
+            inputInventory.maxItems = 1;
+
+            ouputInventory.maxItems = maxItems;
+            ouputInventory.maxWeight = int.MaxValue;
+        }
     }
 
 }

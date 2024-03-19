@@ -64,9 +64,9 @@ public class FloorTileRenderer : MonoBehaviour
 
         tilesRenderedThisFrame = 0;
 
-        for (int x = VisibleRange.x; x < VisibleRange.y; x++)
+        for (int x = VisibleRange.x - 1; x < VisibleRange.y + 1; x++)
         {
-            for (int y = VisibleRange.x; y < VisibleRange.y; y++)
+            for (int y = VisibleRange.x - 1; y < VisibleRange.y + 1; y++)
             {
                 for (int j = 0; j < 2; j++)
                 { 
@@ -102,12 +102,12 @@ public class FloorTileRenderer : MonoBehaviour
             {
                 if (chunkIndex == _matrixArray.chunkIndex)
                 {
-                    Graphics.DrawMeshInstanced(tileData.mesh, 0, GlobalData.Instance.mat_Tile, _matrixArray.matrices[chunkIndex], _matrixArray.itemIndex);
+                    Graphics.DrawMeshInstanced(tileData.mesh, 0, GlobalData.Instance.mat_Tile, _matrixArray.matriceChunks[chunkIndex], _matrixArray.itemIndex);
                     break;
                 }
                 else
                 {
-                    Graphics.DrawMeshInstanced(tileData.mesh, 0, GlobalData.Instance.mat_Tile, _matrixArray.matrices[chunkIndex]);
+                    Graphics.DrawMeshInstanced(tileData.mesh, 0, GlobalData.Instance.mat_Tile, _matrixArray.matriceChunks[chunkIndex]);
                 }
             }
 

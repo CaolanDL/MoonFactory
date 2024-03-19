@@ -705,8 +705,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 42, y: 19.2}
-  m_SizeDelta: {x: 136.269, y: 25.8373}
+  m_AnchoredPosition: {x: 42, y: 15.2}
+  m_SizeDelta: {x: 107.2805, y: 21.8843}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2144179654585290673
 CanvasRenderer:
@@ -738,8 +738,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Crafting Formula
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c1cc56b10ec9239468e23d1eae4f6d35, type: 2}
+  m_sharedMaterial: {fileID: 7329216822478321281, guid: c1cc56b10ec9239468e23d1eae4f6d35,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -763,8 +764,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 12
+  m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -779,7 +780,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -1894,8 +1895,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Crushed Regolith
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d74eddeb218c21246aad0792f52e6cb1, type: 2}
-  m_sharedMaterial: {fileID: -4984048819387828920, guid: d74eddeb218c21246aad0792f52e6cb1,
+  m_fontAsset: {fileID: 11400000, guid: c1cc56b10ec9239468e23d1eae4f6d35, type: 2}
+  m_sharedMaterial: {fileID: 7329216822478321281, guid: c1cc56b10ec9239468e23d1eae4f6d35,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1920,7 +1921,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 13.35
+  m_fontSize: 11.1
   m_fontSizeBase: 11.5
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1930,7 +1931,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -19.72
+  m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2401,8 +2402,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: This is description Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d74eddeb218c21246aad0792f52e6cb1, type: 2}
-  m_sharedMaterial: {fileID: -4984048819387828920, guid: d74eddeb218c21246aad0792f52e6cb1,
+  m_fontAsset: {fileID: 11400000, guid: c1cc56b10ec9239468e23d1eae4f6d35, type: 2}
+  m_sharedMaterial: {fileID: 7329216822478321281, guid: c1cc56b10ec9239468e23d1eae4f6d35,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3769,8 +3770,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Crusher
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d74eddeb218c21246aad0792f52e6cb1, type: 2}
-  m_sharedMaterial: {fileID: -4984048819387828920, guid: d74eddeb218c21246aad0792f52e6cb1,
+  m_fontAsset: {fileID: 11400000, guid: c1cc56b10ec9239468e23d1eae4f6d35, type: 2}
+  m_sharedMaterial: {fileID: 7329216822478321281, guid: c1cc56b10ec9239468e23d1eae4f6d35,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3790,12 +3791,12 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
+  m_TextStyleHashCode: -1312281222
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.3
+  m_fontSize: 18.85
   m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3904,8 +3905,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Toggle
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d74eddeb218c21246aad0792f52e6cb1, type: 2}
-  m_sharedMaterial: {fileID: -4984048819387828920, guid: d74eddeb218c21246aad0792f52e6cb1,
+  m_fontAsset: {fileID: 11400000, guid: c1cc56b10ec9239468e23d1eae4f6d35, type: 2}
+  m_sharedMaterial: {fileID: 7329216822478321281, guid: c1cc56b10ec9239468e23d1eae4f6d35,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3940,7 +3941,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: -6
+  m_characterSpacing: 4
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

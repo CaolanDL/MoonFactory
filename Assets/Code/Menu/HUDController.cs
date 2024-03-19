@@ -75,4 +75,12 @@ public class HUDController : MonoBehaviour
 
     public void HeatmapButtonPressed() { } 
 
+
+    // Viewport Swapping //
+
+    public void ViewPortClicked()
+    {
+        GameManager.Instance.cameraController.SwapViews();
+    }
+
 }

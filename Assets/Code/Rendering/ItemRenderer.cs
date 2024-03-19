@@ -11,9 +11,7 @@ public class ItemRenderer : MonoBehaviour
 {  
     private Dictionary<ResourceData, ChunkedMatrixArray> matrixArrays = new();
 
-    ChunkedMatrixArray _matrixArray;
-
-    int matrixArraysPerResource = 68;
+    ChunkedMatrixArray _matrixArray; 
 
     private float VerticalOffset = 0.205f;
 
@@ -82,16 +80,16 @@ public class ItemRenderer : MonoBehaviour
         {
             _matrixArray = matrixArrays[resourceData];
 
-            for (int chunkIndex = 0; chunkIndex < matrixArraysPerResource; chunkIndex++)
+            for (int chunkIndex = 0; chunkIndex < matrixArrays[resourceData].matriceChunks.Count; chunkIndex++)
             {
                 if (chunkIndex == _matrixArray.chunkIndex)
                 {
-                    Graphics.DrawMeshInstanced(resourceData.mesh, 0, resourceData.material, _matrixArray.matrices[chunkIndex], _matrixArray.itemIndex);
+                    Graphics.DrawMeshInstanced(resourceData.mesh, 0, resourceData.material, _matrixArray.matriceChunks[chunkIndex], _matrixArray.itemIndex);
                     break;
                 }
                 else
                 {
-                    Graphics.DrawMeshInstanced(resourceData.mesh, 0, resourceData.material, _matrixArray.matrices[chunkIndex]);
+                    Graphics.DrawMeshInstanced(resourceData.mesh, 0, resourceData.material, _matrixArray.matriceChunks[chunkIndex]);
                 }
             }
 

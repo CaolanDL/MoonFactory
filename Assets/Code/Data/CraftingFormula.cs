@@ -9,6 +9,8 @@ public class CraftingFormula : ScriptableObject
 
     [Tooltip("Duration in Ticks (s*50)")] public short duration;
 
+    public Sprite sprite;
+
     [SerializeField] public List<ResourceQuantity> InputResources;
 
     [SerializeField] public List<ResourceQuantity> OutputResources;

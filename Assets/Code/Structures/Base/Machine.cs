@@ -457,8 +457,7 @@ public class Machine : Structure
     public void OnInterfaceClosed()
     {
         isInterfaceOpen = false;
-    }
-
+    } 
 
     void TryUpdateInterface()
     {

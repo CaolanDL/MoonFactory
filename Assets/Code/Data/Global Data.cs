@@ -79,6 +79,7 @@ public class GlobalData : ScriptableObject
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(GlobalData))]
 public class GlobalDataInspector : Editor
 {
@@ -95,3 +96,4 @@ public class GlobalDataInspector : Editor
 
     }
 }
+#endif
