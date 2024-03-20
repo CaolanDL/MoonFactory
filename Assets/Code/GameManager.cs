@@ -8,7 +8,7 @@ public static class DevFlags
 #if UNITY_EDITOR
 
     public static bool SkipMainMenu = true;
-    public static bool Benchmark = false; 
+    public static bool Benchmark = true; 
     public static bool AutoSpawnRover = true;
 
 #else
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         #if UNITY_EDITOR
-        if(DevFlags.Benchmark == true) { CreateNewGame("DevGame"); BuildCPUBenchmark(32) ; return; }
+        if(DevFlags.Benchmark == true) { CreateNewGame("DevGame"); BuildCPUBenchmark(64) ; return; }
 
         if (DevFlags.AutoSpawnRover) { CreateNewGame("DevGame"); AutoSpawnRover(); return; }
 

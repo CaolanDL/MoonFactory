@@ -3,16 +3,19 @@ using UnityEngine;
 
 public class ChunkedMatrixArray
 {
-    public List<Matrix4x4[]> matriceChunks;
+    public List<Matrix4x4[]> matriceChunks = new(32);
 
     public byte chunkIndex = 0;
-    public int itemIndex = 0; 
+    public int itemIndex = 0;
 
     public ChunkedMatrixArray()
     { 
-        matriceChunks = new();
+        matriceChunks = new(32);
 
-        CacheNewArray();
+        for(int i = 0; i < 32; i++)
+        {
+            CacheNewArray();
+        } 
     }
 
     public void QueueMatrix(Matrix4x4 matrix)

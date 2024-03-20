@@ -15,7 +15,6 @@ public class ItemRenderer : MonoBehaviour
 
     private float VerticalOffset = 0.205f;
 
-
     private CameraController cameraController;
 
     private void Awake()
@@ -40,7 +39,10 @@ public class ItemRenderer : MonoBehaviour
 
     int2 xVisibleRange; int2 yVisibleRange;
 
-    public int itemsRenderedThisFrame = 0;
+    public int itemsRenderedThisFrame = 0; 
+
+    static Vector2 itemV2WorldPosCached; 
+    static short itemRotationCached;
 
     void DrawVisibleItems()
     {
@@ -60,11 +62,13 @@ public class ItemRenderer : MonoBehaviour
             }
             if (shouldRender == false) continue;
             foreach(Item item in chain.items) // Render any item that is within the visible range
-            { 
-                if (item.worldPosition.x.WithinRange(xVisibleRange) && item.worldPosition.y.WithinRange(yVisibleRange))  
+            {
+                itemV2WorldPosCached = item.GetWorldPosition(chain);
+
+                if (itemV2WorldPosCached.x.WithinRange(xVisibleRange) && itemV2WorldPosCached.y.WithinRange(yVisibleRange))  
                 {
-                    //serialItems.Add(new SerialItem(item.worldPosition, item.distance, chain.items.IndexOf(item)));
-                    //DrawItem(item, item.worldPosition, item.Rotation); 
+                    itemRotationCached = item.GetRotation();
+
                     itemsRenderedThisFrame++;
                     QueueItem(item) ;
                 }
@@ -80,7 +84,7 @@ public class ItemRenderer : MonoBehaviour
         {
             _matrixArray = matrixArrays[resourceData];
 
-            for (int chunkIndex = 0; chunkIndex < matrixArrays[resourceData].matriceChunks.Count; chunkIndex++)
+            for (int chunkIndex = 0; chunkIndex <= _matrixArray.matriceChunks.Count; chunkIndex++)
             {
                 if (chunkIndex == _matrixArray.chunkIndex)
                 {
@@ -97,15 +101,16 @@ public class ItemRenderer : MonoBehaviour
         }
     }
 
+
     void QueueItem(Item item)
     {
         if (item == null) return;
 
-        Vector3 _worldPosition = new Vector3(item.worldPosition.x, VerticalOffset, item.worldPosition.y); 
+        Vector3 _worldPosition = new Vector3(itemV2WorldPosCached.x, VerticalOffset, itemV2WorldPosCached.y); 
 
         var _matrix = Matrix4x4.TRS(
             _worldPosition,
-            Quaternion.Euler(0, item.rotation, 0),
+            Quaternion.Euler(0, itemRotationCached,0),
             Vector3.one); 
 
         matrixArrays[item.data].QueueMatrix(_matrix);

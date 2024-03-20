@@ -9,25 +9,43 @@ namespace Logistics
 {
     public class Item
     {
-        public static int Size = Conveyor.Length / 5;
-
         public ResourceData data;
 
         public int distance = 1;
+
+        public static int Size = Conveyor.Length / 5;
 
         public int distanceOnConveyor
         {
             get { return (distance - 1) % Conveyor.Length + 1; }
         }
 
-        public float2 worldPosition;
+        public float normalisedDistanceOnConveyor
+        {
+            get { return (float)distanceOnConveyor / Conveyor.Length; }
+        }
 
+        float turnFactor
+        {
+            get { return currentConveyor.turnConfig == Conveyor.TurnConfig.LeftTurn ? +90f : -90f; }
+        }
+         
+        // Cached Variables
+        static Conveyor currentConveyor;
+        static Vector2 positionOnConveyor;
+        static float remapNormalDistance;
+        static float normalRotation;
+
+        //public float2 worldPosition;
+
+        /*  
         public short rotation;
         public short Rotation
         {
             get { return rotation; }
             set { rotation = (short)((value % 360 + 360) % 360); }
         }
+        */
 
         public Item(ResourceData resourceData)
         {
@@ -40,52 +58,37 @@ namespace Logistics
             if (distance < Conveyor.Length) { return chain.conveyors[0]; }
             int index = Mathf.CeilToInt((float)distance / Conveyor.Length) - 1;
             return chain.conveyors[index];
-        }
+        }  
 
-
-
-        static Conveyor currentConveyor;            
-        static float normalisedDistanceOnConveyor;  
-        static Vector2 positionOnConveyor;          
-        static float turnFactor;                    
-        static float remapNormalDistance;
-        static float normalRotation;
-
-        public void UpdateWorldPosition(Chain chain)
+        public Vector2 GetWorldPosition(Chain chain)
         {
-            currentConveyor = GetConveyor(chain);
-
-            normalisedDistanceOnConveyor = (float)distanceOnConveyor / Conveyor.Length;
+            currentConveyor = GetConveyor(chain); 
 
             Vector2 linearPositionCalc()
             {
                 return new Vector2(0, normalisedDistanceOnConveyor - 0.5f);
             }
 
-            Rotation = 0;//(short)(currentConveyor.rotation * 90);
+            //Rotation = 0;//(short)(currentConveyor.rotation * 90);
 
             // Item path of straight conveyors
             if (currentConveyor.turnConfig == Conveyor.TurnConfig.Straight)
             {
-                positionOnConveyor = linearPositionCalc();
-                Rotation = (short)(currentConveyor.rotation * 90);
+                positionOnConveyor = linearPositionCalc(); 
             }
 
             // Item path of curved conveyors. This could probably do with some refactoring and optimisations but heyho it works.
             else
-            {
-                turnFactor = currentConveyor.turnConfig == Conveyor.TurnConfig.LeftTurn ? +90f : -90f; // Setting turn offset based on the turn configuration of the current belt 
-                 
-
+            {  
                 if (normalisedDistanceOnConveyor <= Conveyor.TurnStartOffset)
                 {
                     positionOnConveyor = linearPositionCalc().Rotate(turnFactor);
-                    Rotation = (short)(currentConveyor.rotation * 90f + turnFactor);
+                   // Rotation = (short)(currentConveyor.rotation * 90f + turnFactor);
                 }
                 else if (normalisedDistanceOnConveyor >= 1 - Conveyor.TurnStartOffset)
                 {
                     positionOnConveyor = linearPositionCalc();
-                    Rotation = (short)(currentConveyor.rotation * 90f);
+                    //Rotation = (short)(currentConveyor.rotation * 90f);
                 }
                 else
                 {
@@ -110,11 +113,38 @@ namespace Logistics
 
                     positionOnConveyor = positionOnConveyor.Rotate(turnFactor);
 
-                    Rotation = (short)(currentConveyor.rotation * 90 + turnFactor + normalRotation); 
+                    //Rotation = (short)(currentConveyor.rotation * 90 + turnFactor + normalRotation); 
                 }
             }
 
-            worldPosition = (positionOnConveyor).Rotate(90 * currentConveyor.rotation) + currentConveyor.position.ToVector2();
+            return (positionOnConveyor).Rotate(90 * currentConveyor.rotation) + currentConveyor.position.ToVector2();
+        }
+
+        public short GetRotation()
+        {
+            short _rotation;
+
+            if (currentConveyor.turnConfig == Conveyor.TurnConfig.Straight)
+            {
+                _rotation = (short)(currentConveyor.rotation * 90);
+            }
+            else
+            {
+                if (normalisedDistanceOnConveyor <= Conveyor.TurnStartOffset)
+                {
+                    _rotation = (short)(currentConveyor.rotation * 90f + turnFactor);
+                }
+                else if (normalisedDistanceOnConveyor >= 1 - Conveyor.TurnStartOffset)
+                {
+                    _rotation = (short)(currentConveyor.rotation * 90f);
+                }
+                else
+                {
+                    _rotation = (short)(currentConveyor.rotation * 90 + turnFactor + normalRotation);
+                }
+            }
+
+            return (short)((_rotation % 360 + 360) % 360);
         }
     }
 
@@ -143,7 +173,7 @@ namespace Logistics
     public class Chain
     {
         public List<Conveyor> conveyors = new();
-        public List<Item> items = new();
+        public List<Item> items = new(100);
 
         public int chainCapacity { get { return conveyorCapacity * conveyors.Count; } }
         public int chainLength { get { return Conveyor.Length * conveyors.Count; } }
@@ -201,16 +231,16 @@ namespace Logistics
                 }
             }
 
-            UpdateItemPositions();
+            //UpdateItemPositions();
         }
 
-        void UpdateItemPositions()
+/*        void UpdateItemPositions()
         {
             foreach (Item item in items)
             {
                 item.UpdateWorldPosition(this);
             }
-        }
+        }*/
 
         public bool TryTransferLastItem()
         {
@@ -249,7 +279,7 @@ namespace Logistics
 
             items.Insert(0, newItem); // Prepend Item
 
-            newItem.UpdateWorldPosition(this); // Brute force update its position. You should figure out why the execution order allows items to default to 0,0 on first frame. 
+            //newItem.UpdateWorldPosition(this); // Brute force update its position. You should figure out why the execution order allows items to default to 0,0 on first frame. 
 
             return true;
         }

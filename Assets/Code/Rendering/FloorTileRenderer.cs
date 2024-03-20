@@ -8,7 +8,7 @@ public class FloorTileRenderer : MonoBehaviour
 
     ChunkedMatrixArray _matrixArray;
 
-    static int maxCachedArrays = 16;
+    //static int maxCachedArrays = 16;
 
     public int tilesRenderedThisFrame = 0;
 
@@ -98,7 +98,7 @@ public class FloorTileRenderer : MonoBehaviour
         {
             _matrixArray = matrixArrays[tileData];
 
-            for (int chunkIndex = 0; chunkIndex < maxCachedArrays; chunkIndex++)
+            for (int chunkIndex = 0; chunkIndex <= _matrixArray.chunkIndex; chunkIndex++)
             {
                 if (chunkIndex == _matrixArray.chunkIndex)
                 {
