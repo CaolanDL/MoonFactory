@@ -17,9 +17,49 @@ public class ConstructionManager
     {
         get { return ghostRotation; }
         set { ghostRotation = (sbyte)((value % 4 + 4) % 4); }
+    } 
+
+    public void StartPlacingGhosts(StructureData structureData)
+    {
+        ghostRotation = 0;
+        newGhostData = structureData;
     }
 
-    int2 dragPlacementOrigin = new();
+    public void PlaceGhost(int2 position)
+    {
+        var worldGrid = GameManager.Instance.gameWorld.worldGrid;
+
+        StructureGhost newGhostStructure = new(newGhostData);
+
+        if (worldGrid.TryAddEntity(newGhostStructure, position, ghostRotation) != null)
+        {
+            ghosts.Add(newGhostStructure);
+            newGhostStructure.OnPlaced();
+            newGhostStructure.FinishConstruction(); // Immediately finish building the structure on placement. Should be replaced with rover construction logic ASAP.
+        }
+    }
+
+    public void RotateGhost(sbyte direction)
+    {
+        GhostRotation += direction;
+    }
+
+
+    /// <summary>
+    /// Force a structure to spawn at a location. Development use only.
+    /// </summary> 
+    public void ForceSpawnStructure(int2 position, sbyte rotation, StructureData structureData)
+    {
+        var worldGrid = GameManager.Instance.gameWorld.worldGrid;
+
+        worldGrid.RemoveEntity(position);
+
+        Structure newStructure = StructureFactory.CreateStructure(structureData);
+
+        worldGrid.TryAddEntity(newStructure, position, rotation);
+
+        newStructure.Constructed();
+    } 
 
     public void DrawGhosts()
     {
@@ -29,9 +69,9 @@ public class ConstructionManager
             {
                 var matrix = MatrixConstruction.CreateTransformMatrix(ghost.position, ghost.rotation);
 
-                Graphics.DrawMesh(ghost.data.ghostMesh, matrix, GlobalData.Instance.mat_Ghost, 0);
+                Graphics.DrawMesh(ghost.structureData.ghostMesh, matrix, GlobalData.Instance.mat_Ghost, 0);
 
-                foreach (StructureData.GhostModels ghostModel in ghost.data.ghostModels)
+                foreach (StructureData.GhostModels ghostModel in ghost.structureData.ghostModels)
                 {
                     Graphics.DrawMesh(ghostModel.mesh, matrix, ghostModel.material, 0);
                 }
@@ -61,26 +101,8 @@ public class ConstructionManager
             }
             Graphics.DrawMesh(ghostModel.mesh, matrix, materialToDraw, 0);
         }
-
-        // Draw indicator arrows
-/*        foreach (StructureData.ArrowIndicatorData arrow in newGhostData.arrowIndicators)
-        {
-            continue;
-            Quaternion _rotation = Quaternion.Euler(0, (arrow.rotation + GhostRotation) * 90, 0);
-
-            Vector3 _position = (GhostRotation.ToQuaternion() * arrow.relativePosition) + position.ToVector3();
-
-            Matrix4x4 _matrix = Matrix4x4.TRS
-            (
-                _position,
-                _rotation,
-                Vector3.one * arrow.size
-            );
-
-            if (arrow.IsInput) Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicatorInput, 0);
-            else Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicatorOutput, 0);
-        }*/
-
+         
+        // Draw indicator arrows ->
         foreach (TinyTransform input in newGhostData.inputs)
         {
             Matrix4x4 _matrix = Matrix4x4.TRS
@@ -104,46 +126,6 @@ public class ConstructionManager
 
             Graphics.DrawMesh(GlobalData.Instance.m_ArrowIndicator, _matrix, GlobalData.Instance.mat_ArrowIndicatorOutput, 0);
         }
-    }
-
-        public void StartPlacingGhosts(StructureData structureData)
-    {
-        ghostRotation = 0;
-        newGhostData = structureData;
-    } 
-
-    public void PlaceGhost(int2 position)
-    { 
-        var worldGrid = GameManager.Instance.gameWorld.worldGrid; 
-
-        StructureGhost newGhostStructure = new(newGhostData);
-
-        if (worldGrid.TryAddEntity(newGhostStructure, position, ghostRotation) != null)
-        {
-            ghosts.Add(newGhostStructure);
-            newGhostStructure.FinishConstruction(); // Immediately finish building the structure on placement. Should be replaced with rover construction logic ASAP.
-        }
-    }  
-
-    public void RotateGhost(sbyte direction)
-    { 
-        GhostRotation += direction;
-    }
-
-
-    /// <summary>
-    /// Force a structure to spawn at a location. Development use only.
-    /// </summary> 
-    public void ForceSpawnStructure(int2 position, sbyte rotation, StructureData structureData)
-    {
-        var worldGrid = GameManager.Instance.gameWorld.worldGrid;
-
-        worldGrid.RemoveEntity(position);
-
-        Structure newStructure = StructureFactory.CreateStructure(structureData);
-
-        worldGrid.TryAddEntity(newStructure, position, rotation); 
-
-        newStructure.Constructed(); 
+        // <- Draw indicator arrows
     }
 } 

@@ -7,14 +7,17 @@ using UnityEngine;
 
 public class Machine : Structure
 {
-    public List<Inventory> InputInventories = new();
-    public List<Inventory> OutputInventories = new();
+    public Inventory[] InputInventories;
+    public Inventory[] OutputInventories;
 
     public override void OnInitialise()
     {
-        for (int i = 0; i < structureData.inputs.Count; i++) { InputInventories.Add(new()); }
-        for (int i = 0; i < structureData.outputs.Count; i++) { OutputInventories.Add(new()); }
-    } 
+        InputInventories = new Inventory[structureData.inputs.Count];
+        OutputInventories = new Inventory[structureData.outputs.Count];
+
+        for (int i = 0; i < structureData.inputs.Count; i++) { InputInventories[i] = new(); }
+        for (int i = 0; i < structureData.outputs.Count; i++) { OutputInventories[i] = new(); } 
+    }
 
     public override void OnClicked(Vector3 mousePosition)
     {
@@ -95,7 +98,7 @@ public class Machine : Structure
             if (otherMachine.TryInputItem(resource, offsetOutputTransform))
             {
                 inventory.RemoveResource(resource, 1);
-                ItemOutput(); 
+                ItemOutput();
 
                 return true;
             }
@@ -117,7 +120,7 @@ public class Machine : Structure
     private void ItemOutput()
     {
         TryBeginCrafting();
-        TryUpdateInterface(); 
+        TryUpdateInterface();
 
         OnItemOutput();
     }
@@ -156,7 +159,7 @@ public class Machine : Structure
 
         if (inputInventory.TryAddResource(resource, 1))
         {
-            ItemInput(); 
+            ItemInput();
 
             return true;
         }
@@ -301,8 +304,8 @@ public class Machine : Structure
 
         TryUpdateCF();
 
-        if (InputInventories.Count == 0) return false;
-        if (OutputInventories.Count == 0) return false;
+        if (InputInventories == null) return false;
+        if (OutputInventories == null) return false;
 
         // Check if input inventories are empty
         bool inventoriesEmpty = true;
@@ -313,7 +316,7 @@ public class Machine : Structure
         CraftingFormula cf = structureData.CraftingFormulas[activeCFIndex];
 
         if (cf == null) return false;
-        if (cf.OutputResources.Count > OutputInventories.Count) { throw new Exception("Crafting formula outputs exceed outputs available on structure"); }
+        if (cf.OutputResources.Count > OutputInventories.Length) { throw new Exception("Crafting formula outputs exceed outputs available on structure"); }
 
         // Check if any output inventories are full
         for (int i = 0; i < cf.OutputResources.Count; i++)
@@ -438,15 +441,15 @@ public class Machine : Structure
 
     #region Interface Handling
 
-    bool isInterfaceOpen = false; 
+    bool isInterfaceOpen = false;
     static MachineInterface activeInterface;
 
     public void OpenInterface(Vector3 mousePosition)
     {
         var success = GameManager.Instance.HUDController.OpenMachineInterface(this, mousePosition);
 
-        if (success) 
-        { 
+        if (success)
+        {
             isInterfaceOpen = true;
             activeInterface = GameManager.Instance.HUDController.activeMachineInterface;
         }
@@ -457,15 +460,15 @@ public class Machine : Structure
     public void OnInterfaceClosed()
     {
         isInterfaceOpen = false;
-    } 
+    }
 
     void TryUpdateInterface()
     {
-        if(isInterfaceOpen)
+        if (isInterfaceOpen)
         {
             activeInterface.UpdateInventoryElements();
         }
-    } 
+    }
 
     #endregion
 }

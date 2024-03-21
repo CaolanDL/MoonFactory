@@ -1,7 +1,9 @@
 ﻿using Logistics;
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Profiling;
 
 public static class DevFlags
 {
@@ -10,20 +12,14 @@ public static class DevFlags
     public static bool SkipMainMenu = true;
     public static bool Benchmark = true; 
     public static bool AutoSpawnRover = true;
+    public static bool RoverTaskOverrideToPathfind = true;
 
 #else
 
     public static bool SkipMainMenu = false; 
 
 #endif
-}
-
-public delegate void OnGameExit(); 
-
-public delegate void OnSaveLoad();
-
-public delegate void OnStartNewGame(); 
-
+}  
 
 public class GameManager : MonoBehaviour
 {
@@ -36,6 +32,7 @@ public class GameManager : MonoBehaviour
     public GameWorld gameWorld;
     public ConstructionManager ConstructionManager;
     public RoverManager RoverManager;
+    public TaskManager TaskManager;
 
     // Menu Instances
     public HUDController HUDController;
@@ -46,8 +43,17 @@ public class GameManager : MonoBehaviour
     public CameraController cameraController;
     public PlayerInputManager playerInputManager;
 
+    // Global Events
+    public static Action OnGameExit;
+    public static Action OnSaveLoad;
+    public static Action OnStartNewGame;
+
     private void Awake()
     {
+        Profiler.maxUsedMemory = 50000000;
+        //Shader.WarmupAllShaders();
+        //ShaderVariantCollection.WarmUp();
+
         MakeSingleton(); 
 
         GlobalData.MakeSingleton();
@@ -139,6 +145,7 @@ public class GameManager : MonoBehaviour
         // Create new gameWorld
         gameWorld = new GameWorld(seed);
         ConstructionManager = new(); 
+        TaskManager = new TaskManager();
 
         // Start zone is generated
         gameWorld.GenerateStartZone(); 

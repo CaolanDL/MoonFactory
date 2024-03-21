@@ -116,9 +116,21 @@ namespace ExtensionMethods
             }
         }
 
+        static Quaternion byteQuaternionZero = Quaternion.Euler(0, 0, 0);
+        static Quaternion byteQuaternionOne = Quaternion.Euler(0, 90, 0);
+        static Quaternion byteQuaternionTwo = Quaternion.Euler(0, 180, 0);
+        static Quaternion byteQuaternionThree = Quaternion.Euler(0, 270, 0); 
+
         public static Quaternion ToQuaternion(this sbyte i)
         {
-            return Quaternion.Euler(0, 90 * i, 0);
+            return i switch
+            {
+                0 => byteQuaternionZero,
+                1 => byteQuaternionOne,
+                2 => byteQuaternionTwo,
+                3 => byteQuaternionThree,
+                _ => throw new NotImplementedException(),
+            };
         }
 
         public static sbyte Rotate(this sbyte i, sbyte rotation)

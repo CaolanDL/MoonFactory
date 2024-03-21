@@ -1,10 +1,13 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using RoverJobs;
+using UnityEngine;
 
 public enum RoverModule
 {
-    None, 
+    None,
     Logistics,
     Construction,
     Mining
@@ -14,55 +17,71 @@ public class Rover
 {
     public static List<Rover> Pool = new();
 
+    public static float moveSpeed = 1.0f;
+
     public DisplayObject displayObject;
 
+    public SmallTransform smallTransform = new();
+
+    public float2 position
+    {
+        get {  return smallTransform.position; }
+        set { smallTransform.position = value; }
+    }
+    public ushort rotation
+    {
+        get {  return smallTransform.rotation; }
+        set { smallTransform.rotation = value; }
+    }
+
     public Inventory Inventory = new();
-     
+
+    public Task activeTask;
+    public Queue<Job> JobQueue = new Queue<Job>();
+    public Stack<Job> JobStack = new Stack<Job>(); 
 
     public void Init(int2 spawnLocation, DisplayObject displayObject)
     {
         this.displayObject = displayObject;
 
-        JobQueue.Enqueue(new Job());
-    } 
+        JobQueue.Enqueue(new FetchTask());
+    }
 
     public void Tick()
     {
-        HandleActions();
+        HandleJobs();
     }
 
-    // Task Management //
+    // Task & Job Management //
 
-    Queue<Job> JobQueue = new Queue<Job>();
-
-    Task activeTask = null;
-
-    bool JobComplete = false;   
-
-    void HandleActions()
+    void HandleJobs()
     {
-
-    } 
-
-    // Jobs // 
-
-    void FetchTask()
-    {
-        activeTask = null;
-
-        // Task Fetching Logic; 
-
-        switch (Module)
+        if (JobStack.Count > 0)
         {
-            case RoverModule.None:
-                break;
-            case RoverModule.Logistics:
-                break; 
-            case RoverModule.Construction: 
-                break; 
-            case RoverModule.Mining: 
-                break;
+            Job job = JobStack.Peek();
+            job.Tick();
+            return;
         }
+
+        if (JobQueue.Count == 0)
+        {
+            JobQueue.Enqueue(new FetchTask());
+            return;
+        }
+
+        if (JobStack.Count == 0)
+        {
+            JobStack.Push(JobQueue.Dequeue());
+            return;
+        }
+    }
+
+    public void OnTaskFailed()
+    {
+        TaskManager.AddTask(activeTask);
+        activeTask = null;
+        JobQueue.Clear();
+        JobStack.Clear();
     }
 
     // Actions //
@@ -70,7 +89,7 @@ public class Rover
     void Goto()
     {
 
-    } 
+    }
 
 
     // Modules //
@@ -79,15 +98,15 @@ public class Rover
 
     public void RemoveModule()
     {
-        if (Module == RoverModule.None) return;  
-        Module = RoverModule.None; 
+        if (Module == RoverModule.None) return;
+        Module = RoverModule.None;
     }
 
     public void SetModule(RoverModule module)
     {
-        if(Module != RoverModule.None) { return; }
+        if (Module != RoverModule.None) { return; }
 
-        if(Module != module)
+        if (Module != module)
         {
             Module = module;
             UpdateModuleModel();
@@ -99,7 +118,7 @@ public class Rover
         switch (Module)
         {
             case RoverModule.None:
-                break; 
+                break;
 
             case RoverModule.Logistics:
                 break;
@@ -108,10 +127,10 @@ public class Rover
                 break;
 
             case RoverModule.Mining:
-                break; 
+                break;
         }
-    }  
-} 
+    }
+}
 
 public class Widget : Rover
 {

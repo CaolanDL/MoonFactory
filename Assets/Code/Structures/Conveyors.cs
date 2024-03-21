@@ -511,25 +511,26 @@ namespace Logistics
                     return false;
                 }
 
-                /*                Entity entityInfront = worldGrid.GetEntityAt(positionInfront);
+                /*
+                Entity entityInfront = worldGrid.GetEntityAt(positionInfront);
 
-                                if (entityInfront is null || entityInfront.GetType() != typeof(Conveyor)) return;
+                if (entityInfront is null || entityInfront.GetType() != typeof(Conveyor)) return;
 
-                                Conveyor conveyorInfront = (Conveyor)entityInfront;
+                Conveyor conveyorInfront = (Conveyor)entityInfront;
 
-                                if (conveyorInfront.rotation == rotation + 2) return;
+                if (conveyorInfront.rotation == rotation + 2) return;
 
-                                if (conveyorInfront.lastConveyor != null) return;
+                if (conveyorInfront.lastConveyor != null) return;
 
-                                switch (conveyorInfront.rotation - rotation)
-                                {
-                                    case 1:
-                                        conveyorInfront.SetConfig(Config.RightTurn); break;
-                                    case -1:
-                                        conveyorInfront.SetConfig(Config.LeftTurn); break;
-                                    default:
-                                        conveyorInfront.SetConfig(Config.Straight); break;
-                                }*/
+                switch (conveyorInfront.rotation - rotation)
+                {
+                    case 1:
+                        conveyorInfront.SetConfig(Config.RightTurn); break;
+                    case -1:
+                        conveyorInfront.SetConfig(Config.LeftTurn); break;
+                    default:
+                        conveyorInfront.SetConfig(Config.Straight); break;
+                }*/
             }
         }
 

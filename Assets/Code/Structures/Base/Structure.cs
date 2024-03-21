@@ -1,25 +1,25 @@
 using ExtensionMethods;
-using System; 
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Unity.Mathematics;
-using UnityEngine; 
+using UnityEngine;
 
 public abstract class Structure : Entity
 {
-    public static List<Structure> structures = new List<Structure>(); 
+    public static List<Structure> structures = new List<Structure>();
 
     public StructureData structureData;
 
-    private string name { get; } 
+    private string name { get; }
 
-    public DisplayObject displayObject = null; 
+    public DisplayObject displayObject = null;
 
-    public void Initialise ()
+    public void Initialise()
     {
-        base.size = new DataStructs.byte2(structureData.size.x, structureData.size.y); 
+        base.size = new DataStructs.byte2(structureData.size.x, structureData.size.y);
         OnInitialise();
-    } 
+    }
 
     public virtual void OnInitialise()
     {
@@ -30,12 +30,12 @@ public abstract class Structure : Entity
     {
         foreach (var structure in structures)
         {
-            if(structure == null) continue;
-            if( structure.position.Equals(position)) return structure;
+            if (structure == null) continue;
+            if (structure.position.Equals(position)) return structure;
         }
 
         return null;
-    }  
+    }
 
     public static void TickAllStructures()
     {
@@ -64,14 +64,9 @@ public abstract class Structure : Entity
         OnConstructed();
     }
 
-    public virtual void ConnectOuputs()
+    public void Demolished()
     {
-
-    }
-
-    public virtual void OnConstructed()
-    {
-
+        OnDemolished();
     }
 
     public void Tick()
@@ -79,19 +74,9 @@ public abstract class Structure : Entity
         OnTick();
     }
 
-    public virtual void OnTick()
-    {
-
-    } 
-
     public void FrameUpdate()
     {
         OnFrameUpdate();
-    }
-
-    public virtual void OnFrameUpdate()
-    {
-
     }
 
     public void Clicked()
@@ -104,16 +89,23 @@ public abstract class Structure : Entity
         OnClicked(mousePosition);
     }
 
-    public virtual void OnClicked(Vector3 mousePosition)
-    {
+    public virtual void ConnectOuputs() { }
 
-    }
+    public virtual void OnConstructed() { }
+
+    public virtual void OnDemolished() { }
+
+    public virtual void OnTick() { }
+
+    public virtual void OnFrameUpdate() { }
+
+    public virtual void OnClicked(Vector3 mousePosition) { }
 }
 
 // http://www.jkfill.com/2010/12/29/self-registering-factories-in-c-sharp/
 
 public static class StructureFactory
-{ 
+{
     public static Dictionary<string, Type> sTypeRegistry = BuildRegistry();
 
     private static Dictionary<string, Type> BuildRegistry()
@@ -135,11 +127,11 @@ public static class StructureFactory
 
             if (derivedStructure != null)
             {
-                Type structureType =  derivedStructure.GetType();
+                Type structureType = derivedStructure.GetType();
 
                 _registry.Add(structureType.Name, structureType);
             }
-        } 
+        }
 
         return _registry;
     }
@@ -147,7 +139,7 @@ public static class StructureFactory
     public static Structure CreateStructure(StructureData structureData)
     {
         Structure newStructure = (Structure)Activator.CreateInstance(sTypeRegistry[structureData.name]);
-        
+
         newStructure.structureData = structureData;
 
         newStructure.Initialise();
@@ -156,4 +148,4 @@ public static class StructureFactory
 
         return newStructure;
     }
-} 
+}

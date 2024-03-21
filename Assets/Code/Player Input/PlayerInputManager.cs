@@ -126,7 +126,7 @@ public class PlayerInputManager : MonoBehaviour
                 if (entity.GetType() == typeof(StructureGhost))
                 {
                     ChangeInputState(InputState.Construction);
-                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((StructureGhost)entity).data);
+                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((StructureGhost)entity).structureData);
                 }
                 if (entity.GetType().IsSubclassOf(typeof(Structure)))
                 { 

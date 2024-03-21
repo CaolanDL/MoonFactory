@@ -2,11 +2,16 @@
 
 public class StructureGhost : Entity
 {
-    public StructureData data;
+    public StructureData structureData;
 
     public StructureGhost(StructureData structureData)
     {
-        data = structureData;
+        this.structureData = structureData;
+    }
+
+    public void OnPlaced()
+    {
+        TaskManager.AddTask(new BuildStructure(this));
     }
 
     public void FinishConstruction()
@@ -15,7 +20,7 @@ public class StructureGhost : Entity
 
         worldGrid.RemoveEntity(position); 
          
-        Structure newStructure = StructureFactory.CreateStructure(data);
+        Structure newStructure = StructureFactory.CreateStructure(structureData);
 
         worldGrid.TryAddEntity(newStructure, position, rotation);
 
