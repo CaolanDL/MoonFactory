@@ -17,7 +17,7 @@ public class Rover
 {
     public static List<Rover> Pool = new();
 
-    public static float moveSpeed = 1.0f;
+    public static float moveSpeed = 1.0f / 50;
 
     public DisplayObject displayObject;
 

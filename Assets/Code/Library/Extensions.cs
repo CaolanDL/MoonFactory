@@ -185,5 +185,13 @@ namespace ExtensionMethods
     public static class QuaternionExtensions
     {
         public static Quaternion MinusFortyFive = Quaternion.Euler(0, -45, 0);
-    } 
+    }
+
+    public static class Float2Extensions
+    {
+        public static float DistanceBetween(float2 origin, float2 target)
+        {
+            return Mathf.Sqrt((origin.x * origin.x) + (target.y * target.y));
+        }
+    }
 }
