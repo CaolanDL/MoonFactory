@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using RoverJobs;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum RoverModule
 {
@@ -17,40 +18,56 @@ public class Rover
 {
     public static List<Rover> Pool = new();
 
-    public static float moveSpeed = 1.0f / 50;
+    public const float MoveSpeed = 5f;
 
-    public DisplayObject displayObject;
+    public SmallTransform SmallTransform = new();
 
-    public SmallTransform smallTransform = new();
+    public Inventory Inventory = new();
+    public RoverModule Module = RoverModule.Construction;
+
+    public Task ActiveTask;
+    public readonly Queue<Job> JobQueue = new Queue<Job>();
+    public readonly Stack<Job> JobStack = new Stack<Job>();
+
+    private DisplayObject _displayObject;
+
 
     public float2 position
     {
-        get {  return smallTransform.position; }
-        set { smallTransform.position = value; }
+        get => SmallTransform.position;
+        set => SmallTransform.position = value;
     }
     public ushort rotation
     {
-        get {  return smallTransform.rotation; }
-        set { smallTransform.rotation = value; }
+        get => SmallTransform.rotation;
+        set => SmallTransform.rotation = value;
     }
 
-    public Inventory Inventory = new();
-
-    public Task activeTask;
-    public Queue<Job> JobQueue = new Queue<Job>();
-    public Stack<Job> JobStack = new Stack<Job>(); 
 
     public void Init(int2 spawnLocation, DisplayObject displayObject)
     {
-        this.displayObject = displayObject;
-
-        JobQueue.Enqueue(new FetchTask());
+        this._displayObject = displayObject;
     }
+
+    public void OnFrameUpdate() { }
 
     public void Tick()
     {
         HandleJobs();
+
+        UpdateDOPosition();
     }
+
+    public void UpdateDOPosition()
+    {
+        _displayObject.transform.position = new Vector3(position.x, 0, position.y);
+    }
+
+    public void UpdateDoRotation()
+    {
+        _displayObject.transform.rotation = Quaternion.Euler(0, rotation, 0);
+    }
+
 
     // Task & Job Management //
 
@@ -59,30 +76,70 @@ public class Rover
         if (JobStack.Count > 0)
         {
             Job job = JobStack.Peek();
-            job.Tick();
+
+            if (job.lifeSpan == 0) job.OnStart();
+
+            if (ActiveTask != null) job.Tick();
+
             return;
         }
 
         if (JobQueue.Count == 0)
         {
-            JobQueue.Enqueue(new FetchTask());
+            EnqueueJob(new FetchTask());
+
             return;
         }
 
-        if (JobStack.Count == 0)
+        if (JobStack.Count == 0 && JobQueue.Count > 0)
         {
-            JobStack.Push(JobQueue.Dequeue());
+            StackJob(JobQueue.Dequeue());
+            //Debug.Log($"Stacked job {JobStack.Peek()}");
             return;
         }
     }
 
-    public void OnTaskFailed()
+    public void StackJob(Job job)
     {
-        TaskManager.AddTask(activeTask);
-        activeTask = null;
+        job.rover = this;
+        JobStack.Push(job);
+    }
+
+
+    public void PopJob()
+    { 
+        JobStack.Pop();
+    }
+
+    public void EnqueueJob(Job job)
+    {
+        job.rover = this;
+        JobQueue.Enqueue(job);
+    }
+
+    public void TaskFailed()
+    {
+/*        var taskType = ActiveTask.GetType();
+
+        if (taskType == typeof(BuildStructureTask)) TaskManager.QueueTask(ActiveTask as BuildStructureTask);
+        else if (taskType == typeof(LogisticsTasks)) TaskManager.QueueTask(ActiveTask as LogisticsTasks);
+        else if (taskType == typeof(MiningTasks)) TaskManager.QueueTask(ActiveTask as MiningTasks);
+        else { throw new Exception("task had no type"); }*/
+
+        TaskManager.QueueTask(ActiveTask);
+        ActiveTask.rover = null;
+        ActiveTask = null;
         JobQueue.Clear();
         JobStack.Clear();
     }
+
+    public void TaskFinished()
+    {  
+        ActiveTask = null;
+        JobQueue.Clear();
+        JobStack.Clear();
+    }
+
 
     // Actions //
 
@@ -92,9 +149,7 @@ public class Rover
     }
 
 
-    // Modules //
-
-    public RoverModule Module = RoverModule.None;
+    // Modules // 
 
     public void RemoveModule()
     {

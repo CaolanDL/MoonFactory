@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoverManager : MonoBehaviour
 {
-    public List<Rover> Rovers = new();
+    public static List<Rover> Rovers = new();
 
     public GameObject roverDisplayObjectPrefab;
 
@@ -15,7 +15,7 @@ public class RoverManager : MonoBehaviour
         MakeSingleton();
     } 
 
-    public void TickRovers()
+    public static void TickRovers()
     {
         foreach (var rover in Rovers)
         {

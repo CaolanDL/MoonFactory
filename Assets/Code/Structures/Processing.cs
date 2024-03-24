@@ -27,14 +27,14 @@ public class Crusher : Machine
 
     public override void OnBeginCrafting()
     {
-        displayObject.SetLoopingAnimation("Crushing");
-        displayObject.PlayParticleEffect("CrushingParticles");
+        DisplayObject.SetLoopingAnimation("Crushing");
+        DisplayObject.PlayParticleEffect("CrushingParticles");
     }
 
     public override void OnStopCrafting() 
     {
-        displayObject.SetLoopingAnimation("Idle");
-        displayObject.StopParticleEffect("CrushingParticles");
+        DisplayObject.SetLoopingAnimation("Idle");
+        DisplayObject.StopParticleEffect("CrushingParticles");
     }
 }
 
@@ -66,11 +66,11 @@ public class MagneticSeperator : Machine
 
     public override void OnBeginCrafting()
     { 
-        displayObject.PlayParticleEffect("BeltParticles");
+        DisplayObject.PlayParticleEffect("BeltParticles");
     }
 
     public override void OnStopCrafting()
     { 
-        displayObject.StopParticleEffect("BeltParticles");
+        DisplayObject.StopParticleEffect("BeltParticles");
     }
 }

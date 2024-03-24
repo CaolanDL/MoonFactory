@@ -3,6 +3,7 @@ using Unity.Mathematics;
 
 using ExtensionMethods;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.Requests;
 
 namespace Logistics
 {
@@ -78,6 +79,10 @@ namespace Logistics
 
         public Inventory inputInventory;
         public Inventory storageInventory;
+
+        public bool isRequestor;
+        public bool isSupplier;
+        public ResourceData targetResource;
 
         public override void OnConstructed()
         {  

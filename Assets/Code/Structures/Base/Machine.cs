@@ -12,11 +12,11 @@ public class Machine : Structure
 
     public override void OnInitialise()
     {
-        InputInventories = new Inventory[structureData.inputs.Count];
-        OutputInventories = new Inventory[structureData.outputs.Count];
+        InputInventories = new Inventory[StructureData.inputs.Count];
+        OutputInventories = new Inventory[StructureData.outputs.Count];
 
-        for (int i = 0; i < structureData.inputs.Count; i++) { InputInventories[i] = new(); }
-        for (int i = 0; i < structureData.outputs.Count; i++) { OutputInventories[i] = new(); } 
+        for (int i = 0; i < StructureData.inputs.Count; i++) { InputInventories[i] = new(); }
+        for (int i = 0; i < StructureData.outputs.Count; i++) { OutputInventories[i] = new(); } 
     }
 
     public override void OnClicked(Vector3 mousePosition)
@@ -30,7 +30,7 @@ public class Machine : Structure
 
     public override void ConnectOuputs()
     {
-        foreach (var output in structureData.outputs)
+        foreach (var output in StructureData.outputs)
         {
             var offsetPosition = output.position.Rotate(rotation) + position;
             var offsetRotation = output.rotation.Rotate(rotation);
@@ -109,7 +109,7 @@ public class Machine : Structure
 
     public bool TryOutputItem(ResourceData resource, int outputIndex)
     {
-        return TryOutputItem(resource, OutputInventories[outputIndex], structureData.outputs[outputIndex]);
+        return TryOutputItem(resource, OutputInventories[outputIndex], StructureData.outputs[outputIndex]);
     }
 
     public bool TryOutputAnything(int outputIndex)
@@ -140,11 +140,11 @@ public class Machine : Structure
 
         relativeInputTransform.position = relativeInputTransform.position.Rotate((sbyte)-rotation);
 
-        foreach (var input in structureData.inputs)
+        foreach (var input in StructureData.inputs)
         {
             if (input.position.Equals(relativeInputTransform.position))
             {
-                invIndex = structureData.inputs.IndexOf(input);
+                invIndex = StructureData.inputs.IndexOf(input);
                 break;
             }
         }
@@ -265,7 +265,7 @@ public class Machine : Structure
 
     public void SetNewCF(CraftingFormula craftingFormula)
     {
-        newCFIndex = (byte)structureData.CraftingFormulas.IndexOf(craftingFormula);
+        newCFIndex = (byte)StructureData.CraftingFormulas.IndexOf(craftingFormula);
     }
 
     void TryUpdateCF()
@@ -274,7 +274,7 @@ public class Machine : Structure
         {
             activeCFIndex = newCFIndex;
 
-            UpdateCFVariables(structureData.CraftingFormulas[activeCFIndex]);
+            UpdateCFVariables(StructureData.CraftingFormulas[activeCFIndex]);
         }
     }
 
@@ -313,7 +313,7 @@ public class Machine : Structure
         if (inventoriesEmpty) return false;
 
         // Get the current crafting formula
-        CraftingFormula cf = structureData.CraftingFormulas[activeCFIndex];
+        CraftingFormula cf = StructureData.CraftingFormulas[activeCFIndex];
 
         if (cf == null) return false;
         if (cf.OutputResources.Count > OutputInventories.Length) { throw new Exception("Crafting formula outputs exceed outputs available on structure"); }
@@ -408,7 +408,7 @@ public class Machine : Structure
     public void FinishCrafting()
     {
         // Get the current crafting formula
-        CraftingFormula cf = structureData.CraftingFormulas[activeCFIndex];
+        CraftingFormula cf = StructureData.CraftingFormulas[activeCFIndex];
 
         // Add output resources to output inventories
         for (int i = 0; i < cf.OutputResources.Count; i++)
@@ -444,7 +444,9 @@ public class Machine : Structure
     bool isInterfaceOpen = false;
     static MachineInterface activeInterface;
 
-    public void OpenInterface(Vector3 mousePosition)
+    //TODO Should really modifiy this to a different creational design pattern. Maybe pass the call off to the structure subclass in question with a virtual method
+    //TODO and let the subclass handle the HUD call. Would prefer not to have a large switch statement in the HUD class to dependently spawn interfaces.
+    public void OpenInterface(Vector3 mousePosition) 
     {
         var success = GameManager.Instance.HUDController.OpenMachineInterface(this, mousePosition);
 

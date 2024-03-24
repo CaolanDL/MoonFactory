@@ -21,6 +21,10 @@ MonoBehaviour:
   size:
     x: 1
     y: 1
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+    quantity: 25
+  CraftingFormulas: []
   inputs:
   - position:
       x: 0
@@ -37,12 +41,3 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}
   - mesh: {fileID: 8654884093285089175, guid: 8626fe02b00017f4ab3ae100f81fa2be, type: 3}
     material: {fileID: 2100000, guid: c9067e89d5229114da459edce48d621d, type: 2}
-  arrowIndicators:
-  - relativePosition: {x: 0, y: 0.1, z: -0.75}
-    rotation: 0
-    size: 0.25
-    IsInput: 1
-  - relativePosition: {x: 0, y: 0.1, z: 0.75}
-    rotation: 0
-    size: 0.25
-    IsInput: 0

@@ -3,55 +3,73 @@ using RoverJobs;
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEngine;
 
 public class TaskManager
 {
-    public static List<Task> allTasks;
+    public static LinkedList<Task> AllTasks = new();
 
-    public static List<ConstructionTask> constructionTasks;
+    //public static LinkedList<ConstructionTasks> ConstructionTasks = new();
 
-    public static List<LogisticsTask> logisticsTasks;
+    public static LinkedList<LogisticsTasks> LogisticsTasks = new();
 
-    public static List<MiningTask> miningTasks;
+    public static LinkedList<MiningTasks> MiningTasks = new();
 
     public TaskManager()
     {
-        GameManager.OnGameExit += () =>
-        {
-            allTasks.Clear();
-            constructionTasks.Clear();
-            logisticsTasks.Clear();
-            miningTasks.Clear();
-        };
+        GameManager.OnGameExit += OnGameExit;
     }
 
-    static Type ConstructionTaskType = typeof(ConstructionTask);
-    static Type LogisticsTaskType = typeof(LogisticsTask);
-    static Type MiningTaskType = typeof(MiningTask);
-
-    public static void AddTask(Task task)
+    void OnGameExit()
     {
-        allTasks.Add(task);
+        AllTasks.Clear();
+        ConstructionTasks.Clear();
+        LogisticsTasks.Clear();
+        MiningTasks.Clear();
+        GameManager.OnGameExit -= OnGameExit;
+    }
+     
+    private static readonly Type ConstructionTaskType = typeof(ConstructionTasks);
+    private static readonly Type LogisticsTaskType = typeof(LogisticsTasks);
+    private static readonly Type MiningTaskType = typeof(MiningTasks);
+
+    public static void QueueTask(Task task)
+    {
+        AllTasks.AddLast(task);
+
+        var taskType = task.GetType();
+
+        if (taskType.IsSubclassOf(ConstructionTaskType))
+        {
+            ConstructionTasks.QueueTask((ConstructionTasks)task);
+        }
+        else if (taskType == LogisticsTaskType)
+        {
+            //LogisticsTasks.Add((LogisticsTask)task);
+        }
+        else if (taskType == MiningTaskType)
+        {
+            //MiningTasks.Add((MiningTask)task);
+        }
+    } 
+
+    public static void CancelTask(Task task)
+    {
+        Task.Pool.Remove(task);
 
         var taskType = task.GetType();
 
         if (taskType == ConstructionTaskType)
         {
-            constructionTasks.Add((ConstructionTask)task);
-        }
-        else if (taskType == LogisticsTaskType)
-        {
-            logisticsTasks.Add((LogisticsTask)task);
-        }
-        else if (taskType == MiningTaskType)
-        {
-            miningTasks.Add((MiningTask)task);
+            global::ConstructionTasks.CancelTask((ConstructionTasks)task);
         }
     }
 }
 
 public class Task
 {
+    public static LinkedList<Task> Pool { get => TaskManager.AllTasks; }
+
     public Rover rover;
 
     public bool isComplete = false;
@@ -60,65 +78,113 @@ public class Task
 
     public void EnqueueJob(Job job)
     {
-        rover.JobQueue.Enqueue(job);
+        rover.EnqueueJob(job);
     }
 
     public void EnqueueJobs(List<Job> jobs)
     {
         foreach (var job in jobs)
         {
-            rover.JobQueue.Enqueue(job);
+            EnqueueJob(job);
         }
     }
 }
 
-// Construction Tasks
-public class ConstructionTask : Task { }
+// Debugging Tasks
 
-public class BuildStructure : ConstructionTask
+public class DebuggingTask : Task { }
+
+public class AutoPathfind : DebuggingTask
 {
-    public int2 ghostLocation;
-    public StructureData structureData;
-
-    public BuildStructure(StructureGhost ghost)
-    {
-        this.ghostLocation = ghost.position;
-        this.structureData = ghost.structureData;
-    }
-
     public override void BuildJobs()
     {
+        var origin = (int2)rover.SmallTransform;
+        var destination = (int2)rover.SmallTransform + new int2(20, 20);
+        var path = PathFinder.FindPath(origin, destination);
+
+        if(path == null) { rover.TaskFailed(); Debug.Log("Auto Path Failed"); return; }
+
         List<Job> jobs = new List<Job>
-        { 
+        {
+             new TraversePath(path) 
         };
         EnqueueJobs(jobs);
     }
 }
 
-public class DemolishStructure : ConstructionTask
+
+// Construction Tasks
+public class ConstructionTasks : Task
+{
+    public static LinkedList<ConstructionTasks> constructionTasks = new();  //{ get => TaskManager.ConstructionTasks; } // Temporarily Mapped to Task Manager, should be migrated to be self contained.
+
+    public static void QueueTask(ConstructionTasks constructionTask)
+    {
+        constructionTasks.AddLast(constructionTask); 
+    }
+
+    public static ConstructionTasks PopTask()
+    {
+        if(constructionTasks.Count == 0) return null; 
+        var task = constructionTasks.First;
+        constructionTasks.RemoveFirst();
+        return task.Value;
+    }
+
+    public static void CancelTask(ConstructionTasks constructionTask)
+    {
+        constructionTasks.Remove(constructionTask);
+    }
+
+    public static void Clear()
+    {
+
+    }
+}
+
+public class BuildStructureTask : ConstructionTasks
+{
+    StructureGhost ghost;
+
+    public BuildStructureTask(StructureGhost ghost)
+    {
+        this.ghost = ghost;
+    }
+
+    public override void BuildJobs()
+    {
+        List<Job> jobs = new()
+        {
+            new CollectAndDeliverResources(ghost.structureData.requiredResources, ghost.position),
+            //new BuildStructureJob(ghost.position),
+        };
+        EnqueueJobs(jobs);
+    }
+}
+
+public class DemolishStructureTask : ConstructionTasks
 {
     public int2 structureLocation;
     public StructureData structureData;
 }
 
 // Logistics Tasks
-public class LogisticsTask : Task { }
+public class LogisticsTasks : Task { }
 
-public class HopperRequest : LogisticsTask
+public class HopperRequestTask : LogisticsTasks
 {
 
 }
 
-public class ResearchSampleRequest : LogisticsTask
+public class ResearchSampleRequestTask : LogisticsTasks
 {
 
 }
 
 // Mining Tasks
-public class MiningTask : Task { }
+public class MiningTasks : Task { }
 
-public class DestroyMeteor : MiningTask
+public class DestroyMeteorTask : MiningTasks
 {
 
 }
-

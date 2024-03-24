@@ -30,7 +30,7 @@ public class MachineInterface : ModularInterface
     { 
         this.machine = _machine; 
 
-        structureData = machine.structureData;
+        structureData = machine.StructureData;
 
         SetDetails(structureData.sprite, structureData.screenname, structureData.description);
 

@@ -5,14 +5,21 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Profiling;
 
+
+//! MoonFactory
+// This GameManager is effectively Main running as a monobehavior.
+
+
+
+
 public static class DevFlags
 {
 #if UNITY_EDITOR
 
     public static bool SkipMainMenu = true;
-    public static bool Benchmark = true; 
-    public static bool AutoSpawnRover = true;
-    public static bool RoverTaskOverrideToPathfind = true;
+    public static bool AutoBenchmark = true; 
+    public static bool AutoSpawnRover = false;
+    public static bool RoverTaskOverrideToPathfind = false;
 
 #else
 
@@ -75,9 +82,9 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         #if UNITY_EDITOR
-        if(DevFlags.Benchmark == true) { CreateNewGame("DevGame"); BuildCPUBenchmark(64) ; return; }
+        if(DevFlags.AutoBenchmark == true) { CreateNewGame("DevGame"); DebugBuildBenchmark() ; return; }
 
-        if (DevFlags.AutoSpawnRover) { CreateNewGame("DevGame"); AutoSpawnRover(); return; }
+        if (DevFlags.AutoSpawnRover) { CreateNewGame("DevGame"); DebugSpawnRover(); return; }
 
         if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); return; }
 #endif
@@ -198,8 +205,11 @@ public class GameManager : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    void BuildCPUBenchmark(int width)
+    public void DebugBuildBenchmark()
     {
+        int width = 126; 
+        int offset = 12;
+
         StructureData debugOutput = GetStructureData("DebugOutput");
 
         StructureData conveyor = GetStructureData("Conveyor");
@@ -208,28 +218,32 @@ public class GameManager : MonoBehaviour
 
         StructureData magSep = GetStructureData("MagneticSeperator");
 
+        StructureData hopper = GetStructureData("Hopper");
 
         StructureData GetStructureData(string name) { return GlobalData.structures.Find(structure => structure.name == name); } 
 
         for (int x = 0; x < width; x += 2)
         {
-            var y = 0;
+            var y = offset;
+
             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, debugOutput); y++;
 
             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
 
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, crusher); y++;
+            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, hopper); y++;
 
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
+            /* ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, crusher); y++;
 
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, magSep); y++;
+             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
 
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
+             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, magSep); y++;
+
+             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
+             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;*/
         }
     }
 
-    void AutoSpawnRover()
+    public void DebugSpawnRover()
     {
         RoverManager.SpawnNewRover(new int2(0,0));
     }

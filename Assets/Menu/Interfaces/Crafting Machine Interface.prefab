@@ -515,7 +515,7 @@ GameObject:
   - component: {fileID: 3588644345634713699}
   - component: {fileID: 194164929082248141}
   m_Layer: 5
-  m_Name: Machine Interface
+  m_Name: Crafting Machine Interface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

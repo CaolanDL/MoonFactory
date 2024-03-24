@@ -1,23 +1,22 @@
 using ExtensionMethods;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Unity.Mathematics;
 using UnityEngine;
 
 public abstract class Structure : Entity
 {
-    public static List<Structure> structures = new List<Structure>();
+    public static List<Structure> Structures = new List<Structure>();
 
-    public StructureData structureData;
+    public StructureData StructureData; 
 
-    private string name { get; }
-
-    public DisplayObject displayObject = null;
+    public DisplayObject DisplayObject = null;
 
     public void Initialise()
     {
-        base.size = new DataStructs.byte2(structureData.size.x, structureData.size.y);
+        base.size = new DataStructs.byte2(StructureData.size.x, StructureData.size.y);
         OnInitialise();
     }
 
@@ -28,18 +27,12 @@ public abstract class Structure : Entity
 
     public static Structure GetStructure(int2 position)
     {
-        foreach (var structure in structures)
-        {
-            if (structure == null) continue;
-            if (structure.position.Equals(position)) return structure;
-        }
-
-        return null;
+        return Structures.Where(structure => structure != null).FirstOrDefault(structure => structure.position.Equals(position));
     }
 
     public static void TickAllStructures()
     {
-        foreach (var structure in structures)
+        foreach (var structure in Structures)
         {
             structure.Tick();
         }
@@ -47,21 +40,25 @@ public abstract class Structure : Entity
 
     public static void FrameUpdateAllStructures()
     {
-        foreach (var structure in structures)
+        foreach (var structure in Structures)
         {
             structure.FrameUpdate();
         }
     }
 
+    public static Action<Structure> StructureConstructed;
+
     public void Constructed()
     {
-        GameObject newDisplayGameObject = UnityEngine.Object.Instantiate(structureData.displayObject, position.ToVector3(), rotation.ToQuaternion(), GameManager.Instance.transform);
+        GameObject newDisplayGameObject = UnityEngine.Object.Instantiate(StructureData.displayObject, position.ToVector3(), rotation.ToQuaternion(), GameManager.Instance.transform);
 
-        displayObject = newDisplayGameObject.GetComponent<DisplayObject>();
+        DisplayObject = newDisplayGameObject.GetComponent<DisplayObject>();
 
         ConnectOuputs();
 
         OnConstructed();
+
+        StructureConstructed?.Invoke(this);
     }
 
     public void Demolished()
@@ -140,11 +137,11 @@ public static class StructureFactory
     {
         Structure newStructure = (Structure)Activator.CreateInstance(sTypeRegistry[structureData.name]);
 
-        newStructure.structureData = structureData;
+        newStructure.StructureData = structureData;
 
         newStructure.Initialise();
 
-        Structure.structures.Add(newStructure);
+        Structure.Structures.Add(newStructure);
 
         return newStructure;
     }

@@ -4,6 +4,8 @@ public class StructureGhost : Entity
 {
     public StructureData structureData;
 
+    private BuildStructureTask buildTask;
+
     public StructureGhost(StructureData structureData)
     {
         this.structureData = structureData;
@@ -11,7 +13,14 @@ public class StructureGhost : Entity
 
     public void OnPlaced()
     {
-        TaskManager.AddTask(new BuildStructure(this));
+        buildTask = new BuildStructureTask(this); 
+        ConstructionTasks.QueueTask(buildTask); 
+    }
+
+    public void OnCanceled()
+    {
+        ConstructionTasks.CancelTask(buildTask);
+        buildTask = null; 
     }
 
     public void FinishConstruction()
@@ -24,7 +33,7 @@ public class StructureGhost : Entity
 
         worldGrid.TryAddEntity(newStructure, position, rotation);
 
-        GameManager.Instance.ConstructionManager.ghosts.Remove(this);
+        GameManager.Instance.ConstructionManager.Ghosts.Remove(this);
 
         newStructure.Constructed();
     }

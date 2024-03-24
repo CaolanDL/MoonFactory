@@ -99,36 +99,46 @@ namespace ExtensionMethods
 
     public static class SbyteRotationConversions
     {
+        static class ByteRotationInt2s
+        {
+            public static int2 Zero = new int2(0, 1);
+            public static int2 One = new int2(1, 0);
+            public static int2 Two = new int2(0, -1);
+            public static int2 Three = new int2(-1, 0);
+        }
+
         public static int2 ToInt2(this sbyte i)
         {
             switch (i)
             {
                 case 0:
-                    return new int2(0, 1);
+                    return ByteRotationInt2s.Zero;
                 case 1:
-                    return new int2(1, 0);
+                    return ByteRotationInt2s.One;
                 case 2:
-                    return new int2(0, -1);
+                    return ByteRotationInt2s.Two;
                 case 3:
-                    return new int2(-1, 0);
+                    return ByteRotationInt2s.Three; 
                 default:
-                    return new int2(0, 0);
+                    return ByteRotationInt2s.Zero;
             }
         }
 
-        static Quaternion byteQuaternionZero = Quaternion.Euler(0, 0, 0);
-        static Quaternion byteQuaternionOne = Quaternion.Euler(0, 90, 0);
-        static Quaternion byteQuaternionTwo = Quaternion.Euler(0, 180, 0);
-        static Quaternion byteQuaternionThree = Quaternion.Euler(0, 270, 0); 
-
+        static class ByteQuaterions
+        {
+            public static Quaternion Zero = Quaternion.Euler(0, 0, 0);
+            public static Quaternion One = Quaternion.Euler(0, 90, 0);
+            public static Quaternion Two = Quaternion.Euler(0, 180, 0);
+            public static Quaternion Three = Quaternion.Euler(0, 270, 0);
+        }  
         public static Quaternion ToQuaternion(this sbyte i)
         {
             return i switch
             {
-                0 => byteQuaternionZero,
-                1 => byteQuaternionOne,
-                2 => byteQuaternionTwo,
-                3 => byteQuaternionThree,
+                0 => ByteQuaterions.Zero,
+                1 => ByteQuaterions.One,
+                2 => ByteQuaterions.Two,
+                3 => ByteQuaterions.Three,
                 _ => throw new NotImplementedException(),
             };
         }
@@ -191,7 +201,10 @@ namespace ExtensionMethods
     {
         public static float DistanceBetween(float2 origin, float2 target)
         {
-            return Mathf.Sqrt((origin.x * origin.x) + (target.y * target.y));
+            var a = origin.x - target.x;
+            var b = origin.y - target.y;
+
+            return Mathf.Sqrt((a * a) + (b * b));
         }
     }
 }

@@ -1,54 +1,10 @@
 ﻿using ExtensionMethods;
 using Logistics;
-using System.Collections.Generic;
+using System;
+using System.Collections.Generic; 
 using System.Linq;
-using System.Numerics;
 using Unity.Mathematics;
-using UnityEngine;
-
-public class PathFinder
-{
-    public static Path FindPath(int2 origin, int2 destination)
-    {
-        // A* Algorith here
-
-        return new Path(new int2[] { origin, destination }, 2); // Just return a path that only consists of the start and end nodes.
-    }
-}
-
-public class Path
-{
-    public int2[] nodes;
-
-    public int length;
-
-    public Path(int2[] nodes, int length)
-    {
-        this.nodes = nodes;
-        this.length = length;
-    }
-
-    public void CompressPath()
-    {
-        List<int2> newPath = nodes.ToList();
-
-        for (int i = 0; i < newPath.Count; i++)
-        {
-            if (i == 0) { continue; }
-
-            if (newPath[i].x == newPath[i - 1].x)
-            {
-                newPath.RemoveAt(i);
-            }
-            if (newPath[i].y == newPath[i - 1].y)
-            {
-                newPath.RemoveAt(i);
-            }
-        }
-
-        nodes = newPath.ToArray();
-    }
-}
+using UnityEngine; 
 
 namespace RoverJobs
 {
@@ -60,186 +16,293 @@ namespace RoverJobs
 
         public bool isComplete = false;
 
+        public Job() { }
+
         public void Tick()
-        {
+        { 
             lifeSpan++;
             OnTick();
         }
 
-        public virtual void OnTick()
-        {
+        public virtual void OnStart() { }
 
-        }
+        public virtual void OnTick() { }
 
-        public void StackJob(Job job)
-        {
-            rover.JobStack.Push(job);
-        }
+        public void StackJob(Job job) => rover.StackJob(job);
+        public void PopJob() => rover.PopJob();
 
-        public void QueueJob(Job type)
+        public void EnqueueJob(Job job) => rover.EnqueueJob(job);
+
+        public void FailTask()
         {
-            rover.JobQueue.Enqueue(type);
+            rover.TaskFailed();
         }
     }
+
 
     public class FetchTask : Job
     {
         public FetchTask() { }
 
-        public override void OnTick()
+        public override void OnStart()
         {
-            rover.JobStack.Pop();
+            if (rover == null) { throw new System.Exception("Feath task tried to tick with null rover"); } 
 
-            if (DevFlags.RoverTaskOverrideToPathfind)
+/*            if (DevFlags.RoverTaskOverrideToPathfind)
             {
-                StackJob(new FindPath((int2)rover.smallTransform, (int2)rover.smallTransform + new int2(0, 20)));
+                rover.ActiveTask = new AutoPathfind()
+                {
+                    rover = rover,
+                };
+                rover.ActiveTask?.BuildJobs();
+                Debug.Log($"{rover.ActiveTask}");
                 return;
-            }
+            }*/
 
             switch (rover.Module)
             {
                 case RoverModule.None: break;
 
                 case RoverModule.Construction:
-                    rover.activeTask = TaskManager.constructionTasks.Last();
+                    rover.ActiveTask = ConstructionTasks.PopTask();
+                    //Debug.Log($"{rover.ActiveTask}");
                     break;
 
                 case RoverModule.Logistics:
-                    rover.activeTask = TaskManager.logisticsTasks.Last();
+                    //rover.ActiveTask = TaskManager.LogisticsTasks.Last();
                     break;
 
                 case RoverModule.Mining:
-                    rover.activeTask = TaskManager.miningTasks.Last();
+                    //rover.ActiveTask = TaskManager.MiningTasks.Last();
                     break;
             }
 
-            if (rover.activeTask != null)
+            if(rover.ActiveTask != null)
             {
-                rover.activeTask.BuildJobs();
+                rover.ActiveTask.rover = rover;
+                rover.JobStack.Pop();
+                rover.ActiveTask?.BuildJobs();
             }
         }
     }
 
+
     public class TraversePath : Job
     {
-        public Path path;
+        private Path _path;
 
-        ushort currentNodeIndex = 0;
+        private float2 _currentNodeWorldPosition;
+        private float2 _nextNodeWorldPosition;
 
-        float2 currentNodeWorldPosition;
-        float2 nextNodeWorldPosition;
+        private int _currentNodeIndex = 0;
 
-        float interpolant = 0;
+        private float _interpAlpha = 0;
+        private float _distanceToNextNode = 0;
 
-        float distanceToNextNode = 0;
+        private bool _mustFindNewPath = false;
 
         public TraversePath(Path path)
         {
-            this.path = path;
+            this._path = path;
+        }
 
-            currentNodeWorldPosition = path.nodes[0];
-            nextNodeWorldPosition = path.nodes[1];
+        public override void OnStart()
+        {
+            UpdateRotation();
 
-            distanceToNextNode = Float2Extensions.DistanceBetween(currentNodeWorldPosition, nextNodeWorldPosition);
+            if (_path.length < 2) { rover.TaskFailed(); return; }
+
+            _currentNodeIndex = -1;
+            AdvanceNode();
+
+            Structure.StructureConstructed += EvaluatePathInterruption; // Subscribe to structure build completion for evaluating path interuption.
+        }
+
+        private void EvaluatePathInterruption(Structure structure)
+        {
+            if (_path.nodes.Contains(structure.position)) _mustFindNewPath = true;
+            else _mustFindNewPath = false;
+        }
+
+        private void FindNewPath()
+        {
+            _path = PathFinder.FindPath(_path.nodes[_currentNodeIndex], _path.nodes.Last());
+            _currentNodeIndex = -1;
+            AdvanceNode();
+            _mustFindNewPath = false;
         }
 
         public override void OnTick()
         {
             UpdatePosition();
-        }
 
-        void UpdatePosition()
-        {
-            interpolant += Rover.moveSpeed / distanceToNextNode;
+            var lastNode = _path.nodes.Last();
+            Graphics.DrawMesh(GlobalData.Instance.Gizmo, new Vector3(lastNode.x, 0.25f, lastNode.y), quaternion.identity, GlobalData.Instance.mat_GhostBlocked, 0);
 
-            rover.position = (currentNodeWorldPosition * interpolant) + (nextNodeWorldPosition * (1 - interpolant)); // Lerp between current node and next node;
-
-            if (interpolant >= 1)
+            if (_interpAlpha >= 1)
             {
                 AdvanceNode();
-            } 
+
+                if (_mustFindNewPath)
+                {
+                    FindNewPath();
+                }
+            }
         }
 
-        void AdvanceNode()
+        private void UpdatePosition()
         {
-            if(currentNodeIndex + 1 >= path.length) { Finished(); return; }
+            _interpAlpha += Rover.MoveSpeed * 0.02f / _distanceToNextNode;
 
-            currentNodeWorldPosition = nextNodeWorldPosition;
-            nextNodeWorldPosition = path.nodes[currentNodeIndex + 1];
-
-            distanceToNextNode = Float2Extensions.DistanceBetween(currentNodeWorldPosition, nextNodeWorldPosition);
-
-            currentNodeIndex++; 
+            rover.position = (_nextNodeWorldPosition * _interpAlpha) + (_currentNodeWorldPosition * (1 - _interpAlpha)); // Lerp between current node and next node; 
         }
 
-        void Finished()
+        private void UpdateRotation()
+        {
+            int2 difference = _path.nodes[_currentNodeIndex] - _path.nodes[_currentNodeIndex + 1];
+
+            var rotation = Vector2.Angle(difference.ToVector2(), Vector2.down);
+
+            rover.rotation = (ushort)rotation;
+
+            rover.UpdateDoRotation();
+        }
+
+        private void AdvanceNode()
+        {
+            _currentNodeIndex++;
+
+            _interpAlpha = 0;
+
+            if (_currentNodeIndex + 1 == _path.length) { Finished(); return; }
+
+            _currentNodeWorldPosition = _path.nodes[_currentNodeIndex];
+            _nextNodeWorldPosition = _path.nodes[_currentNodeIndex + 1];
+
+            _distanceToNextNode = Float2Extensions.DistanceBetween(_currentNodeWorldPosition, _nextNodeWorldPosition);
+
+            UpdateRotation();
+        }
+
+        private void Finished()
         {
             rover.JobStack.Pop();
+
+            // Unsubscribe events
+            Structure.StructureConstructed -= EvaluatePathInterruption;
         }
     }
 
+
     public class CollectAndDeliverResources : Job
     {
-        SortedList<float, Hopper> foundHoppers = new SortedList<float, Hopper>();
+        private List<ResourceQuantity> _resourcesToCollect;
+        private int2 destination;
 
-        List<int2[]> pathSegments = new();
+        private SortedList<float, Hopper> _foundHoppers = new SortedList<float, Hopper>(); 
+        private LinkedList<Path> _superPath = new();
 
-        List<ResourceQuantity> resourceQuantities = new();
+        bool finished = false;
 
-        public CollectAndDeliverResources(ResourceQuantity[] resourceQuantities, int2 destination)
+        public CollectAndDeliverResources(IEnumerable<ResourceQuantity> resourceQuantities, int2 destination)
         {
-            this.resourceQuantities = resourceQuantities.ToList();
+            this._resourcesToCollect = resourceQuantities.ToList();
+            this.destination = destination;
+        }
+
+        public override void OnStart()
+        {
+            if (!TryFindHoppers()) { FailTask(); return; }
+
+            _superPath = PathFinder.FindSuperPath((int2)rover.position, _foundHoppers.Values.Select(hopper => hopper.position).ToArray());
+
+            if(_superPath == null || _superPath.Count == 0) { FailTask(); return; }
+
+            _superPath.AddLast(PathFinder.FindPathToAnyFreeNeighbor(_superPath.Last().nodes.Last(), destination));
+
+            if (_superPath.Count < 2) { FailTask(); return; }  
         }
 
         public override void OnTick()
         {
-            if (!TryFindHoppers()) return;
+            Job job;
 
-            TryFindSuperPath();
-        }
-
-        void TryFindSuperPath() // Should return bool
-        {
-            int2 nodeLocation = (int2)rover.position;
-
-            for(int i = 0; i < foundHoppers.Count; i++)
+            if (_superPath.Count > 0)
             {
-                Path path = PathFinder.FindPath(nodeLocation, foundHoppers.Values[i].position);
+                job = new CollectResource(_superPath.First().nodes.Last());
+                StackJob(job);
 
-                if(path.length > 8) { path.CompressPath(); } // Should add a static variable. Needs perf test to determine path length where compression becomes beneficial.
-
-
+                var path = _superPath.First();
+                _superPath.RemoveFirst();
+                job = new TraversePath(path);
+                StackJob(job);
+            }
+            else if (!finished)
+            {
+                job = new DeliverResource(destination);
+                finished = true;
+            }
+            else
+            {
+                PopJob(); return; 
             }
         }
 
-        bool TryFindHoppers()
+/*        private List<Path> FindSuperPath(int2 origin, int2[] destinations)
+        {
+            List<Path> superPath = new();
+
+            int2 lastDestination = origin;
+
+            for (int i = 0; i < destinations.Length; i++)
+            {
+                Path subPath = PathFinder.FindPathToAnyFreeNeighbor(lastDestination, destinations[i]);
+
+                if (subPath == null) { return null; } // No path found;
+
+                if (subPath.length > 8) { subPath.Compress(); } // Should add a static variable. Needs perf test to determine path length where compression becomes beneficial. 
+
+                lastDestination = destinations[i];
+
+                superPath.Add(subPath);
+            } 
+
+            return superPath;
+        }*/ // Exported to Pathfinder
+
+        private bool TryFindHoppers()
         {
             bool foundResourceInHopper = false;
-
-            float2 hopperRoverOffset;
-
-            float hopperDistanceMagnitude;
-
-            foreach (var resourceQuantity in resourceQuantities)
+            Dictionary<ResourceData, int> remaingResourcesToFind = new();
+            foreach(var rq in _resourcesToCollect)
             {
-                foreach (var hopper in Hopper.pool)
+                remaingResourcesToFind.Add(rq.resource, rq.quantity);
+            }
+
+            foreach (ResourceQuantity rq in _resourcesToCollect)
+            {
+                foreach (Hopper hopper in Hopper.pool)
                 {
-                    if (hopper.storageInventory.GetQuantityOf(resourceQuantity.resource) >= resourceQuantity.quantity)
+                    var quantityInHopper = hopper.storageInventory.GetQuantityOf(rq.resource);
+
+                    if (quantityInHopper > 0)
                     {
-                        if (foundHoppers.ContainsValue(hopper))
-                        {
-                            foundResourceInHopper = true;
-                            break;
-                        }
+                        /*                        if (_foundHoppers.ContainsValue(hopper)) // Break if Hopper has already been found
+                                                {
+                                                    foundResourceInHopper = true; 
+                                                    break; 
+                                                } */  
 
-                        hopperRoverOffset = rover.position - hopper.position;
+                        if (PathFinder.FindPathToAnyFreeNeighbor((int2)rover.position, hopper.position) == null) { continue; } // Hopper not reachable
 
-                        hopperDistanceMagnitude = (hopperRoverOffset.x * hopperRoverOffset.x) + (hopperRoverOffset.y * hopperRoverOffset.y);
+                        float2 hopperRoverOffset = rover.position - hopper.position; 
+                        float hopperDistanceMagnitude = (hopperRoverOffset.x * hopperRoverOffset.x) + (hopperRoverOffset.y * hopperRoverOffset.y);
 
-                        foundHoppers.Add(hopperDistanceMagnitude, hopper);
-
+                        if (!_foundHoppers.ContainsValue(hopper)) _foundHoppers.Add(hopperDistanceMagnitude, hopper); 
                         foundResourceInHopper = true;
-                        break;
+
+                        remaingResourcesToFind[rq.resource] -= quantityInHopper;
+                        if (remaingResourcesToFind[rq.resource] <= 0) { remaingResourcesToFind.Remove(rq.resource); break; } 
                     }
                 }
 
@@ -247,20 +310,86 @@ namespace RoverJobs
                 {
                     return false;
                 }
-            }
+            } 
+
+            if(remaingResourcesToFind.Count > 0) { return false; }
 
             return true;
         }
     }
 
+    public class TurnTowards : Job
+    {
+        private int2 _target;
+
+        public TurnTowards(int2 target)
+        {
+            _target = target;
+        }
+
+        public override void OnStart()
+        {
+            UpdateRotation();
+            PopJob();
+        } 
+
+        private void UpdateRotation()
+        {
+            float2 difference = _target - rover.position;
+
+            var rotation = Vector2.Angle(Vector2.right, new Vector2(difference.x, difference.y));
+
+            rover.rotation = (ushort)rotation;
+
+            rover.UpdateDoRotation();
+        }
+    }
+
+
     public class CollectResource : Job
     {
+        private int2 _target;
 
+        public CollectResource(int2 target)
+        {
+            _target = target;
+        }
+
+        public override void OnStart()
+        { 
+            StackJob(new TurnTowards(_target));
+        }
+
+        public override void OnTick()
+        { 
+            if(lifeSpan > 50 )
+            {
+                PopJob();
+            }
+        } 
     }
+
 
     public class DeliverResource : Job
     {
+        private int2 _target;
 
+        public DeliverResource(int2 target)
+        {
+            _target = target;
+        }
+
+        public override void OnStart()
+        {
+            StackJob(new TurnTowards(_target)); 
+        }
+
+        public override void OnTick()
+        { 
+            if (lifeSpan > 50)
+            {
+                PopJob();
+            }
+        }
     }
 }
-

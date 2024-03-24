@@ -498,9 +498,9 @@ namespace Logistics
                     if (entity.GetType().IsSubclassOf(typeof(Machine)))
                     {
                         var machine = (Machine)entity;
-                        if (machine.structureData.outputs.Count == 0) return false;
+                        if (machine.StructureData.outputs.Count == 0) return false;
 
-                        foreach( var output in machine.structureData.outputs)
+                        foreach( var output in machine.StructureData.outputs)
                         {
                             if (((output).position.Rotate(machine.rotation) + machine.position).Equals( position ))
                             {
@@ -542,17 +542,17 @@ namespace Logistics
 
             if (config == 0)
             {
-                displayObject.SetActiveModel("Default");
+                DisplayObject.SetActiveModel("Default");
                 inputPosition = new int2(0, -1).Rotate(rotation) + position;
             }
             if (config == TurnConfig.LeftTurn)
             {
-                displayObject.SetActiveModel("Left Turn");
+                DisplayObject.SetActiveModel("Left Turn");
                 inputPosition = new int2(0, -1).Rotate((sbyte)(rotation + 1)) + position;
             }
             if (config == TurnConfig.RightTurn)
             {
-                displayObject.SetActiveModel("Right Turn");
+                DisplayObject.SetActiveModel("Right Turn");
                 inputPosition = new int2(0, -1).Rotate((sbyte)(rotation - 1)) + position    ;
             }
         }

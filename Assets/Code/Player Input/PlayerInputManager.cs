@@ -131,7 +131,7 @@ public class PlayerInputManager : MonoBehaviour
                 if (entity.GetType().IsSubclassOf(typeof(Structure)))
                 { 
                     ChangeInputState(InputState.Construction);
-                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((Structure)entity).structureData);
+                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((Structure)entity).StructureData);
                 } 
             }
         }
