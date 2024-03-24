@@ -9,23 +9,23 @@ using UnityEngine.Profiling;
 //! MoonFactory
 // This GameManager is effectively Main running as a monobehavior.
 
-
+// Count LOC at the code directory with PowerShell: dir -Recurse *.cs | Get-Content | Measure-Object -Line
 
 
 public static class DevFlags
 {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 
-    public static bool SkipMainMenu = true;
+    public static bool SkipMainMenu = false;
     public static bool AutoBenchmark = true; 
-    public static bool AutoSpawnRover = false;
+    public static bool AutoSpawnRover = true;
     public static bool RoverTaskOverrideToPathfind = false;
 
-#else
+//#else
 
-    public static bool SkipMainMenu = false; 
+    //public static bool SkipMainMenu = false; 
 
-#endif
+//#endif
 }  
 
 public class GameManager : MonoBehaviour
@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour
 
     // DEVELOPMENT // 
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 
     public void DebugBuildBenchmark()
     {
@@ -248,5 +248,5 @@ public class GameManager : MonoBehaviour
         RoverManager.SpawnNewRover(new int2(0,0));
     }
 
-#endif
+//#endif
 }
