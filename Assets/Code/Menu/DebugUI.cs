@@ -23,9 +23,9 @@ public class DebugUI : MonoBehaviour
 
     private void Awake()
     {
-        #if !UNITY_EDITOR
+/*        #if !UNITY_EDITOR
         Destroy(gameObject);
-        #endif
+        #endif*/
     }
 
     private void Start()

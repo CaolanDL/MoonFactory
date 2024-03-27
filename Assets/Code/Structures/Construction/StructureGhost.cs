@@ -1,6 +1,5 @@
 ﻿using DataStructs;
-using System;
-
+using System; 
 
 public class StructureGhost : Entity
 {

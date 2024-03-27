@@ -120,22 +120,16 @@ public class ConstructionManager
 
         bool blocked = false;
 
-        if (NewGhostData.size.x > 1 && NewGhostData.size.y > 1)
+        //TODO Large structures should be blocked from being built when overlapping other large objects. This will require some thinking and some time.
+        //? You really need to take a little holiday. You are starting to feel the burn-out.
+
+        if (GameManager.Instance.gameWorld.worldGrid.IsEntityAt(ghostGridPosition))
         {
-            (int2 xRange, int2 yRange) occupyRegion = GetOccupyRegion(ghostGridPosition); 
-
-            if (GameManager.Instance.gameWorld.worldGrid.IsEntityInArea(occupyRegion.xRange, occupyRegion.yRange)) blocked = true;  
+            blocked = true;
         }
-        else
-        { 
-            if (GameManager.Instance.gameWorld.worldGrid.IsEntityAt(ghostGridPosition))
-            {
-                blocked = true;
-            }
-        } 
 
 
-        if(blocked)
+        if (blocked)
         {
             activeGhostMaterial = GlobalData.Instance.mat_GhostBlocked;
         }

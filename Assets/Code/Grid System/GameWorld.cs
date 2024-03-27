@@ -11,7 +11,7 @@ public class GameWorld
 {
     public Grid floorGrid = new Grid();
 
-    public Grid worldGrid = new Grid(); 
+    public Grid worldGrid = new Grid();
 
     private TerrainGenerator terrainGenerator;
 
@@ -85,10 +85,10 @@ public class GameWorld
 
         FloorTile newFloorTile = new(newTileData);
 
-        if(floorGrid.TryAddEntity(newFloorTile, position, (sbyte)Random.Range(0, 3)) != null)
-        { 
+        if (floorGrid.TryAddEntity(newFloorTile, position, (sbyte)Random.Range(0, 3)) != null)
+        {
             worldGrid.AddLocation(position);
-        } 
+        }
 
         return newFloorTile;
     }
@@ -175,16 +175,16 @@ public class Grid
 
     public Entity TryAddEntity(Entity entity, int2 position, sbyte rotation)
     {
-        if (entity.size.Equals(singleTileSize))
+        if (true || entity.size.Equals(singleTileSize))
         {
             Location location = AddLocation(position);
 
             if (IsEntityAt(position)) return null;
 
-            location.entity = entity; 
+            location.entity = entity;
         }
 
-        else
+/*        else
         {
             for (int x = 0; x < entity.size.x; x++)
             {
@@ -198,8 +198,8 @@ public class Grid
 
                     location.entity = entity;
                 }
-            } 
-        }
+            }
+        }*/
 
         entity.position = position;
 
@@ -263,7 +263,7 @@ public class Grid
     }
 
     public bool IsEntityInRegion(int2 xRange, int2 yRange)
-    { 
+    {
         int xSign = (int)Mathf.Sign(xRange.x - xRange.y);
         int ySign = (int)Mathf.Sign(yRange.x - yRange.y);
 
@@ -315,7 +315,7 @@ public class Location // Size: 17 bytes
     {
         Location[] neighbors = new Location[4];
 
-        Grid grid = Grid.GetGrid(gridId); 
+        Grid grid = Grid.GetGrid(gridId);
 
         neighbors[0] = grid.GetLocationAt(position + Directions.forward);
         neighbors[1] = grid.GetLocationAt(position + Directions.right);
