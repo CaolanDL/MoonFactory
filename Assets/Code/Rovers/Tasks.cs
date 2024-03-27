@@ -72,9 +72,17 @@ public class Task
 
     public Rover rover;
 
+    public List<Job> jobs;
+
     public bool isComplete = false;
 
-    public virtual void BuildJobs() { }
+    public void BuildJobs()
+    {
+        if(jobs != null)
+        {
+            EnqueueJobs(jobs);
+        }
+    }
 
     public void EnqueueJob(Job job)
     {
@@ -92,24 +100,24 @@ public class Task
 
 // Debugging Tasks
 
-public class DebuggingTask : Task { }
+public class DebuggingTask : Task { } 
+
 
 public class AutoPathfind : DebuggingTask
 {
-    public override void BuildJobs()
+    public AutoPathfind()
     {
         var origin = (int2)rover.SmallTransform;
         var destination = (int2)rover.SmallTransform + new int2(20, 20);
-        var path = PathFinder.FindPath(origin, destination);
+        var path = PathFinder.FindPath(origin, destination); 
 
-        if(path == null) { rover.TaskFailed(); Debug.Log("Auto Path Failed"); return; }
+        if (path == null) { rover.TaskFailed(); Debug.Log("Auto Path Failed"); return; }
 
-        List<Job> jobs = new List<Job>
+        jobs = new List<Job>
         {
-             new TraversePath(path) 
+             new TraversePath(path)
         };
-        EnqueueJobs(jobs);
-    }
+    } 
 }
 
 
@@ -142,25 +150,26 @@ public class ConstructionTasks : Task
     }
 }
 
-public class BuildStructureTask : ConstructionTasks
-{
-    StructureGhost ghost;
 
+//TODO Modify collect and deliver resources to reserve resources in hoppers.
+//TODO Stretch Goal: This task should attempt to collect the resources necessary to build more than one structure if possible. 
+public class BuildStructureTask : ConstructionTasks
+{ 
+    StructureGhost ghost; 
+     
     public BuildStructureTask(StructureGhost ghost)
     {
         this.ghost = ghost;
-    }
 
-    public override void BuildJobs()
-    {
-        List<Job> jobs = new()
+        jobs = new()
         {
             new CollectAndDeliverResources(ghost.structureData.requiredResources, ghost.position),
-            //new BuildStructureJob(ghost.position),
+            new BuildStructure(ghost),
+            new FinishTask()
         };
-        EnqueueJobs(jobs);
-    }
+    } 
 }
+
 
 public class DemolishStructureTask : ConstructionTasks
 {
@@ -168,21 +177,26 @@ public class DemolishStructureTask : ConstructionTasks
     public StructureData structureData;
 }
 
+
 // Logistics Tasks
 public class LogisticsTasks : Task { }
+
 
 public class HopperRequestTask : LogisticsTasks
 {
 
 }
 
+
 public class ResearchSampleRequestTask : LogisticsTasks
 {
 
 }
 
+
 // Mining Tasks
 public class MiningTasks : Task { }
+
 
 public class DestroyMeteorTask : MiningTasks
 {

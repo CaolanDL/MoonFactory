@@ -82,7 +82,7 @@ namespace Logistics
 
         public bool isRequestor;
         public bool isSupplier;
-        public ResourceData targetResource;
+        public ResourceData requestResource;
 
         public override void OnConstructed()
         {  
@@ -106,8 +106,7 @@ namespace Logistics
         { 
             TransferAnythingRandom(InputInventories[0], OutputInventories[0]);
             TryOutputAnything(0);
-        }
-
+        } 
 
         // This item rendering could be modified to update an array OnItemRecieved and OnItemOutput to reduce per frame overhead
         public override void OnFrameUpdate()

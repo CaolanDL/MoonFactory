@@ -13,19 +13,8 @@ using UnityEngine.Profiling;
 
 
 public static class DevFlags
-{
-//#if UNITY_EDITOR
-
-    public static bool SkipMainMenu = false;
-    public static bool AutoBenchmark = true; 
-    public static bool AutoSpawnRover = true;
-    public static bool RoverTaskOverrideToPathfind = false;
-
-//#else
-
-    //public static bool SkipMainMenu = false; 
-
-//#endif
+{ 
+    public static bool SkipMainMenu = false; 
 }  
 
 public class GameManager : MonoBehaviour
@@ -81,11 +70,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        #if UNITY_EDITOR
-        if(DevFlags.AutoBenchmark == true) { CreateNewGame("DevGame"); DebugBuildBenchmark() ; return; }
-
-        if (DevFlags.AutoSpawnRover) { CreateNewGame("DevGame"); DebugSpawnRover(); return; }
-
+#if UNITY_EDITOR
         if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); return; }
 #endif
 
@@ -202,9 +187,7 @@ public class GameManager : MonoBehaviour
     }
 
     // DEVELOPMENT // 
-
-//#if UNITY_EDITOR
-
+      
     public void DebugBuildBenchmark()
     {
         int width = 126; 
@@ -246,7 +229,5 @@ public class GameManager : MonoBehaviour
     public void DebugSpawnRover()
     {
         RoverManager.SpawnNewRover(new int2(0,0));
-    }
-
-//#endif
+    } 
 }

@@ -7,6 +7,8 @@ public class Path
 {
     public int2[] nodes;
 
+    public int2 trueDestination;
+
     public int length;
 
     public Path(int2[] nodes)
@@ -38,6 +40,10 @@ public class Path
     }
 } 
 
+public class SuperPath
+{ 
+}
+
 
 public static class PathFinder
 {
@@ -57,11 +63,11 @@ public static class PathFinder
 
             if (subPath == null) { return null; } // No path found;
 
-            //if (subPath.length > 8) { subPath.Compress(); } // Should add a static variable. Needs perf test to determine path length where compression becomes beneficial. 
-
-            lastDestination = destinations[i];
+            //if (subPath.length > 8) { subPath.Compress(); } // Should add a static variable. Needs perf test to determine path length where compression becomes beneficial.  s
 
             superPath.AddLast(subPath);
+
+            lastDestination = superPath.Last().nodes.Last();
         }
 
         return superPath;
@@ -73,16 +79,24 @@ public static class PathFinder
 
         Location location = _worldGrid.GetLocationAt(destination);
 
-        var neighbors = location.GetNeighbors(); 
+        var neighbors = location.GetNeighbors();
+
+        Path path;
 
         foreach (var neighbor in neighbors)
         {
             if(neighbor == null) { continue; }
-            if(neighbor.entity == null || neighbor.entity.GetType() != typeof(Structure))
+
+            if(neighbor.entity != null)
             {
-                return FindPath(origin, neighbor.position);
-            }
-        }
+                if(neighbor.entity.GetType() == typeof(Structure)) { continue; }
+                if (neighbor.entity.GetType() != typeof(StructureGhost)) { continue; }
+            } 
+
+            path = FindPath(origin, neighbor.position);
+            path.trueDestination = destination;
+            return path; 
+        } 
 
         return null;
     }
@@ -145,7 +159,7 @@ public static class PathFinder
         path.Add(origin);
         path.Reverse();
 
-        Debug.Log($"path length: {path.Count}");
+        //Debug.Log($"path length: {path.Count}");
 
         return new Path(path.ToArray());
         

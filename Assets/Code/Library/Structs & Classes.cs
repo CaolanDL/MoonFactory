@@ -55,17 +55,17 @@ public struct TinyTransform
 }
 
 /// <summary>
-/// Stores a float2 for position, and a ushort for rotation between 0-359
+/// Stores a float2 for position, and a float for rotation between 0-359
 /// </summary>
 public struct SmallTransform
 {
     [SerializeField] public float2 position; // 8 bytes 
 
-    [SerializeField] private ushort _rotation; // 2 byte
-    public ushort rotation
+    [SerializeField] private float _rotation; // 4 bytes
+    public float rotation
     {
         get { return _rotation; }
-        set { _rotation = (ushort)((value % 360 + 360) % 360); }
+        set { _rotation = ((value+180) % 360 + 360) % 360 - 180; }
     }
 
     public static SmallTransform empty = new SmallTransform();
@@ -76,7 +76,7 @@ public struct SmallTransform
         _rotation = 0;
     }
 
-    public SmallTransform(float2 position, ushort rotation)
+    public SmallTransform(float2 position, short rotation)
     {
         this.position = position;
 

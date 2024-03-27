@@ -11,10 +11,8 @@ public class HUDController : MonoBehaviour
     [SerializeField] private GameObject ScienceMenu; 
 
     [SerializeField] private GameObject MapMenu;
-
-
-    public MachineInterface activeMachineInterface;
-
+     
+    public ModularInterface openInterface; 
 
     private void Start()
     {
@@ -23,20 +21,20 @@ public class HUDController : MonoBehaviour
         //MapMenu.SetActive(false);
     } 
 
-    public bool OpenMachineInterface(Machine machine, Vector3 screenPosition)
+    public bool OpenInterface(GameObject interfacePrefab, Entity entity, Vector3 screenPosition)
     {
-        if(activeMachineInterface != null) { CloseMachineInterface(); }
+        if(openInterface != null) { CloseInterface(); }
 
-        activeMachineInterface = Instantiate(MenuData.Instance.MachineInterface, transform).GetComponent<MachineInterface>();
-        activeMachineInterface.Init(machine, screenPosition + (Vector3.right * 20));
+        openInterface = Instantiate(interfacePrefab, transform).GetComponent<ModularInterface>();
+        openInterface.Init(entity, screenPosition + (Vector3.right * 20));
 
         return true;
     } 
 
-    public void CloseMachineInterface()
+    public void CloseInterface()
     {
-        Destroy(activeMachineInterface.gameObject);
-        activeMachineInterface = null;
+        Destroy(openInterface.gameObject);
+        openInterface = null;
     } 
 
     // Menu Buttons //

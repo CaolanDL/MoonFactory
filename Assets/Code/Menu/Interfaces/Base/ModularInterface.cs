@@ -10,12 +10,16 @@ public class ModularInterface : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI nameText;
 
-    [SerializeField] TextMeshProUGUI descriptionText;
+    [SerializeField] TextMeshProUGUI descriptionText; 
 
     private void Awake()
     {
         Canvas.ForceUpdateCanvases();
     }
+
+    public virtual void Init(Entity entity, Vector3 screenPosition) { }
+
+    public virtual void UpdateUI() { }
      
     public void SetDetails(Sprite sprite, string name, string description)
     {
@@ -28,7 +32,7 @@ public class ModularInterface : MonoBehaviour
     public void CloseInterface()
     {
         OnCloseInterface();
-        GameManager.Instance.HUDController.CloseMachineInterface(); 
+        GameManager.Instance.HUDController.CloseInterface(); 
     }
 
     public virtual void OnCloseInterface()

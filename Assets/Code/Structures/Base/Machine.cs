@@ -442,18 +442,18 @@ public class Machine : Structure
     #region Interface Handling
 
     bool isInterfaceOpen = false;
-    static MachineInterface activeInterface;
+    static ModularInterface activeInterface;
 
     //TODO Should really modifiy this to a different creational design pattern. Maybe pass the call off to the structure subclass in question with a virtual method
     //TODO and let the subclass handle the HUD call. Would prefer not to have a large switch statement in the HUD class to dependently spawn interfaces.
-    public void OpenInterface(Vector3 mousePosition) 
+    public virtual void OpenInterface(Vector3 mousePosition) 
     {
-        var success = GameManager.Instance.HUDController.OpenMachineInterface(this, mousePosition);
+        var success = GameManager.Instance.HUDController.OpenInterface(MenuData.Instance.CraftingMachineInterface, this, mousePosition);
 
         if (success)
         {
             isInterfaceOpen = true;
-            activeInterface = GameManager.Instance.HUDController.activeMachineInterface;
+            activeInterface = GameManager.Instance.HUDController.openInterface;
         }
 
         TryUpdateInterface();
@@ -464,11 +464,11 @@ public class Machine : Structure
         isInterfaceOpen = false;
     }
 
-    void TryUpdateInterface()
+    public virtual void TryUpdateInterface()
     {
         if (isInterfaceOpen)
         {
-            activeInterface.UpdateInventoryElements();
+            activeInterface.UpdateUI();
         }
     }
 

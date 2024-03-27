@@ -181,11 +181,7 @@ public class Grid
 
             if (IsEntityAt(position)) return null;
 
-            location.entity = entity;
-
-            entity.position = position;
-
-            entity.rotation = rotation;
+            location.entity = entity; 
         }
 
         else
@@ -202,12 +198,12 @@ public class Grid
 
                     location.entity = entity;
                 }
-            }
-
-            entity.position = position;
-
-            entity.rotation = rotation;
+            } 
         }
+
+        entity.position = position;
+
+        entity.rotation = rotation;
 
         return entity;
     }
@@ -241,7 +237,53 @@ public class Grid
 
         return false;
     }
-     
+
+    public bool IsEntityInArea(int2 position, int2 size)
+    {
+        return IsEntityInArea(position, size, 0);
+    }
+
+    public bool IsEntityInArea(int2 position, int2 size, sbyte rotation)
+    {
+        for (int x = position.x; x < position.x + size.x; x++)
+        {
+            for (int y = position.y; y < position.y + size.y; y++)
+            {
+                if (grid.TryGetValue(new int2(x, y), out Location location))
+                {
+                    if (location.entity != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsEntityInRegion(int2 xRange, int2 yRange)
+    { 
+        int xSign = (int)Mathf.Sign(xRange.x - xRange.y);
+        int ySign = (int)Mathf.Sign(yRange.x - yRange.y);
+
+        for (int x = xRange.x; x != xRange.y; x += xSign)
+        {
+            for (int y = yRange.x; y != yRange.y; y += ySign)
+            {
+                if (grid.TryGetValue(new int2(x, y), out Location location))
+                {
+                    if (location.entity != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
 }
 
 

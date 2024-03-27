@@ -11,12 +11,26 @@ public class HopperInterface : ModularInterface
 
     private StructureData structureData;
 
-    public void Update()
+
+    public void Init(Hopper _hopper, Vector3 screenPosition)
     {
-        Graphics.DrawMesh(GlobalData.Instance.m_TileGizmo, hopper.transform.ToMatrix(), GlobalData.Instance.mat_PulsingGizmo, 0);
+        this.hopper = _hopper;
+
+        structureData = hopper.StructureData;
+
+        SetDetails(structureData.sprite, structureData.screenname, structureData.description);
+
+        transform.position = screenPosition;
+
+        InventoryElement.inventory = hopper.storageInventory;
     }
 
-    private void FixedUpdate()
+    public void Update()
+    {
+        Graphics.DrawMesh(GlobalData.Instance.gizmo_TileGrid, hopper.transform.ToMatrix(), GlobalData.Instance.mat_PulsingGizmo, 0);
+    }
+
+    public override void UpdateUI()
     {
         UpdateInventoryElement();
     }
@@ -34,19 +48,6 @@ public class HopperInterface : ModularInterface
             InventoryElement.resourceStack = hopperInventory.stacks[0]; 
         }
         InventoryElement.UpdateDisplay(); 
-    }
-
-    public void Init(Hopper _hopper, Vector3 screenPosition)
-    { 
-        this.hopper = _hopper; 
-
-        structureData = hopper.StructureData;
-
-        SetDetails(structureData.sprite, structureData.screenname, structureData.description);
-
-        transform.position = screenPosition;
-
-        InventoryElement.inventory = hopper.storageInventory;
     }
 
     public override void OnCloseInterface()

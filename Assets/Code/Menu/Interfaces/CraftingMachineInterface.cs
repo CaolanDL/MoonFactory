@@ -17,18 +17,18 @@ public class MachineInterface : ModularInterface
 
     public void Update()
     {
-        Graphics.DrawMesh(GlobalData.Instance.Gizmo, machine.transform.ToMatrix(), GlobalData.Instance.mat_PulsingGizmo, 0);
+        Graphics.DrawMesh(GlobalData.Instance.gizmo_Axis, machine.transform.ToMatrix(), GlobalData.Instance.mat_PulsingGizmo, 0);
     }
 
-    public void UpdateInventoryElements()
+    public override void UpdateUI()
     {
         UpdateInputInventoryElements();
         UpdateOuputInventoryElements();
     }
 
-    public void Init(Machine _machine, Vector3 screenPosition)
+    public override void Init(Entity entity, Vector3 screenPosition)
     { 
-        this.machine = _machine; 
+        this.machine = (Machine)entity; 
 
         structureData = machine.StructureData;
 

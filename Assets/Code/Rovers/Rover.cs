@@ -16,11 +16,20 @@ public enum RoverModule
 
 public class Rover
 {
+    public const float _MoveSpeed = 8f;
+    public float MoveSpeed { get { return _MoveSpeed; } }
+
+    public const float _TurnSpeed = 12f;
+    public float TurnSpeed { get { return _TurnSpeed; } }
+
+    public const float _CollectSpeed = 6f;
+    public float CollectSpeed { get { return _CollectSpeed; } }
+
+    public const float _MiningSpeed = 6f;
+    public float MiningSpeed { get { return _MiningSpeed; } }
+
+
     public static List<Rover> Pool = new();
-
-    public const float MoveSpeed = 5f;
-
-    public SmallTransform SmallTransform = new();
 
     public Inventory Inventory = new();
     public RoverModule Module = RoverModule.Construction;
@@ -29,24 +38,24 @@ public class Rover
     public readonly Queue<Job> JobQueue = new Queue<Job>();
     public readonly Stack<Job> JobStack = new Stack<Job>();
 
-    private DisplayObject _displayObject;
-
+    public SmallTransform SmallTransform = new();
 
     public float2 position
     {
         get => SmallTransform.position;
         set => SmallTransform.position = value;
     }
-    public ushort rotation
+    public float rotation
     {
         get => SmallTransform.rotation;
         set => SmallTransform.rotation = value;
     }
 
+    public DisplayObject DisplayObject;
 
     public void Init(int2 spawnLocation, DisplayObject displayObject)
     {
-        this._displayObject = displayObject;
+        this.DisplayObject = displayObject;
     }
 
     public void OnFrameUpdate() { }
@@ -60,12 +69,12 @@ public class Rover
 
     public void UpdateDOPosition()
     {
-        _displayObject.transform.position = new Vector3(position.x, 0, position.y);
+        DisplayObject.transform.position = new Vector3(position.x, 0, position.y);
     }
 
     public void UpdateDoRotation()
     {
-        _displayObject.transform.rotation = Quaternion.Euler(0, rotation, 0);
+        DisplayObject.transform.rotation = Quaternion.Euler(0, rotation, 0);
     }
 
 
@@ -77,7 +86,7 @@ public class Rover
         {
             Job job = JobStack.Peek();
 
-            if (job.lifeSpan == 0) job.OnStart();
+            if (job.lifeSpan < 0) job.Start();
 
             if (ActiveTask != null) job.Tick();
 
@@ -107,7 +116,7 @@ public class Rover
 
 
     public void PopJob()
-    { 
+    {
         JobStack.Pop();
     }
 
@@ -119,12 +128,12 @@ public class Rover
 
     public void TaskFailed()
     {
-/*        var taskType = ActiveTask.GetType();
+        /*        var taskType = ActiveTask.GetType();
 
-        if (taskType == typeof(BuildStructureTask)) TaskManager.QueueTask(ActiveTask as BuildStructureTask);
-        else if (taskType == typeof(LogisticsTasks)) TaskManager.QueueTask(ActiveTask as LogisticsTasks);
-        else if (taskType == typeof(MiningTasks)) TaskManager.QueueTask(ActiveTask as MiningTasks);
-        else { throw new Exception("task had no type"); }*/
+                if (taskType == typeof(BuildStructureTask)) TaskManager.QueueTask(ActiveTask as BuildStructureTask);
+                else if (taskType == typeof(LogisticsTasks)) TaskManager.QueueTask(ActiveTask as LogisticsTasks);
+                else if (taskType == typeof(MiningTasks)) TaskManager.QueueTask(ActiveTask as MiningTasks);
+                else { throw new Exception("task had no type"); }*/
 
         TaskManager.QueueTask(ActiveTask);
         ActiveTask.rover = null;
@@ -134,7 +143,7 @@ public class Rover
     }
 
     public void TaskFinished()
-    {  
+    {
         ActiveTask = null;
         JobQueue.Clear();
         JobStack.Clear();

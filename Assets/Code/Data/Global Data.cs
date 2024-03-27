@@ -20,7 +20,7 @@ public class GlobalData : ScriptableObject
     public List<CraftingFormula> craftingFormulas; 
 
 
-    [Space(32), Header("Global Materials")]
+    [Space(8), Header("Global Materials")]
     public Material mat_DevUniversal;
     [Space]
     public Material mat_Ghost;
@@ -29,15 +29,15 @@ public class GlobalData : ScriptableObject
     public Material mat_Tile;
 
 
-    [Header("Gizmos")]
-    public Mesh m_ArrowIndicator;
+    [Space(8), Header("Gizmos")]
+    public Mesh gizmo_Arrow;
     public Material mat_ArrowIndicatorInput;
     public Material mat_ArrowIndicatorOutput;
     [Space]
-    public Mesh m_TileGizmo;
+    public Mesh gizmo_TileGrid;
     public Material mat_PulsingGizmo;
     [Space]
-    public Mesh Gizmo;
+    public Mesh gizmo_Axis;
 
 
     private void OnEnable()

@@ -16,7 +16,8 @@ public class MenuData : ScriptableObject
     public GameObject BuildButtonTooltip;
 
     [Header("Interfaces")]
-    public GameObject MachineInterface;
+    public GameObject CraftingMachineInterface;
+    public GameObject HopperInterface;
 
     [Header("Interfaces Elements")]
     public GameObject InventoryElement;

@@ -1,4 +1,6 @@
-﻿
+﻿using DataStructs;
+using System;
+
 
 public class StructureGhost : Entity
 {
@@ -9,6 +11,8 @@ public class StructureGhost : Entity
     public StructureGhost(StructureData structureData)
     {
         this.structureData = structureData;
+        size.x = (byte)structureData.size.x;
+        size.y = (byte)structureData.size.y;
     }
 
     public void OnPlaced()

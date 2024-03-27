@@ -36,13 +36,14 @@ MonoBehaviour:
   mat_Ghost: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}
   mat_GhostBlocked: {fileID: 2100000, guid: 265dc20729eb93941adae5f1e3edfc43, type: 2}
   mat_Tile: {fileID: 2100000, guid: cc2dddc32720bcc44bef8ca8b288603d, type: 2}
-  m_ArrowIndicator: {fileID: 2782774259527958836, guid: 663b6f19701347045b5c7419e615dd8e,
+  gizmo_Arrow: {fileID: 2782774259527958836, guid: 663b6f19701347045b5c7419e615dd8e,
     type: 3}
   mat_ArrowIndicatorInput: {fileID: 2100000, guid: 4b9e2c61465009f40aea2ed8207c9764,
     type: 2}
   mat_ArrowIndicatorOutput: {fileID: 2100000, guid: aaf3dad24ffc8d140b2f1fd51c084db7,
     type: 2}
-  m_TileGizmo: {fileID: -2103533393138579091, guid: 2ebadecb188dadc47996c84639d8d254,
+  gizmo_TileGrid: {fileID: -2103533393138579091, guid: 2ebadecb188dadc47996c84639d8d254,
     type: 3}
   mat_PulsingGizmo: {fileID: 2100000, guid: 9e0f6bc44e9809f4b9132213d36fb8bd, type: 2}
-  Gizmo: {fileID: 5429665806620753192, guid: 55ea8a76b1ff83b40b6d9c65dcef5039, type: 3}
+  gizmo_Axis: {fileID: 5429665806620753192, guid: 55ea8a76b1ff83b40b6d9c65dcef5039,
+    type: 3}

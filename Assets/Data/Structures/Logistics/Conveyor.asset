@@ -24,6 +24,7 @@ MonoBehaviour:
   requiredResources:
   - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
     quantity: 25
+  timeToBuild: 10
   CraftingFormulas: []
   inputs:
   - position:
