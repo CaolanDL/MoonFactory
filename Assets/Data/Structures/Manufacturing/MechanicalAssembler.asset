@@ -22,6 +22,11 @@ MonoBehaviour:
   size:
     x: 2
     y: 2
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+    quantity: 25
+  timeToBuild: 99
+  CraftingFormulas: []
   inputs:
   - position:
       x: 2
@@ -43,20 +48,3 @@ MonoBehaviour:
   ghostMesh: {fileID: -6188161795047023275, guid: 9450df16ded2fe3408e7fd109925918a,
     type: 3}
   ghostModels: []
-  arrowIndicators:
-  - relativePosition: {x: 2, y: 0.2, z: 0}
-    rotation: -1
-    size: 0.25
-    IsInput: 1
-  - relativePosition: {x: 2, y: 0.2, z: 1}
-    rotation: -1
-    size: 0.25
-    IsInput: 1
-  - relativePosition: {x: 0, y: 0.2, z: 2}
-    rotation: 0
-    size: 0.25
-    IsInput: 0
-  - relativePosition: {x: -1, y: 0.2, z: 0}
-    rotation: -1
-    size: 0.25
-    IsInput: 0

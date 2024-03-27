@@ -18,9 +18,16 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 27e5deaf148761b4cbbff2a75fabe40a, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: e063641950d0bb042b742cfc107d64d9,
     type: 3}
+  size:
+    x: 1
+    y: 1
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+    quantity: 25
+  timeToBuild: 99
+  CraftingFormulas: []
   inputs: []
   outputs: []
   ghostMesh: {fileID: 2799126265915382784, guid: 449adcf01ceae1545bda1293a7a21111,
     type: 3}
   ghostModels: []
-  arrowIndicators: []

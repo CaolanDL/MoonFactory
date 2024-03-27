@@ -94,6 +94,8 @@ public static class PathFinder
             } 
 
             path = FindPath(origin, neighbor.position);
+            if(path == null) { return null; }
+
             path.trueDestination = destination;
             return path; 
         } 
@@ -145,6 +147,7 @@ public static class PathFinder
                 cameFrom.Add(neighbor, current);
             }
         }
+         
 
         // Reconstruct Path
         current = destinationLocation;
@@ -153,6 +156,7 @@ public static class PathFinder
         while(current != originLocation)
         { 
             path.Add(current.position);
+            if(!cameFrom.ContainsKey(current)) return null;
             current = cameFrom[current];
         }
 
@@ -164,10 +168,5 @@ public static class PathFinder
         return new Path(path.ToArray());
         
         //return new Path(new int2[] { origin, destination }); // Just return a path that only consists of the start and end nodes.
-    }
-
-    private class Node
-    {
-        
-    }
+    } 
 } 

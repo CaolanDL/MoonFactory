@@ -4,9 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
 
 namespace RoverJobs
 {
@@ -188,7 +187,7 @@ namespace RoverJobs
             // Stack a TurnTowards job if the next node would cause the rover to turn
             Vector2 _difference = (Vector2)(rover.position - _nextNodePosition);
             float _angle = Vector2.SignedAngle(_difference, Vector2.down);
-            Debug.Log($"{_angle} : {rover.rotation}");
+            //Debug.Log($"{_angle} : {rover.rotation}");
             if (! (Mathf.Approximately(_angle, rover.rotation) || (Mathf.Approximately(Mathf.Abs(_angle), 180) && Mathf.Approximately(Mathf.Abs(rover.rotation), 180))) )
             {
                 StackJob(new TurnTowards(_nextNodePosition));
@@ -228,7 +227,17 @@ namespace RoverJobs
         private List<ResourceQuantity> _resourcesToCollect;
         private int2 destination;
 
-        private SortedList<float, Hopper> _foundHoppers = new SortedList<float, Hopper>();
+        private List<Hopper> foundHoppers = new List<Hopper>();
+        public class FoundHopper
+        {
+            Hopper Hopper; float DistanceToRover; 
+            public FoundHopper(Hopper hopper, float distanceToRover)
+            {
+                Hopper = hopper;
+                DistanceToRover = distanceToRover;
+            }
+        }
+
         private LinkedList<Path> _superPath = new();
 
         bool finished = false;
@@ -243,7 +252,7 @@ namespace RoverJobs
         {
             if (!TryFindHoppers()) { FailTask(); return; }
 
-            _superPath = PathFinder.FindSuperPath((int2)rover.position, _foundHoppers.Values.Select(hopper => hopper.position).ToArray());
+            _superPath = PathFinder.FindSuperPath((int2)rover.position, foundHoppers.Select(hopper => hopper.position).ToArray());
 
             if (_superPath == null || _superPath.Count == 0) { FailTask(); return; }
 
@@ -282,12 +291,16 @@ namespace RoverJobs
         {
             bool foundResourceInHopper = false;
             Dictionary<ResourceData, int> remaingResourcesToFind = new();
-            _foundHoppers = new();
+            foundHoppers = new();
 
             foreach (var rq in _resourcesToCollect)
             {
                 remaingResourcesToFind.Add(rq.resource, rq.quantity);
             }
+
+            List<Hopper> hoppers = Hopper.pool;
+
+            hoppers.Sort(HopperSort);
 
             foreach (ResourceQuantity rq in _resourcesToCollect)
             {
@@ -302,7 +315,7 @@ namespace RoverJobs
                         float2 hopperRoverOffset = rover.position - hopper.position;
                         float hopperDistanceMagnitude = (hopperRoverOffset.x * hopperRoverOffset.x) + (hopperRoverOffset.y * hopperRoverOffset.y);
 
-                        if (!_foundHoppers.ContainsValue(hopper)) _foundHoppers.Add(hopperDistanceMagnitude, hopper);
+                        if (!foundHoppers.Contains(hopper)) foundHoppers.Add(hopper);
                         foundResourceInHopper = true;
 
                         remaingResourcesToFind[rq.resource] -= quantityInHopper;
@@ -318,8 +331,31 @@ namespace RoverJobs
 
             if (remaingResourcesToFind.Count > 0) { return false; }
 
+            // Sort Hoppers Here 
+
+            foundHoppers.Sort(HopperSort);
+
+            int HopperSort(Hopper a, Hopper b)
+            {
+                float aDistance = GetRoughHopperDistance(a);
+                float bDistance = GetRoughHopperDistance(b);
+
+                if (aDistance == bDistance) return 0;
+                else if (aDistance < bDistance) return -1;
+                else if (aDistance > bDistance) return 1;
+                else return 0;
+            }
+
+            float GetRoughHopperDistance(Hopper hopper)
+            {
+                float2 hopperRoverOffset = rover.position - hopper.position;
+                return (hopperRoverOffset.x * hopperRoverOffset.x) + (hopperRoverOffset.y * hopperRoverOffset.y);
+            }
+
+            //
+
             return true;
-        }
+        } 
     }
 
 

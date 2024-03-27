@@ -39,6 +39,7 @@ public class Rover
     public readonly Stack<Job> JobStack = new Stack<Job>();
 
     public SmallTransform SmallTransform = new();
+    // Add tiny transform for grid operations without float rounding
 
     public float2 position
     {
@@ -76,7 +77,6 @@ public class Rover
     {
         DisplayObject.transform.rotation = Quaternion.Euler(0, rotation, 0);
     }
-
 
     // Task & Job Management //
 

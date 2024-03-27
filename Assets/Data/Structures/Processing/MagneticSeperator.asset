@@ -22,8 +22,12 @@ MonoBehaviour:
   size:
     x: 1
     y: 1
-  requiredResources: []
-  CraftingFormulas: []
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+    quantity: 25
+  timeToBuild: 99
+  CraftingFormulas:
+  - {fileID: 11400000, guid: d9bf0d968584ad646bd22827abde60f4, type: 2}
   inputs:
   - position:
       x: 0

@@ -13,20 +13,25 @@ MonoBehaviour:
   m_Name: DebugOutput
   m_EditorClassIdentifier: 
   screenname: 'DebugBlock: Output'
+  description: 
   category: 0
   sprite: {fileID: 21300000, guid: d72c101ca7734f346b6fa8871ae0a033, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: 839d7f6803d7ffd4da6149d6a5b91f5d,
     type: 3}
+  size:
+    x: 1
+    y: 1
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+    quantity: 1
+  timeToBuild: 99
+  CraftingFormulas: []
   inputs: []
   outputs:
   - position:
       x: 0
       y: 1
-    rotation: 0
+    _rotation: 0
   ghostMesh: {fileID: -527392640140947631, guid: 604ea376479816b458dff156e63450d0,
     type: 3}
   ghostModels: []
-  arrowIndicators:
-  - relativePosition: {x: 0, y: 0.25, z: 1}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-    size: 0.25
