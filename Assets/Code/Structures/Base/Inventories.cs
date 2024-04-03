@@ -38,6 +38,8 @@ public class Inventory // 56 bytes
 
     public List<ResourceStack> stacks = new(); // Min 32 bytes
 
+    public Dictionary<ResourceData, int> reservedResources = new();
+
     public int maxItems = 9999; // 4 bytes
     public int totalItems = 0; // 4 bytes
     public int maxWeight = 9999 ; // 4 bytes
@@ -71,6 +73,31 @@ public class Inventory // 56 bytes
         get { return totalTypes >= maxTypes; }
     }
 
+    public void ReserveResource(ResourceQuantity rq)
+    {
+       if(GetQuantityOf(rq.resource) < rq.quantity) throw new Exception("Tried to reserve a resource that does not exist"); ; 
+
+       if (reservedResources.ContainsKey(rq.resource))
+        {
+            reservedResources[rq.resource] += rq.quantity;
+        }
+       else
+        {
+            reservedResources.Add(rq.resource, rq.quantity);
+        } 
+    }
+
+    public void FreeResource(ResourceQuantity rq)
+    {
+        if(reservedResources.ContainsKey(rq.resource) == false) { throw new Exception("Tried to free a reserved resource that does not exist"); }
+
+        if (reservedResources[rq.resource] == 0 || reservedResources[rq.resource] < rq.quantity) { throw new Exception("Tried to free a reserved resource that does not exist"); }
+
+        reservedResources[rq.resource] -= rq.quantity;
+
+        if(reservedResources[rq.resource] <= 0) { reservedResources.Remove(rq.resource); } 
+    }
+
     public int GetMaxAcceptable(ResourceData resource)
     {
         int nByWeight = (int)MathF.Floor(AvailableCapacityByWeight / resource.weight); 
@@ -92,6 +119,15 @@ public class Inventory // 56 bytes
         if (stack == null) { return 0; }
 
         return GetStack(resource).quantity;
+    }
+
+    public int GetUnreservedQuantityOf(ResourceData resource)
+    {
+        var quanity = GetQuantityOf(resource);
+
+        quanity -= reservedResources[resource];
+
+        return quanity;
     }
 
     public ResourceData GetResourceAtIndex(int index)

@@ -21,6 +21,13 @@ public class DebugUI : MonoBehaviour
     int tileOnScreenCount;
     TextMeshProUGUI TileOnScreenCounter;
 
+    private void Awake()
+    {
+/*        #if !UNITY_EDITOR
+        Destroy(gameObject);
+        #endif*/
+    }
+
     private void Start()
     {
         FPSCounter = NewTextLine();

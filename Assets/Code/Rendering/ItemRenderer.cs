@@ -108,13 +108,14 @@ public class ItemRenderer : MonoBehaviour
 
         Vector3 _worldPosition = new Vector3(itemV2WorldPosCached.x, VerticalOffset, itemV2WorldPosCached.y); 
 
-        var _matrix = Matrix4x4.TRS(
+/*        var _matrix = Matrix4x4.TRS(
             _worldPosition,
             Quaternion.Euler(0, itemRotationCached,0),
-            Vector3.one); 
-
-        matrixArrays[item.data].QueueMatrix(_matrix);
-    } 
+            Vector3.one);
+*/
+        //matrixArrays[item.data].QueueMatrix(_matrix);
+        matrixArrays[item.data].QueueMatrix(_worldPosition, Quaternion.Euler(0, itemRotationCached, 0));
+    }
 
     void DrawItem(Item item, Vector2 position, short rotation)
     {

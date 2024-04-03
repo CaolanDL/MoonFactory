@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using UnityEngine; 
 
 /// <summary>
-/// An int2 position and a sbyte rotation. 9 bytes.
+/// An int2 position and a sbyte rotation representing 90 degree turns as 0-3. 9 bytes.
 /// </summary>
 [Serializable]
 public struct TinyTransform
@@ -14,7 +14,7 @@ public struct TinyTransform
     public sbyte rotation
     {
         get { return _rotation; }
-        set { _rotation = (sbyte)((value % 4 + 4) % 4); }  
+        set { _rotation = (sbyte)((value % 4 + 4) % 4); }
     }
 
     public static TinyTransform empty = new TinyTransform();
@@ -51,6 +51,42 @@ public struct TinyTransform
             Quaternion.Euler(0, 90 * rotation, 0),
             Vector3.one
         );
+    }
+}
+
+/// <summary>
+/// Stores a float2 for position, and a float for rotation between 0-359
+/// </summary>
+public struct SmallTransform
+{
+    [SerializeField] public float2 position; // 8 bytes 
+
+    [SerializeField] private float _rotation; // 4 bytes
+    public float rotation
+    {
+        get { return _rotation; }
+        set { _rotation = ((value+180) % 360 + 360) % 360 - 180; }
+    }
+
+    public static SmallTransform empty = new SmallTransform();
+
+    public SmallTransform(float2 position)
+    {
+        this.position = position;
+        _rotation = 0;
+    }
+
+    public SmallTransform(float2 position, short rotation)
+    {
+        this.position = position;
+
+        _rotation = rotation;
+        this.rotation = _rotation;
+    }
+
+    public static explicit operator int2(SmallTransform i)
+    {
+        return new int2(Mathf.RoundToInt(i.position.x), Mathf.RoundToInt(i.position.y));
     }
 }
 

@@ -28,7 +28,25 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""78cb8385-15cf-4a77-9bdc-d3c4c6b8ca46"",
             ""actions"": [
                 {
-                    ""name"": ""Pick Structure"",
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""dd69b364-8546-4a05-82f6-5bc8c5a0539b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Exit Tool"",
+                    ""type"": ""Button"",
+                    ""id"": ""4526ccdb-3834-4023-beb5-94df31c8a2bf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pick"",
                     ""type"": ""Button"",
                     ""id"": ""c49dbca6-541e-4d6e-9518-3cb4ba26ec48"",
                     ""expectedControlType"": ""Button"",
@@ -37,9 +55,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Select"",
+                    ""name"": ""Rotate"",
                     ""type"": ""Button"",
-                    ""id"": ""dd69b364-8546-4a05-82f6-5bc8c5a0539b"",
+                    ""id"": ""c4439b84-9728-4292-b1b1-909980ef47b3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -47,39 +65,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""86050476-2a1d-44c0-8ded-f36592e7a82d"",
-                    ""path"": ""OneModifier"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pick Structure"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""modifier"",
-                    ""id"": ""c3eda2fa-8d62-4572-b6e2-4f08eab30242"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pick Structure"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""binding"",
-                    ""id"": ""8b49c0c9-58b6-4967-930f-16a35ccc4262"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pick Structure"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
                 {
                     ""name"": """",
                     ""id"": ""b921ba43-5ddb-4f26-ac88-83358cf2a250"",
@@ -90,92 +75,59 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Construction Controls"",
-            ""id"": ""add89bcc-454f-4370-a07c-e3238b334ddf"",
-            ""actions"": [
-                {
-                    ""name"": ""Rotate Ghost"",
-                    ""type"": ""Button"",
-                    ""id"": ""c4921403-e006-44a3-8cd9-3230593a8278"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Place Ghost"",
-                    ""type"": ""Button"",
-                    ""id"": ""b335af96-48cd-4d1d-9e69-133f20b74084"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Delete Ghost"",
-                    ""type"": ""Button"",
-                    ""id"": ""35364b0e-2cfd-41f7-8bbc-4344687c649f"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Exit Construction Mode"",
-                    ""type"": ""Button"",
-                    ""id"": ""27deb085-3ce8-4fb6-82ef-84f725bc82e7"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""49853261-70eb-40b4-92a7-d8f2b6b044cb"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate Ghost"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f6bb2177-17f6-4533-a159-f1229dc3a1ce"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Place Ghost"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""60680741-a13f-4981-adc7-fedef4856ab1"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Delete Ghost"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7e2492f8-f646-4af6-844a-120481ccea2a"",
+                    ""id"": ""1044a024-c187-4dea-b6bc-2cbb88aa5c1e"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Exit Construction Mode"",
+                    ""action"": ""Exit Tool"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""86050476-2a1d-44c0-8ded-f36592e7a82d"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pick"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""c3eda2fa-8d62-4572-b6e2-4f08eab30242"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""8b49c0c9-58b6-4967-930f-16a35ccc4262"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d621d752-b665-43ae-90e4-852a03bfbb85"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -429,14 +381,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
 }");
         // Default Controls
         m_DefaultControls = asset.FindActionMap("Default Controls", throwIfNotFound: true);
-        m_DefaultControls_PickStructure = m_DefaultControls.FindAction("Pick Structure", throwIfNotFound: true);
         m_DefaultControls_Select = m_DefaultControls.FindAction("Select", throwIfNotFound: true);
-        // Construction Controls
-        m_ConstructionControls = asset.FindActionMap("Construction Controls", throwIfNotFound: true);
-        m_ConstructionControls_RotateGhost = m_ConstructionControls.FindAction("Rotate Ghost", throwIfNotFound: true);
-        m_ConstructionControls_PlaceGhost = m_ConstructionControls.FindAction("Place Ghost", throwIfNotFound: true);
-        m_ConstructionControls_DeleteGhost = m_ConstructionControls.FindAction("Delete Ghost", throwIfNotFound: true);
-        m_ConstructionControls_ExitConstructionMode = m_ConstructionControls.FindAction("Exit Construction Mode", throwIfNotFound: true);
+        m_DefaultControls_ExitTool = m_DefaultControls.FindAction("Exit Tool", throwIfNotFound: true);
+        m_DefaultControls_Pick = m_DefaultControls.FindAction("Pick", throwIfNotFound: true);
+        m_DefaultControls_Rotate = m_DefaultControls.FindAction("Rotate", throwIfNotFound: true);
         // Camera Controls
         m_CameraControls = asset.FindActionMap("Camera Controls", throwIfNotFound: true);
         m_CameraControls_Move = m_CameraControls.FindAction("Move", throwIfNotFound: true);
@@ -507,14 +455,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Default Controls
     private readonly InputActionMap m_DefaultControls;
     private List<IDefaultControlsActions> m_DefaultControlsActionsCallbackInterfaces = new List<IDefaultControlsActions>();
-    private readonly InputAction m_DefaultControls_PickStructure;
     private readonly InputAction m_DefaultControls_Select;
+    private readonly InputAction m_DefaultControls_ExitTool;
+    private readonly InputAction m_DefaultControls_Pick;
+    private readonly InputAction m_DefaultControls_Rotate;
     public struct DefaultControlsActions
     {
         private @PlayerInputActions m_Wrapper;
         public DefaultControlsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @PickStructure => m_Wrapper.m_DefaultControls_PickStructure;
         public InputAction @Select => m_Wrapper.m_DefaultControls_Select;
+        public InputAction @ExitTool => m_Wrapper.m_DefaultControls_ExitTool;
+        public InputAction @Pick => m_Wrapper.m_DefaultControls_Pick;
+        public InputAction @Rotate => m_Wrapper.m_DefaultControls_Rotate;
         public InputActionMap Get() { return m_Wrapper.m_DefaultControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -524,22 +476,34 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_DefaultControlsActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_DefaultControlsActionsCallbackInterfaces.Add(instance);
-            @PickStructure.started += instance.OnPickStructure;
-            @PickStructure.performed += instance.OnPickStructure;
-            @PickStructure.canceled += instance.OnPickStructure;
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
+            @ExitTool.started += instance.OnExitTool;
+            @ExitTool.performed += instance.OnExitTool;
+            @ExitTool.canceled += instance.OnExitTool;
+            @Pick.started += instance.OnPick;
+            @Pick.performed += instance.OnPick;
+            @Pick.canceled += instance.OnPick;
+            @Rotate.started += instance.OnRotate;
+            @Rotate.performed += instance.OnRotate;
+            @Rotate.canceled += instance.OnRotate;
         }
 
         private void UnregisterCallbacks(IDefaultControlsActions instance)
         {
-            @PickStructure.started -= instance.OnPickStructure;
-            @PickStructure.performed -= instance.OnPickStructure;
-            @PickStructure.canceled -= instance.OnPickStructure;
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
+            @ExitTool.started -= instance.OnExitTool;
+            @ExitTool.performed -= instance.OnExitTool;
+            @ExitTool.canceled -= instance.OnExitTool;
+            @Pick.started -= instance.OnPick;
+            @Pick.performed -= instance.OnPick;
+            @Pick.canceled -= instance.OnPick;
+            @Rotate.started -= instance.OnRotate;
+            @Rotate.performed -= instance.OnRotate;
+            @Rotate.canceled -= instance.OnRotate;
         }
 
         public void RemoveCallbacks(IDefaultControlsActions instance)
@@ -557,76 +521,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public DefaultControlsActions @DefaultControls => new DefaultControlsActions(this);
-
-    // Construction Controls
-    private readonly InputActionMap m_ConstructionControls;
-    private List<IConstructionControlsActions> m_ConstructionControlsActionsCallbackInterfaces = new List<IConstructionControlsActions>();
-    private readonly InputAction m_ConstructionControls_RotateGhost;
-    private readonly InputAction m_ConstructionControls_PlaceGhost;
-    private readonly InputAction m_ConstructionControls_DeleteGhost;
-    private readonly InputAction m_ConstructionControls_ExitConstructionMode;
-    public struct ConstructionControlsActions
-    {
-        private @PlayerInputActions m_Wrapper;
-        public ConstructionControlsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @RotateGhost => m_Wrapper.m_ConstructionControls_RotateGhost;
-        public InputAction @PlaceGhost => m_Wrapper.m_ConstructionControls_PlaceGhost;
-        public InputAction @DeleteGhost => m_Wrapper.m_ConstructionControls_DeleteGhost;
-        public InputAction @ExitConstructionMode => m_Wrapper.m_ConstructionControls_ExitConstructionMode;
-        public InputActionMap Get() { return m_Wrapper.m_ConstructionControls; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(ConstructionControlsActions set) { return set.Get(); }
-        public void AddCallbacks(IConstructionControlsActions instance)
-        {
-            if (instance == null || m_Wrapper.m_ConstructionControlsActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_ConstructionControlsActionsCallbackInterfaces.Add(instance);
-            @RotateGhost.started += instance.OnRotateGhost;
-            @RotateGhost.performed += instance.OnRotateGhost;
-            @RotateGhost.canceled += instance.OnRotateGhost;
-            @PlaceGhost.started += instance.OnPlaceGhost;
-            @PlaceGhost.performed += instance.OnPlaceGhost;
-            @PlaceGhost.canceled += instance.OnPlaceGhost;
-            @DeleteGhost.started += instance.OnDeleteGhost;
-            @DeleteGhost.performed += instance.OnDeleteGhost;
-            @DeleteGhost.canceled += instance.OnDeleteGhost;
-            @ExitConstructionMode.started += instance.OnExitConstructionMode;
-            @ExitConstructionMode.performed += instance.OnExitConstructionMode;
-            @ExitConstructionMode.canceled += instance.OnExitConstructionMode;
-        }
-
-        private void UnregisterCallbacks(IConstructionControlsActions instance)
-        {
-            @RotateGhost.started -= instance.OnRotateGhost;
-            @RotateGhost.performed -= instance.OnRotateGhost;
-            @RotateGhost.canceled -= instance.OnRotateGhost;
-            @PlaceGhost.started -= instance.OnPlaceGhost;
-            @PlaceGhost.performed -= instance.OnPlaceGhost;
-            @PlaceGhost.canceled -= instance.OnPlaceGhost;
-            @DeleteGhost.started -= instance.OnDeleteGhost;
-            @DeleteGhost.performed -= instance.OnDeleteGhost;
-            @DeleteGhost.canceled -= instance.OnDeleteGhost;
-            @ExitConstructionMode.started -= instance.OnExitConstructionMode;
-            @ExitConstructionMode.performed -= instance.OnExitConstructionMode;
-            @ExitConstructionMode.canceled -= instance.OnExitConstructionMode;
-        }
-
-        public void RemoveCallbacks(IConstructionControlsActions instance)
-        {
-            if (m_Wrapper.m_ConstructionControlsActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(IConstructionControlsActions instance)
-        {
-            foreach (var item in m_Wrapper.m_ConstructionControlsActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_ConstructionControlsActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public ConstructionControlsActions @ConstructionControls => new ConstructionControlsActions(this);
 
     // Camera Controls
     private readonly InputActionMap m_CameraControls;
@@ -754,15 +648,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     }
     public interface IDefaultControlsActions
     {
-        void OnPickStructure(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
-    }
-    public interface IConstructionControlsActions
-    {
-        void OnRotateGhost(InputAction.CallbackContext context);
-        void OnPlaceGhost(InputAction.CallbackContext context);
-        void OnDeleteGhost(InputAction.CallbackContext context);
-        void OnExitConstructionMode(InputAction.CallbackContext context);
+        void OnExitTool(InputAction.CallbackContext context);
+        void OnPick(InputAction.CallbackContext context);
+        void OnRotate(InputAction.CallbackContext context);
     }
     public interface ICameraControlsActions
     {

@@ -6,7 +6,25 @@
             "id": "78cb8385-15cf-4a77-9bdc-d3c4c6b8ca46",
             "actions": [
                 {
-                    "name": "Pick Structure",
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "dd69b364-8546-4a05-82f6-5bc8c5a0539b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Exit Tool",
+                    "type": "Button",
+                    "id": "4526ccdb-3834-4023-beb5-94df31c8a2bf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pick",
                     "type": "Button",
                     "id": "c49dbca6-541e-4d6e-9518-3cb4ba26ec48",
                     "expectedControlType": "Button",
@@ -15,9 +33,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Select",
+                    "name": "Rotate",
                     "type": "Button",
-                    "id": "dd69b364-8546-4a05-82f6-5bc8c5a0539b",
+                    "id": "c4439b84-9728-4292-b1b1-909980ef47b3",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -25,39 +43,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "One Modifier",
-                    "id": "86050476-2a1d-44c0-8ded-f36592e7a82d",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Pick Structure",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "c3eda2fa-8d62-4572-b6e2-4f08eab30242",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Pick Structure",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "8b49c0c9-58b6-4967-930f-16a35ccc4262",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Pick Structure",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
                 {
                     "name": "",
                     "id": "b921ba43-5ddb-4f26-ac88-83358cf2a250",
@@ -68,92 +53,59 @@
                     "action": "Select",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Construction Controls",
-            "id": "add89bcc-454f-4370-a07c-e3238b334ddf",
-            "actions": [
-                {
-                    "name": "Rotate Ghost",
-                    "type": "Button",
-                    "id": "c4921403-e006-44a3-8cd9-3230593a8278",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Place Ghost",
-                    "type": "Button",
-                    "id": "b335af96-48cd-4d1d-9e69-133f20b74084",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Delete Ghost",
-                    "type": "Button",
-                    "id": "35364b0e-2cfd-41f7-8bbc-4344687c649f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Exit Construction Mode",
-                    "type": "Button",
-                    "id": "27deb085-3ce8-4fb6-82ef-84f725bc82e7",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "49853261-70eb-40b4-92a7-d8f2b6b044cb",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotate Ghost",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "f6bb2177-17f6-4533-a159-f1229dc3a1ce",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Place Ghost",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "60680741-a13f-4981-adc7-fedef4856ab1",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Delete Ghost",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "7e2492f8-f646-4af6-844a-120481ccea2a",
+                    "id": "1044a024-c187-4dea-b6bc-2cbb88aa5c1e",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Exit Construction Mode",
+                    "action": "Exit Tool",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "86050476-2a1d-44c0-8ded-f36592e7a82d",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pick",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "c3eda2fa-8d62-4572-b6e2-4f08eab30242",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pick",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "8b49c0c9-58b6-4967-930f-16a35ccc4262",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pick",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "d621d752-b665-43ae-90e4-852a03bfbb85",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

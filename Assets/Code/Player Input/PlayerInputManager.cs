@@ -28,6 +28,7 @@ public class PlayerInputManager : MonoBehaviour
     public InputState inputState = InputState.Default;
 
     [SerializeField] public int2 MouseGridPositon = new(0, 0);
+    [SerializeField] public double2 MouseWorldPositon = new(0, 0);
 
     public bool isMouseOverUI = true;
 
@@ -45,17 +46,9 @@ public class PlayerInputManager : MonoBehaviour
     void OnEnable()
     {
         inputActions.DefaultControls.Enable();
-
+        inputActions.CameraControls.Enable(); 
         inputActions.ConstructionControls.Enable();
     }
-
-    void OnDisable()
-    {
-        inputActions.DefaultControls.Disable();
-
-        inputActions.ConstructionControls.Disable();
-    }
-
 
     public enum InputState
     {
@@ -79,7 +72,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (!isMouseOverUI)
             {
-                UpdateMouseGridPosition();
+                UpdateSpatialMousePosition();
                 RenderGizmoAtMouseTile();
             }
 
@@ -90,9 +83,6 @@ public class PlayerInputManager : MonoBehaviour
 
                 case InputState.Default:
                     HandleDefaultInput();
-                    break;
-
-                case InputState.Menu:
                     break;
 
                 case InputState.Construction:
@@ -117,7 +107,41 @@ public class PlayerInputManager : MonoBehaviour
     {
         HandleCameraControl();
 
-        if (inputActions.DefaultControls.PickStructure.WasPressedThisFrame())
+        if (inputActions.DefaultControls.Select.WasPressedThisFrame())
+        {
+            if (isMouseOverUI) { return; }
+
+            // Check if a rover was selected, else check if a structure was selected. 
+            Ray ray = cameraController.activeMainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Rover")))
+            {
+                Entity entity = hit.transform.gameObject.GetComponent<DisplayObject>().parentEntity;
+
+                if (entity.GetType() == typeof(Rover))
+                {
+                    ((Rover)entity).Clicked(Input.mousePosition);
+                }
+            }
+
+            else
+            {
+                Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
+
+                if (entity != null)
+                {
+                    if (entity.GetType().IsSubclassOf(typeof(Structure)))
+                    {
+                        ((Structure)entity).Clicked(Input.mousePosition);
+                    }
+                }
+            }
+
+            return;
+        }
+
+        if (inputActions.DefaultControls.Pick.WasPressedThisFrame())
         {
             Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
 
@@ -126,37 +150,24 @@ public class PlayerInputManager : MonoBehaviour
                 if (entity.GetType() == typeof(StructureGhost))
                 {
                     ChangeInputState(InputState.Construction);
-                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((StructureGhost)entity).data);
+                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((StructureGhost)entity).structureData);
                 }
                 if (entity.GetType().IsSubclassOf(typeof(Structure)))
                 { 
                     ChangeInputState(InputState.Construction);
-                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((Structure)entity).structureData);
+                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((Structure)entity).StructureData);
                 } 
             }
-        }
 
-        else if (inputActions.DefaultControls.Select.WasPressedThisFrame())
-        {
-            if(isMouseOverUI) { return; }
-
-            Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
-
-            if (entity != null)
-            { 
-                if (entity.GetType().IsSubclassOf(typeof(Structure)))
-                {
-                    ((Structure)entity).Clicked(Input.mousePosition);
-                }
-            }
-        }
+            return;
+        } 
     }
 
     public void HandleConstructionInput()
     {
         HandleCameraControl();
 
-        if (Mouse.current.rightButton.wasPressedThisFrame)
+        if (inputActions.ConstructionControls.ExitConstructionMode.WasPressedThisFrame())
         {
             ChangeInputState(InputState.Default);
             return;
@@ -166,11 +177,11 @@ public class PlayerInputManager : MonoBehaviour
 
         if (isMouseOverUI != true)
         {
-            constructionManager.DrawGhostAtMouse(MouseGridPositon); 
+            constructionManager.DrawGhostAtMouse(); 
 
             if (inputActions.ConstructionControls.PlaceGhost.IsPressed())
             {
-                constructionManager.PlaceGhost(MouseGridPositon);
+                constructionManager.PlaceGhost(MouseWorldPositon);
             }
         }
 
@@ -181,22 +192,21 @@ public class PlayerInputManager : MonoBehaviour
     }
 
 
-    public void UpdateMouseGridPosition()
-    {
-        Vector3 mouseWorldPosition = Vector3.zero;
-
+    public void UpdateSpatialMousePosition()
+    { 
         Ray ray = cameraController.activeMainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("MouseToGridPosition")))
         {
-            mouseWorldPosition = hit.point;
+            Vector3 mouseWorldPosition = hit.point;
+            MouseWorldPositon = new double2(mouseWorldPosition.x, mouseWorldPosition.z);
             MouseGridPositon = new int2((int)Mathf.Round(mouseWorldPosition.x), (int)Mathf.Round(mouseWorldPosition.z));
         }
     }
 
     public void RenderGizmoAtMouseTile()
     {
-        Graphics.DrawMesh(GlobalData.Instance.m_TileGizmo, new TinyTransform(MouseGridPositon, 0).ToMatrix(), GlobalData.Instance.mat_PulsingGizmo, 0);
+        Graphics.DrawMesh(GlobalData.Instance.gizmo_TileGrid, new TinyTransform(MouseGridPositon, 0).ToMatrix(), GlobalData.Instance.mat_PulsingGizmo, 0);
     }
 }

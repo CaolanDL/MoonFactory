@@ -100,14 +100,18 @@ public class FloorTileRenderer : MonoBehaviour
 
             for (int chunkIndex = 0; chunkIndex <= _matrixArray.chunkIndex; chunkIndex++)
             {
+                if(_matrixArray.totalInQueue == 0) { continue; }
+
                 if (chunkIndex == _matrixArray.chunkIndex)
                 {
-                    Graphics.DrawMeshInstanced(tileData.mesh, 0, GlobalData.Instance.mat_Tile, _matrixArray.matriceChunks[chunkIndex], _matrixArray.itemIndex);
+                    //Graphics.DrawMeshInstanced(tileData.mesh, 0, GlobalData.Instance.mat_Tile, _matrixArray.matriceChunks[chunkIndex], _matrixArray.itemIndex);
+                    Graphics.RenderMeshInstanced(renderParams, tileData.mesh, 0, _matrixArray.matriceChunks[chunkIndex], _matrixArray.itemIndex+1);
                     break;
                 }
                 else
                 {
-                    Graphics.DrawMeshInstanced(tileData.mesh, 0, GlobalData.Instance.mat_Tile, _matrixArray.matriceChunks[chunkIndex]);
+                    //Graphics.DrawMeshInstanced(tileData.mesh, 0, GlobalData.Instance.mat_Tile, _matrixArray.matriceChunks[chunkIndex]);
+                    Graphics.RenderMeshInstanced(renderParams, tileData.mesh, 0, _matrixArray.matriceChunks[chunkIndex]);
                 }
             }
 
@@ -119,7 +123,7 @@ public class FloorTileRenderer : MonoBehaviour
     {
         if (currentFloorTile == null) return;
 
-        matrixArrays[currentFloorTile.data].QueueMatrix(currentFloorTile.transform.ToMatrix());
+        matrixArrays[currentFloorTile.data].QueueMatrix(currentFloorTile.transform);
     }
 
     // Deprecated

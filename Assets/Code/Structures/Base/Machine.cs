@@ -7,27 +7,29 @@ using UnityEngine;
 
 public class Machine : Structure
 {
-    public List<Inventory> InputInventories = new();
-    public List<Inventory> OutputInventories = new();
+    public Inventory[] InputInventories;
+    public Inventory[] OutputInventories; 
 
     public override void OnInitialise()
     {
-        for (int i = 0; i < structureData.inputs.Count; i++) { InputInventories.Add(new()); }
-        for (int i = 0; i < structureData.outputs.Count; i++) { OutputInventories.Add(new()); }
-    } 
+        InputInventories = new Inventory[StructureData.inputs.Count];
+        OutputInventories = new Inventory[StructureData.outputs.Count];
+
+        for (int i = 0; i < StructureData.inputs.Count; i++) { InputInventories[i] = new(); }
+        for (int i = 0; i < StructureData.outputs.Count; i++) { OutputInventories[i] = new(); } 
+    }
 
     public override void OnClicked(Vector3 mousePosition)
     {
         OpenInterface(mousePosition);
-    }
-
+    } 
 
     // Input Output //
     #region Input Output
 
     public override void ConnectOuputs()
     {
-        foreach (var output in structureData.outputs)
+        foreach (var output in StructureData.outputs)
         {
             var offsetPosition = output.position.Rotate(rotation) + position;
             var offsetRotation = output.rotation.Rotate(rotation);
@@ -95,7 +97,7 @@ public class Machine : Structure
             if (otherMachine.TryInputItem(resource, offsetOutputTransform))
             {
                 inventory.RemoveResource(resource, 1);
-                ItemOutput(); 
+                ItemOutput();
 
                 return true;
             }
@@ -106,7 +108,7 @@ public class Machine : Structure
 
     public bool TryOutputItem(ResourceData resource, int outputIndex)
     {
-        return TryOutputItem(resource, OutputInventories[outputIndex], structureData.outputs[outputIndex]);
+        return TryOutputItem(resource, OutputInventories[outputIndex], StructureData.outputs[outputIndex]);
     }
 
     public bool TryOutputAnything(int outputIndex)
@@ -117,7 +119,7 @@ public class Machine : Structure
     private void ItemOutput()
     {
         TryBeginCrafting();
-        TryUpdateInterface(); 
+        TryUpdateInterface();
 
         OnItemOutput();
     }
@@ -137,11 +139,11 @@ public class Machine : Structure
 
         relativeInputTransform.position = relativeInputTransform.position.Rotate((sbyte)-rotation);
 
-        foreach (var input in structureData.inputs)
+        foreach (var input in StructureData.inputs)
         {
             if (input.position.Equals(relativeInputTransform.position))
             {
-                invIndex = structureData.inputs.IndexOf(input);
+                invIndex = StructureData.inputs.IndexOf(input);
                 break;
             }
         }
@@ -156,7 +158,7 @@ public class Machine : Structure
 
         if (inputInventory.TryAddResource(resource, 1))
         {
-            ItemInput(); 
+            ItemInput();
 
             return true;
         }
@@ -262,7 +264,7 @@ public class Machine : Structure
 
     public void SetNewCF(CraftingFormula craftingFormula)
     {
-        newCFIndex = (byte)structureData.CraftingFormulas.IndexOf(craftingFormula);
+        newCFIndex = (byte)StructureData.CraftingFormulas.IndexOf(craftingFormula);
     }
 
     void TryUpdateCF()
@@ -271,7 +273,7 @@ public class Machine : Structure
         {
             activeCFIndex = newCFIndex;
 
-            UpdateCFVariables(structureData.CraftingFormulas[activeCFIndex]);
+            UpdateCFVariables(StructureData.CraftingFormulas[activeCFIndex]);
         }
     }
 
@@ -301,8 +303,8 @@ public class Machine : Structure
 
         TryUpdateCF();
 
-        if (InputInventories.Count == 0) return false;
-        if (OutputInventories.Count == 0) return false;
+        if (InputInventories == null) return false;
+        if (OutputInventories == null) return false;
 
         // Check if input inventories are empty
         bool inventoriesEmpty = true;
@@ -310,10 +312,10 @@ public class Machine : Structure
         if (inventoriesEmpty) return false;
 
         // Get the current crafting formula
-        CraftingFormula cf = structureData.CraftingFormulas[activeCFIndex];
+        CraftingFormula cf = StructureData.CraftingFormulas[activeCFIndex];
 
         if (cf == null) return false;
-        if (cf.OutputResources.Count > OutputInventories.Count) { throw new Exception("Crafting formula outputs exceed outputs available on structure"); }
+        if (cf.OutputResources.Count > OutputInventories.Length) { throw new Exception("Crafting formula outputs exceed outputs available on structure"); }
 
         // Check if any output inventories are full
         for (int i = 0; i < cf.OutputResources.Count; i++)
@@ -405,7 +407,7 @@ public class Machine : Structure
     public void FinishCrafting()
     {
         // Get the current crafting formula
-        CraftingFormula cf = structureData.CraftingFormulas[activeCFIndex];
+        CraftingFormula cf = StructureData.CraftingFormulas[activeCFIndex];
 
         // Add output resources to output inventories
         for (int i = 0; i < cf.OutputResources.Count; i++)
@@ -438,17 +440,25 @@ public class Machine : Structure
 
     #region Interface Handling
 
-    bool isInterfaceOpen = false; 
-    static MachineInterface activeInterface;
+    bool isInterfaceOpen = false;
+    static ModularInterface activeInterface;
 
-    public void OpenInterface(Vector3 mousePosition)
+    //TODO Should really modifiy this to a different creational design pattern. Maybe pass the call off to the structure subclass in question with a virtual method
+    //TODO and let the subclass handle the HUD call. Would prefer not to have a large switch statement in the HUD class to dependently spawn interfaces.
+    // Defaults to opening a crafting machine interface.
+    public virtual void OpenInterface(Vector3 mousePosition) 
     {
-        var success = GameManager.Instance.HUDController.OpenMachineInterface(this, mousePosition);
+        OpenInterfaceOnHUD(MenuData.Instance.CraftingMachineInterface, mousePosition);
+    }
 
-        if (success) 
-        { 
+    public void OpenInterfaceOnHUD(GameObject interfacePrefab, Vector3 mousePosition)
+    {
+        var success = GameManager.Instance.HUDController.OpenInterface(interfacePrefab, this, mousePosition);
+
+        if (success)
+        {
             isInterfaceOpen = true;
-            activeInterface = GameManager.Instance.HUDController.activeMachineInterface;
+            activeInterface = GameManager.Instance.HUDController.openInterface;
         }
 
         TryUpdateInterface();
@@ -457,15 +467,15 @@ public class Machine : Structure
     public void OnInterfaceClosed()
     {
         isInterfaceOpen = false;
-    } 
+    }
 
-    void TryUpdateInterface()
+    public virtual void TryUpdateInterface()
     {
-        if(isInterfaceOpen)
+        if (isInterfaceOpen)
         {
-            activeInterface.UpdateInventoryElements();
+            activeInterface.UpdateUI();
         }
-    } 
+    }
 
     #endregion
 }

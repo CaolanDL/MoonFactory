@@ -26,11 +26,19 @@ public class StructureData : ScriptableObject
     public Sprite sprite;
     [SerializeField] public GameObject displayObject; 
 
-    [Space(20)]
+    [Space]
     [SerializeField] public int2 size = new(1, 1);
 
-    public List<ResourceQuantity> requiredResources = new();
+    public Vector2 centre
+    {
+        get { return new Vector2(size.x / 2f, size.y / 2f); }
+    }
 
+    [Header("Construction")] 
+    public List<ResourceQuantity> requiredResources = new();
+    [Tooltip("In Ticks")] public int timeToBuild = 99;
+
+    [Header("Crafting")]
     public List<CraftingFormula> CraftingFormulas = new();
 
     public List<TinyTransform> inputs;
@@ -49,3 +57,8 @@ public class StructureData : ScriptableObject
     } 
 }
 
+[CreateAssetMenu(menuName = "MoonFactory/Configurable Structure Data")]
+public class ConfigurableStructureData : StructureData
+{
+    public List<StructureData> Configurations; 
+} 

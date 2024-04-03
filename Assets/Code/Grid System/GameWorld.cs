@@ -1,8 +1,9 @@
 ﻿using DataStructs;
 using ExtensionMethods;
+using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
-using UnityEngine; 
+using UnityEngine;
 
 using Random = UnityEngine.Random;
 
@@ -12,16 +13,15 @@ public class GameWorld
 
     public Grid worldGrid = new Grid();
 
-    List<Entity> entities = new List<Entity>();
-
-
     private TerrainGenerator terrainGenerator;
 
+    public static Action WorldInstanciated;
 
     public GameWorld(int seed)
     {
         terrainGenerator = new TerrainGenerator(seed);
-    } 
+        WorldInstanciated?.Invoke();
+    }
 
     public void OnFixedUpdate()
     {
@@ -47,7 +47,7 @@ public class GameWorld
                 }
             }
         }
-    } 
+    }
 
     public void GenerateChunk(int2 position)
     {
@@ -68,7 +68,7 @@ public class GameWorld
     {
         //Modify start and end positions to point in positive iteration direction
         if (startPosition.x > endPosition.x) { (startPosition.x, endPosition.x) = (endPosition.x, startPosition.x); }
-        if (startPosition.y > endPosition.y) { (startPosition.y, endPosition.y) = (endPosition.y, startPosition.y); } 
+        if (startPosition.y > endPosition.y) { (startPosition.y, endPosition.y) = (endPosition.y, startPosition.y); }
 
         for (int x = startPosition.x; x < endPosition.x; x++)
         {
@@ -85,10 +85,13 @@ public class GameWorld
 
         FloorTile newFloorTile = new(newTileData);
 
-        floorGrid.TryAddEntity(newFloorTile, position, (sbyte)Random.Range(0, 3)); 
+        if (floorGrid.TryAddEntity(newFloorTile, position, (sbyte)Random.Range(0, 3)) != null)
+        {
+            worldGrid.AddLocation(position);
+        }
 
         return newFloorTile;
-    } 
+    }
 
     ////
     ///   Sequencing
@@ -117,17 +120,17 @@ public class Grid
 
     public List<Entity> entities = new List<Entity>();
 
-    public byte id;
+    public byte id = 0;
 
     public Grid()
     {
         grids.Add(this);
-        id = (byte)(grids[grids.Count - 1].id + 1);
+        id = (byte)(grids.Count > 1 ? grids[grids.Count - 1].id + 1 : 0);
     }
 
-    public static Grid GetGrid(byte id)
+    public static Grid GetGrid(byte _id)
     {
-        return grids.Find(x => x.id == id);
+        return grids.Find(grid => grid.id == _id);
     }
 
     public Location AddLocation(int2 position)
@@ -156,11 +159,11 @@ public class Grid
 
     public Location GetLocationAt(int2 position)
     {
-        if (grid.ContainsKey(position))
+        if (grid.TryGetValue(position, out Location location))
         {
-            return grid[position];
+            return location;
         }
-        else return Location.empty;
+        else return null;
     }
 
     public Entity AddEntity(Entity entity, int2 position)
@@ -171,23 +174,19 @@ public class Grid
     static byte2 singleTileSize = new byte2(1, 1);
 
     public Entity TryAddEntity(Entity entity, int2 position, sbyte rotation)
-    { 
-        if (entity.size.Equals(singleTileSize))
-        { 
+    {
+        if (true || entity.size.Equals(singleTileSize))
+        {
             Location location = AddLocation(position);
 
             if (IsEntityAt(position)) return null;
 
             location.entity = entity;
-
-            entity.position = position;
-
-            entity.rotation = rotation; 
         }
 
-        else
+/*        else
         {
-            for(int x = 0; x < entity.size.x; x++)
+            for (int x = 0; x < entity.size.x; x++)
             {
                 for (int y = 0; y < entity.size.y; y++)
                 {
@@ -197,18 +196,18 @@ public class Grid
 
                     if (IsEntityAt(offsetPosition)) return null;
 
-                    location.entity = entity; 
+                    location.entity = entity;
                 }
             }
+        }*/
 
-            entity.position = position;
+        entity.position = position;
 
-            entity.rotation = rotation;
-        }
+        entity.rotation = rotation;
 
         return entity;
     }
-     
+
     public Entity RemoveEntity(int2 position)
     {
         if (grid.ContainsKey(position) != true) { return null; }
@@ -238,6 +237,53 @@ public class Grid
 
         return false;
     }
+
+    public bool IsEntityInArea(int2 position, int2 size)
+    {
+        return IsEntityInArea(position, size, 0);
+    }
+
+    public bool IsEntityInArea(int2 position, int2 size, sbyte rotation)
+    {
+        for (int x = position.x; x < position.x + size.x; x++)
+        {
+            for (int y = position.y; y < position.y + size.y; y++)
+            {
+                if (grid.TryGetValue(new int2(x, y), out Location location))
+                {
+                    if (location.entity != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsEntityInRegion(int2 xRange, int2 yRange)
+    {
+        int xSign = (int)Mathf.Sign(xRange.x - xRange.y);
+        int ySign = (int)Mathf.Sign(yRange.x - yRange.y);
+
+        for (int x = xRange.x; x != xRange.y; x += xSign)
+        {
+            for (int y = yRange.x; y != yRange.y; y += ySign)
+            {
+                if (grid.TryGetValue(new int2(x, y), out Location location))
+                {
+                    if (location.entity != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
 }
 
 
@@ -249,12 +295,34 @@ public class Location // Size: 17 bytes
 
     public Entity entity; // 8 bytes 
 
-    public static Location empty = new Location();
+    //public static Location empty = new Location() { position = new int2(int.MaxValue, int.MaxValue) };
 
     public int2 GetChunk()
     {
         int2 unflooredChunkPosition = position.x / TerrainGenerationData.ChunkSize;
         return new int2(Mathf.FloorToInt(unflooredChunkPosition.x), Mathf.FloorToInt(unflooredChunkPosition.y));
+    }
+
+    static class Directions
+    {
+        public static int2 forward = new(0, 1);
+        public static int2 back = new(0, -1);
+        public static int2 left = new(-1, 0);
+        public static int2 right = new(1, 0);
+    }
+
+    public Location[] GetNeighbors()
+    {
+        Location[] neighbors = new Location[4];
+
+        Grid grid = Grid.GetGrid(gridId);
+
+        neighbors[0] = grid.GetLocationAt(position + Directions.forward);
+        neighbors[1] = grid.GetLocationAt(position + Directions.right);
+        neighbors[2] = grid.GetLocationAt(position + Directions.back);
+        neighbors[3] = grid.GetLocationAt(position + Directions.left);
+
+        return neighbors;
     }
 
     public Entity RemoveEntity()

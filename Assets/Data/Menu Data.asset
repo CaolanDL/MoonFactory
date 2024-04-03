@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed07c09d42bff264f861564a26d9cdce, type: 3}
+  m_Name: Menu Data
+  m_EditorClassIdentifier: 
+  mainMenu: {fileID: 6591914507216965253, guid: f3ceeb9026ae29b4e89afbbf9125e3fe,
+    type: 3}
+  MobilePlatformWarning: {fileID: 2846562734260813511, guid: a1694f366d031164b83db085eeb65076,
+    type: 3}
+  HUD: {fileID: 5208321704792210768, guid: da97c697ec104794f97b769a51c7df26, type: 3}
+  BuildButtonTooltip: {fileID: 1213213408029545927, guid: e1402c0125a47d747b7fd68bb941f9f5,
+    type: 3}
+  RoverInterface: {fileID: 1452811590041402077, guid: 074ddf08676b28e449723e1101904783,
+    type: 3}
+  CraftingMachineInterface: {fileID: 1452811590041402077, guid: 149121bacb169494991421cd7979e39d,
+    type: 3}
+  HopperInterface: {fileID: 1452811590041402077, guid: 00ee7b4c93f6eef4daa85723fd49908c,
+    type: 3}
+  InventoryElement: {fileID: 5989839607907215971, guid: 20fb51a43e319da48b135c1fe96c623c,
+    type: 3}
+  emptySprite: {fileID: 21300000, guid: 6e65be19100f13442877ed3825b1b0c3, type: 3}

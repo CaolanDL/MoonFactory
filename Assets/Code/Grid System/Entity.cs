@@ -37,6 +37,16 @@ public class Entity // 12 bytes
     public Entity GetNeighbor(sbyte rotationFactor)
     { 
         return GameManager.Instance.gameWorld.worldGrid.GetEntityAt(position + rotation.Rotate(rotationFactor).ToInt2());
+    } 
+
+    public (int2 xRange, int2 yRange) GetOccupyRegion()
+    {
+        var rSize = new int2(size.x, size.y).Rotate(rotation);
+
+        var xRange = new int2(position.x, position.x + rSize.x);
+        var yRange = new int2(position.y, position.y + rSize.y);
+
+        return (xRange, yRange);
     }
 }
 

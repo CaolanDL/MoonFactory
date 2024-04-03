@@ -1,29 +1,21 @@
 ﻿using Logistics;
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Profiling;
+
+
+//! MoonFactory
+// This GameManager is effectively Main running as a monobehavior.
+
+// Count LOC at the code directory with PowerShell: dir -Recurse *.cs | Get-Content | Measure-Object -Line
+
 
 public static class DevFlags
-{
-#if UNITY_EDITOR
-
-    public static bool SkipMainMenu = true;
-    public static bool Benchmark = true; 
-    public static bool AutoSpawnRover = true;
-
-#else
-
+{ 
     public static bool SkipMainMenu = false; 
-
-#endif
-}
-
-public delegate void OnGameExit(); 
-
-public delegate void OnSaveLoad();
-
-public delegate void OnStartNewGame(); 
-
+}  
 
 public class GameManager : MonoBehaviour
 {
@@ -31,11 +23,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GlobalData GlobalData;
     [SerializeField] public TerrainGenerationData worldGenerationData;
     [SerializeField] public MenuData menuData;
+    [SerializeField] public RoverData roverData;
 
     // Gameplay Objects
     public GameWorld gameWorld;
     public ConstructionManager ConstructionManager;
     public RoverManager RoverManager;
+    public TaskManager TaskManager;
 
     // Menu Instances
     public HUDController HUDController;
@@ -46,8 +40,17 @@ public class GameManager : MonoBehaviour
     public CameraController cameraController;
     public PlayerInputManager playerInputManager;
 
+    // Global Events
+    public static Action OnGameExit;
+    public static Action OnSaveLoad;
+    public static Action OnStartNewGame;
+
     private void Awake()
     {
+        Profiler.maxUsedMemory = 50000000;
+        //Shader.WarmupAllShaders();
+        //ShaderVariantCollection.WarmUp();
+
         MakeSingleton(); 
 
         GlobalData.MakeSingleton();
@@ -68,11 +71,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        #if UNITY_EDITOR
-        if(DevFlags.Benchmark == true) { CreateNewGame("DevGame"); BuildCPUBenchmark(64) ; return; }
-
-        if (DevFlags.AutoSpawnRover) { CreateNewGame("DevGame"); AutoSpawnRover(); return; }
-
+#if UNITY_EDITOR
         if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); return; }
 #endif
 
@@ -139,6 +138,7 @@ public class GameManager : MonoBehaviour
         // Create new gameWorld
         gameWorld = new GameWorld(seed);
         ConstructionManager = new(); 
+        TaskManager = new TaskManager();
 
         // Start zone is generated
         gameWorld.GenerateStartZone(); 
@@ -188,11 +188,12 @@ public class GameManager : MonoBehaviour
     }
 
     // DEVELOPMENT // 
-
-#if UNITY_EDITOR
-
-    void BuildCPUBenchmark(int width)
+      
+    public void DebugBuildBenchmark()
     {
+        int width = 126; 
+        int offset = 12;
+
         StructureData debugOutput = GetStructureData("DebugOutput");
 
         StructureData conveyor = GetStructureData("Conveyor");
@@ -201,31 +202,33 @@ public class GameManager : MonoBehaviour
 
         StructureData magSep = GetStructureData("MagneticSeperator");
 
+        StructureData hopper = GetStructureData("Hopper");
 
         StructureData GetStructureData(string name) { return GlobalData.structures.Find(structure => structure.name == name); } 
 
         for (int x = 0; x < width; x += 2)
         {
-            var y = 0;
+            var y = offset;
+
             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, debugOutput); y++;
 
             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
 
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, crusher); y++;
+            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, hopper); y++;
 
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
+            /* ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, crusher); y++;
 
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, magSep); y++;
+             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
 
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
+             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, magSep); y++;
+
+             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
+             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;*/
         }
     }
 
-    void AutoSpawnRover()
+    public void DebugSpawnRover()
     {
         RoverManager.SpawnNewRover(new int2(0,0));
-    }
-
-#endif
+    } 
 }

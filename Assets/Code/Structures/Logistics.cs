@@ -1,7 +1,6 @@
-using UnityEngine;
-using Unity.Mathematics;
-
+using UnityEngine;  
 using ExtensionMethods;
+using System.Collections.Generic; 
 
 namespace Logistics
 {
@@ -70,29 +69,41 @@ namespace Logistics
 
     public class Hopper : Machine
     {
+        public static List<Hopper> pool = new List<Hopper>();
+
         public static int maxItems = 16;
         public static int renderGap = 1;
 
         public Inventory inputInventory;
-        public Inventory ouputInventory;
+        public Inventory storageInventory;
+
+        public bool isRequestor;
+        public bool isSupplier;
+        public ResourceData requestResource;
 
         public override void OnConstructed()
         {  
             inputInventory = InputInventories[0];
-            ouputInventory = OutputInventories[0];
+            storageInventory = OutputInventories[0];
 
             inputInventory.maxItems = 1;
 
-            ouputInventory.maxItems = maxItems; 
-            ouputInventory.maxWeight = int.MaxValue;
+            storageInventory.maxItems = maxItems; 
+            storageInventory.maxWeight = int.MaxValue;
+
+            pool.Add(this);
         }
+
+        public override void OnDemolished()
+        { 
+            pool.Remove(this);
+        }  
 
         public override void OnTick()
         { 
             TransferAnythingRandom(InputInventories[0], OutputInventories[0]);
             TryOutputAnything(0);
-        }
-
+        } 
 
         // This item rendering could be modified to update an array OnItemRecieved and OnItemOutput to reduce per frame overhead
         public override void OnFrameUpdate()
@@ -121,6 +132,11 @@ namespace Logistics
                     0); ; ;
             }
         }
+
+        public override void OpenInterface(Vector3 mousePosition)
+        {
+            OpenInterfaceOnHUD(MenuData.Instance.HopperInterface, mousePosition);
+        }
     }
 
     public class Silo : Hopper
@@ -130,13 +146,12 @@ namespace Logistics
         public override void OnConstructed()
         {
             inputInventory = InputInventories[0];
-            ouputInventory = OutputInventories[0];
+            storageInventory = OutputInventories[0];
 
             inputInventory.maxItems = 1;
 
-            ouputInventory.maxItems = maxItems;
-            ouputInventory.maxWeight = int.MaxValue;
+            storageInventory.maxItems = maxItems;
+            storageInventory.maxWeight = int.MaxValue;
         }
-    }
-
+    } 
 }
