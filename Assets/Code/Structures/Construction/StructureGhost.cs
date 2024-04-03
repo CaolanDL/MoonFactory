@@ -1,5 +1,6 @@
 ﻿using DataStructs;
-using System; 
+using System;
+using RoverTasks;
 
 public class StructureGhost : Entity
 {
@@ -20,9 +21,10 @@ public class StructureGhost : Entity
         ConstructionTasks.QueueTask(buildTask); 
     }
 
-    public void OnCanceled()
+    public void Cancel()
     {
         ConstructionTasks.CancelTask(buildTask);
+        GameManager.Instance.ConstructionManager.Ghosts.Remove(this);
         buildTask = null; 
     }
 

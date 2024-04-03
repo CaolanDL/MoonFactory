@@ -1,4 +1,5 @@
 using ExtensionMethods;
+using RoverTasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,15 @@ public abstract class Structure : Entity
 
     public DisplayObject DisplayObject = null;
 
+    public bool flaggedForDemolition;
+    public DemolishStructureTask demolishTask;
+
     public void Initialise()
     {
-        base.size = new DataStructs.byte2(StructureData.size.x, StructureData.size.y);
+        base.size = new DataStructs.byte2(StructureData.size.x, StructureData.size.y); 
+
+        Structures.Add(this); 
+
         OnInitialise();
     }
 
@@ -61,8 +68,14 @@ public abstract class Structure : Entity
         StructureConstructed?.Invoke(this);
     }
 
-    public void Demolished()
+    public void Demolish()
     {
+        Structures.Remove(this);
+
+        RemoveEntity();
+
+        DisplayObject.DemolishSequence();
+
         OnDemolished();
     }
 
@@ -97,6 +110,28 @@ public abstract class Structure : Entity
     public virtual void OnFrameUpdate() { }
 
     public virtual void OnClicked(Vector3 mousePosition) { }
+
+     
+
+    public void FlagForDemolition()
+    {
+        var demolishTask = new RoverTasks.DemolishStructureTask(this);
+
+        TaskManager.QueueTask(demolishTask);
+
+        flaggedForDemolition = true;
+
+        this.demolishTask = demolishTask;
+    }
+
+    public void CancelDemolition()
+    {
+        TaskManager.CancelTask(demolishTask);
+
+        flaggedForDemolition = false;
+
+        demolishTask = null;
+    }
 }
 
 // http://www.jkfill.com/2010/12/29/self-registering-factories-in-c-sharp/
@@ -139,9 +174,7 @@ public static class StructureFactory
 
         newStructure.StructureData = structureData;
 
-        newStructure.Initialise();
-
-        Structure.Structures.Add(newStructure);
+        newStructure.Initialise(); 
 
         return newStructure;
     }

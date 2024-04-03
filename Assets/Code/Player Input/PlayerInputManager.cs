@@ -1,7 +1,6 @@
 ﻿using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem; 
+using UnityEngine.EventSystems; 
 
 #region Input Example Comment
 // Input Example:
@@ -46,8 +45,8 @@ public class PlayerInputManager : MonoBehaviour
     void OnEnable()
     {
         inputActions.DefaultControls.Enable();
-        inputActions.CameraControls.Enable(); 
-        inputActions.ConstructionControls.Enable();
+        inputActions.CameraControls.Enable();
+        inputActions.UIControls.Enable();
     }
 
     public enum InputState
@@ -56,7 +55,7 @@ public class PlayerInputManager : MonoBehaviour
         Menu,
         Construction,
         Cancel,
-        Bulldoze
+        Demolish
     }
 
     public void ChangeInputState(InputState newInputState)
@@ -68,34 +67,33 @@ public class PlayerInputManager : MonoBehaviour
     {
         isMouseOverUI = EventSystem.current.IsPointerOverGameObject();
 
-        if(GameManager.Instance.gameWorld != null )
+        if (GameManager.Instance.gameWorld == null)  return; 
+
+        HandleCameraControl();
+
+        if (!isMouseOverUI)
         {
-            if (!isMouseOverUI)
-            {
-                UpdateSpatialMousePosition();
-                RenderGizmoAtMouseTile();
-            }
+            UpdateSpatialMousePosition();
+            RenderGizmoAtMouseTile();
+        }
 
-            switch (inputState)
-            {
-                default:
-                    break;
+        switch (inputState)
+        {
+            default:
+                break;
 
-                case InputState.Default:
-                    HandleDefaultInput();
-                    break;
+            case InputState.Default:
+                HandleDefaultInput();
+                break;
 
-                case InputState.Construction:
-                    HandleConstructionInput();
-                    break;
+            case InputState.Construction:
+                HandleConstructionInput();
+                break; 
 
-                case InputState.Cancel:
-                    break;
-
-                case InputState.Bulldoze:
-                    break;
-            }
-        }  
+            case InputState.Demolish:
+                HandleDemolishInput();
+                break;
+        }
     }
 
     public void HandleCameraControl()
@@ -167,28 +165,59 @@ public class PlayerInputManager : MonoBehaviour
     {
         HandleCameraControl();
 
-        if (inputActions.ConstructionControls.ExitConstructionMode.WasPressedThisFrame())
-        {
-            ChangeInputState(InputState.Default);
-            return;
-        }
+        ConstructionManager constructionManager = GameManager.Instance.ConstructionManager; 
 
-        ConstructionManager constructionManager = GameManager.Instance.ConstructionManager;
+        if (inputActions.DefaultControls.Rotate.WasPressedThisFrame())
+        {
+            constructionManager.RotateGhost(1);
+        }
 
         if (isMouseOverUI != true)
         {
             constructionManager.DrawGhostAtMouse(); 
 
-            if (inputActions.ConstructionControls.PlaceGhost.IsPressed())
+            if (inputActions.DefaultControls.Select.IsPressed())
             {
                 constructionManager.PlaceGhost(MouseWorldPositon);
             }
-        }
+        } 
 
-        if (inputActions.ConstructionControls.RotateGhost.WasPressedThisFrame())
+        if (inputActions.DefaultControls.ExitTool.WasPressedThisFrame())
         {
-            constructionManager.RotateGhost(1);
-        }  
+            ChangeInputState(InputState.Default);
+            return;
+        }
+    }
+
+    public void HandleDemolishInput()
+    {
+        if (inputActions.DefaultControls.Select.IsPressed())
+        {
+            Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
+
+            if (entity != null)
+            {
+                if (entity.GetType() == typeof(StructureGhost))
+                {
+                    ((StructureGhost)entity).Cancel();
+                }
+                if (entity.GetType().IsSubclassOf(typeof(Structure)))
+                {
+                    var structure = (Structure)entity;
+
+                    if (structure.flaggedForDemolition != true)
+                    {
+                        structure.FlagForDemolition();
+                    }
+                    else
+                    {
+                        structure.CancelDemolition();
+                    }
+                }
+            }
+
+            return;
+        } 
     }
 
 

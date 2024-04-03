@@ -24,7 +24,12 @@ public class MainMenuManager : MonoBehaviour
 
     private void Awake()
     {
-        MakeSingleton();
+        MakeSingleton(); 
+    }
+
+    private void Start()
+    {
+        Canvas.ForceUpdateCanvases();
     }
 
     public void StartNewGamePressed()

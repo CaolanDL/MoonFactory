@@ -83,16 +83,11 @@ public static class PathFinder
         List<Location> validNeighbors = new();
         Path path = null;
 
-        // First pass to find visually appealing rover distribution
-        PathValidationPass(0);
-        if(path != null) return path;
-        // Second pass to find locations without ghosts
-        PathValidationPass(1);
-        if (path != null) return path;
-        // Last resort pass to find any traversable locations
-        PathValidationPass(3);
-        if (path != null) return path;
-
+        for (int i = 0; i < 5; i++)
+        { 
+            PathValidationPass(i);
+            if (path != null) return path;
+        }  
 
         /*        // First pass to find visually appealing rover distribution
                 validNeighbors.Clear();
@@ -137,20 +132,27 @@ public static class PathFinder
             {
                 if (LocationValid(neighbor) == false) continue;
 
-                // First pass to find visually appealing rover distribution
-                if (pass == 0)
+                // find visually appealing rover distribution
+                if (pass < 1)
                 {
                     if (RoverManager.RoverPositions.ContainsValue(neighbor.position)) continue; // Is there a rover here?
                 }
 
-                // Second pass to find locations without ghosts
-                if (pass == 0 || pass == 1)
+                // find locations without conveyors
+                if (pass < 2)
+                {
+                    if (neighbor.entity != null)
+                        if (neighbor.entity.GetType() == typeof(Conveyor)) continue;
+                }
+
+                // find for locations without ghosts
+                if (pass < 4)
                 {
                     if (neighbor.entity != null)
                         if (neighbor.entity.GetType() == typeof(StructureGhost)) continue;
                 }
 
-                // Last resort pass to find any traversable locations 
+                // Last resort find any traversable locations 
 
                 validNeighbors.Add(neighbor);
             }
@@ -237,8 +239,7 @@ public static class PathFinder
             var entityType = location.entity.GetType();
 
             // Success Conditions
-            if (entityType == typeof(Conveyor)
-                 )
+            if (entityType == typeof(Conveyor))
             {
                 return true;
             }

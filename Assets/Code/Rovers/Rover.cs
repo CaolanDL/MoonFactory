@@ -1,11 +1,13 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using RoverJobs;
-using UnityEngine;
-using UnityEngine.UIElements;
 
+using UnityEngine;
+using Unity.Mathematics;
+
+using RoverJobs;
+using RoverTasks;
+
+ 
 public enum RoverModule
 {
     None,
@@ -13,6 +15,7 @@ public enum RoverModule
     Construction,
     Mining
 }
+
 
 public class Rover : Entity
 {
@@ -58,6 +61,7 @@ public class Rover : Entity
         {
             TinyTransform.position = value;
             RoverManager.RoverPositions[this] = value;
+            position = value;
         }
     }
     public sbyte GridRotation

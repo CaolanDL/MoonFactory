@@ -28,10 +28,10 @@ public class Entity // 12 bytes
     {
         get { return new byte2(size.x / 2, size.y / 2); }
     }  
-     
-    public Entity()
+
+    public void RemoveEntity()
     {
-         
+        Grid.GetGrid(gridId).RemoveEntity(position);
     }
 
     public Entity GetNeighbor(sbyte rotationFactor)

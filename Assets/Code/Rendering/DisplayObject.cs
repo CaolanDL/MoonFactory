@@ -54,6 +54,15 @@ public class DisplayObject : MonoBehaviour
         }
     }
 
+    public void DemolishSequence()
+    {
+        // play demolish animation
+
+        // Destroy self once complete
+        //todo migrate to a different method
+        Destroy(gameObject); 
+    }
+
     public void PlayAnimationOnce(string animationName)
     {
 

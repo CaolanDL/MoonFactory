@@ -692,7 +692,6 @@ GameObject:
   - component: {fileID: 2042764609287961239}
   - component: {fileID: 3092142667365572441}
   - component: {fileID: 2575648563445250094}
-  - component: {fileID: 194164929082248141}
   - component: {fileID: 5427156692604295266}
   m_Layer: 5
   m_Name: Hopper Interface
@@ -815,21 +814,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.32156864}
   m_EffectDistance: {x: -2, y: -2}
-  m_UseGraphicAlpha: 1
---- !u!114 &194164929082248141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1452811590041402077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 2, y: 2}
   m_UseGraphicAlpha: 1
 --- !u!114 &5427156692604295266
 MonoBehaviour:

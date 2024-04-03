@@ -205,6 +205,8 @@ public class Grid
 
         entity.rotation = rotation;
 
+        entity.gridId = id;
+
         return entity;
     }
 

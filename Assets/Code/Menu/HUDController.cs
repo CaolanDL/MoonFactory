@@ -66,10 +66,11 @@ public class HUDController : MonoBehaviour
 
 
     // Construction Tools //
-
-    public void CancelButtonPressed() { }
-
-    public void BulldozeButtonPressed() { }
+     
+    public void BulldozeButtonPressed()
+    {
+        GameManager.Instance.playerInputManager.ChangeInputState(PlayerInputManager.InputState.Demolish);
+    }
 
     public void HeatmapButtonPressed() { } 
 

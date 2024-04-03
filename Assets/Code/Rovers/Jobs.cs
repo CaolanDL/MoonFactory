@@ -1,10 +1,11 @@
-﻿using ExtensionMethods;
-using Logistics;
+﻿using Logistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics; 
 using UnityEngine;
+using RoverTasks;
+using static UnityEngine.GraphicsBuffer;
 
 namespace RoverJobs
 {
@@ -124,7 +125,7 @@ namespace RoverJobs
         }
 
         public override void OnStart()
-        {
+        { 
             if (_path.length < 2) { rover.TaskFailed(); return; }
 
             rover.DisplayObject.PlayParticleEffect("MovingParticles");
@@ -387,6 +388,30 @@ namespace RoverJobs
     }
 
 
+    public class GotoEntity : Job
+    { 
+        Entity Entity;
+
+        Path path;  
+
+        public GotoEntity(Entity entity)
+        {
+            this.Entity = entity;  
+        }
+
+        public override void OnStart()
+        {
+            if (Entity != null) path = PathFinder.FindPathToAnyFreeNeighbor(rover.GridPosition, Entity.position); 
+
+            if (path == null) { FailTask(); return; }
+
+            PopJob();
+
+            StackJob(new TraversePath(path)); 
+        } 
+    }
+
+
     public class TurnTowards : Job
     {
         private float2 target;
@@ -494,6 +519,27 @@ namespace RoverJobs
             if (lifeSpan >= structureGhost.structureData.timeToBuild)
             {
                 structureGhost.FinishConstruction();
+                PopJob();
+            }
+        }
+    }
+
+
+    public class DemolishStructure : Job
+    {
+        Structure structure;
+
+        public DemolishStructure(Structure structure)
+        {
+            this.structure = structure;
+        }
+
+        public override void OnTick()
+        {
+            if(lifeSpan > structure.StructureData.timeToBuild)
+            {
+                structure.Demolish();
+
                 PopJob();
             }
         }
