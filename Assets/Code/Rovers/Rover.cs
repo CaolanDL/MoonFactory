@@ -14,7 +14,7 @@ public enum RoverModule
     Mining
 }
 
-public class Rover
+public class Rover : Entity
 {
     public const float _MoveSpeed = 8f;
     public float MoveSpeed { get { return _MoveSpeed; } }
@@ -28,9 +28,6 @@ public class Rover
     public const float _MiningSpeed = 6f;
     public float MiningSpeed { get { return _MiningSpeed; } }
 
-
-    public static List<Rover> Pool = new();
-
     public Inventory Inventory = new();
     public RoverModule Module = RoverModule.Construction;
 
@@ -38,18 +35,35 @@ public class Rover
     public readonly Queue<Job> JobQueue = new Queue<Job>();
     public readonly Stack<Job> JobStack = new Stack<Job>();
 
+    // Float transform for visual position
     public SmallTransform SmallTransform = new();
-    // Add tiny transform for grid operations without float rounding
+    // Tiny transform for grid position
+    public TinyTransform TinyTransform = new();
 
-    public float2 position
+    public float2 VisualPosition
     {
         get => SmallTransform.position;
         set => SmallTransform.position = value;
     }
-    public float rotation
+    public float VisualRotation
     {
         get => SmallTransform.rotation;
         set => SmallTransform.rotation = value;
+    }
+
+    public int2 GridPosition
+    {
+        get => TinyTransform.position;
+        set
+        {
+            TinyTransform.position = value;
+            RoverManager.RoverPositions[this] = value;
+        }
+    }
+    public sbyte GridRotation
+    {
+        get => TinyTransform.rotation;
+        set => TinyTransform.rotation = value;
     }
 
     public DisplayObject DisplayObject;
@@ -57,6 +71,7 @@ public class Rover
     public void Init(int2 spawnLocation, DisplayObject displayObject)
     {
         this.DisplayObject = displayObject;
+        DisplayObject.parentEntity = this;
     }
 
     public void OnFrameUpdate() { }
@@ -68,14 +83,19 @@ public class Rover
         UpdateDOPosition();
     }
 
+    public void Clicked(Vector3 mousePosition)
+    {
+        GameManager.Instance.HUDController.OpenInterface(MenuData.Instance.RoverInterface, this, mousePosition);
+    }
+
     public void UpdateDOPosition()
     {
-        DisplayObject.transform.position = new Vector3(position.x, 0, position.y);
+        DisplayObject.transform.position = new Vector3(VisualPosition.x, 0, VisualPosition.y);
     }
 
     public void UpdateDoRotation()
     {
-        DisplayObject.transform.rotation = Quaternion.Euler(0, rotation, 0);
+        DisplayObject.transform.rotation = Quaternion.Euler(0, VisualRotation, 0);
     }
 
     // Task & Job Management //

@@ -12,9 +12,9 @@ public class HopperInterface : ModularInterface
     private StructureData structureData;
 
 
-    public void Init(Hopper _hopper, Vector3 screenPosition)
+    public override void Init(Entity entity, Vector3 screenPosition)
     {
-        this.hopper = _hopper;
+        this.hopper = (Hopper)entity; 
 
         structureData = hopper.StructureData;
 
@@ -27,7 +27,7 @@ public class HopperInterface : ModularInterface
 
     public void Update()
     {
-        Graphics.DrawMesh(GlobalData.Instance.gizmo_TileGrid, hopper.transform.ToMatrix(), GlobalData.Instance.mat_PulsingGizmo, 0);
+        //Graphics.DrawMesh(GlobalData.Instance.gizmo_TileGrid, hopper.transform.ToMatrix(), GlobalData.Instance.mat_PulsingGizmo, 0);
     }
 
     public override void UpdateUI()

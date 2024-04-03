@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MachineInterface : ModularInterface
+public class CraftingMachineInterface : ModularInterface
 {
     [Space]
     public GameObject InputInventoriesGrid;
@@ -15,10 +15,10 @@ public class MachineInterface : ModularInterface
 
     private StructureData structureData;
 
-    public void Update()
+/*    public void Update()
     {
         Graphics.DrawMesh(GlobalData.Instance.gizmo_Axis, machine.transform.ToMatrix(), GlobalData.Instance.mat_PulsingGizmo, 0);
-    }
+    }*/
 
     public override void UpdateUI()
     {

@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using UnityEngine;
 
 using ExtensionMethods;
-using System.Linq;  
+using System.Linq;
 
 namespace Logistics
 {
@@ -29,7 +29,7 @@ namespace Logistics
         {
             get { return currentConveyor.turnConfig == Conveyor.TurnConfig.LeftTurn ? +90f : -90f; }
         }
-         
+
         // Cached Variables
         static Conveyor currentConveyor;
         static Vector2 positionOnConveyor;
@@ -58,11 +58,11 @@ namespace Logistics
             if (distance < Conveyor.Length) { return chain.conveyors[0]; }
             int index = Mathf.CeilToInt((float)distance / Conveyor.Length) - 1;
             return chain.conveyors[index];
-        }  
+        }
 
         public Vector2 GetWorldPosition(Chain chain)
         {
-            currentConveyor = GetConveyor(chain); 
+            currentConveyor = GetConveyor(chain);
 
             Vector2 linearPositionCalc()
             {
@@ -74,16 +74,16 @@ namespace Logistics
             // Item path of straight conveyors
             if (currentConveyor.turnConfig == Conveyor.TurnConfig.Straight)
             {
-                positionOnConveyor = linearPositionCalc(); 
+                positionOnConveyor = linearPositionCalc();
             }
 
             // Item path of curved conveyors. This could probably do with some refactoring and optimisations but heyho it works.
             else
-            {  
+            {
                 if (normalisedDistanceOnConveyor <= Conveyor.TurnStartOffset)
                 {
                     positionOnConveyor = linearPositionCalc().Rotate(turnFactor);
-                   // Rotation = (short)(currentConveyor.rotation * 90f + turnFactor);
+                    // Rotation = (short)(currentConveyor.rotation * 90f + turnFactor);
                 }
                 else if (normalisedDistanceOnConveyor >= 1 - Conveyor.TurnStartOffset)
                 {
@@ -105,7 +105,7 @@ namespace Logistics
 
                     remapNormalDistance = math.remap(0f + Conveyor.TurnStartOffset, 1f - Conveyor.TurnStartOffset, 0f, 1f, normalisedDistanceOnConveyor);
 
-                    normalRotation = remapNormalDistance * -turnFactor; 
+                    normalRotation = remapNormalDistance * -turnFactor;
 
                     positionOnConveyor = new Vector2(0, Conveyor.TurnStartOffset).RotateAround(turnOrigin, normalRotation);
 
@@ -234,13 +234,13 @@ namespace Logistics
             //UpdateItemPositions();
         }
 
-/*        void UpdateItemPositions()
-        {
-            foreach (Item item in items)
-            {
-                item.UpdateWorldPosition(this);
-            }
-        }*/
+        /*        void UpdateItemPositions()
+                {
+                    foreach (Item item in items)
+                    {
+                        item.UpdateWorldPosition(this);
+                    }
+                }*/
 
         public bool TryTransferLastItem()
         {
@@ -348,6 +348,8 @@ namespace Logistics
         }
     }
 
+    //todo Make this a base class, then inherit low-coveyor, raised-conveyor, and ramp conveyor.
+    //todo Add an input to switch the configuration of the active ghost in the construction manager, then add configuration list to the structure data class. 
     public class Conveyor : Structure
     {
         public static int Length = 60;
@@ -371,10 +373,10 @@ namespace Logistics
         }
 
         public override void OnConstructed()
-        { 
+        {
             inputPosition = new int2(0, -1).Rotate(rotation) + position;
 
-            TryAddConnections(); 
+            TryAddConnections();
         }
 
         private void TryAddConnections()
@@ -459,10 +461,10 @@ namespace Logistics
 
                 else { return; }
 
-                if(conveyorFacingMe != null)
-                { 
+                if (conveyorFacingMe != null)
+                {
                     conveyorFacingMe.nextConveyor = this;
-                    lastConveyor = conveyorFacingMe; 
+                    lastConveyor = conveyorFacingMe;
 
                     if (nextConveyor != null)
                     {
@@ -474,7 +476,7 @@ namespace Logistics
                         conveyorFacingMe.parentChain.AppendConveyor(this);
                         parentChain = conveyorFacingMe.parentChain;
                     }
-                }  
+                }
 
 
                 bool IsConveyorFacingMe(Entity entity, sbyte rotationFactor)
@@ -500,13 +502,13 @@ namespace Logistics
                         var machine = (Machine)entity;
                         if (machine.StructureData.outputs.Count == 0) return false;
 
-                        foreach( var output in machine.StructureData.outputs)
+                        foreach (var output in machine.StructureData.outputs)
                         {
-                            if (((output).position.Rotate(machine.rotation) + machine.position).Equals( position ))
+                            if (((output).position.Rotate(machine.rotation) + machine.position).Equals(position))
                             {
                                 return true;
                             }
-                        } 
+                        }
                     }
                     return false;
                 }
@@ -553,7 +555,7 @@ namespace Logistics
             if (config == TurnConfig.RightTurn)
             {
                 DisplayObject.SetActiveModel("Right Turn");
-                inputPosition = new int2(0, -1).Rotate((sbyte)(rotation - 1)) + position    ;
+                inputPosition = new int2(0, -1).Rotate((sbyte)(rotation - 1)) + position;
             }
         }
 
@@ -636,5 +638,20 @@ namespace Logistics
 
             return itemsOnConveyor;
         }
+    }
+
+    public class ConveyorLow : Conveyor
+    {
+
+    }
+
+    public class ConveyorHigh : Conveyor
+    {
+
+    }
+
+    public class ConveyorRamp : Conveyor
+    {
+
     }
 }

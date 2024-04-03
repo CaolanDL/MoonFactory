@@ -29,6 +29,23 @@ public class ModularInterface : MonoBehaviour
         Canvas.ForceUpdateCanvases();
     }
 
+    public void SetDetails(string name, string description)
+    { 
+        nameText.SetText(name);
+        descriptionText.SetText(description);
+        Canvas.ForceUpdateCanvases();
+    }
+
+    public void SetName(string name)
+    {
+        nameText.SetText(name);  
+    }
+
+    public void SetSprite(Sprite sprite)
+    {
+        spriteImage.sprite = sprite; 
+    }
+
     public void CloseInterface()
     {
         OnCloseInterface();

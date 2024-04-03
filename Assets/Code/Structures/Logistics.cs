@@ -97,7 +97,7 @@ namespace Logistics
         public override void OnDemolished()
         { 
             pool.Remove(this);
-        } 
+        }  
 
         public override void OnTick()
         { 
@@ -132,6 +132,11 @@ namespace Logistics
                     0); ; ;
             }
         }
+
+        public override void OpenInterface(Vector3 mousePosition)
+        {
+            OpenInterfaceOnHUD(MenuData.Instance.HopperInterface, mousePosition);
+        }
     }
 
     public class Silo : Hopper
@@ -148,6 +153,5 @@ namespace Logistics
             storageInventory.maxItems = maxItems;
             storageInventory.maxWeight = int.MaxValue;
         }
-    }
-
+    } 
 }

@@ -57,3 +57,8 @@ public class StructureData : ScriptableObject
     } 
 }
 
+[CreateAssetMenu(menuName = "MoonFactory/Configurable Structure Data")]
+public class ConfigurableStructureData : StructureData
+{
+    public List<StructureData> Configurations; 
+} 

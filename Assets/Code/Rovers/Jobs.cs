@@ -142,7 +142,7 @@ namespace RoverJobs
             var lastNode = _path.nodes.Last();
             Graphics.DrawMesh(GlobalData.Instance.gizmo_Axis, new Vector3(lastNode.x, 0.25f, lastNode.y), quaternion.identity, GlobalData.Instance.mat_GhostBlocked, 0);
 
-            if (rover.position.Equals(_nextNodePosition) || lifeSpan == 0)
+            if (rover.VisualPosition.Equals(_nextNodePosition) || lifeSpan == 0)
             {
                 AdvanceNode();
 
@@ -154,7 +154,7 @@ namespace RoverJobs
 
             if (_finished || _mustTurn) return;
 
-            rover.position = Vector2.MoveTowards(rover.position, _nextNodePosition, rover.MoveSpeed * Time.fixedDeltaTime);
+            rover.VisualPosition = Vector2.MoveTowards(rover.VisualPosition, _nextNodePosition, rover.MoveSpeed * Time.fixedDeltaTime);
 
             //rover.position = (_nextNodeWorldPosition * _interpAlpha) + (_currentNodeWorldPosition * (1 - _interpAlpha)); // Lerp between current node and next node;  
         }
@@ -178,16 +178,18 @@ namespace RoverJobs
 
             if (_currentNodeIndex + 1 == _path.nodes.Length) { Finished(); _finished = true; return; }
 
+            rover.GridPosition = _path.nodes[_currentNodeIndex];
+
             _currentNodePosition = _path.nodes[_currentNodeIndex];
             _nextNodePosition = _path.nodes[_currentNodeIndex + 1];
 
             //_distanceToNextNode = Float2Extensions.DistanceBetween(_currentNodeWorldPosition, _nextNodeWorldPosition);
 
             // Stack a TurnTowards job if the next node would cause the rover to turn
-            Vector2 _difference = (Vector2)(rover.position - _nextNodePosition);
+            Vector2 _difference = (Vector2)(rover.VisualPosition - _nextNodePosition);
             float _angle = Vector2.SignedAngle(_difference, Vector2.down);
             //Debug.Log($"{_angle} : {rover.rotation}");
-            if (! (Mathf.Approximately(_angle, rover.rotation) || (Mathf.Approximately(Mathf.Abs(_angle), 180) && Mathf.Approximately(Mathf.Abs(rover.rotation), 180))) )
+            if (! (Mathf.Approximately(_angle, rover.VisualRotation) || (Mathf.Approximately(Mathf.Abs(_angle), 180) && Mathf.Approximately(Mathf.Abs(rover.VisualRotation), 180))) )
             {
                 StackJob(new TurnTowards(_nextNodePosition));
                 _mustTurn = true;
@@ -210,7 +212,9 @@ namespace RoverJobs
         }
 
         private void Finished()
-        { 
+        {
+            rover.GridPosition = _path.destination;
+
             PopJob();
 
             rover.DisplayObject.StopParticleEffect("MovingParticles");
@@ -226,20 +230,26 @@ namespace RoverJobs
         private List<ResourceQuantity> _resourcesToCollect;
         private int2 destination;
 
-        private List<Hopper> foundHoppers = new List<Hopper>();
-        public class FoundHopper
-        {
-            Hopper Hopper; float DistanceToRover; 
-            public FoundHopper(Hopper hopper, float distanceToRover)
-            {
-                Hopper = hopper;
-                DistanceToRover = distanceToRover;
-            }
-        }
+        private List<FoundHopper> foundHoppers = new List<FoundHopper>();
 
         private LinkedList<Path> _superPath = new();
 
         bool finished = false;
+
+        public class FoundHopper
+        {
+            public Hopper Hopper;
+            public List<ResourceQuantity> reservedResources = new();
+            public float DistanceToRover;
+            public float DistanceToDestination;
+
+            public FoundHopper(Hopper hopper, float distanceToRover, float distanceToDestination)
+            {
+                Hopper = hopper;
+                DistanceToRover = distanceToRover;
+                DistanceToDestination = distanceToDestination;
+            }
+        } 
 
         public CollectAndDeliverResources(IEnumerable<ResourceQuantity> resourceQuantities, int2 destination)
         {
@@ -251,7 +261,7 @@ namespace RoverJobs
         {
             if (!TryFindHoppers()) { FailTask(); return; }
 
-            _superPath = PathFinder.FindSuperPath((int2)rover.position, foundHoppers.Select(hopper => hopper.position).ToArray());
+            _superPath = PathFinder.FindSuperPath((int2)rover.VisualPosition, foundHoppers.Select(foundHopper => foundHopper.Hopper.position).ToArray());
 
             if (_superPath == null || _superPath.Count == 0) { FailTask(); return; }
 
@@ -262,11 +272,11 @@ namespace RoverJobs
 
         public override void OnTick()
         {
-            Job job;
+            Job job; 
 
             if (_superPath.Count > 0)
             {
-                job = new CollectResource(_superPath.First().trueDestination);
+                job = new CollectResource(_superPath.First().target);
                 StackJob(job);
 
                 var path = _superPath.First();
@@ -293,51 +303,57 @@ namespace RoverJobs
             foundHoppers = new();
 
             foreach (var rq in _resourcesToCollect)
-            {
                 remaingResourcesToFind.Add(rq.resource, rq.quantity);
-            }
 
             List<Hopper> hoppers = Hopper.pool;
 
-            hoppers.Sort(HopperSort);
+            hoppers.Sort(HopperSortDistToDest);
 
-            foreach (ResourceQuantity rq in _resourcesToCollect)
-            {
+            foreach (ResourceQuantity rq in _resourcesToCollect) 
                 foreach (Hopper hopper in Hopper.pool)
                 {
                     var quantityInHopper = hopper.storageInventory.GetQuantityOf(rq.resource);
 
                     if (quantityInHopper > 0)
                     {
-                        if (PathFinder.FindPathToAnyFreeNeighbor((int2)rover.position, hopper.position) == null) { continue; } // Hopper not reachable
+                        if (PathFinder.FindPathToAnyFreeNeighbor((int2)rover.VisualPosition, hopper.position) == null) { continue; } // Hopper not reachable
 
-                        float2 hopperRoverOffset = rover.position - hopper.position;
+                        float2 hopperRoverOffset = rover.VisualPosition - hopper.position;
                         float hopperDistanceMagnitude = (hopperRoverOffset.x * hopperRoverOffset.x) + (hopperRoverOffset.y * hopperRoverOffset.y);
 
-                        if (!foundHoppers.Contains(hopper)) foundHoppers.Add(hopper);
+                        var foundHopper = foundHoppers.Find(foundHoppers => foundHoppers.Hopper == hopper);
+
+                        if (foundHopper == null)
+                        {
+                            foundHopper = new FoundHopper(hopper, GetRoughDistanceToRover(hopper), GetRoughDistanceToDestination(hopper));
+                            foundHoppers.Add(foundHopper);
+                        } 
+
+                        var maxReservableQuantity = Mathf.Clamp(quantityInHopper, 0, remaingResourcesToFind[rq.resource]);
+                        foundHopper.reservedResources.Add(new ResourceQuantity(rq.resource, maxReservableQuantity)); 
                         foundResourceInHopper = true;
 
                         remaingResourcesToFind[rq.resource] -= quantityInHopper;
                         if (remaingResourcesToFind[rq.resource] <= 0) { remaingResourcesToFind.Remove(rq.resource); break; }
-                    }
-                }
+                    } 
 
-                if (foundResourceInHopper == false)
-                {
-                    return false;
-                }
+                if (foundResourceInHopper == false) return false; 
             }
 
             if (remaingResourcesToFind.Count > 0) { return false; }
 
-            // Sort Hoppers Here 
+            foundHoppers.Sort(FHopperSortDistToDestination);
 
-            foundHoppers.Sort(HopperSort);
+            foreach(var foundHopper in foundHoppers) 
+                foreach(var reservedResource in foundHopper.reservedResources)
+                    foundHopper.Hopper.storageInventory.ReserveResource(reservedResource); 
 
-            int HopperSort(Hopper a, Hopper b)
+            return true;
+
+            int HopperSortDistToDest(Hopper a, Hopper b)
             {
-                float aDistance = GetRoughHopperDistance(a);
-                float bDistance = GetRoughHopperDistance(b);
+                float aDistance = GetRoughDistanceToDestination(a);
+                float bDistance = GetRoughDistanceToDestination(b);
 
                 if (aDistance == bDistance) return 0;
                 else if (aDistance < bDistance) return -1;
@@ -345,15 +361,28 @@ namespace RoverJobs
                 else return 0;
             }
 
-            float GetRoughHopperDistance(Hopper hopper)
+            int FHopperSortDistToDestination(FoundHopper a, FoundHopper b)
             {
-                float2 hopperRoverOffset = rover.position - hopper.position;
-                return (hopperRoverOffset.x * hopperRoverOffset.x) + (hopperRoverOffset.y * hopperRoverOffset.y);
+                float aDistance = a.DistanceToDestination;
+                float bDistance = b.DistanceToDestination;
+
+                if (aDistance == bDistance) return 0;
+                else if (aDistance < bDistance) return -1;
+                else if (aDistance > bDistance) return 1;
+                else return 0;
             }
 
-            //
+            float GetRoughDistanceToRover(Hopper hopper)
+            {
+                float2 offset = rover.VisualPosition - hopper.position;
+                return (offset.x * offset.x) + (offset.y * offset.y);
+            }
 
-            return true;
+            float GetRoughDistanceToDestination(Hopper hopper)
+            {
+                float2 offset = destination - hopper.position;
+                return (offset.x * offset.x) + (offset.y * offset.y);
+            }
         } 
     }
 
@@ -379,9 +408,9 @@ namespace RoverJobs
         public override void OnStart()
         {
             //_baseRotation = rover.rotation;
-            _currentRotation = rover.rotation;
+            _currentRotation = rover.VisualRotation;
 
-            Vector2 difference = (Vector2)(rover.position - target);
+            Vector2 difference = (Vector2)(rover.VisualPosition - target);
             _targetRotation = Vector2.SignedAngle(difference.normalized, Vector2.down);
 
             //Debug.Log($"Rotate Towards {target} at {_targetRotation} from {_currentRotation}");
@@ -391,7 +420,7 @@ namespace RoverJobs
         {
             _currentRotation = Mathf.MoveTowardsAngle(_currentRotation, _targetRotation, rover.TurnSpeed);
 
-            rover.rotation = _currentRotation;
+            rover.VisualRotation = _currentRotation;
 
             rover.UpdateDoRotation();
 

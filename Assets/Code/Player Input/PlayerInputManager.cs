@@ -46,17 +46,9 @@ public class PlayerInputManager : MonoBehaviour
     void OnEnable()
     {
         inputActions.DefaultControls.Enable();
-
+        inputActions.CameraControls.Enable(); 
         inputActions.ConstructionControls.Enable();
     }
-
-    void OnDisable()
-    {
-        inputActions.DefaultControls.Disable();
-
-        inputActions.ConstructionControls.Disable();
-    }
-
 
     public enum InputState
     {
@@ -93,9 +85,6 @@ public class PlayerInputManager : MonoBehaviour
                     HandleDefaultInput();
                     break;
 
-                case InputState.Menu:
-                    break;
-
                 case InputState.Construction:
                     HandleConstructionInput();
                     break;
@@ -118,7 +107,41 @@ public class PlayerInputManager : MonoBehaviour
     {
         HandleCameraControl();
 
-        if (inputActions.DefaultControls.PickStructure.WasPressedThisFrame())
+        if (inputActions.DefaultControls.Select.WasPressedThisFrame())
+        {
+            if (isMouseOverUI) { return; }
+
+            // Check if a rover was selected, else check if a structure was selected. 
+            Ray ray = cameraController.activeMainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Rover")))
+            {
+                Entity entity = hit.transform.gameObject.GetComponent<DisplayObject>().parentEntity;
+
+                if (entity.GetType() == typeof(Rover))
+                {
+                    ((Rover)entity).Clicked(Input.mousePosition);
+                }
+            }
+
+            else
+            {
+                Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
+
+                if (entity != null)
+                {
+                    if (entity.GetType().IsSubclassOf(typeof(Structure)))
+                    {
+                        ((Structure)entity).Clicked(Input.mousePosition);
+                    }
+                }
+            }
+
+            return;
+        }
+
+        if (inputActions.DefaultControls.Pick.WasPressedThisFrame())
         {
             Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
 
@@ -135,29 +158,16 @@ public class PlayerInputManager : MonoBehaviour
                     GameManager.Instance.ConstructionManager.StartPlacingGhosts(((Structure)entity).StructureData);
                 } 
             }
-        }
 
-        else if (inputActions.DefaultControls.Select.WasPressedThisFrame())
-        {
-            if(isMouseOverUI) { return; }
-
-            Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
-
-            if (entity != null)
-            { 
-                if (entity.GetType().IsSubclassOf(typeof(Structure)))
-                {
-                    ((Structure)entity).Clicked(Input.mousePosition);
-                }
-            }
-        }
+            return;
+        } 
     }
 
     public void HandleConstructionInput()
     {
         HandleCameraControl();
 
-        if (Mouse.current.rightButton.wasPressedThisFrame)
+        if (inputActions.ConstructionControls.ExitConstructionMode.WasPressedThisFrame())
         {
             ChangeInputState(InputState.Default);
             return;

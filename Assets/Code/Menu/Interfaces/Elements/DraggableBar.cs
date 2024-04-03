@@ -50,7 +50,7 @@ public class DraggableBar : UIMouseHover
 
 
 
-            // Clamp interface position to screen bounds
+/*            // Clamp interface position to screen bounds
             if (rectTransform.anchoredPosition.x < 0)
             {
                 rectTransform.anchoredPosition = new Vector3(0, rectTransform.anchoredPosition.y, 0);
@@ -66,7 +66,7 @@ public class DraggableBar : UIMouseHover
             if (rectTransform.anchoredPosition.y > canvas.pixelRect.size.y)
             {
                 rectTransform.anchoredPosition = new Vector3(rectTransform.anchoredPosition.x, canvas.pixelRect.size.y - 5, 0);
-            }
+            }*/
         }
     }
 }

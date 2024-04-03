@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GlobalData GlobalData;
     [SerializeField] public TerrainGenerationData worldGenerationData;
     [SerializeField] public MenuData menuData;
+    [SerializeField] public RoverData roverData;
 
     // Gameplay Objects
     public GameWorld gameWorld;

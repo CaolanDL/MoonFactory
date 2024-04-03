@@ -8,7 +8,7 @@ using UnityEngine;
 public class Machine : Structure
 {
     public Inventory[] InputInventories;
-    public Inventory[] OutputInventories;
+    public Inventory[] OutputInventories; 
 
     public override void OnInitialise()
     {
@@ -22,8 +22,7 @@ public class Machine : Structure
     public override void OnClicked(Vector3 mousePosition)
     {
         OpenInterface(mousePosition);
-    }
-
+    } 
 
     // Input Output //
     #region Input Output
@@ -446,9 +445,15 @@ public class Machine : Structure
 
     //TODO Should really modifiy this to a different creational design pattern. Maybe pass the call off to the structure subclass in question with a virtual method
     //TODO and let the subclass handle the HUD call. Would prefer not to have a large switch statement in the HUD class to dependently spawn interfaces.
+    // Defaults to opening a crafting machine interface.
     public virtual void OpenInterface(Vector3 mousePosition) 
     {
-        var success = GameManager.Instance.HUDController.OpenInterface(MenuData.Instance.CraftingMachineInterface, this, mousePosition);
+        OpenInterfaceOnHUD(MenuData.Instance.CraftingMachineInterface, mousePosition);
+    }
+
+    public void OpenInterfaceOnHUD(GameObject interfacePrefab, Vector3 mousePosition)
+    {
+        var success = GameManager.Instance.HUDController.OpenInterface(interfacePrefab, this, mousePosition);
 
         if (success)
         {

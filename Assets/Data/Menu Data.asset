@@ -19,6 +19,8 @@ MonoBehaviour:
   HUD: {fileID: 5208321704792210768, guid: da97c697ec104794f97b769a51c7df26, type: 3}
   BuildButtonTooltip: {fileID: 1213213408029545927, guid: e1402c0125a47d747b7fd68bb941f9f5,
     type: 3}
+  RoverInterface: {fileID: 1452811590041402077, guid: 074ddf08676b28e449723e1101904783,
+    type: 3}
   CraftingMachineInterface: {fileID: 1452811590041402077, guid: 149121bacb169494991421cd7979e39d,
     type: 3}
   HopperInterface: {fileID: 1452811590041402077, guid: 00ee7b4c93f6eef4daa85723fd49908c,

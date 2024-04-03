@@ -6,6 +6,8 @@ public class RoverManager : MonoBehaviour
 {
     public static List<Rover> Rovers = new();
 
+    public static Dictionary<Rover, int2> RoverPositions = new();
+
     public GameObject roverDisplayObjectPrefab;
 
     public GameObject widgetDisplayObjectPrefab;
@@ -28,6 +30,7 @@ public class RoverManager : MonoBehaviour
         var newRover = new Rover();
 
         Rovers.Add(newRover);
+        RoverPositions.Add(newRover, newRover.GridPosition);
 
         var newRoverDO = Instantiate(roverDisplayObjectPrefab, new Vector3(location.x, 0 , location.y), Quaternion.identity, transform).GetComponent<DisplayObject>();
 
