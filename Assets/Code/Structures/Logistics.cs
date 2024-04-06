@@ -1,6 +1,7 @@
 using UnityEngine;  
 using ExtensionMethods;
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using RoverTasks;
 
 namespace Logistics
 {
@@ -79,7 +80,8 @@ namespace Logistics
 
         public bool isRequestor;
         public bool isSupplier;
-        public ResourceData requestResource;
+        public ResourceData requestResource;  
+        public ManagedTask requestTask = new(); 
 
         public override void OnConstructed()
         {  
@@ -137,14 +139,21 @@ namespace Logistics
         {
             OpenInterfaceOnHUD(MenuData.Instance.HopperInterface, mousePosition);
         }
+
+        void HandleRequest()
+        {
+            if (!isRequestor || requestTask.taskExists) return;
+
+            requestTask.TryCreateTask(new HopperRequestTask(requestResource));
+        }
     }
 
     public class Silo : Hopper
     {
-        public static new int maxItems = 64;
+        public static new int maxItems = 48;
 
         public override void OnConstructed()
-        {
+        { 
             inputInventory = InputInventories[0];
             storageInventory = OutputInventories[0];
 
@@ -152,6 +161,8 @@ namespace Logistics
 
             storageInventory.maxItems = maxItems;
             storageInventory.maxWeight = int.MaxValue;
+
+            pool.Add(this);
         }
     } 
 }

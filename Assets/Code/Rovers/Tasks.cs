@@ -2,6 +2,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 using RoverJobs;
+using System;
 
 namespace RoverTasks
 { 
@@ -14,6 +15,14 @@ namespace RoverTasks
         public List<Job> jobs;
 
         public bool isComplete = false;
+
+        public bool isCancelled = false;
+
+        public Action OnFetched;
+        public Action OnFailed;
+
+        public Action OnCompleteCallback;
+        public Action OnCancelledCallback;
 
         public void BuildJobs()
         {
@@ -34,6 +43,69 @@ namespace RoverTasks
             {
                 EnqueueJob(job);
             }
+        } 
+    }
+
+    public class ManagedTask
+    {
+        public Task linkedTask = null; 
+        public bool taskExists = false;
+
+        public bool onRover = false;
+
+        public Action OnTaskAvailable;
+
+        public void TryCreateTask(Task task)
+        {
+            if (linkedTask != null) return;
+
+            linkedTask = task;
+            taskExists = true;
+            TaskManager.QueueTask(task);
+
+            linkedTask.OnCompleteCallback += OnComplete;
+            linkedTask.OnCancelledCallback += OnCancelled;
+
+            linkedTask.OnFetched += OnFetched;
+            linkedTask.OnFailed += OnFetched;
+        }
+
+        public void CancelTask()
+        {
+            if (!taskExists) return;
+
+            linkedTask.isCancelled = true;
+            TaskManager.CancelTask(linkedTask);
+
+            OnCancelled();
+        }
+
+        public void OnComplete()
+        {
+            linkedTask = null;
+            taskExists = false;
+            onRover = false;
+
+            OnTaskAvailable?.Invoke();
+        }
+
+        public void OnCancelled()
+        {
+            linkedTask = null;
+            taskExists = false;
+            onRover = false;
+
+            OnTaskAvailable?.Invoke();
+        }
+
+        public void OnFetched()
+        {
+            onRover = true;
+        }
+
+        public void OnFailed()
+        {
+            onRover = false;
         }
     }
 
@@ -102,7 +174,7 @@ namespace RoverTasks
 
             jobs = new()
             {
-                new CollectAndDeliverResources(ghost.structureData.requiredResources, ghost.position),
+                new CollectAndDeliverShoppingList(ghost.structureData.requiredResources, ghost.position),
                 new BuildStructure(ghost),
                 new FinishTask()
             };
@@ -134,7 +206,18 @@ namespace RoverTasks
 
     public class HopperRequestTask : LogisticsTasks
     {
+        ResourceData resource;
 
+        public HopperRequestTask(ResourceData resource)
+        {
+            this.resource = resource;
+
+            jobs = new()
+            {
+
+                new FinishTask()
+            };
+        } 
     }
 
 

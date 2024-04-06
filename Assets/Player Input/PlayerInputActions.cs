@@ -28,6 +28,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""78cb8385-15cf-4a77-9bdc-d3c4c6b8ca46"",
             ""actions"": [
                 {
+                    ""name"": ""Pick"",
+                    ""type"": ""Button"",
+                    ""id"": ""c49dbca6-541e-4d6e-9518-3cb4ba26ec48"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Select"",
                     ""type"": ""Button"",
                     ""id"": ""dd69b364-8546-4a05-82f6-5bc8c5a0539b"",
@@ -40,15 +49,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Exit Tool"",
                     ""type"": ""Button"",
                     ""id"": ""4526ccdb-3834-4023-beb5-94df31c8a2bf"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Pick"",
-                    ""type"": ""Button"",
-                    ""id"": ""c49dbca6-541e-4d6e-9518-3cb4ba26ec48"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -88,6 +88,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
+                    ""name"": """",
+                    ""id"": ""d621d752-b665-43ae-90e4-852a03bfbb85"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
                     ""name"": ""One Modifier"",
                     ""id"": ""86050476-2a1d-44c0-8ded-f36592e7a82d"",
                     ""path"": ""OneModifier"",
@@ -119,17 +130,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Pick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""d621d752-b665-43ae-90e4-852a03bfbb85"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -381,9 +381,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
 }");
         // Default Controls
         m_DefaultControls = asset.FindActionMap("Default Controls", throwIfNotFound: true);
+        m_DefaultControls_Pick = m_DefaultControls.FindAction("Pick", throwIfNotFound: true);
         m_DefaultControls_Select = m_DefaultControls.FindAction("Select", throwIfNotFound: true);
         m_DefaultControls_ExitTool = m_DefaultControls.FindAction("Exit Tool", throwIfNotFound: true);
-        m_DefaultControls_Pick = m_DefaultControls.FindAction("Pick", throwIfNotFound: true);
         m_DefaultControls_Rotate = m_DefaultControls.FindAction("Rotate", throwIfNotFound: true);
         // Camera Controls
         m_CameraControls = asset.FindActionMap("Camera Controls", throwIfNotFound: true);
@@ -455,17 +455,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Default Controls
     private readonly InputActionMap m_DefaultControls;
     private List<IDefaultControlsActions> m_DefaultControlsActionsCallbackInterfaces = new List<IDefaultControlsActions>();
+    private readonly InputAction m_DefaultControls_Pick;
     private readonly InputAction m_DefaultControls_Select;
     private readonly InputAction m_DefaultControls_ExitTool;
-    private readonly InputAction m_DefaultControls_Pick;
     private readonly InputAction m_DefaultControls_Rotate;
     public struct DefaultControlsActions
     {
         private @PlayerInputActions m_Wrapper;
         public DefaultControlsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pick => m_Wrapper.m_DefaultControls_Pick;
         public InputAction @Select => m_Wrapper.m_DefaultControls_Select;
         public InputAction @ExitTool => m_Wrapper.m_DefaultControls_ExitTool;
-        public InputAction @Pick => m_Wrapper.m_DefaultControls_Pick;
         public InputAction @Rotate => m_Wrapper.m_DefaultControls_Rotate;
         public InputActionMap Get() { return m_Wrapper.m_DefaultControls; }
         public void Enable() { Get().Enable(); }
@@ -476,15 +476,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_DefaultControlsActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_DefaultControlsActionsCallbackInterfaces.Add(instance);
+            @Pick.started += instance.OnPick;
+            @Pick.performed += instance.OnPick;
+            @Pick.canceled += instance.OnPick;
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
             @ExitTool.started += instance.OnExitTool;
             @ExitTool.performed += instance.OnExitTool;
             @ExitTool.canceled += instance.OnExitTool;
-            @Pick.started += instance.OnPick;
-            @Pick.performed += instance.OnPick;
-            @Pick.canceled += instance.OnPick;
             @Rotate.started += instance.OnRotate;
             @Rotate.performed += instance.OnRotate;
             @Rotate.canceled += instance.OnRotate;
@@ -492,15 +492,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
 
         private void UnregisterCallbacks(IDefaultControlsActions instance)
         {
+            @Pick.started -= instance.OnPick;
+            @Pick.performed -= instance.OnPick;
+            @Pick.canceled -= instance.OnPick;
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
             @ExitTool.started -= instance.OnExitTool;
             @ExitTool.performed -= instance.OnExitTool;
             @ExitTool.canceled -= instance.OnExitTool;
-            @Pick.started -= instance.OnPick;
-            @Pick.performed -= instance.OnPick;
-            @Pick.canceled -= instance.OnPick;
             @Rotate.started -= instance.OnRotate;
             @Rotate.performed -= instance.OnRotate;
             @Rotate.canceled -= instance.OnRotate;
@@ -648,9 +648,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     }
     public interface IDefaultControlsActions
     {
+        void OnPick(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnExitTool(InputAction.CallbackContext context);
-        void OnPick(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
     }
     public interface ICameraControlsActions

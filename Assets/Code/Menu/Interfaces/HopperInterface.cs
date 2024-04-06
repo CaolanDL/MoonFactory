@@ -5,12 +5,9 @@ using UnityEngine;
 
 public class HopperInterface : ModularInterface
 { 
-    public SingleStackInventoryElement InventoryElement;
-
-    private Hopper hopper;
-
-    private StructureData structureData;
-
+    public SingleStackInventoryElement InventoryElement; 
+    private Hopper hopper; 
+    private StructureData structureData; 
 
     public override void Init(Entity entity, Vector3 screenPosition)
     {
@@ -22,7 +19,7 @@ public class HopperInterface : ModularInterface
 
         transform.position = screenPosition;
 
-        InventoryElement.inventory = hopper.storageInventory;
+        InventoryElement.inventory = hopper.storageInventory; 
     }
 
     public void Update()
@@ -56,4 +53,9 @@ public class HopperInterface : ModularInterface
 
         if (hopper != null) { hopper.OnInterfaceClosed(); }
     } 
+
+    public void SetRequestResource(ResourceData resourceData)
+    {
+        hopper.requestResource = resourceData;
+    }
 }

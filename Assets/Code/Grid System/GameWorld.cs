@@ -32,7 +32,7 @@ public class GameWorld
     {
         int2 tileLocation;
 
-        (var xVisibleRange, var yVisibleRange) = GameManager.Instance.cameraController.GetDiamondVisibleRange();
+        (var xVisibleRange, var yVisibleRange) = GameManager.Instance.cameraController.GetIsometricVisibleRange();
 
         for (int x = xVisibleRange.x; x < xVisibleRange.y; x++)
         {
@@ -135,7 +135,7 @@ public class Grid
 
     public Location AddLocation(int2 position)
     {
-        if (LocationExists(position)) { return grid[position]; }
+        if (LocationExists(position)) return grid[position];
 
         Location newLocation = new Location()
         {
@@ -150,19 +150,13 @@ public class Grid
 
     public bool LocationExists(int2 position)
     {
-        if (grid.ContainsKey(position))
-        {
-            return true;
-        }
+        if (grid.ContainsKey(position)) return true;
         else return false;
     }
 
     public Location GetLocationAt(int2 position)
     {
-        if (grid.TryGetValue(position, out Location location))
-        {
-            return location;
-        }
+        if (grid.TryGetValue(position, out Location location)) return location;
         else return null;
     }
 
@@ -184,22 +178,22 @@ public class Grid
             location.entity = entity;
         }
 
-/*        else
-        {
-            for (int x = 0; x < entity.size.x; x++)
-            {
-                for (int y = 0; y < entity.size.y; y++)
+        /*        else
                 {
-                    var offsetPosition = position + (new int2(x, y).Rotate(rotation));
+                    for (int x = 0; x < entity.size.x; x++)
+                    {
+                        for (int y = 0; y < entity.size.y; y++)
+                        {
+                            var offsetPosition = position + (new int2(x, y).Rotate(rotation));
 
-                    Location location = AddLocation(offsetPosition);
+                            Location location = AddLocation(offsetPosition);
 
-                    if (IsEntityAt(offsetPosition)) return null;
+                            if (IsEntityAt(offsetPosition)) return null;
 
-                    location.entity = entity;
-                }
-            }
-        }*/
+                            location.entity = entity;
+                        }
+                    }
+                }*/
 
         entity.position = position;
 
@@ -212,17 +206,14 @@ public class Grid
 
     public Entity RemoveEntity(int2 position)
     {
-        if (grid.ContainsKey(position) != true) { return null; }
+        if (grid.ContainsKey(position) != true) return null;
 
         return grid[position].RemoveEntity();
     }
 
     public Entity GetEntityAt(int2 position)
     {
-        if (grid.TryGetValue(position, out Location location))
-        {
-            return location.entity;
-        }
+        if (grid.TryGetValue(position, out Location location)) return location.entity;
 
         else return null;
     }
@@ -230,12 +221,7 @@ public class Grid
     public bool IsEntityAt(int2 position)
     {
         if (grid.TryGetValue(position, out Location location))
-        {
-            if (location.entity != null)
-            {
-                return true;
-            }
-        }
+            if (location.entity != null) return true; 
 
         return false;
     }
@@ -247,20 +233,11 @@ public class Grid
 
     public bool IsEntityInArea(int2 position, int2 size, sbyte rotation)
     {
-        for (int x = position.x; x < position.x + size.x; x++)
-        {
-            for (int y = position.y; y < position.y + size.y; y++)
-            {
+        for (int x = position.x; x < position.x + size.x; x++) 
+            for (int y = position.y; y < position.y + size.y; y++) 
                 if (grid.TryGetValue(new int2(x, y), out Location location))
-                {
-                    if (location.entity != null)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-
+                    if (location.entity != null) 
+                        return true;    
         return false;
     }
 
@@ -269,20 +246,11 @@ public class Grid
         int xSign = (int)Mathf.Sign(xRange.x - xRange.y);
         int ySign = (int)Mathf.Sign(yRange.x - yRange.y);
 
-        for (int x = xRange.x; x != xRange.y; x += xSign)
-        {
-            for (int y = yRange.x; y != yRange.y; y += ySign)
-            {
-                if (grid.TryGetValue(new int2(x, y), out Location location))
-                {
-                    if (location.entity != null)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-
+        for (int x = xRange.x; x != xRange.y; x += xSign) 
+            for (int y = yRange.x; y != yRange.y; y += ySign) 
+                if (grid.TryGetValue(new int2(x, y), out Location location)) 
+                    if (location.entity != null) 
+                        return true;  
         return false;
     }
 

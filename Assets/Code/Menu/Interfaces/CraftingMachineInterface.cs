@@ -14,11 +14,14 @@ public class CraftingMachineInterface : ModularInterface
     private Machine machine;
 
     private StructureData structureData;
+     
 
-/*    public void Update()
+
+    public void SetCraftingFormula(CraftingFormula craftingFormula)
     {
-        Graphics.DrawMesh(GlobalData.Instance.gizmo_Axis, machine.transform.ToMatrix(), GlobalData.Instance.mat_PulsingGizmo, 0);
-    }*/
+
+    }
+
 
     public override void UpdateUI()
     {

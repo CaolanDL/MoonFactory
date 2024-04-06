@@ -1,4 +1,4 @@
-﻿using Logistics;
+﻿    using Logistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using RoverTasks;
 using static UnityEngine.GraphicsBuffer;
+using static RoverJobs.CollectAndDeliverShoppingList;
 
 namespace RoverJobs
 {
@@ -52,8 +53,7 @@ namespace RoverJobs
         {
             rover.TaskFinished();
         }
-    }
-
+    } 
 
     public class FetchTask : Job
     {
@@ -97,6 +97,7 @@ namespace RoverJobs
                 rover.ActiveTask.rover = rover;
                 rover.JobStack.Pop();
                 rover.ActiveTask?.BuildJobs();
+                rover.ActiveTask?.OnFetched?.Invoke();
             }
         }
     }
@@ -223,170 +224,7 @@ namespace RoverJobs
             // Unsubscribe events
             Structure.StructureConstructed -= EvaluatePathInterruption;
         }
-    }
-
-
-    public class CollectAndDeliverResources : Job
-    {
-        private List<ResourceQuantity> _resourcesToCollect;
-        private int2 destination;
-
-        private List<FoundHopper> foundHoppers = new List<FoundHopper>();
-
-        private LinkedList<Path> _superPath = new();
-
-        bool finished = false;
-
-        public class FoundHopper
-        {
-            public Hopper Hopper;
-            public List<ResourceQuantity> reservedResources = new();
-            public float DistanceToRover;
-            public float DistanceToDestination;
-
-            public FoundHopper(Hopper hopper, float distanceToRover, float distanceToDestination)
-            {
-                Hopper = hopper;
-                DistanceToRover = distanceToRover;
-                DistanceToDestination = distanceToDestination;
-            }
-        } 
-
-        public CollectAndDeliverResources(IEnumerable<ResourceQuantity> resourceQuantities, int2 destination)
-        {
-            this._resourcesToCollect = resourceQuantities.ToList();
-            this.destination = destination;
-        }
-
-        public override void OnStart()
-        {
-            if (!TryFindHoppers()) { FailTask(); return; }
-
-            _superPath = PathFinder.FindSuperPath((int2)rover.VisualPosition, foundHoppers.Select(foundHopper => foundHopper.Hopper.position).ToArray());
-
-            if (_superPath == null || _superPath.Count == 0) { FailTask(); return; }
-
-            _superPath.AddLast(PathFinder.FindPathToAnyFreeNeighbor(_superPath.Last().nodes.Last(), destination));
-
-            if (_superPath.Count < 2) { FailTask(); return; }
-        }
-
-        public override void OnTick()
-        {
-            Job job; 
-
-            if (_superPath.Count > 0)
-            {
-                job = new CollectResource(_superPath.First().target);
-                StackJob(job);
-
-                var path = _superPath.First();
-                _superPath.RemoveFirst();
-                job = new TraversePath(path);
-                StackJob(job);
-            }
-            else if (!finished)
-            {
-                job = new DeliverResource(destination);
-                StackJob(job);
-                finished = true;
-            }
-            else
-            {
-                PopJob(); return;
-            }
-        }
-
-        private bool TryFindHoppers()
-        {
-            bool foundResourceInHopper = false;
-            Dictionary<ResourceData, int> remaingResourcesToFind = new();
-            foundHoppers = new();
-
-            foreach (var rq in _resourcesToCollect)
-                remaingResourcesToFind.Add(rq.resource, rq.quantity);
-
-            List<Hopper> hoppers = Hopper.pool;
-
-            hoppers.Sort(HopperSortDistToDest);
-
-            foreach (ResourceQuantity rq in _resourcesToCollect) 
-                foreach (Hopper hopper in Hopper.pool)
-                {
-                    var quantityInHopper = hopper.storageInventory.GetQuantityOf(rq.resource);
-
-                    if (quantityInHopper > 0)
-                    {
-                        if (PathFinder.FindPathToAnyFreeNeighbor((int2)rover.VisualPosition, hopper.position) == null) { continue; } // Hopper not reachable
-
-                        float2 hopperRoverOffset = rover.VisualPosition - hopper.position;
-                        float hopperDistanceMagnitude = (hopperRoverOffset.x * hopperRoverOffset.x) + (hopperRoverOffset.y * hopperRoverOffset.y);
-
-                        var foundHopper = foundHoppers.Find(foundHoppers => foundHoppers.Hopper == hopper);
-
-                        if (foundHopper == null)
-                        {
-                            foundHopper = new FoundHopper(hopper, GetRoughDistanceToRover(hopper), GetRoughDistanceToDestination(hopper));
-                            foundHoppers.Add(foundHopper);
-                        } 
-
-                        var maxReservableQuantity = Mathf.Clamp(quantityInHopper, 0, remaingResourcesToFind[rq.resource]);
-                        foundHopper.reservedResources.Add(new ResourceQuantity(rq.resource, maxReservableQuantity)); 
-                        foundResourceInHopper = true;
-
-                        remaingResourcesToFind[rq.resource] -= quantityInHopper;
-                        if (remaingResourcesToFind[rq.resource] <= 0) { remaingResourcesToFind.Remove(rq.resource); break; }
-                    } 
-
-                if (foundResourceInHopper == false) return false; 
-            }
-
-            if (remaingResourcesToFind.Count > 0) { return false; }
-
-            foundHoppers.Sort(FHopperSortDistToDestination);
-
-            foreach(var foundHopper in foundHoppers) 
-                foreach(var reservedResource in foundHopper.reservedResources)
-                    foundHopper.Hopper.storageInventory.ReserveResource(reservedResource); 
-
-            return true;
-
-            int HopperSortDistToDest(Hopper a, Hopper b)
-            {
-                float aDistance = GetRoughDistanceToDestination(a);
-                float bDistance = GetRoughDistanceToDestination(b);
-
-                if (aDistance == bDistance) return 0;
-                else if (aDistance < bDistance) return -1;
-                else if (aDistance > bDistance) return 1;
-                else return 0;
-            }
-
-            int FHopperSortDistToDestination(FoundHopper a, FoundHopper b)
-            {
-                float aDistance = a.DistanceToDestination;
-                float bDistance = b.DistanceToDestination;
-
-                if (aDistance == bDistance) return 0;
-                else if (aDistance < bDistance) return -1;
-                else if (aDistance > bDistance) return 1;
-                else return 0;
-            }
-
-            float GetRoughDistanceToRover(Hopper hopper)
-            {
-                float2 offset = rover.VisualPosition - hopper.position;
-                return (offset.x * offset.x) + (offset.y * offset.y);
-            }
-
-            float GetRoughDistanceToDestination(Hopper hopper)
-            {
-                float2 offset = destination - hopper.position;
-                return (offset.x * offset.x) + (offset.y * offset.y);
-            }
-        } 
-    }
-
+    } 
 
     public class GotoEntity : Job
     { 
@@ -409,8 +247,7 @@ namespace RoverJobs
 
             StackJob(new TraversePath(path)); 
         } 
-    }
-
+    } 
 
     public class TurnTowards : Job
     {
@@ -478,8 +315,7 @@ namespace RoverJobs
                 PopJob();
             }
         }
-    }
-
+    } 
 
     public class DeliverResource : Job
     {
@@ -522,26 +358,286 @@ namespace RoverJobs
                 PopJob();
             }
         }
-    }
-
+    } 
 
     public class DemolishStructure : Job
     {
-        Structure structure;
+        Structure structure; 
 
         public DemolishStructure(Structure structure)
         {
             this.structure = structure;
         }
 
+        public override void OnStart()
+        {
+            StackJob(new TurnTowards(structure.position));
+        }
+
         public override void OnTick()
         {
-            if(lifeSpan > structure.StructureData.timeToBuild)
+            if(lifeSpan > structure.StructureData.timeToBuild && isComplete == false)
             {
                 structure.Demolish();
 
+                isComplete = true;
+
                 PopJob();
             }
+        }
+    }
+
+
+    public class FoundHopper
+    {
+        public Hopper Hopper;
+        public List<ResourceQuantity> reservedResources = new();
+        public float DistanceToRover;
+        public float DistanceToDestination;
+
+        public FoundHopper(Hopper hopper, float distanceToRover, float distanceToDestination)
+        {
+            Hopper = hopper;
+            DistanceToRover = distanceToRover;
+            DistanceToDestination = distanceToDestination;
+        }
+    } 
+
+    public static class CollectionPathBuilder
+    {
+
+
+        public static LinkedList<Path> ShoppingList(List<ResourceQuantity> resourcesToCollect, int2 destination)
+        {
+            List<ResourceQuantity> _resourcesToCollect;
+            int2 _destination;
+
+            List<FoundHopper> foundHoppers = new List<FoundHopper>(); 
+            LinkedList<Path> _superPath = new();
+
+
+
+            return null;
+        }
+
+        public static LinkedList<Path> UpToQuantity(ResourceQuantity resourceQuantity, int2 destination)
+        {
+
+
+            return null;
+        }
+    }
+
+    public class ExcecuteCollectAndDeliver : Job
+    {
+        private LinkedList<Path> superPath;
+        private int2 destination;
+        bool finished = false;
+
+        public ExcecuteCollectAndDeliver(LinkedList<Path> superPath, int2 destination)
+        {
+            this.superPath = superPath;
+            this.destination = destination;
+        }
+
+        public override void OnTick()
+        {
+            Job job;
+
+            if (superPath.Count > 0)
+            {
+                if (superPath.Count > 1)
+                {
+                    job = new CollectResource(superPath.First().target);
+                    StackJob(job);
+                }
+
+                var path = superPath.First();
+                superPath.RemoveFirst();
+                job = new TraversePath(path);
+                StackJob(job);
+            }
+            else if (!finished)
+            {
+                job = new DeliverResource(destination);
+                StackJob(job);
+                finished = true;
+            }
+            else
+            {
+                PopJob(); return;
+            }
+        }
+    }
+
+    public class CollectAndDeliverShoppingList : Job
+    {
+        private List<ResourceQuantity> _resourcesToCollect;
+        private int2 destination;
+
+        private List<FoundHopper> foundHoppers = new List<FoundHopper>();
+
+        private LinkedList<Path> _superPath = new();
+
+        bool finished = false; 
+
+        public CollectAndDeliverShoppingList(IEnumerable<ResourceQuantity> resourceQuantities, int2 destination)
+        {
+            this._resourcesToCollect = resourceQuantities.ToList();
+            this.destination = destination;
+        }
+
+        public override void OnStart()
+        {
+            if (!TryFindHoppers()) { FailTask(); return; }
+
+            _superPath = PathFinder.FindSuperPath((int2)rover.VisualPosition, foundHoppers.Select(foundHopper => foundHopper.Hopper.position).ToArray());
+
+            if (_superPath == null || _superPath.Count == 0) { FailTask(); return; }
+
+            _superPath.AddLast(PathFinder.FindPathToAnyFreeNeighbor(_superPath.Last().nodes.Last(), destination));
+
+            if (_superPath.Count < 2) { FailTask(); return; }
+
+            PopJob();
+
+            StackJob(new ExcecuteCollectAndDeliver(_superPath, destination));
+        }
+
+        public override void OnTick()
+        {
+            return; // Early exit: Migrated to self contained job -> ExcecuteCollectAndDeliver
+
+            Job job;
+
+            if (_superPath.Count > 0)
+            {
+                if (_superPath.Count > 1)
+                {
+                    job = new CollectResource(_superPath.First().target);
+                    StackJob(job);
+                }
+
+                var path = _superPath.First();
+                _superPath.RemoveFirst();
+                job = new TraversePath(path);
+                StackJob(job);
+            }
+            else if (!finished)
+            {
+                job = new DeliverResource(destination);
+                StackJob(job);
+                finished = true;
+            }
+            else
+            {
+                PopJob(); return;
+            }
+        }
+
+        private bool TryFindHoppers()
+        {
+            bool foundResourceInHopper = false;
+            Dictionary<ResourceData, int> remaingResourcesToFind = new();
+            foundHoppers = new();
+
+            foreach (var rq in _resourcesToCollect)
+                remaingResourcesToFind.Add(rq.resource, rq.quantity);
+
+            List<Hopper> hoppers = Hopper.pool;
+
+            hoppers.Sort(HopperSortDistToDest);
+
+            foreach (ResourceQuantity rq in _resourcesToCollect)
+                foreach (Hopper hopper in Hopper.pool)
+                {
+                    var quantityInHopper = hopper.storageInventory.GetQuantityOf(rq.resource);
+
+                    if (quantityInHopper > 0)
+                    {
+                        if (PathFinder.FindPathToAnyFreeNeighbor((int2)rover.VisualPosition, hopper.position) == null) { continue; } // Hopper not reachable
+
+                        float2 hopperRoverOffset = rover.VisualPosition - hopper.position;
+                        float hopperDistanceMagnitude = (hopperRoverOffset.x * hopperRoverOffset.x) + (hopperRoverOffset.y * hopperRoverOffset.y);
+
+                        var foundHopper = foundHoppers.Find(foundHoppers => foundHoppers.Hopper == hopper);
+
+                        if (foundHopper == null)
+                        {
+                            foundHopper = new FoundHopper(hopper, GetRoughDistanceToRover(hopper), GetRoughDistanceToDestination(hopper));
+                            foundHoppers.Add(foundHopper);
+                        }
+
+                        var maxReservableQuantity = Mathf.Clamp(quantityInHopper, 0, remaingResourcesToFind[rq.resource]);
+                        foundHopper.reservedResources.Add(new ResourceQuantity(rq.resource, maxReservableQuantity));
+                        foundResourceInHopper = true;
+
+                        remaingResourcesToFind[rq.resource] -= quantityInHopper;
+                        if (remaingResourcesToFind[rq.resource] <= 0) { remaingResourcesToFind.Remove(rq.resource); break; }
+                    }
+
+                    if (foundResourceInHopper == false) return false;
+                }
+
+            if (remaingResourcesToFind.Count > 0) { return false; }
+
+            foundHoppers.Sort(FHopperSortDistToDestination);
+
+            foreach (var foundHopper in foundHoppers)
+                foreach (var reservedResource in foundHopper.reservedResources)
+                    foundHopper.Hopper.storageInventory.ReserveResource(reservedResource);
+
+            return true;
+
+            int HopperSortDistToDest(Hopper a, Hopper b)
+            {
+                float aDistance = GetRoughDistanceToDestination(a);
+                float bDistance = GetRoughDistanceToDestination(b);
+
+                if (aDistance == bDistance) return 0;
+                else if (aDistance < bDistance) return -1;
+                else if (aDistance > bDistance) return 1;
+                else return 0;
+            }
+
+            int FHopperSortDistToDestination(FoundHopper a, FoundHopper b)
+            {
+                float aDistance = a.DistanceToDestination;
+                float bDistance = b.DistanceToDestination;
+
+                if (aDistance == bDistance) return 0;
+                else if (aDistance < bDistance) return -1;
+                else if (aDistance > bDistance) return 1;
+                else return 0;
+            }
+
+            float GetRoughDistanceToRover(Hopper hopper)
+            {
+                float2 offset = rover.VisualPosition - hopper.position;
+                return (offset.x * offset.x) + (offset.y * offset.y);
+            }
+
+            float GetRoughDistanceToDestination(Hopper hopper)
+            {
+                float2 offset = destination - hopper.position;
+                return (offset.x * offset.x) + (offset.y * offset.y);
+            }
+        }
+    } 
+
+    public class CollectAndDeliverUpToQuantity
+    {
+        ResourceQuantity resourceQuantity;
+        private int2 destination; 
+        private List<FoundHopper> foundHoppers = new List<FoundHopper>(); 
+        private LinkedList<Path> _superPath = new();
+
+        bool finished = false;
+
+        public CollectAndDeliverUpToQuantity(ResourceQuantity resourceQuantity, int2 destination)
+        {
+            this.resourceQuantity = resourceQuantity;
+            this.destination = destination;
         }
     }
 }

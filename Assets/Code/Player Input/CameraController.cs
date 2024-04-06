@@ -128,7 +128,7 @@ public class CameraController : MonoBehaviour
     }
 
 
-    public (int2 xVisibleRange, int2 yVisibleRange) GetDiamondVisibleRange()
+    public (int2 xVisibleRange, int2 yVisibleRange) GetIsometricVisibleRange()
     {
         float2 cameraPosition = new float2(position.x, position.z);
 

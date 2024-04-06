@@ -16,9 +16,18 @@ public class StructureGhost : Entity
     }
 
     public void OnPlaced()
+    { }
+
+    int queueDelay = 75;
+
+    public void OnTick()
     {
-        buildTask = new BuildStructureTask(this); 
-        ConstructionTasks.QueueTask(buildTask); 
+        if(queueDelay > 0) { queueDelay--; }
+        else if (buildTask == null)
+        {
+            buildTask = new BuildStructureTask(this); 
+            ConstructionTasks.QueueTask(buildTask);
+        } 
     }
 
     public void Cancel()

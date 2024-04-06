@@ -32,7 +32,7 @@ public class ConstructionMenuBuilder : MonoBehaviour
 
         buttons.Clear();
 
-        foreach(var structureData in GlobalData.Instance.structures)
+        foreach(var structureData in GlobalData.Instance.Structures)
         {
             Transform parent;
 

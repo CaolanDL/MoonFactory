@@ -1,6 +1,8 @@
 ﻿using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems; 
+using UnityEngine.EventSystems;
+
+
 
 #region Input Example Comment
 // Input Example:
@@ -105,6 +107,28 @@ public class PlayerInputManager : MonoBehaviour
     {
         HandleCameraControl();
 
+        if (inputActions.DefaultControls.Pick.WasPressedThisFrame())
+        {
+            Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
+
+            if (entity != null)
+            {
+                if (entity.GetType() == typeof(StructureGhost))
+                {
+                    ChangeInputState(InputState.Construction);
+                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((StructureGhost)entity).structureData);
+                }
+                if (entity.GetType().IsSubclassOf(typeof(Structure)))
+                {
+                    ChangeInputState(InputState.Construction);
+                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((Structure)entity).StructureData);
+                }
+            }
+
+            return;
+        }
+
+
         if (inputActions.DefaultControls.Select.WasPressedThisFrame())
         {
             if (isMouseOverUI) { return; }
@@ -134,27 +158,6 @@ public class PlayerInputManager : MonoBehaviour
                         ((Structure)entity).Clicked(Input.mousePosition);
                     }
                 }
-            }
-
-            return;
-        }
-
-        if (inputActions.DefaultControls.Pick.WasPressedThisFrame())
-        {
-            Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
-
-            if (entity != null)
-            {
-                if (entity.GetType() == typeof(StructureGhost))
-                {
-                    ChangeInputState(InputState.Construction);
-                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((StructureGhost)entity).structureData);
-                }
-                if (entity.GetType().IsSubclassOf(typeof(Structure)))
-                { 
-                    ChangeInputState(InputState.Construction);
-                    GameManager.Instance.ConstructionManager.StartPlacingGhosts(((Structure)entity).StructureData);
-                } 
             }
 
             return;
@@ -189,11 +192,15 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
+    Entity lastEntity = null;
+
     public void HandleDemolishInput()
-    {
+    { 
         if (inputActions.DefaultControls.Select.IsPressed())
         {
             Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
+
+            if(entity == lastEntity) { return; }
 
             if (entity != null)
             {
@@ -216,8 +223,14 @@ public class PlayerInputManager : MonoBehaviour
                 }
             }
 
+            lastEntity = entity;
+
             return;
-        } 
+        }
+        if (inputActions.DefaultControls.Select.WasReleasedThisFrame())
+        {
+            lastEntity = null;
+        }
     }
 
 

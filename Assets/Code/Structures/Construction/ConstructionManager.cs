@@ -95,11 +95,13 @@ public class ConstructionManager
     } 
 
     public void DrawGhosts()
-    {
+    { 
         if (Ghosts.Count != 0)
         { 
             foreach (StructureGhost ghost in Ghosts)
-            {
+            { 
+                ghost.OnTick();
+
                 var matrix = MatrixConstruction.CreateTransformMatrix(ghost.position, ghost.rotation);
 
                 Graphics.DrawMesh(ghost.structureData.ghostMesh, matrix, GlobalData.Instance.mat_Ghost, 0);

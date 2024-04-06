@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum ResourceCategory
@@ -9,17 +10,40 @@ public enum ResourceCategory
 
 [CreateAssetMenu(menuName = "MoonFactory/Resource Data")]
 public class ResourceData : ScriptableObject
-{ 
-    public string description;
-    public ResourceCategory resourceCategory;
+{
+    // Editor Variables
+    [SerializeField] public string description;
+    [SerializeField] public ResourceCategory resourceCategory;
 
-    [Header("Rendering")]
-    //public Sprite sprite;
-    public Mesh mesh;
-    public Material material;
+    [Header("Rendering")] 
+    [SerializeField] public Mesh mesh;
+    [SerializeField] public Material material;
 
-    public Sprite sprite;
+    [SerializeField] public Sprite sprite;
 
     [Header("Details")]
-    public byte weight = 1;
+    [SerializeField] public byte weight = 1;
+
+    //Runtime Data
+    public bool unlocked = false;
+
+    public void Unlock()
+    {
+        unlocked = true;
+        GlobalData.Instance.unlocked_Resources.Add(this);
+    }
 }
+
+[Serializable]
+public struct ResourceQuantity
+{
+    [SerializeField] public ResourceData resource;
+    [SerializeField] public int quantity;
+
+    public ResourceQuantity(ResourceData resource, int quantity)
+    {
+        this.resource = resource;
+        this.quantity = quantity;
+    }
+}
+

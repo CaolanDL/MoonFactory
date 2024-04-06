@@ -16,7 +16,7 @@ public abstract class Structure : Entity
     public DisplayObject DisplayObject = null;
 
     public bool flaggedForDemolition;
-    public DemolishStructureTask demolishTask;
+    public ManagedTask demolishTask = new();
 
     public void Initialise()
     {
@@ -115,22 +115,18 @@ public abstract class Structure : Entity
 
     public void FlagForDemolition()
     {
-        var demolishTask = new RoverTasks.DemolishStructureTask(this);
-
-        TaskManager.QueueTask(demolishTask);
+        var demolishTask = new RoverTasks.DemolishStructureTask(this); 
 
         flaggedForDemolition = true;
 
-        this.demolishTask = demolishTask;
+        this.demolishTask.TryCreateTask(demolishTask);
     }
 
     public void CancelDemolition()
     {
-        TaskManager.CancelTask(demolishTask);
+        demolishTask.CancelTask();
 
-        flaggedForDemolition = false;
-
-        demolishTask = null;
+        flaggedForDemolition = false; 
     }
 }
 

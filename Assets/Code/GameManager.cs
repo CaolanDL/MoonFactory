@@ -5,21 +5,19 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Profiling;
 
+public static class DevFlags
+{
+    public static bool SkipMainMenu = true;
+}
 
 //! MoonFactory
 // This GameManager is effectively Main running as a monobehavior.
 
 // Count LOC at the code directory with PowerShell: dir -Recurse *.cs | Get-Content | Measure-Object -Line
-
-
-public static class DevFlags
-{ 
-    public static bool SkipMainMenu = false; 
-}  
-
+ 
 public class GameManager : MonoBehaviour
 {
-    [Header("Global Data Blocks")]
+    [Header("Global Data")]
     [SerializeField] public GlobalData GlobalData;
     [SerializeField] public TerrainGenerationData worldGenerationData;
     [SerializeField] public MenuData menuData;
@@ -34,7 +32,7 @@ public class GameManager : MonoBehaviour
     // Menu Instances
     public HUDController HUDController;
 
-    // Manager Components
+    // Components
     public FloorTileRenderer floorTileRenderer;
     public ItemRenderer itemRenderer; 
     public CameraController cameraController;
@@ -72,7 +70,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
 #if UNITY_EDITOR
-        if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); return; }
+        if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); DebugUnlockAll(); return; }
 #endif
 
         if (Application.isMobilePlatform) { Instantiate(menuData.MobilePlatformWarning); return; }
@@ -153,7 +151,7 @@ public class GameManager : MonoBehaviour
         // Save game to file
 
         // Enable player input
-
+         
     }
 
     public void OpenMainMenu()
@@ -204,7 +202,7 @@ public class GameManager : MonoBehaviour
 
         StructureData hopper = GetStructureData("Hopper");
 
-        StructureData GetStructureData(string name) { return GlobalData.structures.Find(structure => structure.name == name); } 
+        StructureData GetStructureData(string name) { return GlobalData.Structures.Find(structure => structure.name == name); } 
 
         for (int x = 0; x < width; x += 2)
         {
@@ -231,4 +229,20 @@ public class GameManager : MonoBehaviour
     {
         RoverManager.SpawnNewRover(new int2(0,0));
     } 
+
+    public void DebugUnlockAll()
+    {
+        foreach(StructureData i in GlobalData.Structures)
+        {
+            i.Unlock();
+        }
+        foreach (ResourceData i in GlobalData.Resources)
+        {
+            i.Unlock();
+        }
+        foreach (CraftingFormula i in GlobalData.CraftingFormulas)
+        {
+            i.Unlock();
+        }
+    }
 }

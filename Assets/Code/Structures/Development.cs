@@ -11,7 +11,7 @@ public class DebugOutput : Machine
 
     public override void OnConstructed()
     {
-        resource = GameManager.Instance.GlobalData.resources[0];
+        resource = GameManager.Instance.GlobalData.Resources[0];
 
         OutputInventories[0].maxWeight = 1;
 

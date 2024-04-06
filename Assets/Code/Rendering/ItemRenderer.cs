@@ -24,7 +24,7 @@ public class ItemRenderer : MonoBehaviour
 
     public void Init()
     {
-        foreach (ResourceData data in GlobalData.Instance.resources)
+        foreach (ResourceData data in GlobalData.Instance.Resources)
         {
             if (matrixArrays.ContainsKey(data)) { continue; }
 
@@ -34,7 +34,7 @@ public class ItemRenderer : MonoBehaviour
 
     public void Tick()
     {
-        DrawVisibleItems();
+        RenderVisibleItems();
     } 
 
     int2 xVisibleRange; int2 yVisibleRange;
@@ -44,11 +44,15 @@ public class ItemRenderer : MonoBehaviour
     static Vector2 itemV2WorldPosCached; 
     static short itemRotationCached;
 
-    void DrawVisibleItems()
+    void RenderVisibleItems()
     {
-        (xVisibleRange, yVisibleRange) = cameraController.GetDiamondVisibleRange();
+        (xVisibleRange, yVisibleRange) = cameraController.GetIsometricVisibleRange();
         itemsRenderedThisFrame = 0;
 
+        // Loop through each conveyor chain and identify if any part of the chain is within the visible area
+        //? Probably a more effective way to do this: Search each grid location within the visible range for a conveyor, then retrieve the items on that conveyor, then render those items.
+        //? This way the only conveyors, chains and items that are iterated over are the ones that will ultimately be rendered.
+        // The existing implementation is performant enough, only make this change if you start to experience slow downs with large scale game worlds.
         foreach (Chain chain in ChainManager.chains)
         {
             bool shouldRender = false;
@@ -75,11 +79,7 @@ public class ItemRenderer : MonoBehaviour
             }
         }
 
-        RenderItems(); 
-    }
-
-    void RenderItems()
-    {
+        // Loop through each matrice chunk and send its data to the GPU
         foreach (ResourceData resourceData in matrixArrays.Keys)
         {
             _matrixArray = matrixArrays[resourceData];
@@ -99,8 +99,7 @@ public class ItemRenderer : MonoBehaviour
 
             _matrixArray.Reset();
         }
-    }
-
+    }  
 
     void QueueItem(Item item)
     {

@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "MoonFactory/Crafting Formula")]
 public class CraftingFormula : ScriptableObject
 {
+    // Editor Variables // 
     [Tooltip("Machine crafted in")] public StructureData machine;
 
     [Tooltip("Duration in Ticks (s*50)")] public short duration;
@@ -14,19 +15,13 @@ public class CraftingFormula : ScriptableObject
     [SerializeField] public List<ResourceQuantity> InputResources;
 
     [SerializeField] public List<ResourceQuantity> OutputResources;
-}
 
-[Serializable]
-public struct ResourceQuantity
-{
-    [SerializeField] public ResourceData resource;
-    [SerializeField] public int quantity;
-     
-    public ResourceQuantity(ResourceData resource, int quantity)
+    // Runtime Data //
+    public bool unlocked = false;
+
+    public void Unlock()
     {
-        this.resource = resource;
-        this.quantity = quantity;
+        unlocked = true;
+        GlobalData.Instance.unlocked_CraftingFormulas.Add(this);
     }
-}
-
-
+} 

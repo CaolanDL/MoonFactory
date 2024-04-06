@@ -7,7 +7,7 @@ using Unity.Mathematics;
 using RoverJobs;
 using RoverTasks;
 
- 
+
 public enum RoverModule
 {
     None,
@@ -106,28 +106,25 @@ public class Rover : Entity
 
     void HandleJobs()
     {
+        if (ActiveTask != null && ActiveTask.isCancelled)
+        {
+            TaskCancelled();
+        }
         if (JobStack.Count > 0)
         {
             Job job = JobStack.Peek();
-
             if (job.lifeSpan < 0) job.Start();
-
             if (ActiveTask != null) job.Tick();
-
             return;
         }
-
         if (JobQueue.Count == 0)
         {
             EnqueueJob(new FetchTask());
-
             return;
         }
-
         if (JobStack.Count == 0 && JobQueue.Count > 0)
         {
             StackJob(JobQueue.Dequeue());
-            //Debug.Log($"Stacked job {JobStack.Peek()}");
             return;
         }
     }
@@ -152,35 +149,31 @@ public class Rover : Entity
 
     public void TaskFailed()
     {
-        /*        var taskType = ActiveTask.GetType();
-
-                if (taskType == typeof(BuildStructureTask)) TaskManager.QueueTask(ActiveTask as BuildStructureTask);
-                else if (taskType == typeof(LogisticsTasks)) TaskManager.QueueTask(ActiveTask as LogisticsTasks);
-                else if (taskType == typeof(MiningTasks)) TaskManager.QueueTask(ActiveTask as MiningTasks);
-                else { throw new Exception("task had no type"); }*/
-
+        var taskToFail = ActiveTask;
         TaskManager.QueueTask(ActiveTask);
         ActiveTask.rover = null;
-        ActiveTask = null;
-        JobQueue.Clear();
-        JobStack.Clear();
+        ClearTask();
+        taskToFail.OnFailed?.Invoke();
     }
 
     public void TaskFinished()
     {
+        ActiveTask.OnCompleteCallback?.Invoke();
+        ClearTask();
+    }
+
+    public void TaskCancelled()
+    {
+        ActiveTask.OnCancelledCallback?.Invoke();
+        ClearTask();
+    }
+
+    public void ClearTask()
+    {
         ActiveTask = null;
         JobQueue.Clear();
         JobStack.Clear();
-    }
-
-
-    // Actions //
-
-    void Goto()
-    {
-
-    }
-
+    } 
 
     // Modules // 
 

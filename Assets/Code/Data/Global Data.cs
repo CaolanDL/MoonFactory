@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -12,12 +13,14 @@ public class GlobalData : ScriptableObject
     [SerializeField] public PlayerInputActions inputActions;
 
     [Header("Registry")]
-    public List<StructureData> structures;
- 
-    public List<ResourceData> resources;
+    [SerializeField] public List<StructureData> Structures;
+    [NonSerialized] public List<StructureData> unlocked_Structures = new();
 
-    [ContextMenuItem("Update Structure CF Assignment", "UpdateStructureCFAssignment")] 
-    public List<CraftingFormula> craftingFormulas; 
+    [SerializeField] public List<ResourceData> Resources;
+    [NonSerialized] public List<ResourceData> unlocked_Resources = new();
+
+    [SerializeField] public List<CraftingFormula> CraftingFormulas;
+    [NonSerialized] public List<CraftingFormula> unlocked_CraftingFormulas = new();
 
 
     [Space(8), Header("Global Materials")]
@@ -67,11 +70,11 @@ public class GlobalData : ScriptableObject
     [ContextMenu("Update Structure CF Assignment")]
     public void UpdateStructureCFAssignment()
     {
-        foreach (var structure in structures)
+        foreach (var structure in Structures)
         {
             structure.CraftingFormulas.Clear();
 
-            foreach(CraftingFormula formula in craftingFormulas.Where(formula => formula.machine.Equals(structure)))
+            foreach(CraftingFormula formula in CraftingFormulas.Where(formula => formula.machine.Equals(structure)))
             {
                 structure.CraftingFormulas.Add(formula);
             }

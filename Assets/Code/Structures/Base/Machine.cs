@@ -267,6 +267,17 @@ public class Machine : Structure
         newCFIndex = (byte)StructureData.CraftingFormulas.IndexOf(craftingFormula);
     }
 
+    /// <summary> Returns the crafting formula at a specific index </summary> 
+    public CraftingFormula GetCraftingFormula(byte CFIndex)
+    {
+        return StructureData.CraftingFormulas[CFIndex];
+    }
+    /// <summary> Returns the active crafting formula </summary> 
+    public CraftingFormula GetCraftingFormula()
+    {
+        return StructureData.CraftingFormulas[activeCFIndex];
+    }
+
     void TryUpdateCF()
     {
         if (activeCFIndex != newCFIndex)

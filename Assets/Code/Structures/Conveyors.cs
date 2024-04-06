@@ -324,7 +324,8 @@ namespace Logistics
 
         public void Split(Conveyor conveyor)
         {
-
+            //todo Add conveyor splitting logic here ASAP
+            //? Putting a red comment here to just get you to hurry up and do this.
         }
 
         public void MergeWith(Chain otherChain, bool isChainInfront)
@@ -377,6 +378,11 @@ namespace Logistics
             inputPosition = new int2(0, -1).Rotate(rotation) + position;
 
             TryAddConnections();
+        }
+
+        public override void OnDemolished()
+        { 
+            parentChain.RemoveConveyor(this);
         }
 
         private void TryAddConnections()
