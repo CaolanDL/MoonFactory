@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
-using static UnityEditor.ShaderData;
+//using static UnityEditor.ShaderData;
 
 public class Path
 {

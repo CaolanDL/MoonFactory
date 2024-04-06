@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum ResourceCategory
@@ -14,6 +15,7 @@ public class ResourceData : ScriptableObject
     // Editor Variables
     [SerializeField] public string description;
     [SerializeField] public ResourceCategory resourceCategory;
+    [SerializeField] public byte weight = 1;
 
     [Header("Rendering")] 
     [SerializeField] public Mesh mesh;
@@ -21,11 +23,14 @@ public class ResourceData : ScriptableObject
 
     [SerializeField] public Sprite sprite;
 
-    [Header("Details")]
-    [SerializeField] public byte weight = 1;
+    [Header("Details")] 
+    [Tooltip("Machine crafted in")] public StructureData craftedIn; 
+    [Tooltip("Duration in Ticks (s*50)")] public short timeToCraft; 
+    [SerializeField] public List<ResourceQuantity> requiredResources;
+
 
     //Runtime Data
-    public bool unlocked = false;
+    [NonSerialized] public bool unlocked = false;
 
     public void Unlock()
     {

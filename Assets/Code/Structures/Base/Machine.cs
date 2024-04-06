@@ -249,18 +249,20 @@ public class Machine : Structure
 
     // Crafting //
     #region Crafting
-
-    /// <summary> Crafting Forumula index in use </summary>
-    public byte activeCFIndex = 0;
-
-    byte newCFIndex = 0;
-
-    public short craftingCountdown = 0;
-
-    public bool isCrafting = false;
-
+    
     public bool isCrafter = false;
 
+    public ResourceData craftingResource;
+    public ResourceData newCraftingResource;
+
+    public byte activeCFIndex = 0; 
+    byte newCFIndex = 0;
+
+    public short craftingCountdown = 0; 
+    public bool isCrafting = false;  
+
+
+    //public void SetNew
 
     public void SetNewCF(CraftingFormula craftingFormula)
     {
@@ -272,6 +274,7 @@ public class Machine : Structure
     {
         return StructureData.CraftingFormulas[CFIndex];
     }
+
     /// <summary> Returns the active crafting formula </summary> 
     public CraftingFormula GetCraftingFormula()
     {
@@ -409,12 +412,7 @@ public class Machine : Structure
 
         return true;
     }
-
-    public virtual void OnBeginCrafting()
-    {
-
-    }
-
+      
     public void FinishCrafting()
     {
         // Get the current crafting formula
@@ -436,19 +434,15 @@ public class Machine : Structure
         OnStopCrafting();
     }
 
-    public virtual void OnCraft()
-    {
+    public virtual void OnBeginCrafting()  { }
 
-    }
+    public virtual void OnCraft()  { }
 
-    public virtual void OnStopCrafting()
-    {
-
-    }
+    public virtual void OnStopCrafting()  { }
 
     #endregion
 
-
+    // Interface Handling //
     #region Interface Handling
 
     bool isInterfaceOpen = false;

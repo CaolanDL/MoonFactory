@@ -12,8 +12,7 @@ public class CraftingFormula : ScriptableObject
 
     public Sprite sprite;
 
-    [SerializeField] public List<ResourceQuantity> InputResources;
-
+    [SerializeField] public List<ResourceQuantity> InputResources; 
     [SerializeField] public List<ResourceQuantity> OutputResources;
 
     // Runtime Data //

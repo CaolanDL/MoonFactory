@@ -15,13 +15,11 @@ public class CraftingMachineInterface : ModularInterface
 
     private StructureData structureData;
      
-
-
+     
     public void SetCraftingFormula(CraftingFormula craftingFormula)
     {
 
-    }
-
+    } 
 
     public override void UpdateUI()
     {
