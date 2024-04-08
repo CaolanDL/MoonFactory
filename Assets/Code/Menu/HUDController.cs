@@ -69,7 +69,7 @@ public class HUDController : MonoBehaviour
      
     public void BulldozeButtonPressed()
     {
-        GameManager.Instance.playerInputManager.ChangeInputState(PlayerInputManager.InputState.Demolish);
+        GameManager.Instance.PlayerInputManager.ChangeInputState(PlayerInputManager.InputState.Demolish);
     }
 
     public void HeatmapButtonPressed() { } 
@@ -79,7 +79,7 @@ public class HUDController : MonoBehaviour
 
     public void ViewPortClicked()
     {
-        GameManager.Instance.cameraController.SwapViews();
+        GameManager.Instance.CameraController.SwapViews();
     }
 
 }

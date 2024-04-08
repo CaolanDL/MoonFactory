@@ -54,13 +54,16 @@ public class DisplayObject : MonoBehaviour
         }
     }
 
-    public void DemolishSequence()
+    public void DemolishAnimation()
     {
         // play demolish animation
 
         // Destroy self once complete
         //todo migrate to a different method
-        Destroy(gameObject); 
+        if(gameObject != null)
+        {
+            Destroy(gameObject); 
+        }
     }
 
     public void PlayAnimationOnce(string animationName)
@@ -106,5 +109,10 @@ public class DisplayObject : MonoBehaviour
     public void PlaySound()
     {
 
+    }
+
+    public Vector3 GetWireConnectionPoint()
+    {
+        return transform.position + (Vector3.up * 0.5f);
     }
 } 

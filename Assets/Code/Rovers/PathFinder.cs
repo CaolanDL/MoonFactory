@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
+using Utils;
 //using static UnityEditor.ShaderData;
 
 public class Path
@@ -53,7 +54,111 @@ public class SuperPath
 public static class PathFinder
 {
     private static Grid _worldGrid;
-     
+
+    public static Path FindPath(int2 origin, int2 destination)
+    {
+        _worldGrid = GameManager.Instance.GameWorld.worldGrid;
+
+        var originLocation = _worldGrid.GetLocationAt(origin);
+        var destinationLocation = _worldGrid.GetLocationAt(destination);
+
+        if (destinationLocation == null) { return null; }
+        if (originLocation == null) { return null; }
+
+        
+        PriorityQueue<Location, float> frontier = new(); // lhs Location; rhs Cost;
+        frontier.Enqueue(originLocation, 0);
+
+        Dictionary<Location, Location> cameFrom = new(); // lhs Location; rhs The location that preceded it
+        cameFrom.Add(originLocation, null);
+
+        Dictionary<Location, float> accumulatedCost = new(); // lhs Location; rhs The total accumulated cost of that location by its predecessors
+        accumulatedCost.Add(originLocation, 0);
+
+        Location current;
+        var neighbors = new Location[4];
+
+        // Greedy search implementation
+        while (frontier.Count > 0)
+        {
+            current = frontier.Dequeue();
+
+            // Early exit if destination reached
+            if (current.position.Equals(destination)) break;
+
+            // Store a list of current locations neighbors
+            current.GetNeighbors().CopyTo(neighbors, 0);
+
+            // Increase cost as we get further from origin (Dijkstra’s  Algorithm)
+            float newCost = accumulatedCost[current] + 1; 
+
+            foreach (Location next in neighbors)
+            {   
+                if (next == null) continue;
+                 
+                if (cameFrom.ContainsKey(next)) continue;
+                if (cameFrom.ContainsKey(next)) continue;
+
+                // Block path conditions ->
+                if (IsTraversable(next) == false) continue;
+                // <-
+                 
+                // Apply hueristic
+                var priority = Hueristic(next) + newCost;
+
+                frontier.Enqueue(next, priority);
+                cameFrom.Add(next, current);
+                accumulatedCost.Add(next, newCost);
+            }
+        }
+
+        float Hueristic(Location location)
+        {
+            return Mathf.Abs(location.position.x - destination.x) + Mathf.Abs(location.position.y - destination.y);
+        }
+
+        bool IsTraversable(Location location)
+        {
+            if (location.entity == null) return true;
+
+            var entityType = location.entity.GetType();
+
+            // Success Conditions
+            if (entityType == typeof(Conveyor))
+            {
+                return true;
+            }
+
+            // Fail Conditions
+            if (entityType.IsSubclassOf(typeof(Structure))) return false;
+
+            // Default to traversable if no conditions met
+            return true;
+        }
+
+
+        // Reconstruct Path
+        current = destinationLocation;
+        var path = new List<int2>(64);
+
+        while (current != originLocation)
+        {
+            path.Add(current.position);
+            if (!cameFrom.ContainsKey(current)) return null;
+            current = cameFrom[current];
+        }
+
+        path.Add(origin);
+        path.Reverse();
+
+        var newPath = new Path(path.ToArray());
+
+        newPath.destination = destination;
+
+        return newPath;
+    } 
+
+
     public static LinkedList<Path> FindSuperPath(int2 origin, int2[] destinations)
     {
         LinkedList<Path> superPath = new();
@@ -74,9 +179,10 @@ public static class PathFinder
         return superPath;
     }
 
+
     public static Path FindPathToAnyFreeNeighbor(int2 origin, int2 destination)
     {
-        _worldGrid = GameManager.Instance.gameWorld.worldGrid;
+        _worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
         Location location = _worldGrid.GetLocationAt(destination);
         Location[] neighbors = location.GetNeighbors();
@@ -187,89 +293,5 @@ public static class PathFinder
         }
 
         return null;
-    }
-
-
-    public static Path FindPath(int2 origin, int2 destination)
-    {
-        _worldGrid = GameManager.Instance.gameWorld.worldGrid;
-
-        var originLocation = _worldGrid.GetLocationAt(origin);
-        var destinationLocation = _worldGrid.GetLocationAt(destination);
-
-        if (destinationLocation == null) { return null; }
-        if (originLocation == null) { return null; }
-
-        Queue<Location> frontier = new();
-        frontier.Enqueue(originLocation);
-
-        Dictionary<Location, Location> cameFrom = new();
-        cameFrom.Add(originLocation, null);
-
-        Location current;
-        var neighbors = new Location[4];
-
-        // Basic BFS implementation
-        while (frontier.Count > 0)
-        {
-            current = frontier.Dequeue();
-
-            if (current.position.Equals(destination)) break;
-
-            current.GetNeighbors().CopyTo(neighbors, 0);
-
-            foreach (Location neighbor in neighbors)
-            {
-                if (neighbor == null) continue;
-                if (cameFrom.ContainsKey(neighbor)) continue;
-
-                // Block path conditions ->
-                if (IsTraversable(neighbor) == false) continue;
-                // <-
-
-                frontier.Enqueue(neighbor);
-                cameFrom.Add(neighbor, current);
-            }
-        }
-
-        bool IsTraversable(Location location)
-        {
-            if (location.entity == null) return true;
-
-            var entityType = location.entity.GetType();
-
-            // Success Conditions
-            if (entityType == typeof(Conveyor))
-            {
-                return true;
-            }
-
-            // Fail Conditions
-            if (entityType.IsSubclassOf(typeof(Structure))) return false;
-
-            // Default to traversable if no conditions met
-            return true;
-        }
-
-
-        // Reconstruct Path
-        current = destinationLocation;
-        var path = new List<int2>(64);
-
-        while (current != originLocation)
-        {
-            path.Add(current.position);
-            if (!cameFrom.ContainsKey(current)) return null;
-            current = cameFrom[current];
-        }
-
-        path.Add(origin);
-        path.Reverse();
-
-        var newPath = new Path(path.ToArray());
-
-        newPath.destination = destination;
-
-        return newPath;
-    }
+    } 
 }

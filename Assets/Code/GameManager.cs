@@ -19,12 +19,13 @@ public class GameManager : MonoBehaviour
 {
     [Header("Global Data")]
     [SerializeField] public GlobalData GlobalData;
-    [SerializeField] public TerrainGenerationData worldGenerationData;
-    [SerializeField] public MenuData menuData;
-    [SerializeField] public RoverData roverData;
+    [SerializeField] public RenderData RenderData;
+    [SerializeField] public TerrainGenerationData WorldGenerationData;
+    [SerializeField] public MenuData MenuData;
+    [SerializeField] public RoverData RoverData;
 
     // Gameplay Objects
-    public GameWorld gameWorld;
+    public GameWorld GameWorld;
     public ConstructionManager ConstructionManager;
     public RoverManager RoverManager;
     public TaskManager TaskManager;
@@ -33,10 +34,12 @@ public class GameManager : MonoBehaviour
     public HUDController HUDController;
 
     // Components
-    public FloorTileRenderer floorTileRenderer;
-    public ItemRenderer itemRenderer; 
-    public CameraController cameraController;
-    public PlayerInputManager playerInputManager;
+    public FloorTileRenderer FloorTileRenderer;
+    public ItemRenderer ItemRenderer;
+    public BatchRenderer BatchRenderer;
+
+    public CameraController CameraController;
+    public PlayerInputManager PlayerInputManager;
 
     // Global Events
     public static Action OnGameExit;
@@ -52,19 +55,22 @@ public class GameManager : MonoBehaviour
         MakeSingleton(); 
 
         GlobalData.MakeSingleton();
-        worldGenerationData.MakeSingleton();
-        menuData.MakeSingleton(); 
+        WorldGenerationData.MakeSingleton();
+        MenuData.MakeSingleton(); 
 
         RoverManager = GetComponent<RoverManager>();
 
-        cameraController = GetComponent<CameraController>();
-        playerInputManager = GetComponent<PlayerInputManager>();
+        CameraController = GetComponent<CameraController>();
+        PlayerInputManager = GetComponent<PlayerInputManager>();
 
-        floorTileRenderer = GetComponent<FloorTileRenderer>();
-        floorTileRenderer.Init();
+        FloorTileRenderer = GetComponent<FloorTileRenderer>();
+        FloorTileRenderer.Init();
 
-        itemRenderer = GetComponent<ItemRenderer>();
-        itemRenderer.Init();
+        ItemRenderer = GetComponent<ItemRenderer>();
+        ItemRenderer.Init();
+
+        BatchRenderer = GetComponent<BatchRenderer>();
+        BatchRenderer.Init();
     }
 
     private void Start()
@@ -73,7 +79,7 @@ public class GameManager : MonoBehaviour
         if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); DebugUnlockAll(); return; }
 #endif
 
-        if (Application.isMobilePlatform) { Instantiate(menuData.MobilePlatformWarning); return; }
+        if (Application.isMobilePlatform) { Instantiate(MenuData.MobilePlatformWarning); return; }
           
         OpenMainMenu();
     }
@@ -96,17 +102,16 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if(gameWorld == null) { return; }
+        if(GameWorld == null) { return; }
         //Read Player inputs
          
         // Draw Ghosts
         ConstructionManager.DrawGhosts();
 
-        // Draw Floor tiles
-        floorTileRenderer.Tick();
-
-        // Draw Items
-        itemRenderer.Tick();
+        // Do Batch Rendering
+        FloorTileRenderer.Tick(); 
+        ItemRenderer.Tick();
+        BatchRenderer.Tick();
 
         // Call Frame Update on Structures
         Structure.FrameUpdateAllStructures();
@@ -114,9 +119,9 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (gameWorld == null) { return; }
+        if (GameWorld == null) { return; }
 
-        gameWorld.OnFixedUpdate();
+        GameWorld.OnFixedUpdate();
 
         // Update Conveyors 
         ChainManager.UpdateChains();
@@ -134,17 +139,17 @@ public class GameManager : MonoBehaviour
         int seed = UnityEngine.Random.Range(0, int.MaxValue);
 
         // Create new gameWorld
-        gameWorld = new GameWorld(seed);
+        GameWorld = new GameWorld(seed);
         ConstructionManager = new(); 
         TaskManager = new TaskManager();
 
         // Start zone is generated
-        gameWorld.GenerateStartZone(); 
+        GameWorld.GenerateStartZone(); 
 
         // Descent vehicle animation plays
 
         // UI startup animation plays
-        HUDController = Instantiate(menuData.HUD, transform).GetComponent<HUDController>();
+        HUDController = Instantiate(MenuData.HUD, transform).GetComponent<HUDController>();
 
         // Tutorial toggle prompt
 
@@ -156,7 +161,7 @@ public class GameManager : MonoBehaviour
 
     public void OpenMainMenu()
     {
-        Instantiate(menuData.mainMenu, transform);
+        Instantiate(MenuData.mainMenu, transform);
     }
 
     void ExitToMenu()

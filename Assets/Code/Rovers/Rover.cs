@@ -173,6 +173,9 @@ public class Rover : Entity
         ActiveTask = null;
         JobQueue.Clear();
         JobStack.Clear();
+
+        DisplayObject.StopParticleEffect("MovingParticles");
+        EnqueueJob(new TurnTowards(position + (float2)Vector2.up));
     } 
 
     // Modules // 

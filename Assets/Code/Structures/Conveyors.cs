@@ -387,7 +387,7 @@ namespace Logistics
 
         private void TryAddConnections()
         {
-            var worldGrid = GameManager.Instance.gameWorld.worldGrid;
+            var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
             TryConveyorInfront();
 

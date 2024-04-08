@@ -66,8 +66,7 @@ public class GlobalData : ScriptableObject
             Instance = this;
         }
     }
-
-    [ContextMenu("Update Structure CF Assignment")]
+     
     public void UpdateStructureCFAssignment()
     {
         foreach (var structure in Structures)
@@ -80,6 +79,19 @@ public class GlobalData : ScriptableObject
             }
         }  
     }
+     
+    public void SyncMachineCraftingReferences()
+    {
+        foreach (var structure in Structures)
+        {
+            structure.CraftableResources.Clear();
+
+            foreach (ResourceData resource in Resources.Where(resource => resource.craftedIn.Equals(structure)))
+            {
+                structure.CraftableResources.Add(resource);
+            }
+        }
+    }
 }
 
 #if UNITY_EDITOR
@@ -90,9 +102,13 @@ public class GlobalDataInspector : Editor
     {
         GlobalData editorInstance = target as GlobalData;
         
-        if(GUILayout.Button("Update Structure CF Assignment"))
+        /*if(GUILayout.Button("Update Structure CF Assignment"))
         {
             editorInstance.UpdateStructureCFAssignment();
+        }*/
+        if (GUILayout.Button("Sync Machine Crafting References"))
+        {
+            editorInstance.SyncMachineCraftingReferences();
         }
 
         DrawDefaultInspector();

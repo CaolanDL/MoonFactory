@@ -6,7 +6,7 @@ public class StructureGhost : Entity
 {
     public StructureData structureData;
 
-    private BuildStructureTask buildTask;
+    private ManagedTask _managedBuildTask = new();
 
     public StructureGhost(StructureData structureData)
     {
@@ -23,23 +23,22 @@ public class StructureGhost : Entity
     public void OnTick()
     {
         if(queueDelay > 0) { queueDelay--; }
-        else if (buildTask == null)
-        {
-            buildTask = new BuildStructureTask(this); 
-            ConstructionTasks.QueueTask(buildTask);
+        else if (_managedBuildTask.taskExists == false)
+        { 
+            _managedBuildTask.TryCreateTask(new BuildStructureTask(this)); 
         } 
     }
 
     public void Cancel()
-    {
-        ConstructionTasks.CancelTask(buildTask);
+    { 
+        _managedBuildTask.CancelTask(); 
         GameManager.Instance.ConstructionManager.Ghosts.Remove(this);
-        buildTask = null; 
+        RemoveEntity(); 
     }
 
     public void FinishConstruction()
     {
-        var worldGrid = GameManager.Instance.gameWorld.worldGrid;
+        var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
         worldGrid.RemoveEntity(position); 
          

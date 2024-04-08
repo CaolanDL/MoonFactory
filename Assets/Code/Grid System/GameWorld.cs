@@ -32,7 +32,7 @@ public class GameWorld
     {
         int2 tileLocation;
 
-        (var xVisibleRange, var yVisibleRange) = GameManager.Instance.cameraController.GetIsometricVisibleRange();
+        (var xVisibleRange, var yVisibleRange) = GameManager.Instance.CameraController.GetIsometricVisibleRange();
 
         for (int x = xVisibleRange.x; x < xVisibleRange.y; x++)
         {
@@ -41,9 +41,9 @@ public class GameWorld
                 (tileLocation.x, tileLocation.y) = (x, y);
 
                 // Generate new floor tiles
-                if (GameManager.Instance.gameWorld.floorGrid.grid.ContainsKey(tileLocation) == false)
+                if (GameManager.Instance.GameWorld.floorGrid.grid.ContainsKey(tileLocation) == false)
                 {
-                    GameManager.Instance.gameWorld.GenerateFloorTile(tileLocation);
+                    GameManager.Instance.GameWorld.GenerateFloorTile(tileLocation);
                 }
             }
         }
@@ -254,6 +254,47 @@ public class Grid
         return false;
     }
 
+    public List<Location> GetSquareRadius(int2 origin, int radius) { return GetSquareRadius(origin, radius, radius); }
+    public List<Location> GetSquareRadius(int2 origin, int xRadius, int yRadius)
+    {
+        int2 xRange = new int2(origin.x - xRadius, origin.x + xRadius);
+        int2 yRange = new int2(origin.y - yRadius, origin.y + yRadius);
+
+        List<Location> region = new();
+
+        int2 pos = new();
+
+        for (pos.x = xRange.x; pos.x < xRange.y; pos.x += 1)
+            for (pos.y = yRange.x; pos.y < yRange.y; pos.y += 1)
+                if (grid.TryGetValue(pos, out Location location))
+                    region.Add(location);
+        return region;
+    }
+
+
+
+    //Todo GetRegion is just broken and I dont really know why. Try to figure this out please.
+    /*    public List<Location> GetRegion(int2 origin, int xSize, int ySize)
+        {
+            int2 xRange = new int2( origin.x, origin.x + xSize );
+            int2 yRange = new int2(origin.y, origin.y + ySize);
+
+            return GetRegion(xRange, yRange);
+        }
+
+        public List<Location> GetRegion(int2 xRange, int2 yRange)
+        {
+            List<Location> region = new();
+
+            int xSign = (int)Mathf.Sign(xRange.x - xRange.y);
+            int ySign = (int)Mathf.Sign(yRange.x - yRange.y);
+
+            for (int x = xRange.x; x != xRange.y; x += xSign)
+                for (int y = yRange.x; y != yRange.y; y += ySign)
+                    if (grid.TryGetValue(new int2(x, y), out Location location))
+                        region.Add(location);
+            return region;
+        }*/ 
 }
 
 

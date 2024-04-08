@@ -52,16 +52,16 @@ public class DebugUI : MonoBehaviour
         foreach (Chain chain in ChainManager.chains) itemInWorldCount += chain.items.Count;
         ItemsInWorldCounter.text = $"Items in world: {itemInWorldCount}";
 
-        ItemsRenderedThisFrameCounter.text = $"Items rendered this frame: {GameManager.Instance.itemRenderer.itemsRenderedThisFrame}";
+        ItemsRenderedThisFrameCounter.text = $"Items rendered this frame: {GameManager.Instance.ItemRenderer.itemsRenderedThisFrame}";
 
-        if (GameManager.Instance.gameWorld != null)
+        if (GameManager.Instance.GameWorld != null)
         {
-            tileInWorldCount = GameManager.Instance.gameWorld.floorGrid.grid.Count;
+            tileInWorldCount = GameManager.Instance.GameWorld.floorGrid.grid.Count;
         }
         TileInWorldCounter.text = $"Tiles in world: {tileInWorldCount}";
-        if (GameManager.Instance.gameWorld != null)
+        if (GameManager.Instance.GameWorld != null)
         {
-            tileOnScreenCount = GameManager.Instance.floorTileRenderer.tilesRenderedThisFrame;
+            tileOnScreenCount = GameManager.Instance.FloorTileRenderer.tilesRenderedThisFrame;
         }
         TileOnScreenCounter.text = $"Tiles rendered this frame: {tileOnScreenCount}";
     }

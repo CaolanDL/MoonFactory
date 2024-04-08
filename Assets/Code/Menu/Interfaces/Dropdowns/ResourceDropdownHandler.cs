@@ -1,9 +1,7 @@
-using System;
-using System.Collections;
+using System; 
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine; 
 
 public class ResourceDropdownHandler : MonoBehaviour
 {
@@ -27,21 +25,21 @@ public class ResourceDropdownHandler : MonoBehaviour
 
     public void Populate(List<ResourceData> _resources)
     {
-        resources = _resources; 
+        resources = _resources;
 
-        if(resources == null ) { throw new Exception("No resouces given to resource dropdown"); }
+        if (resources == null) { throw new Exception("No resouces given to resource dropdown"); }
 
         options.Clear();
 
-        foreach (ResourceData resource in resources) 
+        foreach (ResourceData resource in resources)
             options.Add(new(resource.name, resource.sprite));
 
         dropdown.ClearOptions();
         dropdown.AddOptions(options);
     }
 
-    public void OptionSelected(int index)
+    public void OptionSelected(TMP_Dropdown dropdown)
     {
-        callbackAction.Invoke(resources[index]);
+        callbackAction.Invoke(resources[dropdown.value]);
     }
 }

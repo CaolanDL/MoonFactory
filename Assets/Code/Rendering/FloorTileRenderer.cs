@@ -58,7 +58,7 @@ public class FloorTileRenderer : MonoBehaviour
 
         int2 camGridPos = cameraController.CameraGridPosition;
 
-        gameWorld = GameManager.Instance.gameWorld;
+        gameWorld = GameManager.Instance.GameWorld;
 
         tileLocation = new int2();
 

@@ -25,7 +25,8 @@ public class TaskManager
         MiningTasks.Clear();
         GameManager.OnGameExit -= OnGameExit;
     }
-     
+    
+    // Sub task manager types
     private static readonly Type ConstructionTaskType = typeof(ConstructionTasks);
     private static readonly Type LogisticsTaskType = typeof(LogisticsTasks);
     private static readonly Type MiningTaskType = typeof(MiningTasks);
@@ -36,22 +37,23 @@ public class TaskManager
 
         var taskType = task.GetType();
 
+        //todo Convert to FOR loop iterating through a registry of sub task managers, and comparing their interal task type reference.
         if (taskType.IsSubclassOf(ConstructionTaskType))
         {
             ConstructionTasks.QueueTask((ConstructionTasks)task);
         }
-        else if (taskType == LogisticsTaskType)
+        else if (taskType.IsSubclassOf(LogisticsTaskType))
         {
             //LogisticsTasks.Add((LogisticsTask)task);
         }
-        else if (taskType == MiningTaskType)
+        else if (taskType.IsSubclassOf(MiningTaskType))
         {
             //MiningTasks.Add((MiningTask)task);
         }
     } 
 
     public static void CancelTask(Task task)
-    {
+    { 
         Task.Pool.Remove(task);
 
         var taskType = task.GetType();

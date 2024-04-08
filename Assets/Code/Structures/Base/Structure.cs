@@ -9,22 +9,37 @@ using UnityEngine;
 
 public abstract class Structure : Entity
 {
-    public static List<Structure> Structures = new List<Structure>();
+    public static Action<Structure> StructureConstructed;
+    public event Action OnDemolishedEvent;
 
+    public static List<Structure> Structures = new List<Structure>(); 
     public StructureData StructureData; 
-
     public DisplayObject DisplayObject = null;
 
-    public bool flaggedForDemolition;
     public ManagedTask demolishTask = new();
+    public bool flaggedForDemolition; 
+
+    private Electrical.Node _electricalNode = null;
+    public Electrical.Node ElectricalNode
+    {
+        get => _electricalNode;
+        set 
+        {   // Bind a new Electrical Node and initialise it;
+            //? Might be code smell; Maybe Dangerous; Should work but consider migration to Init method or node constructor, passing structure.
+            _electricalNode = value;
+            _electricalNode.Parent = this;
+            OnDemolishedEvent += _electricalNode.Demolished; 
+        }
+    }
+
 
     public void Initialise()
     {
-        base.size = new DataStructs.byte2(StructureData.size.x, StructureData.size.y); 
+        base.size = new DataStructs.byte2(StructureData.size.x, StructureData.size.y);
 
-        Structures.Add(this); 
+        Structures.Add(this);
 
-        OnInitialise();
+        OnInitialise(); 
     }
 
     public virtual void OnInitialise()
@@ -53,7 +68,7 @@ public abstract class Structure : Entity
         }
     }
 
-    public static Action<Structure> StructureConstructed;
+
 
     public void Constructed()
     {
@@ -66,6 +81,8 @@ public abstract class Structure : Entity
         OnConstructed();
 
         StructureConstructed?.Invoke(this);
+
+        if (_electricalNode != null) { _electricalNode.Constructed(); } 
     }
 
     public void Demolish()
@@ -74,7 +91,9 @@ public abstract class Structure : Entity
 
         RemoveEntity();
 
-        DisplayObject.DemolishSequence();
+        DisplayObject.DemolishAnimation();
+
+        OnDemolishedEvent?.Invoke();
 
         OnDemolished();
     }
@@ -111,11 +130,11 @@ public abstract class Structure : Entity
 
     public virtual void OnClicked(Vector3 mousePosition) { }
 
-     
+
 
     public void FlagForDemolition()
     {
-        var demolishTask = new RoverTasks.DemolishStructureTask(this); 
+        var demolishTask = new RoverTasks.DemolishStructureTask(this);
 
         flaggedForDemolition = true;
 
@@ -126,7 +145,7 @@ public abstract class Structure : Entity
     {
         demolishTask.CancelTask();
 
-        flaggedForDemolition = false; 
+        flaggedForDemolition = false;
     }
 }
 

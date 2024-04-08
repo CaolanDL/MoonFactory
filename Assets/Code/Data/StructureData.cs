@@ -42,6 +42,7 @@ public class StructureData : ScriptableObject
 
     [Header("Crafting")]
     public List<CraftingFormula> CraftingFormulas = new();
+    public List<ResourceData> CraftableResources = new();
 
     public List<TinyTransform> inputs;
     public List<TinyTransform> outputs;  
@@ -64,6 +65,11 @@ public class StructureData : ScriptableObject
     {
         unlocked = true;
         GlobalData.Instance.unlocked_Structures.Add(this);
+
+        foreach(ResourceData resource in CraftableResources)
+        {
+            resource.Unlock();
+        }
     }
 }
 

@@ -69,7 +69,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         isMouseOverUI = EventSystem.current.IsPointerOverGameObject();
 
-        if (GameManager.Instance.gameWorld == null)  return; 
+        if (GameManager.Instance.GameWorld == null)  return; 
 
         HandleCameraControl();
 
@@ -109,7 +109,7 @@ public class PlayerInputManager : MonoBehaviour
 
         if (inputActions.DefaultControls.Pick.WasPressedThisFrame())
         {
-            Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
+            Entity entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(MouseGridPositon);
 
             if (entity != null)
             {
@@ -149,7 +149,7 @@ public class PlayerInputManager : MonoBehaviour
 
             else
             {
-                Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
+                Entity entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(MouseGridPositon);
 
                 if (entity != null)
                 {
@@ -198,7 +198,7 @@ public class PlayerInputManager : MonoBehaviour
     { 
         if (inputActions.DefaultControls.Select.IsPressed())
         {
-            Entity entity = GameManager.Instance.gameWorld.worldGrid.GetEntityAt(MouseGridPositon);
+            Entity entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(MouseGridPositon);
 
             if(entity == lastEntity) { return; }
 
@@ -230,6 +230,12 @@ public class PlayerInputManager : MonoBehaviour
         if (inputActions.DefaultControls.Select.WasReleasedThisFrame())
         {
             lastEntity = null;
+        }
+
+        if (inputActions.DefaultControls.ExitTool.WasPressedThisFrame())
+        {
+            ChangeInputState(InputState.Default);
+            return;
         }
     }
 

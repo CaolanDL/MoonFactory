@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CraftingFormulaDropdownManager : MonoBehaviour
+public class CraftingDropdownManager : MonoBehaviour
 {
     ResourceDropdownHandler dropdownHandler;
 
@@ -13,16 +13,11 @@ public class CraftingFormulaDropdownManager : MonoBehaviour
         dropdownHandler = GetComponent<ResourceDropdownHandler>();
         machineInterface = GetComponentInParent<CraftingMachineInterface>();
 
-        //dropdownHandler.SetCallback(machineInterface.SetCraftingFormula);
+        dropdownHandler.SetCallback(machineInterface.SetCraftingResource);
     }
 
     private void Start()
     {
-        dropdownHandler.Populate(GetResources());
-    }
-
-    List<ResourceData> GetResources()
-    {
-        return GameManager.Instance.GlobalData.unlocked_Resources;
+        dropdownHandler.Populate(machineInterface.GetCraftableResources());
     }
 }

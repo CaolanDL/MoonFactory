@@ -30,7 +30,7 @@ public class ConstructionManager
     {
         var ghostGridPosition = GetMouseGhostPosition();
 
-        var worldGrid = GameManager.Instance.gameWorld.worldGrid;
+        var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
         StructureGhost newGhostStructure = new(NewGhostData);
 
@@ -49,7 +49,7 @@ public class ConstructionManager
 
     public int2 GetMouseGhostPosition()
     {
-        var inputManager = GameManager.Instance.playerInputManager;
+        var inputManager = GameManager.Instance.PlayerInputManager;
 
         if (NewGhostData.size.x > 1 && NewGhostData.size.y > 1)
         { 
@@ -83,7 +83,7 @@ public class ConstructionManager
     /// </summary> 
     public void ForceSpawnStructure(int2 position, sbyte rotation, StructureData structureData)
     {
-        var worldGrid = GameManager.Instance.gameWorld.worldGrid;
+        var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
         worldGrid.RemoveEntity(position);
 
@@ -125,7 +125,7 @@ public class ConstructionManager
         //TODO Large structures should be blocked from being built when overlapping other large objects. This will require some thinking and some time.
         //? You really need to take a little holiday. You are starting to feel the burn-out.
 
-        if (GameManager.Instance.gameWorld.worldGrid.IsEntityAt(ghostGridPosition))
+        if (GameManager.Instance.GameWorld.worldGrid.IsEntityAt(ghostGridPosition))
         {
             blocked = true;
         }

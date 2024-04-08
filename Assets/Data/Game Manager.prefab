@@ -553,6 +553,7 @@ GameObject:
   - component: {fileID: 7716157231332598764}
   - component: {fileID: 8208045981605999340}
   - component: {fileID: 8754063972972500991}
+  - component: {fileID: 7462157466248319354}
   - component: {fileID: 7753882727360442230}
   - component: {fileID: 8718522128751908372}
   m_Layer: 0
@@ -595,16 +596,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalData: {fileID: 11400000, guid: be1b4d32d012ef048a07fe318b66aaed, type: 2}
-  worldGenerationData: {fileID: 11400000, guid: a1e8410657a03ac4891b982a1ddfb03f,
+  RenderData: {fileID: 11400000, guid: 77dd22d7aba4be54883e318c44ef12a3, type: 2}
+  WorldGenerationData: {fileID: 11400000, guid: a1e8410657a03ac4891b982a1ddfb03f,
     type: 2}
-  menuData: {fileID: 11400000, guid: fef9a16f6097abf41ba6a2acaba9d475, type: 2}
-  roverData: {fileID: 11400000, guid: 31f0757be67bcbb48bc06ecd172165ec, type: 2}
-  RoverManager: {fileID: 0}
+  MenuData: {fileID: 11400000, guid: fef9a16f6097abf41ba6a2acaba9d475, type: 2}
+  RoverData: {fileID: 11400000, guid: 31f0757be67bcbb48bc06ecd172165ec, type: 2}
+  RoverManager: {fileID: 7716157231332598764}
   HUDController: {fileID: 0}
-  floorTileRenderer: {fileID: 0}
-  itemRenderer: {fileID: 0}
-  cameraController: {fileID: 0}
-  playerInputManager: {fileID: 0}
+  FloorTileRenderer: {fileID: 8208045981605999340}
+  ItemRenderer: {fileID: 8754063972972500991}
+  BatchRenderer: {fileID: 7462157466248319354}
+  CameraController: {fileID: 7753882727360442230}
+  PlayerInputManager: {fileID: 8718522128751908372}
 --- !u!114 &7716157231332598764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,6 +650,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemsRenderedThisFrame: 0
+--- !u!114 &7462157466248319354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5097026221170367744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b6daed42bae10498265b63e38bb93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7753882727360442230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1224,7 +1239,7 @@ PrefabInstance:
     - target: {fileID: 2901377444576638990, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 168
       objectReference: {fileID: 0}
     - target: {fileID: 4279710545569662900, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}

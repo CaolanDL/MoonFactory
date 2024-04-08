@@ -352,9 +352,10 @@ namespace RoverJobs
 
         public override void OnTick()
         {
-            if (lifeSpan >= structureGhost.structureData.timeToBuild)
+            if (lifeSpan >= structureGhost.structureData.timeToBuild && isComplete != true)
             {
                 structureGhost.FinishConstruction();
+                isComplete = true;
                 PopJob();
             }
         }
@@ -554,7 +555,7 @@ namespace RoverJobs
                     var quantityInHopper = hopper.storageInventory.GetQuantityOf(rq.resource);
 
                     if (quantityInHopper > 0)
-                    {
+                    { 
                         if (PathFinder.FindPathToAnyFreeNeighbor((int2)rover.VisualPosition, hopper.position) == null) { continue; } // Hopper not reachable
 
                         float2 hopperRoverOffset = rover.VisualPosition - hopper.position;

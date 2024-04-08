@@ -131,7 +131,9 @@ namespace RoverTasks
         }
     }
 
-
+     
+    // todo Bad smell here. Need to inherit the shared task management functionality. Use type passing for filtration.
+    // todo These should be considered managers and not tasks. You are ignoring single resposibility principle.
     // Construction Tasks
     public class ConstructionTasks : Task
     {
@@ -147,6 +149,7 @@ namespace RoverTasks
             if (constructionTasks.Count == 0) return null;
             var task = constructionTasks.First;
             constructionTasks.RemoveFirst();
+            TaskManager.AllTasks.Remove(task.Value);
             return task.Value;
         }
 

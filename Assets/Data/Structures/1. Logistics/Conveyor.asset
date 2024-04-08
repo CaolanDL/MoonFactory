@@ -26,6 +26,7 @@ MonoBehaviour:
     quantity: 25
   timeToBuild: 10
   CraftingFormulas: []
+  CraftableResources: []
   inputs:
   - position:
       x: 0
@@ -41,4 +42,5 @@ MonoBehaviour:
   - mesh: {fileID: 534601995681146736, guid: 1d48e8f8386ab6b488b72028b59c19a6, type: 3}
     material: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}
   - mesh: {fileID: 8654884093285089175, guid: 8626fe02b00017f4ab3ae100f81fa2be, type: 3}
-    material: {fileID: 2100000, guid: c9067e89d5229114da459edce48d621d, type: 2}
+    material: {fileID: 2100000, guid: 49ea389af960b8044940149724111ecd, type: 2}
+  unlocked: 1

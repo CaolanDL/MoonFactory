@@ -16,10 +16,15 @@ public class CraftingMachineInterface : ModularInterface
     private StructureData structureData;
      
      
-    public void SetCraftingFormula(CraftingFormula craftingFormula)
+    public void SetCraftingResource(ResourceData resource)
     {
-
+        machine.newCraftingResource = resource;
     } 
+
+    public List<ResourceData> GetCraftableResources()
+    {
+        return structureData.CraftableResources;
+    }
 
     public override void UpdateUI()
     {

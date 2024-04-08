@@ -20,6 +20,7 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: e12ce026e5c35df44a9551d9ed09c066, type: 3}
   craftedIn: {fileID: 11400000, guid: 7722152ffd1341b438e76a1ede5271d2, type: 2}
   timeToCraft: 25
+  quantityCrafted: 1
   requiredResources:
   - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
     quantity: 1

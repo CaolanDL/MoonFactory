@@ -24,8 +24,9 @@ public class ResourceData : ScriptableObject
     [SerializeField] public Sprite sprite;
 
     [Header("Details")] 
-    [Tooltip("Machine crafted in")] public StructureData craftedIn; 
-    [Tooltip("Duration in Ticks (s*50)")] public short timeToCraft; 
+    [Tooltip("Machine crafted in")] public StructureData craftedIn;
+    [Tooltip("Duration in Ticks (s*50)")] public short timeToCraft = 1;
+    [Tooltip("Duration in Ticks (s*50)")] public short quantityCrafted = 1;
     [SerializeField] public List<ResourceQuantity> requiredResources;
 
 
