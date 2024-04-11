@@ -8,8 +8,8 @@ using UnityEngine.UIElements;
 
 public static class DevFlags
 {
-    public static bool SkipMainMenu = true;
-    public static bool InstantBuilding = true;
+    public static bool SkipMainMenu = false;
+    public static bool InstantBuilding = false;
 }
 
 //! MoonFactory
@@ -251,5 +251,10 @@ public class GameManager : MonoBehaviour
     public void AddLifespanGizmo(Vector3 worldPosition, int lifespan)
     {
         BatchRenderer.gizmoRenderer.Add(worldPosition, lifespan);
+    }
+
+    public void ToggleInstantBuild()
+    {
+        DevFlags.InstantBuilding = !DevFlags.InstantBuilding;
     }
 }

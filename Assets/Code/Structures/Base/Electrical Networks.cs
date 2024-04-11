@@ -23,7 +23,7 @@ namespace Electrical
         {
             var LargestNetwork = a.nodes.Count > b.nodes.Count ? a : b;
             var SmallerNetwork = a == LargestNetwork ? b : a;
-
+             
             LargestNetwork.nodes.AddRange(SmallerNetwork.nodes);
             LargestNetwork.relays.AddRange(SmallerNetwork.relays);
             LargestNetwork.inputs.AddRange(SmallerNetwork.inputs);
@@ -151,19 +151,19 @@ namespace Electrical
             //return;
 
             // If the other node is the only node in its network absorb it into this one.
-            if (Network != null && other.Network.nodes.Count == 1)
+            if (Network != null && other.Network != null && other.Network.nodes.Count == 1)
             {
                 other.Network.Destroy();
                 Network.Add(other);
             }
             // If this node is the only in its network, do the opposite.
-            else if (Network != null && Network.nodes.Count == 1)
+            else if (Network != null && other.Network != null && Network.nodes.Count == 1)
             {
                 Network.Destroy();
                 other.Network.Add(this);
             }
             // If both nodes have networks join both the networks together with a merge call.
-            else if (Network != null && other.Network != null)
+            else if (Network != null && other.Network != null && Network != other.Network)
             {
                 SystemManager.MergeNetworks(Network, other.Network);
             }

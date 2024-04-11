@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using ExtensionMethods;
-using UnityEngine.UIElements;
-using static UnityEditor.Rendering.CameraUI;
+using ExtensionMethods; 
 
 public class ConstructionManager
 {

@@ -5,8 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Unity.Mathematics;
-using UnityEditor.Experimental.GraphView;
+using Unity.Mathematics; 
 using UnityEngine;
 
 public abstract class Structure : Entity

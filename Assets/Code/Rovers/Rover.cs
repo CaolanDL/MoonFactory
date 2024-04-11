@@ -129,7 +129,6 @@ public class Rover : Entity
             Job job = JobStack.Peek();
             if (job.lifeSpan < 0) job.Start();
             if (!JobWasPopped) job.Tick();
-            //Debug.Log($"Job = {job.GetType()}");
             return;
         }
         if (FetchDelay < 1 && JobStack.Count == 0 && JobQueue.Count == 0)
@@ -170,7 +169,7 @@ public class Rover : Entity
     public void TaskFailed()
     { 
         var taskToFail = ActiveTask;
-        TaskManager.QueueTask(ActiveTask);
+        TaskManager.QueueTask(taskToFail);
         ActiveTask.rover = null;
         ClearTask();
         taskToFail.OnFailed?.Invoke(); 

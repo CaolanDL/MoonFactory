@@ -1,8 +1,6 @@
-using ExtensionMethods;
-using System.Collections;
+using ExtensionMethods; 
 using System.Collections.Generic;
-using UnityEngine;
-using static UnityEditor.PlayerSettings;
+using UnityEngine; 
 
 public class Bridge : Structure
 {

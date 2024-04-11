@@ -71,7 +71,11 @@ public class TaskManager
         else 
             foreach (var _category in CategoryManagers)
                 if (category == _category.Key)
-                    return _category.Value.PopTask();
+                {
+                    var _task = _category.Value.PopTask();
+                    Tasks.Remove(_task);
+                    return _task;
+                } 
         return null;
     }
 }
