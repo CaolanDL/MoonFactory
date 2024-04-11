@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using ExtensionMethods;
 using UnityEngine.UIElements;
+using static UnityEditor.Rendering.CameraUI;
 
 public class ConstructionManager
 {
@@ -39,7 +40,7 @@ public class ConstructionManager
             Ghosts.Add(newGhostStructure);
             newGhostStructure.OnPlaced();
 
-            if(DevFlags.AutoBuild)
+            if(DevFlags.InstantBuilding)
             {
                 newGhostStructure.FinishConstruction();
             } 
@@ -157,27 +158,24 @@ public class ConstructionManager
          
         // Draw indicator arrows ->
         foreach (TinyTransform input in NewGhostData.inputs)
+            DrawArrow(input, RenderData.Instance.Arrow, RenderData.Instance.ArrowOutputMaterial);  
+
+        foreach (TinyTransform output in NewGhostData.outputs) 
+            DrawArrow(output, RenderData.Instance.Arrow, RenderData.Instance.ArrowInputMaterial);
+
+        foreach (TinyTransform port in NewGhostData.ports)
+            DrawArrow(port, RenderData.Instance.TwoWayArrow, RenderData.Instance.UniversalMaterial);
+
+        void DrawArrow(TinyTransform transform, Mesh mesh, Material material)
         {
             Matrix4x4 _matrix = Matrix4x4.TRS
             (
-                (input.position.Rotate(_ghostRotation) + ghostGridPosition).ToVector3() + (Vector3.up * 0.2f),
-                input.rotation.Rotate(_ghostRotation).ToQuaternion(),
+                (transform.position.Rotate(_ghostRotation) + ghostGridPosition).ToVector3() + (Vector3.up * 0.2f),
+                transform.rotation.Rotate(_ghostRotation).ToQuaternion(),
                 Vector3.one * 0.2f
             );
 
-            Graphics.DrawMesh(GlobalData.Instance.gizmo_Arrow, _matrix, GlobalData.Instance.mat_ArrowIndicatorInput, 0);
-        }
-
-        foreach (TinyTransform output in NewGhostData.outputs)
-        { 
-            Matrix4x4 _matrix = Matrix4x4.TRS
-            (
-                (output.position.Rotate(_ghostRotation) + ghostGridPosition).ToVector3() + (Vector3.up * 0.2f),
-                output.rotation.Rotate(_ghostRotation).ToQuaternion(),
-                Vector3.one * 0.2f
-            );
-
-            Graphics.DrawMesh(GlobalData.Instance.gizmo_Arrow, _matrix, GlobalData.Instance.mat_ArrowIndicatorOutput, 0);
+            Graphics.DrawMesh(mesh, _matrix, material, 0);
         }
         // <- Draw indicator arrows
     }

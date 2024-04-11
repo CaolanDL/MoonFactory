@@ -149,38 +149,45 @@ public abstract class Structure : Entity
     {
         foreach (var output in StructureData.outputs)
         {
-            ConnectAt(output);
+            ConnectAt(output, PortType.Output);
         }
         foreach (var port in StructureData.ports)
         {
-            ConnectAt(port);
+            ConnectAt(port, PortType.Port);
         }
 
-        void ConnectAt(TinyTransform tinyTransform)
+        void ConnectAt(TinyTransform tinyTransform, PortType portType)
         {
             var portTransform = WorldSpacePorts[tinyTransform];
 
             var entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(portTransform.position);
 
             if (entity == null) return;
-
+             
             if (entity.GetType() == typeof(Conveyor))
             {
                 var conveyor = (Conveyor)entity;
 
                 if (conveyor.parentChain.conveyors[0] != conveyor) { return; }
 
-                if (conveyor.rotation == portTransform.rotation)
+                var offsetRotation = portTransform.rotation;
+
+                if (portType == PortType.Port)
                 {
-                    conveyor.SetRotationConfig(Conveyor.TurnConfig.Straight);
+                    offsetRotation = offsetRotation.Rotate(2);
+                } 
+
+                if (conveyor.rotation == offsetRotation)
+                {
+                    conveyor.SetRotationConfig(Conveyor.TurnConfig.Straight); 
                     OnOutputFound();
                 }
-                else if (conveyor.rotation == portTransform.rotation.Rotate(1))
+                else if (conveyor.rotation == offsetRotation.Rotate(1))
                 {
                     conveyor.SetRotationConfig(Conveyor.TurnConfig.RightTurn);
                     OnOutputFound();
                 }
-                else if (conveyor.rotation == portTransform.rotation.Rotate(-1))
+                else if (conveyor.rotation == offsetRotation.Rotate(-1))
                 {
                     conveyor.SetRotationConfig(Conveyor.TurnConfig.LeftTurn);
                     OnOutputFound();
@@ -189,18 +196,18 @@ public abstract class Structure : Entity
         }
     }
 
-    public void DisconnectInputs()
+    public virtual void DisconnectInputs()
     {
         foreach (var output in StructureData.inputs)
         {
-            DisconnectAt(output);
+            DisconnectAt(output, PortType.Input);
         }
         foreach (var output in StructureData.ports)
         {
-            DisconnectAt(output);
+            DisconnectAt(output, PortType.Port);
         }
 
-        void DisconnectAt(TinyTransform tinyTransform)
+        void DisconnectAt(TinyTransform tinyTransform, PortType portType)
         {
             var portTransform = WorldSpacePorts[tinyTransform];
 
@@ -214,11 +221,18 @@ public abstract class Structure : Entity
 
                 // Extrude the port to match its equivelant input.
                 var offsetTransform = new TinyTransform();
-                offsetTransform.position = portTransform.position + portTransform.rotation.ToInt2();
-
-                if (structure.WorldSpacePortTypes.TryGetValue(offsetTransform, out PortType portType))
+                if (portType == PortType.Port)
                 {
-                    if (portType == PortType.Output)
+                    offsetTransform.position = portTransform.position - portTransform.rotation.ToInt2();
+                }
+                else
+                {
+                    offsetTransform.position = portTransform.position + portTransform.rotation.ToInt2();
+                }
+
+                if (structure.WorldSpacePortTypes.TryGetValue(offsetTransform, out PortType _portType))
+                {
+                    if (_portType == PortType.Output)
                     {
                         structure.OnOutputLost();
                     }
@@ -244,16 +258,17 @@ public abstract class Structure : Entity
 
     static int2 int2one = new int2(0, 1);
 
-    public bool TryOutputItem(ResourceData resource, TinyTransform localTansform)
+    public bool TryOutputItem(ResourceData resource, TinyTransform localPort)
     {
         var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
-        var entityAtLocation = worldGrid.GetEntityAt(WorldSpacePorts[localTansform].position); 
+        var entityAtLocation = worldGrid.GetEntityAt(WorldSpacePorts[localPort].position); 
 
         if (entityAtLocation == null) return false;
 
         // Recess the port to match its equivelant input.
-        TinyTransform offsetOutputLocation = WorldSpacePorts[localTansform];
+        TinyTransform offsetOutputLocation = WorldSpacePorts[localPort];
+        if (WorldSpacePortTypes[WorldSpacePorts[localPort]] == PortType.Port) { offsetOutputLocation.rotation += 2; }
         offsetOutputLocation.position = offsetOutputLocation.position - offsetOutputLocation.rotation.ToInt2(); 
 
         if (entityAtLocation.GetType().IsSubclassOf(typeof(Structure)))

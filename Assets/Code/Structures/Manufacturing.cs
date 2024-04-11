@@ -2,3 +2,8 @@
 {
 
 }
+
+public class RoverAssembler : Machine
+{
+
+}

@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using UnityEngine;
 
 using ExtensionMethods;
-using System.Linq;
+using System.Linq; 
 
 namespace Logistics
 {
@@ -326,6 +326,8 @@ namespace Logistics
         {
             //todo Add conveyor splitting logic here ASAP
             //? Putting a red comment here to just get you to hurry up and do this.
+
+            conveyors.Remove(conveyor);
         }
 
         public void MergeWith(Chain otherChain, bool isChainInfront)
@@ -373,20 +375,18 @@ namespace Logistics
             RightTurn
         }
 
-        public override void OnConstructed()
-        {
-            inputPosition = new int2(0, -1).Rotate(rotation) + position;
-
-            TryAddConnections();
-        }
+/*        public override void OnInitialise()
+        { 
+            inputPosition = new int2(0, -1).Rotate(rotation) + position; 
+        } */
 
         public override void OnDemolished()
         { 
             parentChain.RemoveConveyor(this);
         }
 
-        private void TryAddConnections()
-        {
+        public override void ConnectOuputs()
+        { 
             var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
             TryConnectInfront();
@@ -461,9 +461,9 @@ namespace Logistics
                 else if (IsConveyorFacingMe(leftNeighbor, +1)) { SetRotationConfig(TurnConfig.LeftTurn); }
                 else if (IsConveyorFacingMe(rightNeighbor, -1)) { SetRotationConfig(TurnConfig.RightTurn); }
 
-                else if (IsOuputFacingMe(rearNeighbor)) { SetRotationConfig(TurnConfig.Straight); }
-                else if (IsOuputFacingMe(leftNeighbor)) { SetRotationConfig(TurnConfig.LeftTurn); }
-                else if (IsOuputFacingMe(rightNeighbor)) { SetRotationConfig(TurnConfig.RightTurn); }
+                else if (IsPortFacingMe(rearNeighbor)) { SetRotationConfig(TurnConfig.Straight); }
+                else if (IsPortFacingMe(leftNeighbor)) { SetRotationConfig(TurnConfig.LeftTurn); }
+                else if (IsPortFacingMe(rightNeighbor)) { SetRotationConfig(TurnConfig.RightTurn); }
 
                 else { return; }
 
@@ -499,18 +499,17 @@ namespace Logistics
                     return false;
                 }
 
-                bool IsOuputFacingMe(Entity entity)
+                bool IsPortFacingMe(Entity entity)
                 {
                     if (entity == null) { return false; }
 
                     if (entity.GetType().IsSubclassOf(typeof(Structure)))
                     {
-                        var structure = (Structure)entity;
-                        if (structure.StructureData.outputs.Count == 0) return false;
+                        var structure = (Structure)entity; 
 
                         foreach (var output in structure.StructureData.outputs)
                         {
-                            if (((output).position.Rotate(structure.rotation) + structure.position).Equals(position))
+                            if (structure.WorldSpacePorts[output].position.Equals(position))
                             {
                                 structure.OnOutputFound();
                                 return true;
@@ -518,7 +517,7 @@ namespace Logistics
                         }
                         foreach (var port in structure.StructureData.ports)
                         {
-                            if (((port).position.Rotate(structure.rotation) + structure.position).Equals(position))
+                            if (structure.WorldSpacePorts[port].position.Equals(position))
                             {
                                 structure.OnOutputFound();
                                 return true;
@@ -551,9 +550,50 @@ namespace Logistics
             }
         }
 
+        public override void DisconnectInputs()
+        { 
+            var entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(inputPosition);
+
+            if (entity == null) return;
+
+            if (entity.GetType().IsSubclassOf(typeof(Structure)))
+            {
+                var structure = (Structure)entity;
+
+                TinyTransform offset;
+
+                if(turnConfig == TurnConfig.LeftTurn) 
+                    offset = new TinyTransform(position, rotation.Rotate(1)); 
+                else if (turnConfig == TurnConfig.RightTurn) 
+                    offset = new TinyTransform(position, rotation.Rotate(-1)); 
+                else  
+                    offset = new TinyTransform(position, rotation);
+
+                PortType _portType;
+
+                if (structure.WorldSpacePortTypes.TryGetValue(offset, out _portType))
+                {
+                    if (_portType == PortType.Output)
+                    {
+                        structure.OnOutputLost();
+                    }
+                }
+
+                offset = new TinyTransform(offset.position, offset.rotation.Rotate(2));
+
+                if (structure.WorldSpacePortTypes.TryGetValue(offset, out _portType))
+                {
+                    if (_portType == PortType.Port)
+                    {
+                        structure.OnOutputLost();
+                    }
+                }
+            }
+        }
+
         public void SetRotationConfig(TurnConfig config)
         {
-            if (this.turnConfig == config) { return; }
+            //if (this.turnConfig == config) { return; }
 
             this.turnConfig = config;
 
@@ -565,18 +605,18 @@ namespace Logistics
             if (config == TurnConfig.LeftTurn)
             {
                 DisplayObject.SetActiveModel("Left Turn");
-                inputPosition = new int2(0, -1).Rotate((sbyte)(rotation + 1)) + position;
+                inputPosition = new int2(-1, 0).Rotate(rotation) + position;
             }
             if (config == TurnConfig.RightTurn)
             {
                 DisplayObject.SetActiveModel("Right Turn");
-                inputPosition = new int2(0, -1).Rotate((sbyte)(rotation - 1)) + position;
+                inputPosition = new int2(1, 0).Rotate(rotation) + position;
             }
         }
 
 
         public override bool TryInputItem(ResourceData resource, TinyTransform inputWorldTransform)
-        {
+        { 
             if (parentChain.conveyors.IndexOf(this) != 0)  return false;
             if (!inputPosition.Equals(inputWorldTransform.position)) return false; 
 

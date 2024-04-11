@@ -178,22 +178,22 @@ public class Grid
             location.entity = entity;
         }
 
-        /*        else
+        /*else
+        {
+            for (int x = 0; x < entity.size.x; x++)
+            {
+                for (int y = 0; y < entity.size.y; y++)
                 {
-                    for (int x = 0; x < entity.size.x; x++)
-                    {
-                        for (int y = 0; y < entity.size.y; y++)
-                        {
-                            var offsetPosition = position + (new int2(x, y).Rotate(rotation));
+                    var offsetPosition = position + (new int2(x, y).Rotate(rotation));
 
-                            Location location = AddLocation(offsetPosition);
+                    Location location = AddLocation(offsetPosition);
 
-                            if (IsEntityAt(offsetPosition)) return null;
+                    if (IsEntityAt(offsetPosition)) return null;
 
-                            location.entity = entity;
-                        }
-                    }
-                }*/
+                    location.entity = entity;
+                }
+            }
+        }*/
 
         entity.position = position;
 

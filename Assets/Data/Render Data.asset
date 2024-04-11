@@ -13,6 +13,16 @@ MonoBehaviour:
   m_Name: Render Data
   m_EditorClassIdentifier: 
   devgizmo_material: {fileID: 2100000, guid: ad0829fb8cfd0984fa87629c1d36a7e7, type: 2}
+  UniversalMaterial: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
+  Arrow: {fileID: 2782774259527958836, guid: 663b6f19701347045b5c7419e615dd8e, type: 3}
+  TwoWayArrow: {fileID: -3127043776041327853, guid: 1db5738d78b3afe4289dadf511770ab6,
+    type: 3}
+  ArrowOutputMaterial: {fileID: 2100000, guid: aaf3dad24ffc8d140b2f1fd51c084db7, type: 2}
+  ArrowInputMaterial: {fileID: 2100000, guid: 4b9e2c61465009f40aea2ed8207c9764, type: 2}
   wire_mesh: {fileID: 8077376627999728891, guid: 2c687e3cb05f5cc4488579610e17e11d,
     type: 3}
   wire_material: {fileID: 2100000, guid: ed863dbc4a590d942aa608b5d7d82e5c, type: 2}
+  BridgeSegment: {fileID: -7600685906608751353, guid: 6f8ea301c81986848803d75f0e57a6b2,
+    type: 3}
+  BridgePlatform: {fileID: -844240029295795412, guid: e75b4180e76e20146bc2fed2e1ba8c37,
+    type: 3}

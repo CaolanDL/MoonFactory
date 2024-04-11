@@ -5,7 +5,8 @@ public class BatchRenderer : MonoBehaviour
 {
     WireRenderer wireRenderer = new();
     public GizmoRenderer gizmoRenderer = new();
-    PlatformRenderer platformRenderer = new();
+    BridgeRenderer platformRenderer = new();
+    public ItemRenderer ItemRenderer { get { return GameManager.Instance.ItemRenderer; } }
 
     public void Init()
     {

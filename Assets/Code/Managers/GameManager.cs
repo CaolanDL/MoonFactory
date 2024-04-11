@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 public static class DevFlags
 {
     public static bool SkipMainMenu = true;
-    public static bool AutoBuild = true;
+    public static bool InstantBuilding = true;
 }
 
 //! MoonFactory
@@ -112,9 +112,9 @@ public class GameManager : MonoBehaviour
         ConstructionManager.DrawGhosts();
 
         // Do Batch Rendering
-        FloorTileRenderer.Tick(); 
-        ItemRenderer.Tick();
+        FloorTileRenderer.Tick();
         BatchRenderer.Render();
+        ItemRenderer.Tick(); 
 
         // Call Frame Update on Structures
         Structure.FrameUpdateAllStructures();

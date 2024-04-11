@@ -74,7 +74,7 @@ public class ItemRenderer : MonoBehaviour
                     itemRotationCached = item.GetRotation();
 
                     itemsRenderedThisFrame++;
-                    QueueItem(item) ;
+                    QueueItem(item);
                 }
             }
         }
@@ -101,19 +101,18 @@ public class ItemRenderer : MonoBehaviour
         }
     }  
 
-    void QueueItem(Item item)
+    public void QueueItem(Item item)
     {
         if (item == null) return;
 
-        Vector3 _worldPosition = new Vector3(itemV2WorldPosCached.x, VerticalOffset, itemV2WorldPosCached.y); 
+        Vector3 _worldPosition = new Vector3(itemV2WorldPosCached.x, VerticalOffset, itemV2WorldPosCached.y);  
 
-/*        var _matrix = Matrix4x4.TRS(
-            _worldPosition,
-            Quaternion.Euler(0, itemRotationCached,0),
-            Vector3.one);
-*/
-        //matrixArrays[item.data].QueueMatrix(_matrix);
         matrixArrays[item.data].QueueMatrix(_worldPosition, Quaternion.Euler(0, itemRotationCached, 0));
+    }
+
+    public void QueueItem(ResourceData resource, Matrix4x4 matrix)
+    { 
+        matrixArrays[resource].QueueMatrix(matrix);
     }
 
     void DrawItem(Item item, Vector2 position, short rotation)

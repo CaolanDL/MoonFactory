@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c959649ace52a934799d95e3909b1b57, type: 3}
+  m_Name: RoverAssembler
+  m_EditorClassIdentifier: 
+  screenname: Rover Assembler
+  description: A series of robotic arms that take base components and assemble them
+    into more complex objects.
+  category: 3
+  sprite: {fileID: 21300000, guid: 8e85eb680614ac943b562865413d0172, type: 3}
+  displayObject: {fileID: 8149189864003149576, guid: 0267362693b1c844181ee682b87f795a,
+    type: 3}
+  size:
+    x: 3
+    y: 3
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+    quantity: 10
+  timeToBuild: 50
+  CraftingFormulas: []
+  CraftableResources: []
+  inputs:
+  - position:
+      x: -1
+      y: 2
+    _rotation: 1
+  - position:
+      x: -1
+      y: 1
+    _rotation: 1
+  - position:
+      x: -1
+      y: 0
+    _rotation: 1
+  - position:
+      x: 3
+      y: 2
+    _rotation: -1
+  - position:
+      x: 3
+      y: 1
+    _rotation: -1
+  - position:
+      x: 3
+      y: 0
+    _rotation: -1
+  outputs: []
+  ports: []
+  ghostMesh: {fileID: 8191878808238293966, guid: 1fc69e33a0ec30642950416860a43653,
+    type: 3}
+  ghostModels: []
+  unlocked: 1

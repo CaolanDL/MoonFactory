@@ -63,7 +63,7 @@ namespace RoverJobs
         {
             if (rover == null) { throw new System.Exception("Feath task tried to tick with null rover"); }
 
-            Debug.Log("Tried to fetch a task");
+            //Debug.Log("Tried to fetch a task");
 
             switch (rover.Module)
             {
