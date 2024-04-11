@@ -5,17 +5,27 @@ using RoverJobs;
 using System;
 
 namespace RoverTasks
-{ 
+{  
+    public enum TaskCategory
+    {
+        None,
+        All,
+        Construction,
+        Logistics,
+        Mining
+    }
+
     public class Task
     {
-        public static LinkedList<Task> Pool { get => TaskManager.AllTasks; }
+        public static LinkedList<Task> Pool { get => TaskManager.Tasks; }
 
         public Rover rover;
 
+        public TaskCategory Category = TaskCategory.None;
+
         public List<Job> jobs;
 
-        public bool isComplete = false;
-
+        public bool isComplete = false; 
         public bool isCancelled = false;
 
         public Action OnFetched;
@@ -67,7 +77,7 @@ namespace RoverTasks
             linkedTask.OnCancelledCallback += OnCancelled;
 
             linkedTask.OnFetched += OnFetched;
-            linkedTask.OnFailed += OnFetched;
+            linkedTask.OnFailed += OnFailed;
         }
 
         public void CancelTask()
@@ -109,11 +119,10 @@ namespace RoverTasks
         }
     }
 
-    // Debugging Tasks
+    // Debugging Tasks Parent Class
 
     public class DebuggingTask : Task { }
-
-
+     
     public class AutoPathfind : DebuggingTask
     {
         public AutoPathfind()
@@ -132,42 +141,18 @@ namespace RoverTasks
     }
 
      
-    // todo Bad smell here. Need to inherit the shared task management functionality. Use type passing for filtration.
-    // todo These should be considered managers and not tasks. You are ignoring single resposibility principle.
-    // Construction Tasks
-    public class ConstructionTasks : Task
+    // Construction Tasks Parent Class
+    public class ConstructionTask : Task
     {
-        public static LinkedList<ConstructionTasks> constructionTasks = new();  //{ get => TaskManager.ConstructionTasks; } // Temporarily Mapped to Task Manager, should be migrated to be self contained.
-
-        public static void QueueTask(ConstructionTasks constructionTask)
+        public ConstructionTask()
         {
-            constructionTasks.AddLast(constructionTask);
-        }
-
-        public static ConstructionTasks PopTask()
-        {
-            if (constructionTasks.Count == 0) return null;
-            var task = constructionTasks.First;
-            constructionTasks.RemoveFirst();
-            TaskManager.AllTasks.Remove(task.Value);
-            return task.Value;
-        }
-
-        public static void CancelTask(ConstructionTasks constructionTask)
-        {
-            constructionTasks.Remove(constructionTask);
-        }
-
-        public static void Clear()
-        {
-
-        }
+            Category = TaskCategory.Construction;
+        } 
     }
-
-
+     
     //TODO Modify collect and deliver resources to reserve resources in hoppers.
     //TODO Stretch Goal: This task should attempt to collect the resources necessary to build more than one structure if possible. 
-    public class BuildStructureTask : ConstructionTasks
+    public class BuildStructureTask : ConstructionTask
     {
         StructureGhost ghost;
 
@@ -183,9 +168,8 @@ namespace RoverTasks
             };
         }
     }
-
-
-    public class DemolishStructureTask : ConstructionTasks
+     
+    public class DemolishStructureTask : ConstructionTask
     {
         public Structure structure; 
 
@@ -203,11 +187,16 @@ namespace RoverTasks
     }
 
 
-    // Logistics Tasks
-    public class LogisticsTasks : Task { }
-
-
-    public class HopperRequestTask : LogisticsTasks
+    // Logistics Tasks Parent Class
+    public class LogisticsTask : Task
+    {
+        public LogisticsTask()
+        {
+            Category = TaskCategory.Logistics;
+        }
+    }
+     
+    public class HopperRequestTask : LogisticsTask
     {
         ResourceData resource;
 
@@ -222,19 +211,23 @@ namespace RoverTasks
             };
         } 
     }
-
-
-    public class ResearchSampleRequestTask : LogisticsTasks
+     
+    public class ResearchSampleRequestTask : LogisticsTask
     {
 
     }
 
 
-    // Mining Tasks
-    public class MiningTasks : Task { }
-
-
-    public class DestroyMeteorTask : MiningTasks
+    // Mining Tasks Parent Class
+    public class MiningTask : Task
+    {
+        public MiningTask()
+        {
+            Category = TaskCategory.Mining;
+        }
+    }
+     
+    public class DestroyMeteorTask : MiningTask
     {
 
     }

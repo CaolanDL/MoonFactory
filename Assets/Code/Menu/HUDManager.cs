@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HUDController : MonoBehaviour
+public class HUDManager : MonoBehaviour
 {
     [SerializeField] private GameObject ConstructionMenu;
 

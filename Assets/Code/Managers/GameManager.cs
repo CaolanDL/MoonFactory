@@ -4,10 +4,12 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Profiling;
+using UnityEngine.UIElements;
 
 public static class DevFlags
 {
     public static bool SkipMainMenu = true;
+    public static bool AutoBuild = true;
 }
 
 //! MoonFactory
@@ -29,9 +31,10 @@ public class GameManager : MonoBehaviour
     public ConstructionManager ConstructionManager;
     public RoverManager RoverManager;
     public TaskManager TaskManager;
+    public Electrical.SystemManager ElectricalSystemManager;
 
     // Menu Instances
-    public HUDController HUDController;
+    public HUDManager HUDManager;
 
     // Components
     public FloorTileRenderer FloorTileRenderer;
@@ -111,7 +114,7 @@ public class GameManager : MonoBehaviour
         // Do Batch Rendering
         FloorTileRenderer.Tick(); 
         ItemRenderer.Tick();
-        BatchRenderer.Tick();
+        BatchRenderer.Render();
 
         // Call Frame Update on Structures
         Structure.FrameUpdateAllStructures();
@@ -122,13 +125,11 @@ public class GameManager : MonoBehaviour
         if (GameWorld == null) { return; }
 
         GameWorld.OnFixedUpdate();
-
-        // Update Conveyors 
-        ChainManager.UpdateChains();
-        // Update rovers
-        RoverManager.TickRovers();
-        // Update Machines
+         
+        ChainManager.UpdateChains(); 
+        RoverManager.TickRovers(); 
         Structure.TickAllStructures(); 
+        Electrical.SystemManager.Tick();
     }
 
     public void CreateNewGame(string saveName)
@@ -140,8 +141,11 @@ public class GameManager : MonoBehaviour
 
         // Create new gameWorld
         GameWorld = new GameWorld(seed);
+
+        // Initialise Game Managers
         ConstructionManager = new(); 
-        TaskManager = new TaskManager();
+        TaskManager = new();
+        ElectricalSystemManager = new();
 
         // Start zone is generated
         GameWorld.GenerateStartZone(); 
@@ -149,7 +153,7 @@ public class GameManager : MonoBehaviour
         // Descent vehicle animation plays
 
         // UI startup animation plays
-        HUDController = Instantiate(MenuData.HUD, transform).GetComponent<HUDController>();
+        HUDManager = Instantiate(MenuData.HUD, transform).GetComponent<HUDManager>();
 
         // Tutorial toggle prompt
 
@@ -212,32 +216,25 @@ public class GameManager : MonoBehaviour
         for (int x = 0; x < width; x += 2)
         {
             var y = offset;
+            var position = new int2(x, y);
 
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, debugOutput); y++;
-
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
-
-            ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, hopper); y++;
-
-            /* ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, crusher); y++;
-
-             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
-
-             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, magSep); y++;
-
-             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;
-             ConstructionManager.ForceSpawnStructure(new int2(x, y), 0, conveyor); y++;*/
+            ConstructionManager.ForceSpawnStructure(position, 0, debugOutput); position.y++; 
+            ConstructionManager.ForceSpawnStructure(position, 0, conveyor); position.y++; 
+            ConstructionManager.ForceSpawnStructure(position, 0, hopper); position.y++; 
         }
     }
 
+    static int roverSpawnOffset = 0;
+
     public void DebugSpawnRover()
     {
-        RoverManager.SpawnNewRover(new int2(0,0));
-    } 
+        RoverManager.SpawnNewRover(new int2(roverSpawnOffset, 0));
+        roverSpawnOffset++;
+    }
 
     public void DebugUnlockAll()
     {
-        foreach(StructureData i in GlobalData.Structures)
+        foreach (StructureData i in GlobalData.Structures)
         {
             i.Unlock();
         }
@@ -249,5 +246,10 @@ public class GameManager : MonoBehaviour
         {
             i.Unlock();
         }
+    }
+
+    public void AddLifespanGizmo(Vector3 worldPosition, int lifespan)
+    {
+        BatchRenderer.gizmoRenderer.Add(worldPosition, lifespan);
     }
 }

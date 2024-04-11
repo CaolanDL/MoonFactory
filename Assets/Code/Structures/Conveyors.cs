@@ -200,7 +200,7 @@ namespace Logistics
 
         public void IterateItems()
         {
-            TryTransferLastItem();
+            TryOuputLastItem();
 
             if (items.Count == 0) { return; }
 
@@ -213,7 +213,7 @@ namespace Logistics
                 if (items[lastItemIndex].distance >= chainLength)
                 {
                     items[lastItemIndex].distance = chainLength - 1;
-                    TryTransferLastItem();
+                    TryOuputLastItem();
                 }
             }
 
@@ -242,7 +242,7 @@ namespace Logistics
                     }
                 }*/
 
-        public bool TryTransferLastItem()
+        public bool TryOuputLastItem()
         {
             if (items.Count == 0) return false;
 
@@ -256,9 +256,9 @@ namespace Logistics
 
             if (entityToTransferTo == null) { return false; }
 
-            if (entityToTransferTo.GetType().IsSubclassOf(typeof(Machine)))
+            if (entityToTransferTo.GetType().IsSubclassOf(typeof(Structure)))
             {
-                Machine otherMachine = (Machine)entityToTransferTo;
+                Structure otherMachine = (Structure)entityToTransferTo;
 
                 if (otherMachine.TryInputItem(lastItem.data, lastConveyor.transform))
                 {
@@ -389,9 +389,9 @@ namespace Logistics
         {
             var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
-            TryConveyorInfront();
+            TryConnectInfront();
 
-            TryConveyorFacingMe();
+            TryConnectFacingMe();
 
             if (parentChain == null)
             {
@@ -402,7 +402,7 @@ namespace Logistics
             return;
 
             // Try to add any conveyors I am facing
-            void TryConveyorInfront()
+            void TryConnectInfront()
             {
                 Entity entityInfront = GetNeighbor(0);
 
@@ -447,7 +447,7 @@ namespace Logistics
             }
 
             // Try to add any conveyors facing me
-            void TryConveyorFacingMe()
+            void TryConnectFacingMe()
             {
                 if (lastConveyor != null) { return; }
 
@@ -461,9 +461,9 @@ namespace Logistics
                 else if (IsConveyorFacingMe(leftNeighbor, +1)) { SetRotationConfig(TurnConfig.LeftTurn); }
                 else if (IsConveyorFacingMe(rightNeighbor, -1)) { SetRotationConfig(TurnConfig.RightTurn); }
 
-                else if (IsMachineOuputFacingMe(rearNeighbor)) { SetRotationConfig(TurnConfig.Straight); }
-                else if (IsMachineOuputFacingMe(leftNeighbor)) { SetRotationConfig(TurnConfig.LeftTurn); }
-                else if (IsMachineOuputFacingMe(rightNeighbor)) { SetRotationConfig(TurnConfig.RightTurn); }
+                else if (IsOuputFacingMe(rearNeighbor)) { SetRotationConfig(TurnConfig.Straight); }
+                else if (IsOuputFacingMe(leftNeighbor)) { SetRotationConfig(TurnConfig.LeftTurn); }
+                else if (IsOuputFacingMe(rightNeighbor)) { SetRotationConfig(TurnConfig.RightTurn); }
 
                 else { return; }
 
@@ -499,19 +499,28 @@ namespace Logistics
                     return false;
                 }
 
-                bool IsMachineOuputFacingMe(Entity entity)
+                bool IsOuputFacingMe(Entity entity)
                 {
                     if (entity == null) { return false; }
 
-                    if (entity.GetType().IsSubclassOf(typeof(Machine)))
+                    if (entity.GetType().IsSubclassOf(typeof(Structure)))
                     {
-                        var machine = (Machine)entity;
-                        if (machine.StructureData.outputs.Count == 0) return false;
+                        var structure = (Structure)entity;
+                        if (structure.StructureData.outputs.Count == 0) return false;
 
-                        foreach (var output in machine.StructureData.outputs)
+                        foreach (var output in structure.StructureData.outputs)
                         {
-                            if (((output).position.Rotate(machine.rotation) + machine.position).Equals(position))
+                            if (((output).position.Rotate(structure.rotation) + structure.position).Equals(position))
                             {
+                                structure.OnOutputFound();
+                                return true;
+                            }
+                        }
+                        foreach (var port in structure.StructureData.ports)
+                        {
+                            if (((port).position.Rotate(structure.rotation) + structure.position).Equals(position))
+                            {
+                                structure.OnOutputFound();
                                 return true;
                             }
                         }
@@ -563,6 +572,15 @@ namespace Logistics
                 DisplayObject.SetActiveModel("Right Turn");
                 inputPosition = new int2(0, -1).Rotate((sbyte)(rotation - 1)) + position;
             }
+        }
+
+
+        public override bool TryInputItem(ResourceData resource, TinyTransform inputWorldTransform)
+        {
+            if (parentChain.conveyors.IndexOf(this) != 0)  return false;
+            if (!inputPosition.Equals(inputWorldTransform.position)) return false; 
+
+            return parentChain.TryAddFirstItem(resource);
         }
 
         // BROKEN
@@ -645,19 +663,5 @@ namespace Logistics
             return itemsOnConveyor;
         }
     }
-
-    public class ConveyorLow : Conveyor
-    {
-
-    }
-
-    public class ConveyorHigh : Conveyor
-    {
-
-    }
-
-    public class ConveyorRamp : Conveyor
-    {
-
-    }
+     
 }

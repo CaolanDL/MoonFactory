@@ -15,7 +15,7 @@ MonoBehaviour:
   screenname: Conveyor Belt
   description: A structure used to transport items between machines.
   category: 0
-  sprite: {fileID: 21300000, guid: e43ca0dfd30bea442a1fd4bc72f0bc61, type: 3}
+  sprite: {fileID: 21300000, guid: 41336b3d224cd754781c17e2150d8984, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: 9113a848d1855db4b9cab3a65391ec84,
     type: 3}
   size:
@@ -37,6 +37,7 @@ MonoBehaviour:
       x: 0
       y: -1
     _rotation: 0
+  ports: []
   ghostMesh: {fileID: 0}
   ghostModels:
   - mesh: {fileID: 534601995681146736, guid: 1d48e8f8386ab6b488b72028b59c19a6, type: 3}

@@ -36,7 +36,7 @@ public class DebugOutput : Machine
 
         FillInventory();
 
-        TryOutputItem(resource, OutputInventories[0], StructureData.outputs[0]);
+        TryOutputItemFromInventory(resource, OutputInventories[0], StructureData.outputs[0]);
     }
 
     void FillInventory()

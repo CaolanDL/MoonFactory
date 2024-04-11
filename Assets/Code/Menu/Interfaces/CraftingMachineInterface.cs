@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CraftingMachineInterface : ModularInterface
 {
@@ -11,15 +12,16 @@ public class CraftingMachineInterface : ModularInterface
     public List<SingleStackInventoryElement> InputInvElements;
     public List<SingleStackInventoryElement> OutputInvElements;
 
-    private Machine machine;
+    [SerializeField] public Slider PowerMeter;
 
+    private Machine machine;
     private StructureData structureData;
-     
-     
+
+
     public void SetCraftingResource(ResourceData resource)
     {
         machine.newCraftingResource = resource;
-    } 
+    }
 
     public List<ResourceData> GetCraftableResources()
     {
@@ -30,11 +32,12 @@ public class CraftingMachineInterface : ModularInterface
     {
         UpdateInputInventoryElements();
         UpdateOuputInventoryElements();
+        UpdatePowerMeter();
     }
 
     public override void Init(Entity entity, Vector3 screenPosition)
-    { 
-        this.machine = (Machine)entity; 
+    {
+        this.machine = (Machine)entity;
 
         structureData = machine.StructureData;
 
@@ -93,5 +96,25 @@ public class CraftingMachineInterface : ModularInterface
         {
             element.UpdateDisplay();
         }
+    }
+
+    public void UpdatePowerMeter()
+    {
+        if (PowerMeter == null || machine == null) { return; }
+        if (machine.ElectricalNode == null)
+        {
+            PowerMeter.value = 0;
+            return;
+        }
+        if (machine.ElectricalNode.Network == null)
+        {
+            PowerMeter.value = 0;
+            return;
+        }
+        else
+        {
+            PowerMeter.value = machine.ElectricalNode.Network.ClampedPowerRatio;
+            return;
+        } 
     }
 }

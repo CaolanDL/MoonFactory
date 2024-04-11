@@ -6,16 +6,21 @@ using Unity.Mathematics;
 
 using RoverJobs;
 using RoverTasks;
-
+using Random = UnityEngine.Random;
 
 public enum RoverModule
 {
     None,
     Logistics,
     Construction,
-    Mining
+    Mining,
+    Widget
 }
 
+
+//? There is something going wrong when cancelling tasks that a rover is actively completing. 
+//? The rover halts and blocks new tasks from being accepted by itself and other rovers.
+//? Other rovers will begin to accept new tasks once an unkown number tasks have been added, but the issue rover will never move again.
 
 public class Rover : Entity
 {
@@ -37,6 +42,8 @@ public class Rover : Entity
     public Task ActiveTask;
     public readonly Queue<Job> JobQueue = new Queue<Job>();
     public readonly Stack<Job> JobStack = new Stack<Job>();
+    public bool JobWasPopped= false;
+    public int FetchDelay = 0;
 
     // Float transform for visual position
     public SmallTransform SmallTransform = new();
@@ -74,6 +81,9 @@ public class Rover : Entity
 
     public void Init(int2 spawnLocation, DisplayObject displayObject)
     {
+        GridPosition = spawnLocation;
+        VisualPosition = spawnLocation;
+
         this.DisplayObject = displayObject;
         DisplayObject.parentEntity = this;
     }
@@ -89,7 +99,7 @@ public class Rover : Entity
 
     public void Clicked(Vector3 mousePosition)
     {
-        GameManager.Instance.HUDController.OpenInterface(MenuData.Instance.RoverInterface, this, mousePosition);
+        GameManager.Instance.HUDManager.OpenInterface(MenuData.Instance.RoverInterface, this, mousePosition);
     }
 
     public void UpdateDOPosition()
@@ -106,31 +116,39 @@ public class Rover : Entity
 
     void HandleJobs()
     {
+        if(FetchDelay > 0) FetchDelay--;
+
         if (ActiveTask != null && ActiveTask.isCancelled)
         {
             TaskCancelled();
+            //Debug.Log("Cancelled Task");
         }
         if (JobStack.Count > 0)
         {
+            JobWasPopped = false;
             Job job = JobStack.Peek();
             if (job.lifeSpan < 0) job.Start();
-            if (ActiveTask != null) job.Tick();
+            if (!JobWasPopped) job.Tick();
+            //Debug.Log($"Job = {job.GetType()}");
             return;
         }
-        if (JobQueue.Count == 0)
+        if (FetchDelay < 1 && JobStack.Count == 0 && JobQueue.Count == 0)
         {
             EnqueueJob(new FetchTask());
+            ResetFetchDelay();
+            //Debug.Log("Queue Fetchtask");
             return;
         }
         if (JobStack.Count == 0 && JobQueue.Count > 0)
         {
             StackJob(JobQueue.Dequeue());
+            //Debug.Log("Dequeue Task");
             return;
         }
     }
 
     public void StackJob(Job job)
-    {
+    { 
         job.rover = this;
         JobStack.Push(job);
     }
@@ -138,7 +156,9 @@ public class Rover : Entity
 
     public void PopJob()
     {
+        if(JobStack.Count == 0) { return; }
         JobStack.Pop();
+        JobWasPopped = true;
     }
 
     public void EnqueueJob(Job job)
@@ -148,24 +168,27 @@ public class Rover : Entity
     }
 
     public void TaskFailed()
-    {
+    { 
         var taskToFail = ActiveTask;
         TaskManager.QueueTask(ActiveTask);
         ActiveTask.rover = null;
         ClearTask();
-        taskToFail.OnFailed?.Invoke();
+        taskToFail.OnFailed?.Invoke(); 
+        //Debug.Log("Rover Failed Task");
     }
 
     public void TaskFinished()
-    {
+    { 
         ActiveTask.OnCompleteCallback?.Invoke();
         ClearTask();
+        //Debug.Log("Rover Finished Task");
     }
 
     public void TaskCancelled()
-    {
+    { 
         ActiveTask.OnCancelledCallback?.Invoke();
         ClearTask();
+        //Debug.Log("Rover Cancelled Task");
     }
 
     public void ClearTask()
@@ -174,9 +197,14 @@ public class Rover : Entity
         JobQueue.Clear();
         JobStack.Clear();
 
-        DisplayObject.StopParticleEffect("MovingParticles");
-        EnqueueJob(new TurnTowards(position + (float2)Vector2.up));
+        DisplayObject.StopParticleEffect("MovingParticles"); 
+        //Debug.Log("Rover Cleared Task");
     } 
+
+    public void ResetFetchDelay()
+    {
+        FetchDelay = Random.Range(20, 120); 
+    }
 
     // Modules // 
 

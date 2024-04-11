@@ -1,10 +1,12 @@
 using ExtensionMethods;
+using Logistics;
 using RoverTasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Unity.Mathematics;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public abstract class Structure : Entity
@@ -12,26 +14,33 @@ public abstract class Structure : Entity
     public static Action<Structure> StructureConstructed;
     public event Action OnDemolishedEvent;
 
-    public static List<Structure> Structures = new List<Structure>(); 
-    public StructureData StructureData; 
+    public static List<Structure> Structures = new List<Structure>();
+    public StructureData StructureData;
     public DisplayObject DisplayObject = null;
 
+
+    public enum PortType { Port, Input, Output }
+    public Dictionary<TinyTransform, TinyTransform> WorldSpacePorts = new(); // lhs StructureData unput, output, or port local transform; rhs World space transformation
+    public Dictionary<TinyTransform, PortType> WorldSpacePortTypes = new();
+
     public ManagedTask demolishTask = new();
-    public bool flaggedForDemolition; 
+    public bool flaggedForDemolition;
 
     private Electrical.Node _electricalNode = null;
     public Electrical.Node ElectricalNode
     {
         get => _electricalNode;
-        set 
+        set
         {   // Bind a new Electrical Node and initialise it;
             //? Might be code smell; Maybe Dangerous; Should work but consider migration to Init method or node constructor, passing structure.
             _electricalNode = value;
             _electricalNode.Parent = this;
-            OnDemolishedEvent += _electricalNode.Demolished; 
+            OnDemolishedEvent += _electricalNode.Demolished;
         }
     }
 
+    bool isInterfaceOpen = false;
+    static ModularInterface activeInterface;
 
     public void Initialise()
     {
@@ -68,13 +77,13 @@ public abstract class Structure : Entity
         }
     }
 
-
-
     public void Constructed()
     {
         GameObject newDisplayGameObject = UnityEngine.Object.Instantiate(StructureData.displayObject, position.ToVector3(), rotation.ToQuaternion(), GameManager.Instance.transform);
 
         DisplayObject = newDisplayGameObject.GetComponent<DisplayObject>();
+
+        RegisterWorldSpacePorts();
 
         ConnectOuputs();
 
@@ -82,12 +91,14 @@ public abstract class Structure : Entity
 
         StructureConstructed?.Invoke(this);
 
-        if (_electricalNode != null) { _electricalNode.Constructed(); } 
+        if (_electricalNode != null) { _electricalNode.Constructed(); }
     }
 
     public void Demolish()
     {
         Structures.Remove(this);
+
+        DisconnectInputs();
 
         RemoveEntity();
 
@@ -118,7 +129,140 @@ public abstract class Structure : Entity
         OnClicked(mousePosition);
     }
 
-    public virtual void ConnectOuputs() { }
+    public void RegisterWorldSpacePorts()
+    {
+        foreach(var port in StructureData.inputs)
+            RegisterPort(port, PortType.Input);
+        foreach (var port in StructureData.outputs)
+            RegisterPort(port, PortType.Output);
+        foreach (var port in StructureData.ports)
+            RegisterPort(port, PortType.Port);
+        void RegisterPort(TinyTransform port, PortType type)
+        {
+            var worldSpaceTransform = new TinyTransform(port.position.Rotate(rotation) + position, port.rotation.Rotate(rotation));
+            WorldSpacePorts.Add(port, worldSpaceTransform);
+            WorldSpacePortTypes.Add(worldSpaceTransform, type); 
+        }
+    }
+
+    public virtual void ConnectOuputs()
+    {
+        foreach (var output in StructureData.outputs)
+        {
+            ConnectAt(output);
+        }
+        foreach (var port in StructureData.ports)
+        {
+            ConnectAt(port);
+        }
+
+        void ConnectAt(TinyTransform tinyTransform)
+        {
+            var portTransform = WorldSpacePorts[tinyTransform];
+
+            var entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(portTransform.position);
+
+            if (entity == null) return;
+
+            if (entity.GetType() == typeof(Conveyor))
+            {
+                var conveyor = (Conveyor)entity;
+
+                if (conveyor.parentChain.conveyors[0] != conveyor) { return; }
+
+                if (conveyor.rotation == portTransform.rotation)
+                {
+                    conveyor.SetRotationConfig(Conveyor.TurnConfig.Straight);
+                    OnOutputFound();
+                }
+                else if (conveyor.rotation == portTransform.rotation.Rotate(1))
+                {
+                    conveyor.SetRotationConfig(Conveyor.TurnConfig.RightTurn);
+                    OnOutputFound();
+                }
+                else if (conveyor.rotation == portTransform.rotation.Rotate(-1))
+                {
+                    conveyor.SetRotationConfig(Conveyor.TurnConfig.LeftTurn);
+                    OnOutputFound();
+                }
+            } 
+        }
+    }
+
+    public void DisconnectInputs()
+    {
+        foreach (var output in StructureData.inputs)
+        {
+            DisconnectAt(output);
+        }
+        foreach (var output in StructureData.ports)
+        {
+            DisconnectAt(output);
+        }
+
+        void DisconnectAt(TinyTransform tinyTransform)
+        {
+            var portTransform = WorldSpacePorts[tinyTransform];
+
+            var entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(portTransform.position);
+
+            if (entity == null) return;
+
+            if (entity.GetType().IsSubclassOf(typeof(Structure)))
+            {
+                var structure = (Structure)entity;
+
+                // Extrude the port to match its equivelant input.
+                var offsetTransform = new TinyTransform();
+                offsetTransform.position = portTransform.position + portTransform.rotation.ToInt2();
+
+                if (structure.WorldSpacePortTypes.TryGetValue(offsetTransform, out PortType portType))
+                {
+                    if (portType == PortType.Output)
+                    {
+                        structure.OnOutputLost();
+                    }
+                }
+            }
+        }
+    }
+
+    public virtual void OnOutputFound()
+    {
+
+    }
+
+    public virtual void OnOutputLost()
+    {
+
+    }
+
+    public virtual bool TryInputItem(ResourceData resource, TinyTransform inputTransform)
+    {
+        return false;
+    }
+
+    static int2 int2one = new int2(0, 1);
+
+    public bool TryOutputItem(ResourceData resource, TinyTransform localTansform)
+    {
+        var worldGrid = GameManager.Instance.GameWorld.worldGrid;
+
+        var entityAtLocation = worldGrid.GetEntityAt(WorldSpacePorts[localTansform].position); 
+
+        if (entityAtLocation == null) return false;
+
+        // Recess the port to match its equivelant input.
+        TinyTransform offsetOutputLocation = WorldSpacePorts[localTansform];
+        offsetOutputLocation.position = offsetOutputLocation.position - offsetOutputLocation.rotation.ToInt2(); 
+
+        if (entityAtLocation.GetType().IsSubclassOf(typeof(Structure)))
+        {
+            var structure = (Structure)entityAtLocation;
+            if (structure.TryInputItem(resource, offsetOutputLocation)) return true;
+        } 
+        return false;
+    } 
 
     public virtual void OnConstructed() { }
 
@@ -129,7 +273,6 @@ public abstract class Structure : Entity
     public virtual void OnFrameUpdate() { }
 
     public virtual void OnClicked(Vector3 mousePosition) { }
-
 
 
     public void FlagForDemolition()
@@ -146,6 +289,33 @@ public abstract class Structure : Entity
         demolishTask.CancelTask();
 
         flaggedForDemolition = false;
+    }
+
+
+    public void OpenInterfaceOnHUD(GameObject interfacePrefab, Vector3 mousePosition)
+    {
+        var success = GameManager.Instance.HUDManager.OpenInterface(interfacePrefab, this, mousePosition);
+
+        if (success)
+        {
+            isInterfaceOpen = true;
+            activeInterface = GameManager.Instance.HUDManager.openInterface;
+        }
+
+        TryUpdateInterface();
+    }
+
+    public virtual void TryUpdateInterface()
+    {
+        if (isInterfaceOpen)
+        {
+            activeInterface.UpdateUI();
+        }
+    }
+
+    public void OnInterfaceClosed()
+    {
+        isInterfaceOpen = false;
     }
 }
 
@@ -189,7 +359,7 @@ public static class StructureFactory
 
         newStructure.StructureData = structureData;
 
-        newStructure.Initialise(); 
+        newStructure.Initialise();
 
         return newStructure;
     }

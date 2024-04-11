@@ -44,8 +44,10 @@ public class StructureData : ScriptableObject
     public List<CraftingFormula> CraftingFormulas = new();
     public List<ResourceData> CraftableResources = new();
 
+    [Header("Input/Output Locations")]
     public List<TinyTransform> inputs;
-    public List<TinyTransform> outputs;  
+    public List<TinyTransform> outputs;
+    public List<TinyTransform> ports;
 
     [Space, Header("Ghost Data")]
     public Mesh ghostMesh; 
@@ -68,7 +70,8 @@ public class StructureData : ScriptableObject
 
         foreach(ResourceData resource in CraftableResources)
         {
-            resource.Unlock();
+            if(resource.unlocked == false)
+                resource.Unlock();
         }
     }
 }

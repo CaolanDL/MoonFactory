@@ -135,10 +135,10 @@ namespace Logistics
             }
         }
 
-        public override void OpenInterface(Vector3 mousePosition)
+        public override void OnClicked(Vector3 mousePosition)
         {
             OpenInterfaceOnHUD(MenuData.Instance.HopperInterface, mousePosition);
-        }
+        } 
 
         void HandleRequest()
         {

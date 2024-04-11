@@ -63,42 +63,33 @@ namespace RoverJobs
         {
             if (rover == null) { throw new System.Exception("Feath task tried to tick with null rover"); }
 
-            /*            if (DevFlags.RoverTaskOverrideToPathfind)
-                        {
-                            rover.ActiveTask = new AutoPathfind()
-                            {
-                                rover = rover,
-                            };
-                            rover.ActiveTask?.BuildJobs();
-                            Debug.Log($"{rover.ActiveTask}");
-                            return;
-                        }*/
+            Debug.Log("Tried to fetch a task");
 
             switch (rover.Module)
             {
                 case RoverModule.None: break;
 
-                case RoverModule.Construction:
-                    rover.ActiveTask = ConstructionTasks.PopTask();
-                    //Debug.Log($"{rover.ActiveTask}");
+                case RoverModule.Construction: rover.ActiveTask = TaskManager.PopTask(TaskCategory.Construction); 
                     break;
 
-                case RoverModule.Logistics:
-                    //rover.ActiveTask = TaskManager.LogisticsTasks.Last();
+                case RoverModule.Logistics: rover.ActiveTask = TaskManager.PopTask(TaskCategory.Logistics);
                     break;
 
-                case RoverModule.Mining:
-                    //rover.ActiveTask = TaskManager.MiningTasks.Last();
+                case RoverModule.Mining: rover.ActiveTask = TaskManager.PopTask(TaskCategory.Mining);
+                    break;
+
+                case RoverModule.Widget: rover.ActiveTask = TaskManager.PopTask(TaskCategory.All);
                     break;
             }
 
             if (rover.ActiveTask != null)
             {
-                rover.ActiveTask.rover = rover;
-                rover.JobStack.Pop();
-                rover.ActiveTask?.BuildJobs();
-                rover.ActiveTask?.OnFetched?.Invoke();
+                rover.ActiveTask.rover = rover; 
+                rover.ActiveTask.BuildJobs();
+                rover.ActiveTask.OnFetched?.Invoke();
             }
+
+            PopJob();
         }
     }
 
@@ -110,10 +101,7 @@ namespace RoverJobs
         private float2 _currentNodePosition;
         private float2 _nextNodePosition;
 
-        private int _currentNodeIndex = -1;
-
-        //private float _interpAlpha = 0;
-        //private float _distanceToNextNode = 0;
+        private int _currentNodeIndex = -1; 
 
         private bool _mustFindNewPath = false;
         private bool _mustTurn = false;
@@ -137,12 +125,11 @@ namespace RoverJobs
 
         public override void OnTick()
         {
-            _mustTurn = false;
-
-            //_interpAlpha += Rover.MoveSpeed * 0.02f / _distanceToNextNode;
+            _mustTurn = false; 
 
             var lastNode = _path.nodes.Last();
-            Graphics.DrawMesh(GlobalData.Instance.gizmo_Axis, new Vector3(lastNode.x, 0.25f, lastNode.y), quaternion.identity, GlobalData.Instance.mat_GhostBlocked, 0);
+
+            GameManager.Instance.AddLifespanGizmo(new Vector3(lastNode.x, 0.25f, lastNode.y), 100); 
 
             if (rover.VisualPosition.Equals(_nextNodePosition) || lifeSpan == 0)
             {
@@ -156,41 +143,24 @@ namespace RoverJobs
 
             if (_finished || _mustTurn) return;
 
-            rover.VisualPosition = Vector2.MoveTowards(rover.VisualPosition, _nextNodePosition, rover.MoveSpeed * Time.fixedDeltaTime);
-
-            //rover.position = (_nextNodeWorldPosition * _interpAlpha) + (_currentNodeWorldPosition * (1 - _interpAlpha)); // Lerp between current node and next node;  
-        }
-
-        //x private void UpdateRotation()
-        //x {
-        //x     int2 difference = _path.nodes[_currentNodeIndex] - _path.nodes[_currentNodeIndex + 1];
-
-        //x     var rotation = Vector2.Angle(difference.ToVector2(), Vector2.down);
-
-        //x     rover.rotation = (ushort)rotation;
-
-        //x     rover.UpdateDoRotation();
-        //x }
+            rover.VisualPosition = Vector2.MoveTowards(rover.VisualPosition, _nextNodePosition, rover.MoveSpeed * Time.fixedDeltaTime); 
+        } 
 
         private void AdvanceNode()
         {
-            _currentNodeIndex++;
-
-            //_interpAlpha = 0;
+            _currentNodeIndex++; 
 
             if (_currentNodeIndex + 1 == _path.nodes.Length) { Finished(); _finished = true; return; }
 
             rover.GridPosition = _path.nodes[_currentNodeIndex];
 
             _currentNodePosition = _path.nodes[_currentNodeIndex];
-            _nextNodePosition = _path.nodes[_currentNodeIndex + 1];
-
-            //_distanceToNextNode = Float2Extensions.DistanceBetween(_currentNodeWorldPosition, _nextNodeWorldPosition);
+            _nextNodePosition = _path.nodes[_currentNodeIndex + 1]; 
 
             // Stack a TurnTowards job if the next node would cause the rover to turn
             Vector2 _difference = (Vector2)(rover.VisualPosition - _nextNodePosition);
-            float _angle = Vector2.SignedAngle(_difference, Vector2.down);
-            //Debug.Log($"{_angle} : {rover.rotation}");
+            float _angle = Vector2.SignedAngle(_difference, Vector2.down); 
+
             if (! (Mathf.Approximately(_angle, rover.VisualRotation) || (Mathf.Approximately(Mathf.Abs(_angle), 180) && Mathf.Approximately(Mathf.Abs(rover.VisualRotation), 180))) )
             {
                 StackJob(new TurnTowards(_nextNodePosition));
@@ -289,7 +259,7 @@ namespace RoverJobs
             if (Mathf.Approximately(_currentRotation, _targetRotation))
             {
                 PopJob();
-            }
+            } 
         }
     }
 
@@ -503,38 +473,7 @@ namespace RoverJobs
             PopJob();
 
             StackJob(new ExcecuteCollectAndDeliver(_superPath, destination));
-        }
-
-        public override void OnTick()
-        {
-            return; // Early exit: Migrated to self contained job -> ExcecuteCollectAndDeliver
-
-            Job job;
-
-            if (_superPath.Count > 0)
-            {
-                if (_superPath.Count > 1)
-                {
-                    job = new CollectResource(_superPath.First().target);
-                    StackJob(job);
-                }
-
-                var path = _superPath.First();
-                _superPath.RemoveFirst();
-                job = new TraversePath(path);
-                StackJob(job);
-            }
-            else if (!finished)
-            {
-                job = new DeliverResource(destination);
-                StackJob(job);
-                finished = true;
-            }
-            else
-            {
-                PopJob(); return;
-            }
-        }
+        } 
 
         private bool TryFindHoppers()
         {

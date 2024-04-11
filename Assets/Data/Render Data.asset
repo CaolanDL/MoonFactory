@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ae71d4f48c60c4c86f141b2c17f1ed, type: 3}
   m_Name: Render Data
   m_EditorClassIdentifier: 
+  devgizmo_material: {fileID: 2100000, guid: ad0829fb8cfd0984fa87629c1d36a7e7, type: 2}
   wire_mesh: {fileID: 8077376627999728891, guid: 2c687e3cb05f5cc4488579610e17e11d,
     type: 3}
   wire_material: {fileID: 2100000, guid: ed863dbc4a590d942aa608b5d7d82e5c, type: 2}

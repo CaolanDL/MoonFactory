@@ -38,28 +38,58 @@ namespace Electrical
 
             LargestNetwork.Update();
         }
+
+        public static void Tick()
+        {
+            foreach (var network in networks)
+            {
+                network.Update();
+            }
+        }
     }
 
     public class Network
     {
-        public List<Node> nodes;
-        public List<Relay> relays;
-        public List<Input> inputs;
-        public List<Sink> sinks;
+        public List<Node> nodes = new();
+        public List<Relay> relays = new();
+        public List<Input> inputs = new();
+        public List<Sink> sinks = new();
 
         public float MaxInput = 0f;
         public float TotalInput = 0f;
         public float MaxConsumption = 0f;
         public float TotalConsumption = 0f;
 
-        float PowerRatio
+        public float PowerRatio;
+        public float ClampedPowerRatio;
+
+        public Network()
         {
-            get { return TotalInput / TotalConsumption; }
+            SystemManager.networks.Add(this);
         }
 
         public void Update()
         {
+            MaxInput = 0;
+            TotalInput = 0;
+            MaxConsumption = 0;
+            TotalConsumption = 0;
 
+            foreach(var input in inputs)
+            {
+                MaxInput += input.MaxProduction;
+                TotalInput += input.Production;
+            }
+            foreach (var sink in sinks)
+            {
+                MaxConsumption += sink.MaxConsumption;
+                TotalConsumption += sink.Consumption;
+            } 
+
+            PowerRatio = TotalInput / TotalConsumption;
+            ClampedPowerRatio = Mathf.Clamp01(PowerRatio);
+
+            TotalConsumption = Mathf.Clamp(TotalConsumption, 0, TotalInput);
         }
 
         public void Add(Node node)
@@ -89,7 +119,7 @@ namespace Electrical
 
         public void Destroy()
         {
-
+            SystemManager.networks.Remove(this);
         }
     }
 
@@ -97,10 +127,10 @@ namespace Electrical
     {
         public Structure Parent;
         public Network Network;
-        public List<Connection> Connections = new();
+        public List<Connection> Connections = new(); 
 
         public void Constructed()
-        { 
+        {
             OnConstructed();
         }
         public void Demolished()
@@ -147,6 +177,12 @@ namespace Electrical
             {
                 Network.Add(other);
             }
+            else if (Network == null && other.Network == null)
+            {
+                Network = new Network();
+                Network.Add(this);
+                Network.Add(other);
+            }
         }
 
         public void DestroyAllConnections()
@@ -170,29 +206,29 @@ namespace Electrical
 
         public void Disconnect()
         {
-            if(Connections.Count > 0) DestroyAllConnections(); 
+            if (Connections.Count > 0) DestroyAllConnections();
             Network.Remove(this);
         }
 
         public bool IsConnectedTo(Node other)
         {
-            if(Connections.Exists(x => x.GetOther(this) == other)) return true;
+            if (Connections.Exists(x => x.GetOther(this) == other)) return true;
             return false;
         }
 
         public List<Node> FindNearbyOfType(Type type, int range)
         {
-            List<Location> nearbyLocations = GameManager.Instance.GameWorld.worldGrid.GetSquareRadius(Parent.position, range); 
+            List<Location> nearbyLocations = GameManager.Instance.GameWorld.worldGrid.GetSquareRadius(Parent.position, range);
 
-            List<Structure> nearbyStructures = new();   
+            List<Structure> nearbyStructures = new();
             nearbyStructures.AddRange(from location in nearbyLocations
                                       where location.entity != null && location.entity.GetType().IsSubclassOf(typeof(Structure))
-                                      select (Structure)location.entity); 
+                                      select (Structure)location.entity);
 
-            List<Node> nearbyNodes = new();  
+            List<Node> nearbyNodes = new();
             nearbyNodes.AddRange(from structure in nearbyStructures
-                                  where structure.ElectricalNode != null && structure.ElectricalNode.GetType() == type
-                                  select structure.ElectricalNode); 
+                                 where structure.ElectricalNode != null && structure.ElectricalNode.GetType() == type
+                                 select structure.ElectricalNode);
 
             if (nearbyNodes.Count == 0) return null;
             else return nearbyNodes;
@@ -212,22 +248,22 @@ namespace Electrical
 
         // public object LineBetweenA&B
 
-        public Connection(Node a, Node b) 
-        { 
-            this.a = a; 
-            this.b = b; 
+        public Connection(Node a, Node b)
+        {
+            this.a = a;
+            this.b = b;
             pool.Add(this);
 
             var aConnectionPoint = a.Parent.DisplayObject.GetWireConnectionPoint();
             var bConnectionPoint = b.Parent.DisplayObject.GetWireConnectionPoint();
 
             origin = aConnectionPoint;
-             
+
             var difference = aConnectionPoint - bConnectionPoint;
 
             rotation = Quaternion.LookRotation(difference, Vector3.up);
 
-            scale = new Vector3(1, 1, 1*difference.magnitude);
+            scale = new Vector3(1, 1, 1 * difference.magnitude);
         }
 
         public void Init()
@@ -256,6 +292,7 @@ namespace Electrical
     public class Relay : Node
     {
         public int connectionRange = 6;
+        public static int MaxConnections = 3;
 
         public override void OnConstructed()
         {
@@ -268,16 +305,16 @@ namespace Electrical
         }
 
         public void ConnectToClosestRelay()
-        { 
+        {
             List<Relay> nearbyRelays = FindNearbyOfType(typeof(Relay), connectionRange).Select(x => (Relay)x).ToList();
 
-            nearbyRelays.Sort(SortRelayByDistance); 
+            nearbyRelays.Sort(SortRelayByDistance);
             nearbyRelays.Remove(this);
 
             int SortRelayByDistance(Relay a, Relay b)
-            { 
-                var aDistance = GetRoughDistance(a.Parent.position, this.Parent.position); 
-                var bDistance = GetRoughDistance(b.Parent.position, this.Parent.position);   
+            {
+                var aDistance = GetRoughDistance(a.Parent.position, this.Parent.position);
+                var bDistance = GetRoughDistance(b.Parent.position, this.Parent.position);
 
                 if (aDistance == bDistance) return 0;
                 else if (aDistance < bDistance) return -1;
@@ -292,10 +329,27 @@ namespace Electrical
             }
 
             if (nearbyRelays.Count == 0) { return; }
-            if(IsConnectedTo(nearbyRelays[0]) == false)
+
+
+            for (int i = 0; i < nearbyRelays.Count; i++)
             {
-                CreateConnection(nearbyRelays[0]);
-            }
+                Relay selected = nearbyRelays[i];
+
+                if (Connections.Count > MaxConnections) break;
+                if (selected.Connections.Count > MaxConnections) break;
+                
+                //! Big Smart: Only connect to selected relay, if non of its connected relays are already connected to this one
+                bool mustbreak = false;
+                foreach (var connection in selected.Connections)
+                {
+                    var otherRelay = connection.GetOther(selected);
+                    if(otherRelay.IsConnectedTo(this)) mustbreak = true;
+                }
+                if (mustbreak) break; 
+
+                if (IsConnectedTo(selected) == false)
+                    CreateConnection(selected); 
+            } 
         }
     }
 
@@ -359,11 +413,13 @@ namespace Electrical
 
     public class Input : Component
     {
-        public float production = 0f;
+        public float MaxProduction = 10f;
+        public float Production = 1f;
     }
 
     public class Sink : Component
     {
-        public float consumption = 0f;
+        public float MaxConsumption = 10f;
+        public float Consumption = 10f;
     }
 }

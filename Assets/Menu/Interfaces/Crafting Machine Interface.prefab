@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 7657879223952132987}
   - component: {fileID: 9094346907075020680}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: Power Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -217,9 +217,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 10
-  m_WholeNumbers: 1
-  m_Value: 7
+  m_MaxValue: 1
+  m_WholeNumbers: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -557,13 +557,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc7a2f942b7afb24cb885c5d9fb5872e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteImage: {fileID: 4463661187852149943}
   nameText: {fileID: 194966811749335193}
   descriptionText: {fileID: 5009642707979821355}
+  spriteImage: {fileID: 4463661187852149943}
   InputInventoriesGrid: {fileID: 4617096975926558640}
   OutputInventoriesGrid: {fileID: 9115281075949088029}
   InputInvElements: []
   OutputInvElements: []
+  PowerMeter: {fileID: 9094346907075020680}
 --- !u!1 &1541447247869074243
 GameObject:
   m_ObjectHideFlags: 0

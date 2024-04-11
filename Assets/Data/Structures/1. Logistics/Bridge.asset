@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c959649ace52a934799d95e3909b1b57, type: 3}
+  m_Name: Bridge
+  m_EditorClassIdentifier: 
+  screenname: Conveyor Bridge
+  description: 
+  category: 0
+  sprite: {fileID: 21300000, guid: 0e7631f7d1d132841babbb8ad5e43aba, type: 3}
+  displayObject: {fileID: 8149189864003149576, guid: 7ebb9cf25f6d3f04d8e1659cd9b143cb,
+    type: 3}
+  size:
+    x: 1
+    y: 1
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 846496dfeac5afa4781a190aff293cc6, type: 2}
+    quantity: 1
+  timeToBuild: 10
+  CraftingFormulas: []
+  CraftableResources: []
+  inputs: []
+  outputs: []
+  ports:
+  - position:
+      x: 0
+      y: -1
+    _rotation: 0
+  ghostMesh: {fileID: 674340280032488212, guid: b7db57f45a29bf14d99b35d55e07ccee,
+    type: 3}
+  ghostModels: []
+  unlocked: 1

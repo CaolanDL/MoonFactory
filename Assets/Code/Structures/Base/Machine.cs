@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using ExtensionMethods;
 using Logistics;
-using UnityEngine;
+using UnityEngine; 
 
 public class Machine : Structure
 {
@@ -28,47 +28,24 @@ public class Machine : Structure
 
     public override void OnClicked(Vector3 mousePosition)
     {
-        OpenInterface(mousePosition);
-    }
+        OpenInterfaceOnHUD(MenuData.Instance.CraftingMachineInterface, mousePosition);
+    } 
 
     // Input Output //
-    #region Input Output
+    #region Input Output 
 
-    public override void ConnectOuputs()
+    public bool TryOutputItemFromInventory(ResourceData resource, Inventory inventory, TinyTransform outputTransform)
     {
-        foreach (var output in StructureData.outputs)
+        if (inventory.GetQuantityOf(resource) == 0) return false;
+
+        if (TryOutputItem(resource, outputTransform))
         {
-            var offsetPosition = output.position.Rotate(rotation) + position;
-            var offsetRotation = output.rotation.Rotate(rotation);
-
-            var entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(offsetPosition);
-
-            if (entity == null) continue;
-
-            if (entity.GetType() == typeof(Conveyor))
-            {
-                var conveyor = (Conveyor)entity;
-
-                if (conveyor.parentChain.conveyors[0] != conveyor) { continue; }
-
-                if (conveyor.rotation == offsetRotation)
-                {
-                    conveyor.SetRotationConfig(Conveyor.TurnConfig.Straight);
-                }
-                else if (conveyor.rotation == offsetRotation.Rotate(1))
-                {
-                    conveyor.SetRotationConfig(Conveyor.TurnConfig.RightTurn);
-                }
-                else if (conveyor.rotation == offsetRotation.Rotate(-1))
-                {
-                    conveyor.SetRotationConfig(Conveyor.TurnConfig.LeftTurn);
-                }
-            }
+            inventory.RemoveResource(resource, 1);
+            ItemWasOutput();
+            return true;
         }
-    }
+        return false;
 
-    public bool TryOutputItem(ResourceData resource, Inventory inventory, TinyTransform outputTransform)
-    {
         var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
         var entityAtLocation = worldGrid.GetEntityAt(position + (outputTransform.position.ToVector2().Rotate(rotation * 90).ToInt2()));
@@ -89,7 +66,7 @@ public class Machine : Structure
                 if (conveyor.parentChain.TryAddFirstItem(resource))
                 {
                     inventory.RemoveResource(resource, 1);
-                    ItemOutput();
+                    ItemWasOutput();
 
 
                     return true;
@@ -104,7 +81,7 @@ public class Machine : Structure
             if (otherMachine.TryInputItem(resource, offsetOutputTransform))
             {
                 inventory.RemoveResource(resource, 1);
-                ItemOutput();
+                ItemWasOutput();
 
                 return true;
             }
@@ -113,17 +90,17 @@ public class Machine : Structure
         return false;
     }
 
-    public bool TryOutputItem(ResourceData resource, int outputIndex)
+    public bool TryOutputItemFromInventory(ResourceData resource, int outputIndex)
     {
-        return TryOutputItem(resource, OutputInventories[outputIndex], StructureData.outputs[outputIndex]);
+        return TryOutputItemFromInventory(resource, OutputInventories[outputIndex], StructureData.outputs[outputIndex]);
     }
 
     public bool TryOutputAnything(int outputIndex)
-    {
-        return TryOutputItem(OutputInventories[outputIndex].GetRandomResource(), outputIndex);
+    { 
+        return TryOutputItemFromInventory(OutputInventories[outputIndex].GetRandomResource(), outputIndex);
     }
 
-    private void ItemOutput()
+    private void ItemWasOutput()
     {
         TryBeginCrafting();
         TryUpdateInterface();
@@ -136,7 +113,7 @@ public class Machine : Structure
 
     }
 
-    public bool TryInputItem(ResourceData resource, TinyTransform inputTransform)
+    public override bool TryInputItem(ResourceData resource, TinyTransform inputTransform)
     {
         int invIndex = -1;
 
@@ -258,15 +235,13 @@ public class Machine : Structure
     #region Crafting
 
     public bool isCrafter = false;
+    public static float MinimumPowerLevel = 0.25f;
 
     /// <summary> Resource to Craft (CR) </summary>
     public ResourceData craftingResource;
-    public ResourceData newCraftingResource;
+    public ResourceData newCraftingResource; 
 
-    //public byte activeCFIndex = 0; //Deprecated
-    //byte newCFIndex = 0; //Deprecated
-
-    public short craftingCountdown = 0; 
+    public float craftingCountdown = 0; 
     public bool isCrafting = false;
 
     void SetupCrafting()
@@ -291,7 +266,7 @@ public class Machine : Structure
     {
         if (isCrafting)
         {
-            craftingCountdown--;
+            craftingCountdown -= ElectricalNode.Network.ClampedPowerRatio;
 
             if (craftingCountdown < 0)
             {
@@ -311,22 +286,17 @@ public class Machine : Structure
         if (InputInventories == null) return false;
         if (OutputInventories == null) return false;
 
+        // Are we connected to an electrical network and recieving enough power?
+        if (ElectricalNode == null) { return false; }
+        if (ElectricalNode.Network == null) { return false; }
+        if (ElectricalNode.Network.ClampedPowerRatio < MinimumPowerLevel) { return false; }
+
         // Check if input inventories are empty
         bool inventoriesEmpty = true;
         foreach (var inventory in InputInventories) { if (inventory.totalItems > 0) { inventoriesEmpty = false; break; } }
         if (inventoriesEmpty) return false;
 
         if (craftingResource == null) return false;
-        //if (cf.OutputResources.Count > OutputInventories.Length) { throw new Exception("Crafting formula outputs exceed outputs available on structure"); }
-
-/*        // Check if any output inventories are full
-        for (int i = 0; i < cf.OutputResources.Count; i++)
-        {
-            if (OutputInventories[i].GetMaxAcceptable(cf.OutputResources[i].resource) < cf.OutputResources[i].quantity)
-            {
-                return false;
-            }
-        }*/
 
         // Create a dictionary of input fulfilment requirements
         Dictionary<ResourceQuantity, bool> fullfilmentRegister = new Dictionary<ResourceQuantity, bool>();
@@ -351,22 +321,6 @@ public class Machine : Structure
         {
             if (keyValuePair.Value == false) return false;
         }
-
-        /*        foreach (ResourceQuantity resourceQuantity in cf.InputResources)
-                {
-                    fullfilmentRegister.Add(resourceQuantity, false);
-
-                    bool hasResourceQuanity = false;
-                    foreach (Inventory inventory in InputInventories)
-                    {
-                        if (inventory.GetQuantityOf(resourceQuantity.resource) >= resourceQuantity.quantity)
-                        {
-                            hasResourceQuanity = true;
-                            break;
-                        }
-                    }
-                    if (hasResourceQuanity) { fullfilmentRegister[resourceQuantity] = true; } 
-                }*/
 
         // Remove resources from input inventories
         foreach (Inventory inventory in InputInventories)
@@ -401,16 +355,6 @@ public class Machine : Structure
 
     public void FinishCrafting()
     {
-        // Get the current crafting formula
-        //CraftingFormula cf = StructureData.CraftingFormulas[activeCFIndex];
-
-/*        // Add output resources to output inventories
-        for (int i = 0; i < cf.OutputResources.Count; i++)
-        {
-            OutputInventories[i].TryAddResource(cf.OutputResources[i].resource, cf.OutputResources[i].quantity);
-            TryOutputAnything(i);
-        }*/
-
         OutputInventories[0].TryAddResource(craftingResource, craftingResource.quantityCrafted);
 
         isCrafting = false;
@@ -429,205 +373,165 @@ public class Machine : Structure
     public virtual void OnStopCrafting() { }
 
     //! Deprecated Crafting Formula System :
-/*
-    public void SetNewCF(CraftingFormula craftingFormula)
-    {
-        newCFIndex = (byte)StructureData.CraftingFormulas.IndexOf(craftingFormula);
-    }
-
-    /// <summary> Returns the crafting formula at a specific index </summary> 
-    public CraftingFormula GetCraftingFormula(byte CFIndex)
-    {
-        return StructureData.CraftingFormulas[CFIndex];
-    }
-
-    /// <summary> Returns the active crafting formula </summary> 
-    public CraftingFormula GetCraftingFormula()
-    {
-        return StructureData.CraftingFormulas[activeCFIndex];
-    }
-
-    void TryUpdateCF()
-    {
-        if (activeCFIndex != newCFIndex)
+    /*
+        public void SetNewCF(CraftingFormula craftingFormula)
         {
-            activeCFIndex = newCFIndex;
-
-            UpdateCFVariables(StructureData.CraftingFormulas[activeCFIndex]);
+            newCFIndex = (byte)StructureData.CraftingFormulas.IndexOf(craftingFormula);
         }
-    }
 
-    void UpdateCFVariables(CraftingFormula cf)
-    {
-        craftingCountdown = cf.duration;
-    } 
-
-    public bool TryBeginCrafting_()
-    {
-        if (isCrafter == false) { return false; }
-
-        if (isCrafting) return false;
-
-        TryUpdateCF();
-
-        if (InputInventories == null) return false;
-        if (OutputInventories == null) return false;
-
-        // Check if input inventories are empty
-        bool inventoriesEmpty = true;
-        foreach (var inventory in InputInventories) { if (inventory.totalItems > 0) { inventoriesEmpty = false; break; } }
-        if (inventoriesEmpty) return false;
-
-        // Get the current crafting formula
-        CraftingFormula cf = StructureData.CraftingFormulas[activeCFIndex];
-
-        if (cf == null) return false;
-        if (cf.OutputResources.Count > OutputInventories.Length) { throw new Exception("Crafting formula outputs exceed outputs available on structure"); }
-
-        // Check if any output inventories are full
-        for (int i = 0; i < cf.OutputResources.Count; i++)
+        /// <summary> Returns the crafting formula at a specific index </summary> 
+        public CraftingFormula GetCraftingFormula(byte CFIndex)
         {
-            if (OutputInventories[i].GetMaxAcceptable(cf.OutputResources[i].resource) < cf.OutputResources[i].quantity)
+            return StructureData.CraftingFormulas[CFIndex];
+        }
+
+        /// <summary> Returns the active crafting formula </summary> 
+        public CraftingFormula GetCraftingFormula()
+        {
+            return StructureData.CraftingFormulas[activeCFIndex];
+        }
+
+        void TryUpdateCF()
+        {
+            if (activeCFIndex != newCFIndex)
             {
-                return false;
+                activeCFIndex = newCFIndex;
+
+                UpdateCFVariables(StructureData.CraftingFormulas[activeCFIndex]);
             }
         }
 
-        // Create a dictionary of input fulfilment requirements
-        Dictionary<ResourceQuantity, bool> fullfilmentRegister = new Dictionary<ResourceQuantity, bool>();
-
-        // Loop through inventories, adding & toggling entries in fullfilment register if resource quantity is in an input inventory
-        foreach (ResourceQuantity resourceQuantity in cf.InputResources)
+        void UpdateCFVariables(CraftingFormula cf)
         {
-            fullfilmentRegister.Add(resourceQuantity, false);
+            craftingCountdown = cf.duration;
+        } 
 
-            bool hasResourceQuanity = false;
-            foreach (Inventory inventory in InputInventories)
+        public bool TryBeginCrafting_()
+        {
+            if (isCrafter == false) { return false; }
+
+            if (isCrafting) return false;
+
+            TryUpdateCF();
+
+            if (InputInventories == null) return false;
+            if (OutputInventories == null) return false;
+
+            // Check if input inventories are empty
+            bool inventoriesEmpty = true;
+            foreach (var inventory in InputInventories) { if (inventory.totalItems > 0) { inventoriesEmpty = false; break; } }
+            if (inventoriesEmpty) return false;
+
+            // Get the current crafting formula
+            CraftingFormula cf = StructureData.CraftingFormulas[activeCFIndex];
+
+            if (cf == null) return false;
+            if (cf.OutputResources.Count > OutputInventories.Length) { throw new Exception("Crafting formula outputs exceed outputs available on structure"); }
+
+            // Check if any output inventories are full
+            for (int i = 0; i < cf.OutputResources.Count; i++)
             {
-                if (inventory.GetQuantityOf(resourceQuantity.resource) >= resourceQuantity.quantity)
+                if (OutputInventories[i].GetMaxAcceptable(cf.OutputResources[i].resource) < cf.OutputResources[i].quantity)
                 {
-                    hasResourceQuanity = true;
-                    break;
+                    return false;
                 }
             }
-            if (hasResourceQuanity) { fullfilmentRegister[resourceQuantity] = true; }
-        }
 
-        // Exit crafting if resource requirements not met
-        foreach (var keyValuePair in fullfilmentRegister)
-        {
-            if (keyValuePair.Value == false) return false;
-        }
+            // Create a dictionary of input fulfilment requirements
+            Dictionary<ResourceQuantity, bool> fullfilmentRegister = new Dictionary<ResourceQuantity, bool>();
 
-                foreach (ResourceQuantity resourceQuantity in cf.InputResources)
+            // Loop through inventories, adding & toggling entries in fullfilment register if resource quantity is in an input inventory
+            foreach (ResourceQuantity resourceQuantity in cf.InputResources)
+            {
+                fullfilmentRegister.Add(resourceQuantity, false);
+
+                bool hasResourceQuanity = false;
+                foreach (Inventory inventory in InputInventories)
                 {
-                    fullfilmentRegister.Add(resourceQuantity, false);
-
-                    bool hasResourceQuanity = false;
-                    foreach (Inventory inventory in InputInventories)
+                    if (inventory.GetQuantityOf(resourceQuantity.resource) >= resourceQuantity.quantity)
                     {
-                        if (inventory.GetQuantityOf(resourceQuantity.resource) >= resourceQuantity.quantity)
-                        {
-                            hasResourceQuanity = true;
-                            break;
-                        }
+                        hasResourceQuanity = true;
+                        break;
                     }
-                    if (hasResourceQuanity) { fullfilmentRegister[resourceQuantity] = true; } 
                 }
+                if (hasResourceQuanity) { fullfilmentRegister[resourceQuantity] = true; }
+            }
 
-        // Remove resources from input inventories
-        foreach (Inventory inventory in InputInventories)
-        {
-            if (inventory.totalItems == 0) { continue; }
-
-            List<ResourceQuantity> resourcesToRemoveFromRegister = new();
-
+            // Exit crafting if resource requirements not met
             foreach (var keyValuePair in fullfilmentRegister)
             {
-                if (inventory.GetQuantityOf(keyValuePair.Key.resource) >= keyValuePair.Key.quantity)
-                {
-                    inventory.RemoveResource(keyValuePair.Key.resource, keyValuePair.Key.quantity);
+                if (keyValuePair.Value == false) return false;
+            }
 
-                    resourcesToRemoveFromRegister.Add(keyValuePair.Key);
+                    foreach (ResourceQuantity resourceQuantity in cf.InputResources)
+                    {
+                        fullfilmentRegister.Add(resourceQuantity, false);
+
+                        bool hasResourceQuanity = false;
+                        foreach (Inventory inventory in InputInventories)
+                        {
+                            if (inventory.GetQuantityOf(resourceQuantity.resource) >= resourceQuantity.quantity)
+                            {
+                                hasResourceQuanity = true;
+                                break;
+                            }
+                        }
+                        if (hasResourceQuanity) { fullfilmentRegister[resourceQuantity] = true; } 
+                    }
+
+            // Remove resources from input inventories
+            foreach (Inventory inventory in InputInventories)
+            {
+                if (inventory.totalItems == 0) { continue; }
+
+                List<ResourceQuantity> resourcesToRemoveFromRegister = new();
+
+                foreach (var keyValuePair in fullfilmentRegister)
+                {
+                    if (inventory.GetQuantityOf(keyValuePair.Key.resource) >= keyValuePair.Key.quantity)
+                    {
+                        inventory.RemoveResource(keyValuePair.Key.resource, keyValuePair.Key.quantity);
+
+                        resourcesToRemoveFromRegister.Add(keyValuePair.Key);
+                    }
+                }
+
+                foreach (var key in resourcesToRemoveFromRegister)
+                {
+                    fullfilmentRegister.Remove(key);
                 }
             }
 
-            foreach (var key in resourcesToRemoveFromRegister)
+            craftingCountdown = cf.duration;
+            isCrafting = true;
+
+            OnBeginCrafting();
+
+            return true;
+        }
+
+        public void FinishCrafting_()
+        {
+            // Get the current crafting formula
+            CraftingFormula cf = StructureData.CraftingFormulas[activeCFIndex];
+
+            // Add output resources to output inventories
+            for (int i = 0; i < cf.OutputResources.Count; i++)
             {
-                fullfilmentRegister.Remove(key);
+                OutputInventories[i].TryAddResource(cf.OutputResources[i].resource, cf.OutputResources[i].quantity);
+                TryOutputAnything(i);
             }
-        }
 
-        craftingCountdown = cf.duration;
-        isCrafting = true;
+            isCrafting = false;
 
-        OnBeginCrafting();
+            OnCraft();
 
-        return true;
-    }
-      
-    public void FinishCrafting_()
-    {
-        // Get the current crafting formula
-        CraftingFormula cf = StructureData.CraftingFormulas[activeCFIndex];
+            if (TryBeginCrafting_()) return;
 
-        // Add output resources to output inventories
-        for (int i = 0; i < cf.OutputResources.Count; i++)
-        {
-            OutputInventories[i].TryAddResource(cf.OutputResources[i].resource, cf.OutputResources[i].quantity);
-            TryOutputAnything(i);
-        }
-
-        isCrafting = false;
-
-        OnCraft();
-
-        if (TryBeginCrafting_()) return;
-
-        OnStopCrafting();
-    } */
+            OnStopCrafting();
+        } */
 
     #endregion
+     
 
-    // Interface Handling //
-    #region Interface Handling
-
-    bool isInterfaceOpen = false;
-    static ModularInterface activeInterface;
-
-    //TODO Should really modifiy this to a different creational design pattern. Maybe pass the call off to the structure subclass in question with a virtual method
-    //TODO and let the subclass handle the HUD call. Would prefer not to have a large switch statement in the HUD class to dependently spawn interfaces.
-    // Defaults to opening a crafting machine interface.
-    public virtual void OpenInterface(Vector3 mousePosition) 
-    {
-        OpenInterfaceOnHUD(MenuData.Instance.CraftingMachineInterface, mousePosition);
-    }
-
-    public void OpenInterfaceOnHUD(GameObject interfacePrefab, Vector3 mousePosition)
-    {
-        var success = GameManager.Instance.HUDController.OpenInterface(interfacePrefab, this, mousePosition);
-
-        if (success)
-        {
-            isInterfaceOpen = true;
-            activeInterface = GameManager.Instance.HUDController.openInterface;
-        }
-
-        TryUpdateInterface();
-    }
-
-    public void OnInterfaceClosed()
-    {
-        isInterfaceOpen = false;
-    }
-
-    public virtual void TryUpdateInterface()
-    {
-        if (isInterfaceOpen)
-        {
-            activeInterface.UpdateUI();
-        }
-    }
-
-    #endregion
 }

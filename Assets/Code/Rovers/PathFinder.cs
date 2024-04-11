@@ -124,7 +124,9 @@ public static class PathFinder
             var entityType = location.entity.GetType();
 
             // Success Conditions
-            if (entityType == typeof(Conveyor))
+            if (entityType == typeof(Conveyor) ||
+                entityType == typeof(PowerPylon)
+                )
             {
                 return true;
             }

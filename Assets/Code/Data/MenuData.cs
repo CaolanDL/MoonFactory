@@ -19,6 +19,7 @@ public class MenuData : ScriptableObject
     public GameObject RoverInterface;
     public GameObject CraftingMachineInterface;
     public GameObject HopperInterface;
+    public GameObject RelayInterface;
 
     [Header("Interfaces Elements")]
     public GameObject InventoryElement;

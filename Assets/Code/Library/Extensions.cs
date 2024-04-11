@@ -85,10 +85,7 @@ namespace ExtensionMethods
             float yRotate()
             {
                 return i.x * Mathf.Sin(radians) + i.y * Mathf.Cos(radians);
-            }
-
-            float _x = i.x * Mathf.Cos(radians) - i.y * Mathf.Sin(radians);
-            float _y = i.x * Mathf.Sin(radians) + i.y * Mathf.Cos(radians);
+            } 
         }
 
         public static Vector2 RotateAround(this Vector2 i, Vector2 Pivot, float angle)

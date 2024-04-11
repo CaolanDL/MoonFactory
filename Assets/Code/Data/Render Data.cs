@@ -10,6 +10,9 @@ public class RenderData : ScriptableObject
 {
     public static RenderData Instance { get; private set; }
 
+    [Header("Development")]
+    public Material devgizmo_material;
+
     [Header("Wire")]
     public Mesh wire_mesh;
     public Material wire_material;  

@@ -38,7 +38,11 @@ public class ConstructionManager
         {
             Ghosts.Add(newGhostStructure);
             newGhostStructure.OnPlaced();
-            //newGhostStructure.FinishConstruction(); // Immediately finish building the structure on placement. Should be replaced with rover construction logic ASAP.
+
+            if(DevFlags.AutoBuild)
+            {
+                newGhostStructure.FinishConstruction();
+            } 
         }
     }
 

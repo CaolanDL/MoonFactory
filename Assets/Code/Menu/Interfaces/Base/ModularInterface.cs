@@ -5,19 +5,22 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ModularInterface : MonoBehaviour
-{
-    [SerializeField] Image spriteImage;
-
+{ 
     [SerializeField] TextMeshProUGUI nameText;
 
-    [SerializeField] TextMeshProUGUI descriptionText; 
+    [SerializeField] TextMeshProUGUI descriptionText;
+
+    [SerializeField] Image spriteImage;
 
     private void Awake()
     {
         Canvas.ForceUpdateCanvases();
     }
 
-    public virtual void Init(Entity entity, Vector3 screenPosition) { }
+    public virtual void Init(Entity entity, Vector3 screenPosition)
+    {
+        transform.position = screenPosition;
+    }
 
     public virtual void UpdateUI() { }
      
@@ -49,7 +52,7 @@ public class ModularInterface : MonoBehaviour
     public void CloseInterface()
     {
         OnCloseInterface();
-        GameManager.Instance.HUDController.CloseInterface(); 
+        GameManager.Instance.HUDManager.CloseInterface(); 
     }
 
     public virtual void OnCloseInterface()
