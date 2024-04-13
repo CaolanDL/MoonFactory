@@ -46,13 +46,14 @@ public class GlobalData : ScriptableObject
     private void OnEnable()
     {
         MakeSingleton();
-        UpdateStructureCFAssignment();
+        SyncMachineCraftingReferences();
+        //UpdateStructureCFAssignment();
     }
 
     private void OnValidate()
     {
         MakeSingleton();
-        UpdateStructureCFAssignment();
+        //UpdateStructureCFAssignment();
     }
 
     public void MakeSingleton()
@@ -67,7 +68,7 @@ public class GlobalData : ScriptableObject
         }
     }
      
-    public void UpdateStructureCFAssignment()
+/*    public void UpdateStructureCFAssignment()
     {
         foreach (var structure in Structures)
         {
@@ -78,7 +79,7 @@ public class GlobalData : ScriptableObject
                 structure.CraftingFormulas.Add(formula);
             }
         }  
-    }
+    }*/
      
     public void SyncMachineCraftingReferences()
     {

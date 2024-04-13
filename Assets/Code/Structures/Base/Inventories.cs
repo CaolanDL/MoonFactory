@@ -23,7 +23,7 @@ public class ResourceStack
     public void ReduceBy(int quantity)
     {
         this.quantity -= quantity;
-        weight -= resource.weight * quantity;
+        weight -= resource.Weight * quantity;
     }
 
     public void IncreaseBy(int quantity)
@@ -100,7 +100,7 @@ public class Inventory // 56 bytes
 
     public int GetMaxAcceptable(ResourceData resource)
     {
-        int nByWeight = (int)MathF.Floor(AvailableCapacityByWeight / resource.weight); 
+        int nByWeight = (int)MathF.Floor(AvailableCapacityByWeight / resource.Weight); 
 
         if (nByWeight < AvailableCapacityByCount)
         {
@@ -174,11 +174,11 @@ public class Inventory // 56 bytes
 
         var stack = GetStack(resource);
 
-        if (totalWeight + (resource.weight * stack.quantity) > maxWeight) { throw new System.Exception($" Attempted to exceed maximum inventory capacity on {parentEntity}"); }
+        if (totalWeight + (resource.Weight * stack.quantity) > maxWeight) { throw new System.Exception($" Attempted to exceed maximum inventory capacity on {parentEntity}"); }
 
         stack.quantity += quantity;
 
-        totalWeight += resource.weight * quantity;
+        totalWeight += resource.Weight * quantity;
         totalItems += quantity;
 
         return true;
@@ -192,7 +192,7 @@ public class Inventory // 56 bytes
 
         stack.ReduceBy(quantity);
 
-        totalWeight -= resource.weight * quantity;
+        totalWeight -= resource.Weight * quantity;
         totalItems -= quantity;
 
         if (stack.quantity <= 0)

@@ -49,6 +49,7 @@ public class PlayerInputManager : MonoBehaviour
         inputActions.DefaultControls.Enable();
         inputActions.CameraControls.Enable();
         inputActions.UIControls.Enable();
+        inputActions.HUDControls.Enable();
     }
 
     public enum InputState
@@ -73,10 +74,12 @@ public class PlayerInputManager : MonoBehaviour
 
         HandleCameraControl();
 
+        HandleHUDInpts();
+
         if (!isMouseOverUI)
         {
             UpdateSpatialMousePosition();
-            RenderGizmoAtMouseTile();
+            
         }
 
         switch (inputState)
@@ -101,6 +104,33 @@ public class PlayerInputManager : MonoBehaviour
     public void HandleCameraControl()
     {
 
+    }
+
+    public void HandleHUDInpts()
+    {
+        var HUDManager = GameManager.Instance.HUDManager;
+
+        if (inputActions.HUDControls.BuildMenu.WasPressedThisFrame())
+        {
+            HUDManager.ToggleBuildMenu();
+        }
+
+        if (inputActions.HUDControls.ScienceMenu.WasPressedThisFrame())
+        {
+            HUDManager.ToggleScienceMenu();
+        }
+
+        if (inputActions.HUDControls.Demolish.WasPressedThisFrame() && HUDManager.ConstructionMenu.activeSelf == true)
+        {
+            HUDManager.BulldozeButtonPressed();
+        }
+    }
+
+
+    public void GotoDefaultInputState()
+    {
+        GameManager.Instance.HUDManager.MouseIconManager.SetActiveIcon(MouseIconManager.Icon.None);
+        ChangeInputState(InputState.Default);
     }
 
     public void HandleDefaultInput()
@@ -167,6 +197,9 @@ public class PlayerInputManager : MonoBehaviour
     public void HandleConstructionInput()
     {
         HandleCameraControl();
+        RenderGizmoAtMouseTile();
+
+        GameManager.Instance.HUDManager.MouseIconManager.SetActiveIcon(MouseIconManager.Icon.Build);
 
         ConstructionManager constructionManager = GameManager.Instance.ConstructionManager; 
 
@@ -187,7 +220,7 @@ public class PlayerInputManager : MonoBehaviour
 
         if (inputActions.DefaultControls.ExitTool.WasPressedThisFrame())
         {
-            ChangeInputState(InputState.Default);
+            GotoDefaultInputState();
             return;
         }
     }
@@ -195,7 +228,11 @@ public class PlayerInputManager : MonoBehaviour
     Entity lastEntity = null;
 
     public void HandleDemolishInput()
-    { 
+    {
+        GameManager.Instance.HUDManager.MouseIconManager.SetActiveIcon(MouseIconManager.Icon.Cancel);
+
+        RenderGizmoAtMouseTile();
+
         if (inputActions.DefaultControls.Select.IsPressed())
         {
             Entity entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(MouseGridPositon);
@@ -220,6 +257,11 @@ public class PlayerInputManager : MonoBehaviour
                     {
                         structure.CancelDemolition();
                     }
+
+                    if(DevFlags.InstantBuilding)
+                    {
+                        structure.Demolish();
+                    }
                 }
             }
 
@@ -234,10 +276,11 @@ public class PlayerInputManager : MonoBehaviour
 
         if (inputActions.DefaultControls.ExitTool.WasPressedThisFrame())
         {
-            ChangeInputState(InputState.Default);
+            GotoDefaultInputState();
             return;
         }
     }
+
 
 
     public void UpdateSpatialMousePosition()

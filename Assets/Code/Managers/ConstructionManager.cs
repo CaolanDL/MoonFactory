@@ -6,7 +6,7 @@ using ExtensionMethods;
 
 public class ConstructionManager
 {
-    public StructureData NewGhostData;
+    public StructureData GhostStructureData;
 
     public List<StructureGhost> Ghosts = new List<StructureGhost>(); 
 
@@ -22,7 +22,7 @@ public class ConstructionManager
     public void StartPlacingGhosts(StructureData structureData)
     {
         _ghostRotation = 0;
-        NewGhostData = structureData;
+        GhostStructureData = structureData;
     }
 
     public void PlaceGhost(double2 mousePosition)
@@ -31,7 +31,7 @@ public class ConstructionManager
 
         var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
-        StructureGhost newGhostStructure = new(NewGhostData);
+        StructureGhost newGhostStructure = new(GhostStructureData);
 
         if (worldGrid.TryAddEntity(newGhostStructure, ghostGridPosition, _ghostRotation) != null)
         {
@@ -54,9 +54,9 @@ public class ConstructionManager
     {
         var inputManager = GameManager.Instance.PlayerInputManager;
 
-        if (NewGhostData.size.x > 1 && NewGhostData.size.y > 1)
+        if (GhostStructureData.size.x > 1 && GhostStructureData.size.y > 1)
         { 
-            var n = (-NewGhostData.centre).Rotate(GhostRotation * 90);
+            var n = (-GhostStructureData.centre).Rotate(GhostRotation * 90);
 
             int2 nI = n.ToInt2() + inputManager.MouseGridPositon;
 
@@ -70,7 +70,7 @@ public class ConstructionManager
 
     public (int2 xRange, int2 yRange) GetOccupyRegion(int2 position)
     {
-        var rSize = new int2(NewGhostData.size.x, NewGhostData.size.y).Rotate(GhostRotation);
+        var rSize = new int2(GhostStructureData.size.x, GhostStructureData.size.y).Rotate(GhostRotation);
         var xRange = new int2(position.x, position.x + rSize.x);
         var yRange = new int2(position.y, position.y + rSize.y);
 
@@ -128,23 +128,15 @@ public class ConstructionManager
         //TODO Large structures should be blocked from being built when overlapping other large objects. This will require some thinking and some time.
         //? You really need to take a little holiday. You are starting to feel the burn-out.
 
-        if (GameManager.Instance.GameWorld.worldGrid.IsEntityAt(ghostGridPosition))
-        {
-            blocked = true;
-        }
+        if (GameManager.Instance.GameWorld.worldGrid.IsEntityAt(ghostGridPosition)) blocked = true; 
 
-
-        if (blocked)
-        {
-            activeGhostMaterial = GlobalData.Instance.mat_GhostBlocked;
-        }
-
+        if (blocked) activeGhostMaterial = GlobalData.Instance.mat_GhostBlocked; 
 
         var matrix = MatrixConstruction.CreateTransformMatrix(ghostGridPosition, _ghostRotation);
 
-        Graphics.DrawMesh(NewGhostData.ghostMesh, matrix, activeGhostMaterial, 0);
+        Graphics.DrawMesh(GhostStructureData.ghostMesh, matrix, activeGhostMaterial, 0);
 
-        foreach (StructureData.GhostModels ghostModel in NewGhostData.ghostModels)
+        foreach (StructureData.GhostModels ghostModel in GhostStructureData.ghostModels)
         {
             Material materialToDraw = ghostModel.material;
             if (ghostModel.material == GlobalData.Instance.mat_Ghost)
@@ -153,15 +145,14 @@ public class ConstructionManager
             }
             Graphics.DrawMesh(ghostModel.mesh, matrix, materialToDraw, 0);
         }
-         
-        // Draw indicator arrows ->
-        foreach (TinyTransform input in NewGhostData.inputs)
+          
+        foreach (TinyTransform input in GhostStructureData.inputs)
             DrawArrow(input, RenderData.Instance.Arrow, RenderData.Instance.ArrowOutputMaterial);  
 
-        foreach (TinyTransform output in NewGhostData.outputs) 
+        foreach (TinyTransform output in GhostStructureData.outputs) 
             DrawArrow(output, RenderData.Instance.Arrow, RenderData.Instance.ArrowInputMaterial);
 
-        foreach (TinyTransform port in NewGhostData.ports)
+        foreach (TinyTransform port in GhostStructureData.ports)
             DrawArrow(port, RenderData.Instance.TwoWayArrow, RenderData.Instance.UniversalMaterial);
 
         void DrawArrow(TinyTransform transform, Mesh mesh, Material material)
@@ -175,6 +166,13 @@ public class ConstructionManager
 
             Graphics.DrawMesh(mesh, _matrix, material, 0);
         }
-        // <- Draw indicator arrows
-    }
+
+        if(GhostStructureData.name == "PowerPylon")
+        {
+            for(int x = -Electrical.Relay.connectionRange/2; x < Electrical.Relay.connectionRange / 2; x++)
+            {
+                Graphics.DrawMesh(RenderData.Instance.)
+            }
+        }
+    } 
 } 

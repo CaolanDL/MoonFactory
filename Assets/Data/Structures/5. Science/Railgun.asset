@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c959649ace52a934799d95e3909b1b57, type: 3}
+  m_Name: Railgun
+  m_EditorClassIdentifier: 
+  screenname: Rail Gun
+  description: A giant railgun for rapidly launching RTO Research Rockets into orbit
+  category: 4
+  sprite: {fileID: 21300000, guid: 1c28f4e5179dbeb429c4351d429503ce, type: 3}
+  displayObject: {fileID: 919132149155446097, guid: 681ff8ab2ed57404a92deb456d4073bd,
+    type: 3}
+  size:
+    x: 2
+    y: 10
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+    quantity: 25
+  timeToBuild: 200
+  CraftingFormulas: []
+  CraftableResources: []
+  inputs:
+  - position:
+      x: -1
+      y: 0
+    _rotation: 1
+  - position:
+      x: 2
+      y: 0
+    _rotation: -1
+  outputs: []
+  ports: []
+  ghostMesh: {fileID: -6161859482150698858, guid: d067fa762a5bae44e83197dda6ebcf40,
+    type: 3}
+  ghostModels: []
+  unlocked: 1

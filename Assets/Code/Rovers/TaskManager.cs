@@ -58,6 +58,8 @@ public class TaskManager
     {
         Task task;
 
+        if(Tasks.Count == 0) { return null; }
+
         if(category == TaskCategory.All)
         {
             task = Tasks.First.Value;

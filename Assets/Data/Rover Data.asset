@@ -16,7 +16,12 @@ MonoBehaviour:
   MiningScreenName: 'Rover: Mining'
   LogisticsScreenName: 'Rover: Logistics'
   ConstructionScreenName: 'Rover: Construction'
+  Description: 
   DefaultSprite: {fileID: 21300000, guid: 8fdf683812d45904bb516fe8e2172993, type: 3}
   MiningSprite: {fileID: 21300000, guid: 8fdf683812d45904bb516fe8e2172993, type: 3}
   LogisticsSprite: {fileID: 21300000, guid: 8fdf683812d45904bb516fe8e2172993, type: 3}
   ConstructionSprite: {fileID: 21300000, guid: 8fdf683812d45904bb516fe8e2172993, type: 3}
+  RoverDisplayObject: {fileID: 8158448350561381558, guid: b33ece2ce7546a748a8def74c8e2bc8e,
+    type: 3}
+  WidgetDisplayObject: {fileID: 8158448350561381558, guid: bef058f0a29930a49ba2cdf6da5a3726,
+    type: 3}

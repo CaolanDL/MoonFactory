@@ -26,8 +26,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] public MenuData MenuData;
     [SerializeField] public RoverData RoverData;
 
-    // Gameplay Objects
+    // Manager Components
     public GameWorld GameWorld;
+    public ScienceManager ScienceManager;
     public ConstructionManager ConstructionManager;
     public RoverManager RoverManager;
     public TaskManager TaskManager;
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
     // Menu Instances
     public HUDManager HUDManager;
 
-    // Components
+    // Monobehavior Components
     public FloorTileRenderer FloorTileRenderer;
     public ItemRenderer ItemRenderer;
     public BatchRenderer BatchRenderer;
@@ -59,9 +60,7 @@ public class GameManager : MonoBehaviour
 
         GlobalData.MakeSingleton();
         WorldGenerationData.MakeSingleton();
-        MenuData.MakeSingleton(); 
-
-        RoverManager = GetComponent<RoverManager>();
+        MenuData.MakeSingleton();  
 
         CameraController = GetComponent<CameraController>();
         PlayerInputManager = GetComponent<PlayerInputManager>();
@@ -142,9 +141,11 @@ public class GameManager : MonoBehaviour
         // Create new gameWorld
         GameWorld = new GameWorld(seed);
 
-        // Initialise Game Managers
+        // Initialise Game Managers Components
+        ScienceManager = new();
         ConstructionManager = new(); 
         TaskManager = new();
+        RoverManager = new();
         ElectricalSystemManager = new();
 
         // Start zone is generated

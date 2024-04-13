@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class DebugUI : MonoBehaviour
 {
+    [SerializeField] GameObject Content;
+
     [SerializeField] GameObject VerticalLayout;
     [SerializeField] GameObject TextLinePrefab;
 
@@ -64,5 +66,10 @@ public class DebugUI : MonoBehaviour
             tileOnScreenCount = GameManager.Instance.FloorTileRenderer.tilesRenderedThisFrame;
         }
         TileOnScreenCounter.text = $"Tiles rendered this frame: {tileOnScreenCount}";
+    }
+
+    public void ToggleContent()
+    {
+        Content.SetActive(!Content.activeSelf);
     }
 }

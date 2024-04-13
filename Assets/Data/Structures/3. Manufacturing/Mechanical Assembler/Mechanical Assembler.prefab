@@ -48,6 +48,7 @@ MonoBehaviour:
   primaryModels:
   - {fileID: 6433161156851274710}
   additiveModels: []
+  animator: {fileID: 0}
 --- !u!1001 &6162688100250889863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56,6 +57,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4834109678323069399}
     m_Modifications:
+    - target: {fileID: -8986192656331596473, guid: 9450df16ded2fe3408e7fd109925918a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9450df16ded2fe3408e7fd109925918a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -106,6 +112,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7246151144231969694, guid: 9450df16ded2fe3408e7fd109925918a,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -876546973899608171, guid: 55275734bc8dc4445bf7430329be2e10,
+        type: 3}
     - target: {fileID: 919132149155446097, guid: 9450df16ded2fe3408e7fd109925918a,
         type: 3}
       propertyPath: m_Name

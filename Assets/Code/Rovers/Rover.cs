@@ -37,7 +37,7 @@ public class Rover : Entity
     public float MiningSpeed { get { return _MiningSpeed; } }
 
     public Inventory Inventory = new();
-    public RoverModule Module = RoverModule.Construction;
+    public RoverModule Module = RoverModule.Widget;
 
     public Task ActiveTask;
     public readonly Queue<Job> JobQueue = new Queue<Job>();
@@ -79,13 +79,16 @@ public class Rover : Entity
 
     public DisplayObject DisplayObject;
 
-    public void Init(int2 spawnLocation, DisplayObject displayObject)
+    public void SetDisplayObject(DisplayObject displayObject)
     {
-        GridPosition = spawnLocation;
-        VisualPosition = spawnLocation;
-
         this.DisplayObject = displayObject;
         DisplayObject.parentEntity = this;
+    }
+
+    public void SetPosition(int2 position)
+    {
+        GridPosition = position;
+        VisualPosition = position; 
     }
 
     public void OnFrameUpdate() { }

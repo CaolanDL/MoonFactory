@@ -27,24 +27,31 @@ MonoBehaviour:
     quantity: 25
   timeToBuild: 99
   CraftingFormulas: []
+  CraftableResources: []
   inputs:
+  - position:
+      x: 0
+      y: -1
+    _rotation: 0
+  - position:
+      x: 1
+      y: -1
+    _rotation: 0
+  - position:
+      x: -1
+      y: 0
+    _rotation: 1
   - position:
       x: 2
       y: 0
-    _rotation: -1
-  - position:
-      x: 2
-      y: 1
     _rotation: -1
   outputs:
   - position:
       x: 0
       y: 2
     _rotation: 0
-  - position:
-      x: -1
-      y: 0
-    _rotation: -1
+  ports: []
   ghostMesh: {fileID: -6188161795047023275, guid: 9450df16ded2fe3408e7fd109925918a,
     type: 3}
   ghostModels: []
+  unlocked: 1

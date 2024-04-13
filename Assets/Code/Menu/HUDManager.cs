@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
-    [SerializeField] private GameObject ConstructionMenu;
+    [SerializeField] public GameObject ConstructionMenu; 
+    [SerializeField] public GameObject ScienceMenu;  
+    [SerializeField] public GameObject MapMenu;
 
-    [SerializeField] private GameObject ScienceMenu; 
-
-    [SerializeField] private GameObject MapMenu;
+    [SerializeField] public MouseIconManager MouseIconManager;
      
     public ModularInterface openInterface; 
 
@@ -39,14 +39,14 @@ public class HUDManager : MonoBehaviour
 
     // Menu Buttons //
      
-    public void ConstructionMenuButtonPressed()
+    public void ToggleBuildMenu()
     {
         ToggleMenu(ConstructionMenu);
         ConstructionMenu.GetComponent<ConstructionMenuBuilder>().UpdateList();
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }  
 
-    public void ScienceButtonPressed() { ToggleMenu(ScienceMenu); } 
+    public void ToggleScienceMenu() { ToggleMenu(ScienceMenu); } 
 
     public void MapButtonPressed() { ToggleMenu(MapMenu); }
 

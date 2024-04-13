@@ -358,6 +358,107 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""HUD Controls"",
+            ""id"": ""6ab710c6-65df-4dd4-82dd-4268256cc66a"",
+            ""actions"": [
+                {
+                    ""name"": ""Build Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""f37db579-f87f-40f1-a7e4-95d662474824"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Science Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""685d8d41-3f59-4b67-aedc-3d0132bd0837"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Demolish"",
+                    ""type"": ""Button"",
+                    ""id"": ""c23eaeaf-7327-43c5-84a5-2df73c78b349"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e5bf8ddf-a127-4d1c-928d-bcab3909649e"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Build Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ce040d13-db33-4f8e-b432-70e95eb76223"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Build Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""96f24d8b-b272-4e02-b847-7ca499bddcf0"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Science Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76ee54e3-85e7-4df7-924a-da8b0cef5ab5"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Science Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""96482e32-9831-4ca8-8915-72c71776c640"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Science Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1ba85804-2135-4acd-8ae6-5eaa2d5ace91"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Demolish"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -394,6 +495,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UIControls_Click = m_UIControls.FindAction("Click", throwIfNotFound: true);
         m_UIControls_Point = m_UIControls.FindAction("Point", throwIfNotFound: true);
         m_UIControls_PointDelta = m_UIControls.FindAction("PointDelta", throwIfNotFound: true);
+        // HUD Controls
+        m_HUDControls = asset.FindActionMap("HUD Controls", throwIfNotFound: true);
+        m_HUDControls_BuildMenu = m_HUDControls.FindAction("Build Menu", throwIfNotFound: true);
+        m_HUDControls_ScienceMenu = m_HUDControls.FindAction("Science Menu", throwIfNotFound: true);
+        m_HUDControls_Demolish = m_HUDControls.FindAction("Demolish", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -637,6 +743,68 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public UIControlsActions @UIControls => new UIControlsActions(this);
+
+    // HUD Controls
+    private readonly InputActionMap m_HUDControls;
+    private List<IHUDControlsActions> m_HUDControlsActionsCallbackInterfaces = new List<IHUDControlsActions>();
+    private readonly InputAction m_HUDControls_BuildMenu;
+    private readonly InputAction m_HUDControls_ScienceMenu;
+    private readonly InputAction m_HUDControls_Demolish;
+    public struct HUDControlsActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public HUDControlsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @BuildMenu => m_Wrapper.m_HUDControls_BuildMenu;
+        public InputAction @ScienceMenu => m_Wrapper.m_HUDControls_ScienceMenu;
+        public InputAction @Demolish => m_Wrapper.m_HUDControls_Demolish;
+        public InputActionMap Get() { return m_Wrapper.m_HUDControls; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(HUDControlsActions set) { return set.Get(); }
+        public void AddCallbacks(IHUDControlsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_HUDControlsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_HUDControlsActionsCallbackInterfaces.Add(instance);
+            @BuildMenu.started += instance.OnBuildMenu;
+            @BuildMenu.performed += instance.OnBuildMenu;
+            @BuildMenu.canceled += instance.OnBuildMenu;
+            @ScienceMenu.started += instance.OnScienceMenu;
+            @ScienceMenu.performed += instance.OnScienceMenu;
+            @ScienceMenu.canceled += instance.OnScienceMenu;
+            @Demolish.started += instance.OnDemolish;
+            @Demolish.performed += instance.OnDemolish;
+            @Demolish.canceled += instance.OnDemolish;
+        }
+
+        private void UnregisterCallbacks(IHUDControlsActions instance)
+        {
+            @BuildMenu.started -= instance.OnBuildMenu;
+            @BuildMenu.performed -= instance.OnBuildMenu;
+            @BuildMenu.canceled -= instance.OnBuildMenu;
+            @ScienceMenu.started -= instance.OnScienceMenu;
+            @ScienceMenu.performed -= instance.OnScienceMenu;
+            @ScienceMenu.canceled -= instance.OnScienceMenu;
+            @Demolish.started -= instance.OnDemolish;
+            @Demolish.performed -= instance.OnDemolish;
+            @Demolish.canceled -= instance.OnDemolish;
+        }
+
+        public void RemoveCallbacks(IHUDControlsActions instance)
+        {
+            if (m_Wrapper.m_HUDControlsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IHUDControlsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_HUDControlsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_HUDControlsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public HUDControlsActions @HUDControls => new HUDControlsActions(this);
     private int m_DesktopSchemeIndex = -1;
     public InputControlScheme DesktopScheme
     {
@@ -663,5 +831,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnClick(InputAction.CallbackContext context);
         void OnPoint(InputAction.CallbackContext context);
         void OnPointDelta(InputAction.CallbackContext context);
+    }
+    public interface IHUDControlsActions
+    {
+        void OnBuildMenu(InputAction.CallbackContext context);
+        void OnScienceMenu(InputAction.CallbackContext context);
+        void OnDemolish(InputAction.CallbackContext context);
     }
 }

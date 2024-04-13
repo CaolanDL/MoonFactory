@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Electrical
@@ -121,34 +122,57 @@ namespace Electrical
         {
             SystemManager.networks.Remove(this);
         }
+
     }
 
     public class Node
     {
         public Structure Parent;
         public Network Network;
-        public List<Connection> Connections = new(); 
+        public List<Connection> Connections = new();
+        public bool CanConnect = true;
 
         public void Constructed()
         {
+            Parent.OnDemolishedEvent += Demolished; 
             OnConstructed();
         }
+
         public void Demolished()
         {
-            OnDemolished();
-
+            CanConnect = false;
+            DestroyAllConnections(); 
             Parent.OnDemolishedEvent -= Demolished;
+            OnDemolished();
         }
+
         public virtual void OnConstructed() { }
         public virtual void OnDemolished() { }
+
+        public bool TryConnectCleanly(Node node, int MaxConnections)
+        {
+            if (Connections.Count > MaxConnections) return false;
+            if (node.Connections.Count > MaxConnections) return false;
+
+            if (IsConnectedTo(node)) { return false; }
+            if (node.CanConnect == false) { return false; }
+
+            //! Big Smart: Only connect to node, if none of its connected nodes are already connected to this one 
+            foreach (var connection in node.Connections)
+            {
+                var otherNode = connection.GetOther(node);
+                if (otherNode.IsConnectedTo(this)) return false;
+            }  
+
+            CreateConnection(node);
+            return true;
+        }
 
         public void CreateConnection(Node other)
         {
             var newConnection = new Connection(this, other);
             Connections.Add(newConnection);
-            other.Connections.Add(newConnection);
-
-            //return;
+            other.Connections.Add(newConnection); 
 
             // If the other node is the only node in its network absorb it into this one.
             if (Network != null && other.Network != null && other.Network.nodes.Count == 1)
@@ -187,14 +211,11 @@ namespace Electrical
 
         public void DestroyAllConnections()
         {
-            foreach (var connection in Connections) connection.Destroy();
-        }
+            var ConnectionsToDestroy = new List<Connection>();
+            ConnectionsToDestroy.AddRange(Connections);
 
-        public void ConnectionDestroyed(Connection connection)
-        {
-            Connections.Remove(connection);
-            OnConnectionDestroyed();
-        }
+            foreach (var connection in ConnectionsToDestroy) connection.Destroy();
+        } 
 
         public virtual void OnConnectionDestroyed() { }
 
@@ -214,9 +235,9 @@ namespace Electrical
         {
             if (Connections.Exists(x => x.GetOther(this) == other)) return true;
             return false;
-        }
+        } 
 
-        public List<Node> FindNearbyOfType(Type type, int range)
+        public List<Node> FindNearbyNodesOfType(Type type, int range)
         {
             List<Location> nearbyLocations = GameManager.Instance.GameWorld.worldGrid.GetSquareRadius(Parent.position, range);
 
@@ -227,11 +248,38 @@ namespace Electrical
 
             List<Node> nearbyNodes = new();
             nearbyNodes.AddRange(from structure in nearbyStructures
-                                 where structure.ElectricalNode != null && structure.ElectricalNode.GetType() == type
+                                 where structure.ElectricalNode != null && (structure.ElectricalNode.GetType() == type || structure.ElectricalNode.GetType().IsSubclassOf(type))
                                  select structure.ElectricalNode);
 
             if (nearbyNodes.Count == 0) return null;
             else return nearbyNodes;
+        }
+
+        public int SortNodeByDistanceToSelf(Node a, Node b)
+        {
+            var aDistance = GetRoughDistance(a.Parent.position, this.Parent.position);
+            var bDistance = GetRoughDistance(b.Parent.position, this.Parent.position);
+
+            if (aDistance == bDistance) return 0;
+            else if (aDistance < bDistance) return -1;
+            else if (aDistance > bDistance) return 1;
+            else return 0;
+        }
+
+        float GetRoughDistance(float2 a, float2 b)
+        {
+            float2 offset = a - b;
+            return (offset.x * offset.x) + (offset.y * offset.y);
+        }
+
+        public int SortNodesByNetworkCapacity(Node a, Node b)
+        {
+            if (a.Network == null) { return -1; }
+            else if (b.Network == null) { return +1; }
+            else if (a.Network.MaxInput == b.Network.MaxInput) return 0;
+            else if (a.Network.MaxInput < b.Network.MaxInput) return -1;
+            else if (a.Network.MaxInput > b.Network.MaxInput) return 1;
+            else return 0;
         }
     }
 
@@ -274,8 +322,8 @@ namespace Electrical
         public void Destroy()
         {
             // Destory LineBetweenA&B
-            a.ConnectionDestroyed(this);
-            b.ConnectionDestroyed(this);
+            a.Connections.Remove(this);
+            b.Connections.Remove(this);
 
             pool.Remove(this);
         }
@@ -291,7 +339,7 @@ namespace Electrical
 
     public class Relay : Node
     {
-        public int connectionRange = 6;
+        public static int connectionRange = 6;
         public static int MaxConnections = 3;
 
         public override void OnConstructed()
@@ -302,54 +350,26 @@ namespace Electrical
         public override void OnConnectionDestroyed()
         {
             ConnectToClosestRelay();
-        }
+        } 
 
         public void ConnectToClosestRelay()
         {
-            List<Relay> nearbyRelays = FindNearbyOfType(typeof(Relay), connectionRange).Select(x => (Relay)x).ToList();
-
-            nearbyRelays.Sort(SortRelayByDistance);
-            nearbyRelays.Remove(this);
-
-            int SortRelayByDistance(Relay a, Relay b)
-            {
-                var aDistance = GetRoughDistance(a.Parent.position, this.Parent.position);
-                var bDistance = GetRoughDistance(b.Parent.position, this.Parent.position);
-
-                if (aDistance == bDistance) return 0;
-                else if (aDistance < bDistance) return -1;
-                else if (aDistance > bDistance) return 1;
-                else return 0;
-            }
-
-            float GetRoughDistance(float2 a, float2 b)
-            {
-                float2 offset = a - b;
-                return (offset.x * offset.x) + (offset.y * offset.y);
-            }
-
+            List<Node> nearbyRelays = FindNearbyNodesOfType(typeof(Relay), connectionRange); 
             if (nearbyRelays.Count == 0) { return; }
 
+            nearbyRelays.Sort(SortNodeByDistanceToSelf);
+            nearbyRelays.Remove(this);  
 
             for (int i = 0; i < nearbyRelays.Count; i++)
-            {
-                Relay selected = nearbyRelays[i];
-
-                if (Connections.Count > MaxConnections) break;
-                if (selected.Connections.Count > MaxConnections) break;
-                
-                //! Big Smart: Only connect to selected relay, if non of its connected relays are already connected to this one
-                bool mustbreak = false;
-                foreach (var connection in selected.Connections)
-                {
-                    var otherRelay = connection.GetOther(selected);
-                    if(otherRelay.IsConnectedTo(this)) mustbreak = true;
-                }
-                if (mustbreak) break; 
-
-                if (IsConnectedTo(selected) == false)
-                    CreateConnection(selected); 
+            { 
+                TryConnectCleanly(nearbyRelays[i], MaxConnections);
             } 
+        }
+
+        public void ConnectToComponents()
+        {
+            List<Node> nearbyComponents = FindNearbyNodesOfType(typeof(Component), connectionRange);
+
         }
     }
 
@@ -374,40 +394,22 @@ namespace Electrical
 
         public void ConnectToNearbyRelays()
         {
-            List<Location> nearbyLocations = GameManager.Instance.GameWorld.worldGrid.GetSquareRadius(Parent.position, connectionRange);
-            //Debug.Log($"nearbyLocations {nearbyLocations.Count}");
-
-            List<Structure> nearbyStructures = new();   // = nearbyLocations.FindAll(x => x.entity != null && x.entity.GetType() == typeof(Structure)).Select(x => (Structure)x.entity).ToList();
-            nearbyStructures.AddRange(from location in nearbyLocations
-                                      where location.entity != null && location.entity.GetType().IsSubclassOf(typeof(Structure))
-                                      select (Structure)location.entity);
-            //Debug.Log($"nearbyStructures {nearbyStructures.Count}");
-
-            List<Relay> nearbyRelays = new();    //nearbyStructures.FindAll(x => x.ElectricalNode.GetType() == typeof(Relay)).Select(x => (Relay)x.ElectricalNode).ToList();
-            nearbyRelays.AddRange(from structure in nearbyStructures
-                                  where structure.ElectricalNode != null && structure.ElectricalNode.GetType() == typeof(Relay)
-                                  select (Relay)structure.ElectricalNode);
-            //Debug.Log($"nearbyRelays {nearbyRelays.Count}");
-
+            List<Node> nearbyRelays = FindNearbyNodesOfType(typeof(Relay), connectionRange);   
             if (nearbyRelays.Count == 0) return;
 
-            nearbyRelays.Sort(SortRelayByNetworkCapacity);
+            nearbyRelays.Sort(SortNodesByNetworkCapacity);  
+            var bestNetwork = nearbyRelays[0].Network;
+            List<Node> bestRelays = new();
 
-            int SortRelayByNetworkCapacity(Relay a, Relay b)
+            // Remove all relays that are not part of the best network.
+            foreach(var relay in nearbyRelays)
             {
-                if (a.Network == null) { return -1; }
-                else if (b.Network == null) { return +1; }
-                else if (a.Network.MaxInput == b.Network.MaxInput) return 0;
-                else if (a.Network.MaxInput < b.Network.MaxInput) return -1;
-                else if (a.Network.MaxInput > b.Network.MaxInput) return 1;
-                else return 0;
-            }
+                if(relay.Network == null) continue;
+                if(relay.Network == bestNetwork) bestRelays.Add(relay); 
+            } 
+            bestRelays.Sort(SortNodeByDistanceToSelf);
 
-            if (nearbyRelays.Count == 0) { return; }
-            if (IsConnectedTo(nearbyRelays[0]) == false)
-            {
-                CreateConnection(nearbyRelays[0]);
-            }
+            TryConnectCleanly(bestRelays[0], 1);
         }
     }
 
@@ -422,4 +424,5 @@ namespace Electrical
         public float MaxConsumption = 10f;
         public float Consumption = 10f;
     }
+     
 }

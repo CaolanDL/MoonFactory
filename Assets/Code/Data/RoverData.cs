@@ -19,4 +19,8 @@ public class RoverData : ScriptableObject
     public Sprite MiningSprite;
     public Sprite LogisticsSprite;
     public Sprite ConstructionSprite;
+
+    [Header("Prefabs")] 
+    public GameObject RoverDisplayObject; 
+    public GameObject WidgetDisplayObject;
 }

@@ -41,7 +41,7 @@ public class StructureData : ScriptableObject
     [Tooltip("In Ticks")] public int timeToBuild = 99;
 
     [Header("Crafting")]
-    public List<CraftingFormula> CraftingFormulas = new();
+    //public List<CraftingFormula> CraftingFormulas = new();
     public List<ResourceData> CraftableResources = new();
 
     [Header("Input/Output Locations")]

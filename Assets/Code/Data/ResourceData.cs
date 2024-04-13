@@ -12,18 +12,20 @@ public enum ResourceCategory
 [CreateAssetMenu(menuName = "MoonFactory/Resource Data")]
 public class ResourceData : ScriptableObject
 {
-    // Editor Variables
+    [Header("Details")]
     [SerializeField] public string description;
     [SerializeField] public ResourceCategory resourceCategory;
-    [SerializeField] public byte weight = 1;
 
-    [Header("Rendering")] 
+    [Header("Rendering")]
+    [SerializeField] public Sprite sprite;
     [SerializeField] public Mesh mesh;
     [SerializeField] public Material material;
 
-    [SerializeField] public Sprite sprite;
-
-    [Header("Details")] 
+    [Header("Variables")]
+    [SerializeField] public byte Weight = 1;
+    [SerializeField] public int ResearchValue; 
+     
+    [Header("Crafting")] 
     [Tooltip("Machine crafted in")] public StructureData craftedIn;
     [Tooltip("Duration in Ticks (s*50)")] public short timeToCraft = 1;
     [Tooltip("Duration in Ticks (s*50)")] public short quantityCrafted = 1;

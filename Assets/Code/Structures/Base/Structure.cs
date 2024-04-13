@@ -34,7 +34,6 @@ public abstract class Structure : Entity
             //? Might be code smell; Maybe Dangerous; Should work but consider migration to Init method or node constructor, passing structure.
             _electricalNode = value;
             _electricalNode.Parent = this;
-            OnDemolishedEvent += _electricalNode.Demolished;
         }
     }
 
