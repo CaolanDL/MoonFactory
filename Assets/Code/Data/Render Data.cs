@@ -22,6 +22,12 @@ public class RenderData : ScriptableObject
     public Material ArrowOutputMaterial;
     public Material ArrowInputMaterial;
 
+    [Header("Gizmos")]
+    public Mesh TileHighlightGizmo;
+    public Mesh TilePowerGizmo;
+    public Material BlueGizmoMaterial;
+    public Material TransparentBlueGizmoMaterial;
+
     [Header("Wire")]
     public Mesh wire_mesh;
     public Material wire_material;

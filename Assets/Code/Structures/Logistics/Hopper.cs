@@ -1,73 +1,10 @@
-using UnityEngine;  
+﻿using UnityEngine;
 using ExtensionMethods;
 using System.Collections.Generic;
 using RoverTasks;
 
 namespace Logistics
 {
-    public class Merger : Machine
-    {
-        public override void OnConstructed()
-        {
-            foreach (var inventory in InputInventories) inventory.maxItems = 1;
-
-            OutputInventories[0].maxItems = 1;
-        }
-
-        private int iterator;
-        private int Iterator
-        {
-            get { return iterator; }
-            set { iterator = value % 3; }
-        }
-
-        public override void OnTick()
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                Iterator++;
-                if (TransferAnythingRandom(InputInventories[Iterator], OutputInventories[0]))
-                { 
-                    break;
-                }
-            }
-
-            TryOutputAnything(0);
-        }
-    }
-
-    public class Splitter : Machine
-    {
-        public override void OnConstructed()
-        {
-            foreach (var inventory in OutputInventories) inventory.maxItems = 1;
-
-            InputInventories[0].maxItems = 1;
-        }
-
-        private int iterator;
-        private int Iterator
-        {
-            get { return iterator; }
-            set { iterator = value % 3; }
-        }
-
-        public override void OnTick()
-        { 
-            for (int i = 0; i < 3; i++)
-            {
-                TransferAnythingRandom(InputInventories[0], OutputInventories[Iterator]);
-                Iterator++;
-
-                if (TryOutputAnything(Iterator))
-                { 
-                    Iterator++;
-                    break;
-                }
-            }
-        }
-    }
-
     public class Hopper : Machine
     {
         public static List<Hopper> pool = new List<Hopper>();
@@ -77,6 +14,9 @@ namespace Logistics
 
         public Inventory inputInventory;
         public Inventory storageInventory;
+
+        public SupplyPort SupplyPort;
+        public RequestPort RequestPort;
 
         public bool isRequestor;
         public bool isSupplier;
@@ -144,25 +84,17 @@ namespace Logistics
         {
             if (!isRequestor || requestTask.taskExists) return;
 
-            requestTask.TryCreateTask(new HopperRequestTask(requestResource));
+            requestTask.TryCreateTask(new SoftRequestResourceTask(requestResource, 1));
         }
     }
 
     public class Silo : Hopper
-    {
-        public static new int maxItems = 48;
-
+    { 
         public override void OnConstructed()
-        { 
-            inputInventory = InputInventories[0];
-            storageInventory = OutputInventories[0];
+        {
+            maxItems = 48;
 
-            inputInventory.maxItems = 1;
-
-            storageInventory.maxItems = maxItems;
-            storageInventory.maxWeight = int.MaxValue;
-
-            pool.Add(this);
+            base.OnConstructed();  
         }
-    } 
+    }
 }

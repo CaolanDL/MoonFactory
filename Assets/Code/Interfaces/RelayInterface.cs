@@ -5,7 +5,7 @@ using Electrical;
 using UnityEngine.UI;
 using TMPro;
 
-public class RelayInterface : ModularInterface
+public class RelayInterface : StaticInterface
 {
     [SerializeField] TextMeshProUGUI MaxInput;
     [SerializeField] TextMeshProUGUI Input; 

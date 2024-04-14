@@ -264,8 +264,8 @@ public class Grid
 
         int2 pos = new();
 
-        for (pos.x = xRange.x; pos.x < xRange.y; pos.x += 1)
-            for (pos.y = yRange.x; pos.y < yRange.y; pos.y += 1)
+        for (pos.x = xRange.x; pos.x <= xRange.y; pos.x += 1)
+            for (pos.y = yRange.x; pos.y <= yRange.y; pos.y += 1)
                 if (grid.TryGetValue(pos, out Location location))
                     region.Add(location);
         return region;

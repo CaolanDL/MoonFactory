@@ -12,7 +12,7 @@ public class HUDManager : MonoBehaviour
 
     [SerializeField] public MouseIconManager MouseIconManager;
      
-    public ModularInterface openInterface; 
+    public StaticInterface openInterface; 
 
     private void Start()
     {
@@ -25,7 +25,7 @@ public class HUDManager : MonoBehaviour
     {
         if(openInterface != null) { CloseInterface(); }
 
-        openInterface = Instantiate(interfacePrefab, transform).GetComponent<ModularInterface>();
+        openInterface = Instantiate(interfacePrefab, transform).GetComponent<StaticInterface>();
         openInterface.Init(entity, screenPosition + (Vector3.right * 20));
 
         return true;

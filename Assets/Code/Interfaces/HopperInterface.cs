@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HopperInterface : ModularInterface
+public class HopperInterface : StaticInterface
 { 
     public SingleStackInventoryElement InventoryElement; 
     private Hopper hopper; 
@@ -11,13 +11,13 @@ public class HopperInterface : ModularInterface
 
     public override void Init(Entity entity, Vector3 screenPosition)
     {
+        base.Init(entity, screenPosition);
+
         this.hopper = (Hopper)entity; 
 
         structureData = hopper.StructureData;
 
-        SetDetails(structureData.sprite, structureData.screenname, structureData.description);
-
-        transform.position = screenPosition;
+        SetDetails(structureData.sprite, structureData.screenname, structureData.description); 
 
         InventoryElement.inventory = hopper.storageInventory; 
     }

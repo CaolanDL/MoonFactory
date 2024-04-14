@@ -339,7 +339,7 @@ namespace Electrical
 
     public class Relay : Node
     {
-        public static int connectionRange = 6;
+        public static int connectionRange = 4;
         public static int MaxConnections = 3;
 
         public override void OnConstructed()

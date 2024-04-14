@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CloseButton : MonoBehaviour
 {
-    ModularInterface modularInterface;
+    StaticInterface modularInterface;
 
     private void Awake()
     {
-        modularInterface = GetComponentInParent<ModularInterface>();
+        modularInterface = GetComponentInParent<StaticInterface>();
     }
 
     public void ButtonPressed()

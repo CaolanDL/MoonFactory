@@ -169,10 +169,12 @@ public class ConstructionManager
 
         if(GhostStructureData.name == "PowerPylon")
         {
-            for(int x = -Electrical.Relay.connectionRange/2; x < Electrical.Relay.connectionRange / 2; x++)
-            {
-                Graphics.DrawMesh(RenderData.Instance.)
-            }
+            for (int x = -Electrical.Relay.connectionRange; x <= Electrical.Relay.connectionRange; x++)
+                for (int y = -Electrical.Relay.connectionRange; y <= Electrical.Relay.connectionRange; y++)
+                {
+                    var _pos = new Vector3(x + ghostGridPosition.x, 0.05f, y + ghostGridPosition.y);
+                    Graphics.DrawMesh(RenderData.Instance.TilePowerGizmo, _pos, Quaternion.identity, RenderData.Instance.TransparentBlueGizmoMaterial, 0);
+                }
         }
     } 
 } 

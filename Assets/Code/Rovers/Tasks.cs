@@ -162,7 +162,7 @@ namespace RoverTasks
 
             jobs = new()
             {
-                new CollectAndDeliverShoppingList(ghost.structureData.requiredResources, ghost.position),
+                new CollectAndDeliverOnlyIfAvailable(ghost.structureData.requiredResources, ghost.position),
                 new BuildStructure(ghost),
                 new FinishTask()
             };
@@ -195,14 +195,16 @@ namespace RoverTasks
             Category = TaskCategory.Logistics;
         }
     }
-     
-    public class HopperRequestTask : LogisticsTask
+    
+    public class SoftRequestResourceTask : LogisticsTask
     {
         ResourceData resource;
+        int quantity;
 
-        public HopperRequestTask(ResourceData resource)
+        public SoftRequestResourceTask(ResourceData resource, int quantity)
         {
             this.resource = resource;
+            this.quantity = quantity;
 
             jobs = new()
             {
@@ -210,13 +212,7 @@ namespace RoverTasks
                 new FinishTask()
             };
         } 
-    }
-     
-    public class ResearchSampleRequestTask : LogisticsTask
-    {
-
-    }
-
+    }  
 
     // Mining Tasks Parent Class
     public class MiningTask : Task

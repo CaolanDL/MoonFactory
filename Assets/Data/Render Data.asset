@@ -19,6 +19,13 @@ MonoBehaviour:
     type: 3}
   ArrowOutputMaterial: {fileID: 2100000, guid: aaf3dad24ffc8d140b2f1fd51c084db7, type: 2}
   ArrowInputMaterial: {fileID: 2100000, guid: 4b9e2c61465009f40aea2ed8207c9764, type: 2}
+  TileHighlightGizmo: {fileID: -6997785974547370836, guid: bd0e8dc30d0d4034284b4c8eb9e169e7,
+    type: 3}
+  TilePowerGizmo: {fileID: -2668541852928962441, guid: 3354458aa2a456945bf0815d3041d47a,
+    type: 3}
+  BlueGizmoMaterial: {fileID: 2100000, guid: 9e0f6bc44e9809f4b9132213d36fb8bd, type: 2}
+  TransparentBlueGizmoMaterial: {fileID: 2100000, guid: 9e0f6bc44e9809f4b9132213d36fb8bd,
+    type: 2}
   wire_mesh: {fileID: 8077376627999728891, guid: 2c687e3cb05f5cc4488579610e17e11d,
     type: 3}
   wire_material: {fileID: 2100000, guid: ed863dbc4a590d942aa608b5d7d82e5c, type: 2}

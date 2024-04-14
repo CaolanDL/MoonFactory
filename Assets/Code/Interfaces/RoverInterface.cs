@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoverInterface : ModularInterface
+public class RoverInterface : StaticInterface
 {
     public Rover rover;
 

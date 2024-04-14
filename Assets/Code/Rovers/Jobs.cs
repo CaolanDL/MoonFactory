@@ -6,7 +6,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using RoverTasks;
 using static UnityEngine.GraphicsBuffer;
-using static RoverJobs.CollectAndDeliverShoppingList;
+using static RoverJobs.CollectAndDeliverOnlyIfAvailable;
 
 namespace RoverJobs
 {
@@ -372,38 +372,26 @@ namespace RoverJobs
             DistanceToRover = distanceToRover;
             DistanceToDestination = distanceToDestination;
         }
-    } 
-
-    public static class CollectionPathBuilder
-    {
+    }
 
 
-        public static LinkedList<Path> ShoppingList(List<ResourceQuantity> resourcesToCollect, int2 destination)
-        {
-            List<ResourceQuantity> _resourcesToCollect;
-            int2 _destination;
+    //todo Please do this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+    /* This is a high priority item
+     * This class will handle the logic for searching through supply ports for a quantity of resources
+     * The code for doing this behavior is mostly complete in the CollectAndDeliverOnlyIfAvailable Job
+     * 
+     * 
+     * 
+     */
+    public static class SupplyFinder
+    { 
 
-            List<FoundHopper> foundHoppers = new List<FoundHopper>(); 
-            LinkedList<Path> _superPath = new();
-
-
-
-            return null;
-        }
-
-        public static LinkedList<Path> UpToQuantity(ResourceQuantity resourceQuantity, int2 destination)
-        {
-
-
-            return null;
-        }
     }
 
     public class ExcecuteCollectAndDeliver : Job
     {
         private LinkedList<Path> superPath;
-        private int2 destination;
-        bool finished = false;
+        private int2 destination; 
 
         public ExcecuteCollectAndDeliver(LinkedList<Path> superPath, int2 destination)
         {
@@ -412,36 +400,24 @@ namespace RoverJobs
         }
 
         public override void OnTick()
-        {
-            Job job;
-
+        { 
             if (superPath.Count > 0)
             {
-                if (superPath.Count > 1)
-                {
-                    job = new CollectResource(superPath.First().target);
-                    StackJob(job);
-                }
+                if (superPath.Count > 1) StackJob(new CollectResource(superPath.First().target)); 
 
-                var path = superPath.First();
-                superPath.RemoveFirst();
-                job = new TraversePath(path);
-                StackJob(job);
-            }
-            else if (!finished)
-            {
-                job = new DeliverResource(destination);
-                StackJob(job);
-                finished = true;
+                StackJob(new TraversePath(superPath.First()));
+                superPath.RemoveFirst();   
             }
             else
-            {
-                PopJob(); return;
-            }
+            { 
+                PopJob();
+                StackJob(new DeliverResource(destination));
+                return;
+            } 
         }
-    }
+    } 
 
-    public class CollectAndDeliverShoppingList : Job
+    public class CollectAndDeliverOnlyIfAvailable : Job
     {
         private List<ResourceQuantity> _resourcesToCollect;
         private int2 destination;
@@ -452,7 +428,7 @@ namespace RoverJobs
 
         bool finished = false; 
 
-        public CollectAndDeliverShoppingList(IEnumerable<ResourceQuantity> resourceQuantities, int2 destination)
+        public CollectAndDeliverOnlyIfAvailable(IEnumerable<ResourceQuantity> resourceQuantities, int2 destination)
         {
             this._resourcesToCollect = resourceQuantities.ToList();
             this.destination = destination;
@@ -460,24 +436,20 @@ namespace RoverJobs
 
         public override void OnStart()
         {
-            if (!TryFindHoppers()) { FailTask(); return; }
+            var success = TryFindHoppers();
 
-            _superPath = PathFinder.FindSuperPath((int2)rover.VisualPosition, foundHoppers.Select(foundHopper => foundHopper.Hopper.position).ToArray());
+            if (!success) { FailTask(); return; }
 
-            if (_superPath == null || _superPath.Count == 0) { FailTask(); return; }
+            _superPath = PathFinder.FindSuperPath((int2)rover.VisualPosition, foundHoppers.Select(foundHopper => foundHopper.Hopper.position).ToArray()); 
+            if (_superPath == null || _superPath.Count == 0) { FailTask(); return; } 
+            _superPath.AddLast(PathFinder.FindPathToAnyFreeNeighbor(_superPath.Last().nodes.Last(), destination));  
 
-            _superPath.AddLast(PathFinder.FindPathToAnyFreeNeighbor(_superPath.Last().nodes.Last(), destination));
-
-            if (_superPath.Count < 2) { FailTask(); return; }
-
-            PopJob();
-
-            StackJob(new ExcecuteCollectAndDeliver(_superPath, destination));
+            PopJob(); 
+            StackJob(new ExcecuteCollectAndDeliver(_superPath, destination)); 
         } 
 
         private bool TryFindHoppers()
-        {
-            bool foundResourceInHopper = false;
+        { 
             Dictionary<ResourceData, int> remaingResourcesToFind = new();
             foundHoppers = new();
 
@@ -497,26 +469,20 @@ namespace RoverJobs
                     { 
                         if (PathFinder.FindPathToAnyFreeNeighbor((int2)rover.VisualPosition, hopper.position) == null) { continue; } // Hopper not reachable
 
-                        float2 hopperRoverOffset = rover.VisualPosition - hopper.position;
-                        float hopperDistanceMagnitude = (hopperRoverOffset.x * hopperRoverOffset.x) + (hopperRoverOffset.y * hopperRoverOffset.y);
-
                         var foundHopper = foundHoppers.Find(foundHoppers => foundHoppers.Hopper == hopper);
 
                         if (foundHopper == null)
                         {
-                            foundHopper = new FoundHopper(hopper, GetRoughDistanceToRover(hopper), GetRoughDistanceToDestination(hopper));
+                            foundHopper = new FoundHopper(hopper, DistanceBetween(rover.VisualPosition, hopper.position), DistanceBetween(destination, hopper.position));
                             foundHoppers.Add(foundHopper);
                         }
 
                         var maxReservableQuantity = Mathf.Clamp(quantityInHopper, 0, remaingResourcesToFind[rq.resource]);
-                        foundHopper.reservedResources.Add(new ResourceQuantity(rq.resource, maxReservableQuantity));
-                        foundResourceInHopper = true;
+                        foundHopper.reservedResources.Add(new ResourceQuantity(rq.resource, maxReservableQuantity)); 
 
                         remaingResourcesToFind[rq.resource] -= quantityInHopper;
                         if (remaingResourcesToFind[rq.resource] <= 0) { remaingResourcesToFind.Remove(rq.resource); break; }
                     }
-
-                    if (foundResourceInHopper == false) return false;
                 }
 
             if (remaingResourcesToFind.Count > 0) { return false; }
@@ -530,42 +496,32 @@ namespace RoverJobs
             return true;
 
             int HopperSortDistToDest(Hopper a, Hopper b)
-            {
-                float aDistance = GetRoughDistanceToDestination(a);
-                float bDistance = GetRoughDistanceToDestination(b);
-
-                if (aDistance == bDistance) return 0;
-                else if (aDistance < bDistance) return -1;
-                else if (aDistance > bDistance) return 1;
-                else return 0;
-            }
+            { 
+                return FloatSort(DistanceBetween(destination, a.position), DistanceBetween(destination, b.position));
+            } 
 
             int FHopperSortDistToDestination(FoundHopper a, FoundHopper b)
-            {
-                float aDistance = a.DistanceToDestination;
-                float bDistance = b.DistanceToDestination;
+            { 
+                return FloatSort(a.DistanceToDestination, b.DistanceToDestination);
+            }
 
-                if (aDistance == bDistance) return 0;
-                else if (aDistance < bDistance) return -1;
-                else if (aDistance > bDistance) return 1;
+            int FloatSort(float a, float b)
+            {
+                if (a == b) return 0;
+                else if (a < b) return -1;
+                else if (a > b) return 1;
                 else return 0;
-            }
+            } 
 
-            float GetRoughDistanceToRover(Hopper hopper)
+            float DistanceBetween(float2 a, float2 b)
             {
-                float2 offset = rover.VisualPosition - hopper.position;
-                return (offset.x * offset.x) + (offset.y * offset.y);
-            }
-
-            float GetRoughDistanceToDestination(Hopper hopper)
-            {
-                float2 offset = destination - hopper.position;
+                float2 offset = a - b;
                 return (offset.x * offset.x) + (offset.y * offset.y);
             }
         }
     } 
 
-    public class CollectAndDeliverUpToQuantity
+    public class CollectAndDeliverAnyAvailable
     {
         ResourceQuantity resourceQuantity;
         private int2 destination; 
@@ -574,7 +530,7 @@ namespace RoverJobs
 
         bool finished = false;
 
-        public CollectAndDeliverUpToQuantity(ResourceQuantity resourceQuantity, int2 destination)
+        public CollectAndDeliverAnyAvailable(ResourceQuantity resourceQuantity, int2 destination)
         {
             this.resourceQuantity = resourceQuantity;
             this.destination = destination;

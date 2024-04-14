@@ -38,7 +38,7 @@ public abstract class Structure : Entity
     }
 
     bool isInterfaceOpen = false;
-    static ModularInterface activeInterface;
+    static StaticInterface activeInterface;
 
     public void Initialise()
     {

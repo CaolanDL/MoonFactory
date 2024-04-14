@@ -1,13 +1,10 @@
 ﻿
+using UnityEngine;
+
 public class DecorLander : Structure
 {
 
-}
-
-public class SampleAnalyser : Structure
-{
-
-}
+} 
 
 public class StaticDrill : Structure
 {
@@ -17,12 +14,7 @@ public class StaticDrill : Structure
 public class RoverAssembler : Structure
 {
 
-}
-
-public class Railgun : Structure
-{
-
-}
+} 
 
 public class FabricationPlant : Structure
 {

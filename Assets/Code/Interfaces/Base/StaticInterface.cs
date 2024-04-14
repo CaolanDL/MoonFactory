@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ModularInterface : MonoBehaviour
+public class StaticInterface : MonoBehaviour
 { 
     [SerializeField] TextMeshProUGUI nameText;
 
