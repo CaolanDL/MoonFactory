@@ -72,6 +72,13 @@ public class HUDManager : MonoBehaviour
         GameManager.Instance.PlayerInputManager.ChangeInputState(PlayerInputManager.InputState.Demolish);
     }
 
+    public void ElectricalCoverageButtonPressed()
+    {
+        ElectricalCoverageRenderer.enabled = !ElectricalCoverageRenderer.enabled;
+
+        // Enable electrical overlay post process
+    }
+
     public void HeatmapButtonPressed() { } 
 
 

@@ -15,37 +15,49 @@ namespace Logistics
         public Inventory inputInventory;
         public Inventory storageInventory;
 
-        public SupplyPort SupplyPort;
-        public RequestPort RequestPort;
-
         public bool isRequestor;
         public bool isSupplier;
-        public ResourceData requestResource;  
-        public ManagedTask requestTask = new(); 
+
+        public override void OnInitialise()
+        {
+            base.OnInitialise(); 
+        } 
 
         public override void OnConstructed()
-        {  
+        {
             inputInventory = InputInventories[0];
             storageInventory = OutputInventories[0];
 
             inputInventory.maxItems = 1;
 
-            storageInventory.maxItems = maxItems; 
+            storageInventory.maxItems = maxItems;
             storageInventory.maxWeight = int.MaxValue;
+
+            AddPorts();
 
             pool.Add(this);
         }
 
+        // Add supply request port components
+        private void AddPorts()
+        {
+            SupplyPort = new(this);
+            RequestPort = new(this);
+
+            SupplyPort.AddInventory(storageInventory);
+            RequestPort.AddInventory(storageInventory);
+        }
+
         public override void OnDemolished()
-        { 
+        {
             pool.Remove(this);
-        }  
+        }
 
         public override void OnTick()
-        { 
+        {
             TransferAnythingRandom(InputInventories[0], OutputInventories[0]);
             TryOutputAnything(0);
-        } 
+        }
 
         // This item rendering could be modified to update an array OnItemRecieved and OnItemOutput to reduce per frame overhead
         public override void OnFrameUpdate()
@@ -54,13 +66,13 @@ namespace Logistics
             {
                 for (int i = 0; i < OutputInventories[0].totalItems; i += renderGap)
                 {
-                    var n =  i / renderGap;
+                    var n = i / renderGap;
                     DrawResourceAtIndex(n);
                 }
             }
 
             void DrawResourceAtIndex(int i)
-            { 
+            {
                 ResourceData resource = OutputInventories[0].GetResourceAtIndex(i);
 
                 Graphics.DrawMesh(
@@ -78,23 +90,23 @@ namespace Logistics
         public override void OnClicked(Vector3 mousePosition)
         {
             OpenInterfaceOnHUD(MenuData.Instance.HopperInterface, mousePosition);
-        } 
+        }
 
         void HandleRequest()
         {
-            if (!isRequestor || requestTask.taskExists) return;
+            /*if (!isRequestor || requestTask.taskExists) return;
 
-            requestTask.TryCreateTask(new SoftRequestResourceTask(requestResource, 1));
+            requestTask.TryCreateTask(new SoftRequestResourceTask(requestResource, 1));*/
         }
     }
 
     public class Silo : Hopper
-    { 
+    {
         public override void OnConstructed()
         {
             maxItems = 48;
 
-            base.OnConstructed();  
+            base.OnConstructed();
         }
     }
 }

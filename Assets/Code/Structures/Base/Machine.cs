@@ -24,6 +24,7 @@ public class Machine : Structure
     public override void OnConstructed()
     {
         ElectricalNode = new Electrical.Sink();
+        base.OnConstructed(); 
     }
 
     public override void OnClicked(Vector3 mousePosition)
@@ -36,7 +37,7 @@ public class Machine : Structure
 
     public bool TryOutputItemFromInventory(ResourceData resource, Inventory inventory, TinyTransform outputTransform)
     {
-        if (inventory.GetQuantityOf(resource) == 0) return false;
+        if (inventory.GetUnreservedQuantityOf(resource) == 0) return false;
 
         if (TryOutputItem(resource, outputTransform))
         {

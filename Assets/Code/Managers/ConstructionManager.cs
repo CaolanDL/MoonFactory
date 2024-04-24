@@ -125,8 +125,7 @@ public class ConstructionManager
 
         bool blocked = false;
 
-        //TODO Large structures should be blocked from being built when overlapping other large objects. This will require some thinking and some time.
-        //? You really need to take a little holiday. You are starting to feel the burn-out.
+        //TODO Large structures should be blocked from being built when overlapping other large objects. This will require some thinking and some time. 
 
         if (GameManager.Instance.GameWorld.worldGrid.IsEntityAt(ghostGridPosition)) blocked = true; 
 

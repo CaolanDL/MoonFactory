@@ -73,6 +73,11 @@ public class Inventory // 56 bytes
         get { return totalTypes >= maxTypes; }
     }
 
+
+    public void ReserveResource(ResourceData resource, int quantity)
+    {
+        ReserveResource(new(resource, quantity));
+    }
     public void ReserveResource(ResourceQuantity rq)
     {
        if(GetQuantityOf(rq.resource) < rq.quantity) throw new Exception("Tried to reserve a resource that does not exist"); ; 
@@ -85,8 +90,12 @@ public class Inventory // 56 bytes
         {
             reservedResources.Add(rq.resource, rq.quantity);
         } 
-    }
+    } 
 
+    public void FreeResource(ResourceData resource, int quantity)
+    {
+        FreeResource(new(resource, quantity));
+    }
     public void FreeResource(ResourceQuantity rq)
     {
         if(reservedResources.ContainsKey(rq.resource) == false) { throw new Exception("Tried to free a reserved resource that does not exist"); }
@@ -118,17 +127,20 @@ public class Inventory // 56 bytes
 
         if (stack == null) { return 0; }
 
-        return GetStack(resource).quantity;
+        return stack.quantity;
     }
 
     public int GetUnreservedQuantityOf(ResourceData resource)
     {
-        var quanity = GetQuantityOf(resource);
+        var quantity = GetQuantityOf(resource);
 
-        quanity -= reservedResources[resource];
+        if (quantity > 0 && reservedResources.ContainsKey(resource))
+        {
+            quantity -= reservedResources[resource]; 
+        } 
 
-        return quanity;
-    }
+        return quantity;
+    } 
 
     public ResourceData GetResourceAtIndex(int index)
     {
@@ -159,6 +171,10 @@ public class Inventory // 56 bytes
         return stacks[stackIndex].resource;
     }
 
+    public bool TryAddResource(ResourceQuantity rq)
+    {
+        return TryAddResource(rq.resource, rq.quantity);
+    } 
     public bool TryAddResource(ResourceData resource, int quantity)
     { 
         if (resource == null) return false;

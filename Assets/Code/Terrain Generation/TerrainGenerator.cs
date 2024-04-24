@@ -9,7 +9,7 @@ public class TerrainGenerator
     public TerrainGenerator(int seed)
     {
         this.seed = seed;
-    }
+    } 
 
     public FloorTileData GenerateTileAt(int2 position)
     {
@@ -27,11 +27,13 @@ public class TerrainGenerator
         return GenerateTopographyTile(position); 
     }
 
+    // Placeholder
     public FloorTileData TryGenerateCraterCone()
     {  
         return null;
     }
 
+    // Placeholder
     public FloorTileData TryGenerateRubbleRegion()
     {
         return null;

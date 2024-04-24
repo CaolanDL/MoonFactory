@@ -64,7 +64,6 @@ namespace ExtensionMethods
             return quaternion * (i - Pivot) + Pivot;
         }
 
-        // https://sushanta1991.blogspot.com/2016/08/how-to-rotate-2d-vector-in-unity.html
         public static Vector2 Rotate(this Vector2 i, float angle)
         {
             float radian = -angle * Mathf.Deg2Rad;

@@ -44,11 +44,7 @@ public class Path
         nodes = newPath.ToArray();
         length = newPath.Count;
     }
-}
-
-public class SuperPath
-{
-}
+} 
 
 
 public static class PathFinder

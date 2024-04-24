@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Electrical
@@ -11,6 +10,8 @@ namespace Electrical
     public class SystemManager
     {
         public static List<Network> networks = new();
+        public static List<Relay> relays = new();
+
 
         public SystemManager()
         {
@@ -164,11 +165,11 @@ namespace Electrical
                 if (otherNode.IsConnectedTo(this)) return false;
             }  
 
-            CreateConnection(node);
+            CreateConnectionTo(node);
             return true;
         }
 
-        public void CreateConnection(Node other)
+        public void CreateConnectionTo(Node other)
         {
             var newConnection = new Connection(this, other);
             Connections.Add(newConnection);
@@ -237,7 +238,10 @@ namespace Electrical
             return false;
         } 
 
-        public List<Node> FindNearbyNodesOfType(Type type, int range)
+        /// <summary>
+        /// Finds nodes that inherit from or are the type specified
+        /// </summary> 
+        public List<Node> FindNearbyNodesByType(Type type, int range)
         {
             List<Location> nearbyLocations = GameManager.Instance.GameWorld.worldGrid.GetSquareRadius(Parent.position, range);
 
@@ -340,36 +344,62 @@ namespace Electrical
     public class Relay : Node
     {
         public static int connectionRange = 4;
-        public static int MaxConnections = 3;
+        public static int MaxRelayConnections = 4;
 
         public override void OnConstructed()
         {
-            ConnectToClosestRelay();
+            base.OnConstructed();
+            SystemManager.relays.Add(this); 
+            TryConnect();
+        }
+
+        public override void OnDemolished()
+        {
+            base.OnDemolished();
+            SystemManager.relays.Remove(this);
         }
 
         public override void OnConnectionDestroyed()
         {
-            ConnectToClosestRelay();
+            TryConnect();
         } 
 
-        public void ConnectToClosestRelay()
+        public void TryConnect()
         {
-            List<Node> nearbyRelays = FindNearbyNodesOfType(typeof(Relay), connectionRange); 
-            if (nearbyRelays.Count == 0) { return; }
+            ConnectToNearbyRelays();
+            TryConnectToComponents();
+        }
+
+        public void ConnectToNearbyRelays()
+        {
+            List<Node> nearbyRelays = FindNearbyNodesByType(typeof(Relay), connectionRange);
+            if (nearbyRelays == null || nearbyRelays.Count == 0) return;
 
             nearbyRelays.Sort(SortNodeByDistanceToSelf);
             nearbyRelays.Remove(this);  
 
             for (int i = 0; i < nearbyRelays.Count; i++)
             { 
-                TryConnectCleanly(nearbyRelays[i], MaxConnections);
+                TryConnectCleanly(nearbyRelays[i], MaxRelayConnections);
             } 
         }
 
-        public void ConnectToComponents()
+        public void TryConnectToComponents()
         {
-            List<Node> nearbyComponents = FindNearbyNodesOfType(typeof(Component), connectionRange);
+            List<Node> nearbyComponents = FindNearbyNodesByType(typeof(Component), connectionRange);
+            if (nearbyComponents == null || nearbyComponents.Count == 0) return;
 
+            List<Component> invalidComponents = new();
+
+            foreach (Component component in nearbyComponents) 
+                if(component.Connections.Count > 0) 
+                    invalidComponents.Add(component);
+
+            foreach (Component component in invalidComponents)
+                nearbyComponents.Remove(component);
+
+            foreach (Component component in nearbyComponents)
+                CreateConnectionTo(component);
         }
     }
 
@@ -394,13 +424,14 @@ namespace Electrical
 
         public void ConnectToNearbyRelays()
         {
-            List<Node> nearbyRelays = FindNearbyNodesOfType(typeof(Relay), connectionRange);   
-            if (nearbyRelays.Count == 0) return;
+            if (Connections.Count > 0) return;
+
+            List<Node> nearbyRelays = FindNearbyNodesByType(typeof(Relay), connectionRange);   
+            if (nearbyRelays == null || nearbyRelays.Count == 0) return;
 
             nearbyRelays.Sort(SortNodesByNetworkCapacity);  
             var bestNetwork = nearbyRelays[0].Network;
             List<Node> bestRelays = new();
-
             // Remove all relays that are not part of the best network.
             foreach(var relay in nearbyRelays)
             {
@@ -409,7 +440,7 @@ namespace Electrical
             } 
             bestRelays.Sort(SortNodeByDistanceToSelf);
 
-            TryConnectCleanly(bestRelays[0], 1);
+            CreateConnectionTo(bestRelays[0]);
         }
     }
 

@@ -56,6 +56,6 @@ public class HopperInterface : StaticInterface
 
     public void SetRequestResource(ResourceData resourceData)
     {
-        hopper.requestResource = resourceData;
+        //hopper.requestResource = resourceData;
     }
 }

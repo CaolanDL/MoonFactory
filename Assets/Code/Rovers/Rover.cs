@@ -43,7 +43,11 @@ public class Rover : Entity
     public readonly Queue<Job> JobQueue = new Queue<Job>();
     public readonly Stack<Job> JobStack = new Stack<Job>();
     public bool JobWasPopped= false;
+    public bool JobWasStacked = false;
+    public bool TaskWasFailed = false;
     public int FetchDelay = 0;
+
+    public static bool DebugEnabled = true;
 
     // Float transform for visual position
     public SmallTransform SmallTransform = new();
@@ -121,19 +125,25 @@ public class Rover : Entity
     {
         if(FetchDelay > 0) FetchDelay--;
 
+        // Cancel the active task if requested
         if (ActiveTask != null && ActiveTask.isCancelled)
         {
             TaskCancelled();
             //Debug.Log("Cancelled Task");
         }
+        // Handle the active Job
         if (JobStack.Count > 0)
         {
             JobWasPopped = false;
+            JobWasStacked = false;
+            TaskWasFailed = false;
+
             Job job = JobStack.Peek();
-            if (job.lifeSpan < 0) job.Start();
-            if (!JobWasPopped) job.Tick();
+            if (job.wasStarted == false) job.Start();
+            if (!JobWasPopped && !JobWasStacked && !TaskWasFailed) job.Tick();
             return;
         }
+        // Add a fetch task job if no other job exists
         if (FetchDelay < 1 && JobStack.Count == 0 && JobQueue.Count == 0)
         {
             EnqueueJob(new FetchTask());
@@ -141,6 +151,7 @@ public class Rover : Entity
             //Debug.Log("Queue Fetchtask");
             return;
         }
+        // Dequeue a job if the stack is empty
         if (JobStack.Count == 0 && JobQueue.Count > 0)
         {
             StackJob(JobQueue.Dequeue());
@@ -151,46 +162,57 @@ public class Rover : Entity
 
     public void StackJob(Job job)
     { 
-        job.rover = this;
+        job.rover = this; 
         JobStack.Push(job);
+        JobWasStacked = true;
+
+        if(DebugEnabled) Debug.Log($"Rover Stacked Job: {job}");
     }
 
 
     public void PopJob()
     {
         if(JobStack.Count == 0) { return; }
-        JobStack.Pop();
+        var job = JobStack.Pop();
         JobWasPopped = true;
+
+        if (DebugEnabled) Debug.Log($"Rover Popped Job: {job}");
     }
 
     public void EnqueueJob(Job job)
     {
         job.rover = this;
         JobQueue.Enqueue(job);
+
+        if (DebugEnabled) Debug.Log($"Rover Enqueued Job: {job}");
     }
 
     public void TaskFailed()
-    { 
+    {  
         var taskToFail = ActiveTask;
         TaskManager.QueueTask(taskToFail);
         ActiveTask.rover = null;
         ClearTask();
         taskToFail.OnFailed?.Invoke(); 
-        //Debug.Log("Rover Failed Task");
+
+        TaskWasFailed = true;
+        if (DebugEnabled) Debug.Log($"Rover Failed Task: {taskToFail}");
     }
 
     public void TaskFinished()
-    { 
+    {
+        if (DebugEnabled) Debug.Log($"Rover Finished Task: {ActiveTask}");
+
         ActiveTask.OnCompleteCallback?.Invoke();
-        ClearTask();
-        //Debug.Log("Rover Finished Task");
+        ClearTask(); 
     }
 
     public void TaskCancelled()
-    { 
+    {
+        if (DebugEnabled) Debug.Log($"Rover Task Cancelled: {ActiveTask}");
+
         ActiveTask.OnCancelledCallback?.Invoke();
-        ClearTask();
-        //Debug.Log("Rover Cancelled Task");
+        ClearTask(); 
     }
 
     public void ClearTask()

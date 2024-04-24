@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class BatchRenderer : MonoBehaviour
@@ -7,6 +8,7 @@ public class BatchRenderer : MonoBehaviour
     public GizmoRenderer gizmoRenderer = new();
     BridgeRenderer platformRenderer = new();
     public ItemRenderer ItemRenderer { get { return GameManager.Instance.ItemRenderer; } }
+    ElectricalCoverageRenderer electricalCoverageRenderer = new();
 
     public void Init()
     {
@@ -14,12 +16,18 @@ public class BatchRenderer : MonoBehaviour
         platformRenderer.Init();
     }
 
+    public void Tick()
+    {
+        gizmoRenderer.Tick(); 
+    }
+
     public void Render()
     {
         wireRenderer.RenderAll();
-        gizmoRenderer.Tick();
         gizmoRenderer.Render();
         platformRenderer.RenderAll();
+
+        electricalCoverageRenderer.TryRender();
     } 
 
     public static void RenderChunkedMatrixArray(ChunkedMatrixArray chunkedMatrixArray, Mesh mesh, Material material)
@@ -110,4 +118,37 @@ public class GizmoRenderer
             Graphics.DrawMesh(GlobalData.Instance.gizmo_Axis, kvp.Key, Quaternion.identity, GlobalData.Instance.mat_PulsingGizmo, 0);
         }
     } 
+}
+
+
+public class ElectricalCoverageRenderer
+{
+    List<Electrical.Relay> Relays { get { return Electrical.SystemManager.relays; } }
+    ChunkedMatrixArray chunkedMatrixArray = new();
+
+    public static bool enabled = false;
+
+    public void TryRender()
+    {
+        if (enabled == false) return;
+
+        List<Vector3> coveredPositions = new();
+
+        foreach(var relay in Relays)
+        {
+            for (int x = -Electrical.Relay.connectionRange; x <= Electrical.Relay.connectionRange; x++)
+            {
+                for (int y = -Electrical.Relay.connectionRange; y <= Electrical.Relay.connectionRange; y++)
+                { 
+                    var pos = new Vector3(x + relay.Parent.position.x, 0.05f, y + relay.Parent.position.y);
+                    if (coveredPositions.Contains(pos)) { continue; }
+                    coveredPositions.Add(pos);
+                    var matrix = Matrix4x4.TRS(pos, Quaternion.identity, Vector3.one); 
+                    chunkedMatrixArray.QueueMatrix(matrix); 
+                }
+            }
+        }
+
+        BatchRenderer.RenderChunkedMatrixArray(chunkedMatrixArray, RenderData.Instance.TilePowerGizmo, RenderData.Instance.TransparentBlueGizmoMaterial);
+    }
 }

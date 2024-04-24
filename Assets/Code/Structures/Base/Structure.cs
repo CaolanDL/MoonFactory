@@ -15,12 +15,14 @@ public abstract class Structure : Entity
 
     public static List<Structure> Structures = new List<Structure>();
     public StructureData StructureData;
-    public DisplayObject DisplayObject = null;
-
+    public DisplayObject DisplayObject = null; 
 
     public enum PortType { Port, Input, Output }
     public Dictionary<TinyTransform, TinyTransform> WorldSpacePorts = new(); // lhs StructureData unput, output, or port local transform; rhs World space transformation
     public Dictionary<TinyTransform, PortType> WorldSpacePortTypes = new();
+
+    public SupplyPort SupplyPort;
+    public RequestPort RequestPort;
 
     public ManagedTask demolishTask = new();
     public bool flaggedForDemolition;
@@ -332,7 +334,7 @@ public abstract class Structure : Entity
     }
 }
 
-// http://www.jkfill.com/2010/12/29/self-registering-factories-in-c-sharp/
+// Reference: http://www.jkfill.com/2010/12/29/self-registering-factories-in-c-sharp/
 
 public static class StructureFactory
 {

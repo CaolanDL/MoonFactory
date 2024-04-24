@@ -36,11 +36,18 @@ namespace RoverTasks
 
         public void BuildJobs()
         {
+            jobs = SetJobs();
+
             if (jobs != null)
             {
                 EnqueueJobs(jobs);
             }
         }
+
+        public virtual List<Job> SetJobs()
+        {
+            return null;
+        } 
 
         public void EnqueueJob(Job job)
         {
@@ -125,15 +132,15 @@ namespace RoverTasks
      
     public class AutoPathfind : DebuggingTask
     {
-        public AutoPathfind()
-        {
+        public override List<Job> SetJobs()
+        { 
             var origin = (int2)rover.SmallTransform;
             var destination = (int2)rover.SmallTransform + new int2(20, 20);
             var path = PathFinder.FindPath(origin, destination);
 
-            if (path == null) { rover.TaskFailed(); Debug.Log("Auto Path Failed"); return; }
+            if (path == null) { rover.TaskFailed(); Debug.Log("Auto Path Failed"); return null; }
 
-            jobs = new List<Job>
+            return new List<Job>
             {
                  new TraversePath(path)
             };
@@ -158,11 +165,14 @@ namespace RoverTasks
 
         public BuildStructureTask(StructureGhost ghost)
         {
-            this.ghost = ghost;
+            this.ghost = ghost; 
+        }
 
-            jobs = new()
+        public override List<Job> SetJobs()
+        {
+            return new()
             {
-                new CollectAndDeliverOnlyIfAvailable(ghost.structureData.requiredResources, ghost.position),
+                new CollectDeliverExactly(ghost.structureData.requiredResources, ghost.position),
                 new BuildStructure(ghost),
                 new FinishTask()
             };
@@ -175,15 +185,18 @@ namespace RoverTasks
 
         public DemolishStructureTask(Structure structure)
         {
-            this.structure = structure; 
+            this.structure = structure;  
+        }
 
-            jobs = new()
+        public override List<Job> SetJobs()
+        {
+            return new()
             {
                 new GotoEntity(structure),
                 new DemolishStructure(structure),
                 new FinishTask()
             };
-        } 
+        }
     }
 
 
@@ -204,14 +217,17 @@ namespace RoverTasks
         public SoftRequestResourceTask(ResourceData resource, int quantity)
         {
             this.resource = resource;
-            this.quantity = quantity;
+            this.quantity = quantity; 
+        }
 
-            jobs = new()
+        public override List<Job> SetJobs()
+        {
+            return new()
             {
 
                 new FinishTask()
             };
-        } 
+        }
     }  
 
     // Mining Tasks Parent Class
