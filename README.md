@@ -3,7 +3,7 @@
 
 Take the role of a lunar satellite operator, and command an army of lunar rovers to construct a factory on the moon. Analyse research samples, unlock advanced machinery, construct your factory, and launch resources back to Earth to reignite industry and save civilisation as we know it!
 
-![Logo](thumbnail.png)
+![Logo](Thumbnail.png)
 
 ---
 
