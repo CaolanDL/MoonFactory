@@ -335,44 +335,33 @@ public abstract class Structure : Entity
 
 public static class StructureFactory
 {
-    public static Dictionary<string, Type> sTypeRegistry = BuildRegistry();
-
+    public static Dictionary<string, Type> sTypeRegistry = BuildRegistry(); 
     private static Dictionary<string, Type> BuildRegistry()
     {
-        Dictionary<string, Type> _registry = new();
-
-        Assembly currAssembly = Assembly.GetExecutingAssembly();
-
-        Type baseType = typeof(Structure);
-
+        Dictionary<string, Type> _registry = new(); 
+        Assembly currAssembly = Assembly.GetExecutingAssembly(); 
+        Type baseType = typeof(Structure); 
         foreach (Type type in currAssembly.GetTypes())
         {
             if (!type.IsClass || type.IsAbstract || !type.IsSubclassOf(baseType))
             {
                 continue;
-            }
-
-            Structure derivedStructure = Activator.CreateInstance(type) as Structure;
-
+            } 
+            Structure derivedStructure = Activator.CreateInstance(type) as Structure; 
             if (derivedStructure != null)
             {
-                Type structureType = derivedStructure.GetType();
-
+                Type structureType = derivedStructure.GetType(); 
                 _registry.Add(structureType.Name, structureType);
             }
-        }
-
+        } 
         return _registry;
     }
 
     public static Structure CreateStructure(StructureData structureData)
     {
-        Structure newStructure = (Structure)Activator.CreateInstance(sTypeRegistry[structureData.name]);
-
-        newStructure.StructureData = structureData;
-
-        newStructure.Initialise();
-
+        Structure newStructure = (Structure)Activator.CreateInstance(sTypeRegistry[structureData.name]); 
+        newStructure.StructureData = structureData; 
+        newStructure.Initialise(); 
         return newStructure;
     }
 }
