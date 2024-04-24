@@ -47,6 +47,9 @@ public class Machine : Structure
         }
         return false;
 
+
+        // Deprecated ->
+
         var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
         var entityAtLocation = worldGrid.GetEntityAt(position + (outputTransform.position.ToVector2().Rotate(rotation * 90).ToInt2()));
@@ -296,6 +299,12 @@ public class Machine : Structure
         bool inventoriesEmpty = true;
         foreach (var inventory in InputInventories) { if (inventory.totalItems > 0) { inventoriesEmpty = false; break; } }
         if (inventoriesEmpty) return false;
+
+        // Check if output inventory is full 
+        if (OutputInventories[0].GetMaxAcceptable(craftingResource) < craftingResource.quantityCrafted)
+        {
+            return false;
+        } 
 
         if (craftingResource == null) return false;
 

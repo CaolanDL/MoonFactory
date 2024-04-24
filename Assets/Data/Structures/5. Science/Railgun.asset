@@ -15,7 +15,7 @@ MonoBehaviour:
   screenname: Rail Gun
   description: A giant railgun for rapidly launching RTO Research Rockets into orbit
   category: 4
-  sprite: {fileID: 21300000, guid: 1c28f4e5179dbeb429c4351d429503ce, type: 3}
+  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
   displayObject: {fileID: 919132149155446097, guid: 681ff8ab2ed57404a92deb456d4073bd,
     type: 3}
   size:
@@ -25,7 +25,6 @@ MonoBehaviour:
   - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
     quantity: 25
   timeToBuild: 200
-  CraftingFormulas: []
   CraftableResources: []
   inputs:
   - position:

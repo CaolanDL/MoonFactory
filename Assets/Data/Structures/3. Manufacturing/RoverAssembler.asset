@@ -16,7 +16,7 @@ MonoBehaviour:
   description: A series of robotic arms that take base components and assemble them
     into more complex objects.
   category: 3
-  sprite: {fileID: 21300000, guid: 8e85eb680614ac943b562865413d0172, type: 3}
+  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: 0267362693b1c844181ee682b87f795a,
     type: 3}
   size:
@@ -26,7 +26,6 @@ MonoBehaviour:
   - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
     quantity: 10
   timeToBuild: 50
-  CraftingFormulas: []
   CraftableResources: []
   inputs:
   - position:

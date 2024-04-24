@@ -15,7 +15,7 @@ MonoBehaviour:
   screenname: Electrolisis Chamber
   description: Used to seperate compounds from mixtures with electrolisis
   category: 2
-  sprite: {fileID: 21300000, guid: 1c28f4e5179dbeb429c4351d429503ce, type: 3}
+  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: f90f03f25bd34f841b8ce06a75479fe3,
     type: 3}
   size:

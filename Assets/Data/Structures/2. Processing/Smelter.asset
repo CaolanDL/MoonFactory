@@ -15,7 +15,7 @@ MonoBehaviour:
   screenname: Smelter
   description: Used to smelt away oxidisation thus refining metals.
   category: 2
-  sprite: {fileID: 21300000, guid: 1c28f4e5179dbeb429c4351d429503ce, type: 3}
+  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: a03f8f56cf80859448ecb41583f8c0ed,
     type: 3}
   size:

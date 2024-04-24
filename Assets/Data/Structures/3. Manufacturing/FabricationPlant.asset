@@ -16,7 +16,7 @@ MonoBehaviour:
   description: A series of robotic arms that take base components and assemble them
     into more complex objects.
   category: 3
-  sprite: {fileID: 21300000, guid: 1c28f4e5179dbeb429c4351d429503ce, type: 3}
+  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: b58fdec4550037e4ab896c4e8c4e4ec7,
     type: 3}
   size:

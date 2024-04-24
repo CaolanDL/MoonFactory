@@ -249,6 +249,12 @@ public class PlayerInputManager : MonoBehaviour
                 {
                     var structure = (Structure)entity;
 
+                    if (DevFlags.InstantBuilding)
+                    {
+                        structure.Demolish();
+                        return;
+                    }
+
                     if (structure.flaggedForDemolition != true)
                     {
                         structure.FlagForDemolition();
@@ -256,12 +262,7 @@ public class PlayerInputManager : MonoBehaviour
                     else
                     {
                         structure.CancelDemolition();
-                    }
-
-                    if(DevFlags.InstantBuilding)
-                    {
-                        structure.Demolish();
-                    }
+                    } 
                 }
             }
 

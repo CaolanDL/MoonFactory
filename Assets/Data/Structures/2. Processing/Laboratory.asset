@@ -15,7 +15,7 @@ MonoBehaviour:
   screenname: Laboratory
   description: Used to cook meth, re-animate the dead, and also create silicon crystals
   category: 2
-  sprite: {fileID: 21300000, guid: 1c28f4e5179dbeb429c4351d429503ce, type: 3}
+  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: 58941b8c46ede5843a8fc37abee6cd42,
     type: 3}
   size:
