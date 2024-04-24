@@ -9,6 +9,7 @@ Take the role of a lunar satellite operator, and command an army of lunar rovers
 
 ### Controls
 WASD -> Move Camera \
+Mouse Scroll -> Zoom Camera
 Left Click -> Select \
 Right Click -> Cancel \
 R -> Rotate \
