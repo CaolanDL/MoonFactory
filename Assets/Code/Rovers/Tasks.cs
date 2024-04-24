@@ -71,6 +71,7 @@ namespace RoverTasks
         public bool onRover = false;
 
         public Action OnTaskAvailable;
+        public Action OnTaskComplete;
 
         public void TryCreateTask(Task task)
         {
@@ -104,6 +105,7 @@ namespace RoverTasks
             onRover = false;
 
             OnTaskAvailable?.Invoke();
+            OnTaskComplete?.Invoke();   
         }
 
         public void OnCancelled()

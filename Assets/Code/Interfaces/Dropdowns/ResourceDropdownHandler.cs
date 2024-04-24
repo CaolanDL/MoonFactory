@@ -11,7 +11,7 @@ public class ResourceDropdownHandler : MonoBehaviour
 
     List<TMP_Dropdown.OptionData> options = new();
 
-    Action<ResourceData> callbackAction;
+    public Action<ResourceData> callbackAction;
 
     private void Awake()
     {
@@ -40,6 +40,6 @@ public class ResourceDropdownHandler : MonoBehaviour
 
     public void OptionSelected(TMP_Dropdown dropdown)
     {
-        callbackAction.Invoke(resources[dropdown.value]);
+        callbackAction?.Invoke(resources[dropdown.value]);
     }
 }

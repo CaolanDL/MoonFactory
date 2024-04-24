@@ -47,7 +47,7 @@ public class Rover : Entity
     public bool TaskWasFailed = false;
     public int FetchDelay = 0;
 
-    public static bool DebugEnabled = true;
+    public static bool DebugEnabled = false;
 
     // Float transform for visual position
     public SmallTransform SmallTransform = new();

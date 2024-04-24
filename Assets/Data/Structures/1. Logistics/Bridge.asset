@@ -22,10 +22,9 @@ MonoBehaviour:
     x: 1
     y: 1
   requiredResources:
-  - resource: {fileID: 11400000, guid: 846496dfeac5afa4781a190aff293cc6, type: 2}
-    quantity: 1
+  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+    quantity: 10
   timeToBuild: 10
-  CraftingFormulas: []
   CraftableResources: []
   inputs: []
   outputs: []

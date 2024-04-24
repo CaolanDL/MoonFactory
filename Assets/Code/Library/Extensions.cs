@@ -2,6 +2,8 @@
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.UI.Image;
 
 /*using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
@@ -38,6 +40,19 @@ namespace ExtensionMethods
             int _x = Mathf.RoundToInt(i.x * Mathf.Cos(radian) - i.y * Mathf.Sin(radian));
             int _y = Mathf.RoundToInt(i.x * Mathf.Sin(radian) + i.y * Mathf.Cos(radian));
             return new int2(_x, _y);
+        }
+
+        public static float DistanceTo(this int2 origin, int2 target)
+        {
+            var a = origin.x - target.x;
+            var b = origin.y - target.y;
+
+            return Mathf.Sqrt((a * a) + (b * b));
+        }
+
+        public static int GridDistanceTo(this int2 origin, int2 target)
+        {
+            return Mathf.Abs(origin.x - target.x) + Mathf.Abs(origin.y - target.y);
         }
     }
 

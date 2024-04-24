@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SampleAnalyserInterface : StaticInterface
+public class SampleAnalyserInterface : StaticInterface, IResearchInterface
 {
     SampleAnalyser sampleAnalyser;
 
@@ -27,4 +27,14 @@ public class SampleAnalyserInterface : StaticInterface
 
         researchProgress.SetProgress(Mathf.PingPong(Time.fixedTime, 1));
     }
+
+    public IRequestResources GetIRequestResources()
+    {
+        return (IRequestResources)sampleAnalyser;
+    }
+}
+
+public interface IResearchInterface
+{
+    public IRequestResources GetIRequestResources();
 }

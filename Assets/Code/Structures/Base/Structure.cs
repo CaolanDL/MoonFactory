@@ -79,16 +79,13 @@ public abstract class Structure : Entity
 
     public void Constructed()
     {
-        GameObject newDisplayGameObject = UnityEngine.Object.Instantiate(StructureData.displayObject, position.ToVector3(), rotation.ToQuaternion(), GameManager.Instance.transform);
-
+        GameObject newDisplayGameObject = UnityEngine.Object.Instantiate(StructureData.displayObject, position.ToVector3(), rotation.ToQuaternion(), GameManager.Instance.transform); 
         DisplayObject = newDisplayGameObject.GetComponent<DisplayObject>();
 
-        RegisterWorldSpacePorts();
+        RegisterWorldSpacePorts(); 
+        ConnectOuputs(); 
 
-        ConnectOuputs();
-
-        OnConstructed();
-
+        OnConstructed(); 
         StructureConstructed?.Invoke(this);
 
         if (_electricalNode != null) { _electricalNode.Constructed(); }

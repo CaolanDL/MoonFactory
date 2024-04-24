@@ -80,7 +80,7 @@ namespace RoverJobs
                 if (superPath.Count > 1)
                 {
                     var resourcesToCollect = manifest.Orders[remainingPorts[0]];
-                    StackJob(new CollectResources(superPath.First().target, resourcesToCollect));
+                    StackJob(new CollectResources(remainingPorts[0], resourcesToCollect));
                     remainingPorts.RemoveAt(0);
                 }
 
@@ -90,7 +90,7 @@ namespace RoverJobs
             else
             {
                 PopJob();
-                StackJob(new DeliverResource(destination));
+                StackJob(new DeliverResources(destination, manifest.totalQuantities));
                 return;
             }
         }
@@ -100,6 +100,7 @@ namespace RoverJobs
     public class CollectionManifest
     {
         public List<SupplyPort> SupplyPorts = new();
+        public List<ResourceQuantity> totalQuantities = new();
         public Dictionary<SupplyPort, List<ResourceQuantity>> Orders = new();
 
         public void Add(SupplyPort supplyPort, ResourceQuantity resourceQuantity)
@@ -120,6 +121,15 @@ namespace RoverJobs
                 Orders.Add(supplyPort, new() { resourceQuantity });
             }
 
+            if (totalQuantities.Exists(rq => rq.resource == resourceQuantity.resource))
+            {
+                var existingEntry = totalQuantities.Find(rq => rq.resource == resourceQuantity.resource);
+                existingEntry.quantity += resourceQuantity.quantity;
+            }
+            else
+            {
+                totalQuantities.Add(resourceQuantity);
+            }
         }
 
         public void SortPortsByDistance(int2 origin)
@@ -139,7 +149,7 @@ namespace RoverJobs
                     supplyPort.ReserveResource(rq);
                 }
             }
-        }
+        } 
     }
 
 

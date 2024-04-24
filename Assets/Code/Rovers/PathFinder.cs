@@ -1,4 +1,5 @@
-﻿using Logistics;
+﻿using ExtensionMethods;
+using Logistics;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
@@ -85,8 +86,8 @@ public static class PathFinder
             // Store a list of current locations neighbors
             current.GetNeighbors().CopyTo(neighbors, 0);
 
-            // Increase cost as we get further from origin (Dijkstra’s  Algorithm)
-            float newCost = accumulatedCost[current] + 1; 
+            // Increase cost as we get further from origin
+             
 
             foreach (Location next in neighbors)
             {   
@@ -98,19 +99,41 @@ public static class PathFinder
                 // Block path conditions ->
                 if (IsTraversable(next) == false) continue;
                 // <-
+
+                float cost = accumulatedCost[current] + 1;
                  
-                // Apply hueristic
-                var priority = Hueristic(next) + newCost;
+                var grandparent = cameFrom[current];
+                if (grandparent != null)
+                {
+                    cost += grandparent.position.x == next.position.x
+                        || grandparent.position.y == next.position.y
+                        ? 0 : 1;
+                }
+
+                // Apply hueristic & accumulated cost 
+                var priority = Hueristic(next, current) + cost;
 
                 frontier.Enqueue(next, priority);
                 cameFrom.Add(next, current);
-                accumulatedCost.Add(next, newCost);
+                accumulatedCost.Add(next, cost);
             }
         }
 
-        float Hueristic(Location location)
+        float Hueristic(Location next, Location current)
         {
-            return Mathf.Abs(location.position.x - destination.x) + Mathf.Abs(location.position.y - destination.y);
+            var distanceFromDestination = Mathf.Abs(next.position.x - destination.x) + Mathf.Abs(next.position.y - destination.y);
+
+            // Turning cost 
+            int turnCost = 0; 
+            var grandparent = cameFrom[current];
+            if(grandparent != null)
+            {
+                turnCost = grandparent.position.x == next.position.x  
+                    || grandparent.position.y == next.position.y 
+                    ? 0 : 20;
+            }  
+
+            return distanceFromDestination + turnCost;
         }
 
         bool IsTraversable(Location location)
@@ -183,9 +206,9 @@ public static class PathFinder
         _worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
         Location location = _worldGrid.GetLocationAt(destination);
-        Location[] neighbors = location.GetNeighbors();
+        Location[] neighbors = location.GetNeighbors().OrderBy(x => x.position.GridDistanceTo(origin)).ToArray();
         List<Location> validNeighbors = new();
-        Path path = null;
+        Path path = null; 
 
         for (int i = 0; i < 5; i++)
         { 

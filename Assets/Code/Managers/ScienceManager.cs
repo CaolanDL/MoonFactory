@@ -14,7 +14,7 @@ public class ScienceManager
         Railgun
     }
 
-    Dictionary<Researcher, Dictionary<ResourceData, bool>> ResearchRegistries = new();
+    public Dictionary<Researcher, Dictionary<ResourceData, bool>> ResearchRegistries = new();
 
     Dictionary<Researcher, int> ResearchMultipliers = new()
     {

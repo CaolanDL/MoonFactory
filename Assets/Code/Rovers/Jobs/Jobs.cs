@@ -307,25 +307,29 @@ namespace RoverJobs
     {
         private StructureGhost targetGhost;
         private RequestPort targetPort;
+        private int2 target;
         private List<ResourceQuantity> resourcesToDeliver;
 
-        public DeliverResources(RequestPort target, List<ResourceQuantity> resourcesToDeliver)
+        public DeliverResources(int2 target, List<ResourceQuantity> resourcesToDeliver)
         {
-            targetPort = target;
+            this.target = target;
             this.resourcesToDeliver = resourcesToDeliver;
-        }
-        public DeliverResources(StructureGhost target, List<ResourceQuantity> resourcesToDeliver)
-        {
-            targetGhost = target;
-            this.resourcesToDeliver = resourcesToDeliver;
-        }
+        } 
 
         public override void OnStart()
         {
-            int2 target = new();
+            var entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(target);
 
-            if (targetPort != null) { target = targetPort.parent.position; }
-            if (targetGhost != null) { target = targetGhost.position; }
+            if (entity == null) { FailTask(); return; } 
+
+            if(entity.GetType() == typeof(StructureGhost))
+            {
+                targetGhost = (StructureGhost)entity;
+            }
+            if (entity.GetType().IsSubclassOf(typeof(Structure)) && ((Structure)entity).RequestPort != null)
+            {
+                targetPort = ((Structure)entity).RequestPort;
+            }
 
             StackJob(new TurnTowards(target));
         }
@@ -339,16 +343,20 @@ namespace RoverJobs
             {
                 foreach (var rq in resourcesToDeliver)
                 {
-                    targetPort.
+                    targetPort.SupplyResources(rq);
                 }
             }
             if (targetGhost != null)
             {
-
+                foreach (var rq in resourcesToDeliver)
+                {
+                    targetGhost.SupplyResources(rq);
+                }
             }
 
-            foreach (var rq in resourcesToDeliver)
-            { 
+            foreach(var rq in resourcesToDeliver)
+            {
+                rover.Inventory.RemoveResource(rq);
             }
 
             PopJob();

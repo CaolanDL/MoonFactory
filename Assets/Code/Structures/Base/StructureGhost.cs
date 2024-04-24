@@ -52,8 +52,9 @@ public class StructureGhost : Entity
 
         if (existingAmount >= neededAmount) { return remainder; }
 
-        var n = math.clamp(remainder, 0, neededAmount - existingAmount);
-        if (inventory.TryAddResource(resource, n)) { remainder -= n; }
+        var n = math.clamp(remainder, 0, neededAmount - existingAmount); 
+
+        remainder -= n;
         if (n <= 0) { return 0; }
 
         return remainder;

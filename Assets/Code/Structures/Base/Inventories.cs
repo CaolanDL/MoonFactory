@@ -200,6 +200,10 @@ public class Inventory // 56 bytes
         return true;
     }
 
+    public void RemoveResource(ResourceQuantity rq)
+    {
+        RemoveResource(rq.resource, rq.quantity);
+    }
     public void RemoveResource(ResourceData resource, int quantity)
     {
         var stack = GetStack(resource) ?? throw new Exception("Attempted to remove non existant resource from inventory");
