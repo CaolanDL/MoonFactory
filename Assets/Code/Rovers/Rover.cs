@@ -37,7 +37,7 @@ public class Rover : Entity
     public float MiningSpeed { get { return _MiningSpeed; } }
 
     public Inventory Inventory = new();
-    public RoverModule Module = RoverModule.Widget;
+    public RoverModule Module = RoverModule.None;
 
     public Task ActiveTask;
     public readonly Queue<Job> JobQueue = new Queue<Job>();
@@ -270,5 +270,8 @@ public class Rover : Entity
 
 public class Widget : Rover
 {
-
+    public Widget()
+    {
+        Module = RoverModule.Widget;
+    }
 }
