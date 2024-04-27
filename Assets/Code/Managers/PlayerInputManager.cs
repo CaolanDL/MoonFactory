@@ -70,16 +70,16 @@ public class PlayerInputManager : MonoBehaviour
     {
         isMouseOverUI = EventSystem.current.IsPointerOverGameObject();
 
-        if (GameManager.Instance.GameWorld == null)  return; 
+        if (GameManager.Instance.GameWorld == null) return;
 
-        HandleCameraControl();
+        HandleCameraMove();
 
         HandleHUDInpts();
 
         if (!isMouseOverUI)
         {
+            HandleCameraZoom();
             UpdateSpatialMousePosition();
-            
         }
 
         switch (inputState)
@@ -101,9 +101,20 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    public void HandleCameraControl()
+    public void GotoDefaultInputState()
     {
+        GameManager.Instance.HUDManager.MouseIconManager.SetActiveIcon(MouseIconManager.Icon.None);
+        ChangeInputState(InputState.Default);
+    }
 
+    public void HandleCameraMove()
+    {
+        cameraController.InputMove();
+    }
+
+    public void HandleCameraZoom()
+    {
+        cameraController.InputZoom();
     }
 
     public void HandleHUDInpts()
@@ -124,19 +135,10 @@ public class PlayerInputManager : MonoBehaviour
         {
             HUDManager.BulldozeButtonPressed();
         }
-    }
-
-
-    public void GotoDefaultInputState()
-    {
-        GameManager.Instance.HUDManager.MouseIconManager.SetActiveIcon(MouseIconManager.Icon.None);
-        ChangeInputState(InputState.Default);
-    }
+    } 
 
     public void HandleDefaultInput()
-    {
-        HandleCameraControl();
-
+    { 
         if (inputActions.DefaultControls.Pick.WasPressedThisFrame())
         {
             Entity entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(MouseGridPositon);
@@ -195,8 +197,7 @@ public class PlayerInputManager : MonoBehaviour
     }
 
     public void HandleConstructionInput()
-    {
-        HandleCameraControl();
+    { 
         RenderGizmoAtMouseTile();
 
         GameManager.Instance.HUDManager.MouseIconManager.SetActiveIcon(MouseIconManager.Icon.Build);

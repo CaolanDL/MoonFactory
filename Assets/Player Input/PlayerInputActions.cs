@@ -299,6 +299,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Scroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""560355ca-88d1-4f88-8c4d-3dc550478996"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": ""Scale(factor=0.0005)"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -354,6 +363,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PointDelta"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a6c6751-e8d9-4075-bbe1-c12b935afd02"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -495,6 +515,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UIControls_Click = m_UIControls.FindAction("Click", throwIfNotFound: true);
         m_UIControls_Point = m_UIControls.FindAction("Point", throwIfNotFound: true);
         m_UIControls_PointDelta = m_UIControls.FindAction("PointDelta", throwIfNotFound: true);
+        m_UIControls_Scroll = m_UIControls.FindAction("Scroll", throwIfNotFound: true);
         // HUD Controls
         m_HUDControls = asset.FindActionMap("HUD Controls", throwIfNotFound: true);
         m_HUDControls_BuildMenu = m_HUDControls.FindAction("Build Menu", throwIfNotFound: true);
@@ -688,6 +709,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UIControls_Click;
     private readonly InputAction m_UIControls_Point;
     private readonly InputAction m_UIControls_PointDelta;
+    private readonly InputAction m_UIControls_Scroll;
     public struct UIControlsActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -695,6 +717,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Click => m_Wrapper.m_UIControls_Click;
         public InputAction @Point => m_Wrapper.m_UIControls_Point;
         public InputAction @PointDelta => m_Wrapper.m_UIControls_PointDelta;
+        public InputAction @Scroll => m_Wrapper.m_UIControls_Scroll;
         public InputActionMap Get() { return m_Wrapper.m_UIControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -713,6 +736,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PointDelta.started += instance.OnPointDelta;
             @PointDelta.performed += instance.OnPointDelta;
             @PointDelta.canceled += instance.OnPointDelta;
+            @Scroll.started += instance.OnScroll;
+            @Scroll.performed += instance.OnScroll;
+            @Scroll.canceled += instance.OnScroll;
         }
 
         private void UnregisterCallbacks(IUIControlsActions instance)
@@ -726,6 +752,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PointDelta.started -= instance.OnPointDelta;
             @PointDelta.performed -= instance.OnPointDelta;
             @PointDelta.canceled -= instance.OnPointDelta;
+            @Scroll.started -= instance.OnScroll;
+            @Scroll.performed -= instance.OnScroll;
+            @Scroll.canceled -= instance.OnScroll;
         }
 
         public void RemoveCallbacks(IUIControlsActions instance)
@@ -831,6 +860,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnClick(InputAction.CallbackContext context);
         void OnPoint(InputAction.CallbackContext context);
         void OnPointDelta(InputAction.CallbackContext context);
+        void OnScroll(InputAction.CallbackContext context);
     }
     public interface IHUDControlsActions
     {

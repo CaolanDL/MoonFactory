@@ -65,10 +65,7 @@ public class CameraController : MonoBehaviour
     }
 
     private void Update()
-    {
-        InputZoom();
-        InputMove();
-
+    { 
         UpdateCameraGridPosition();
     }
 
@@ -94,7 +91,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void InputMove()
+    public void InputMove()
     {
         Vector2 inputVector = InputActions.CameraControls.Move.ReadValue<Vector2>();
 
@@ -108,7 +105,7 @@ public class CameraController : MonoBehaviour
         cameraOrigin.transform.position = position;
     }
 
-    void InputZoom()
+    public void InputZoom()
     {
         zoom += InputActions.CameraControls.Zoom.ReadValue<float>() * (zoom / 10); //zoomSpeed;
 
