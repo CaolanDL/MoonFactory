@@ -20,8 +20,8 @@ MonoBehaviour:
   displayObject: {fileID: 8149189864003149576, guid: 805b7a2ebf862fd449dbc4a7de5cd553,
     type: 3}
   size:
-    x: 3
-    y: 3
+    x: 1
+    y: 1
   requiredResources:
   - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
     quantity: 25
