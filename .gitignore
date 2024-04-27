@@ -70,4 +70,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-#cloc-2.00.exe
+cloc-2.00.exe
+cloc-2.00.exe.meta
