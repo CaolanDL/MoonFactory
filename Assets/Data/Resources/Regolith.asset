@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd942bfc70745c14eb6fe084aefa422c, type: 3}
+  m_Name: Regolith
+  m_EditorClassIdentifier: 
+  description: A sandy, sharp, soil-like substance that covers the lunar surface.
+  resourceCategory: 0
+  sprite: {fileID: 21300000, guid: ff8ba40d62f156847b738959faea070f, type: 3}
+  mesh: {fileID: -6129970598602713262, guid: 7a67a274b3b824a459cfe0fe16853c8e, type: 3}
+  material: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
+  Weight: 1
+  ResearchValue: 1
+  SecondsToResearch: 10
+  craftedIn: {fileID: 11400000, guid: dcdec8d0a3941b444bbe5f6ae58b6316, type: 2}
+  timeToCraft: 0
+  quantityCrafted: 0
+  requiredResources: []

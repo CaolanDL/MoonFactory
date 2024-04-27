@@ -1,13 +1,16 @@
 ﻿using RoverTasks;
+using System;
 using UnityEngine;
 
-public class SampleAnalyser : Structure, IRecieveResources, IRequestResources
+public class SampleAnalyser : Structure, IRecieveResources, IRequestResources, IDoResearch
 {
     ManagedTask RequestTask = new(); 
     ResourceData requestResource; 
     public ResourceData sample;
     public bool isResearching = false;
-    public int progress = 0; 
+    public float progress = 0;
+
+    public Action ResearchComplete { get; set; }
 
     public override void OnClicked(Vector3 mousePosition)
     {
@@ -25,21 +28,16 @@ public class SampleAnalyser : Structure, IRecieveResources, IRequestResources
 
         if (isResearching)
         {
-
+            DoResearch();
         }
-    }
-
-    void BeginResearch()
-    {
-        isResearching = true;
-    }
+    } 
 
     void DoResearch()
     {
-        progress += 1;
-        if(progress > sample.TicksToResearch)
+        progress += 1 / (sample.SecondsToResearch * 50f); 
+        if (progress >= 1)
         {
-            GameManager.Instance.ScienceManager.ResearchComplete(sample, ScienceManager.Researcher.Analyser);
+            FinishResearch();
         }
     }
 
@@ -52,16 +50,36 @@ public class SampleAnalyser : Structure, IRecieveResources, IRequestResources
     public void NewRequest()
     {
         if (RequestTask.taskExists) { RequestTask.CancelTask(); }
-        RequestTask.TryCreateTask(new RoverTasks.SoftRequestResourceTask(requestResource, 1));
+        RequestTask.TryCreateTask(new RoverTasks.SoftRequestResourceTask(requestResource, 1, position));
     }
 
     public void RecieveResources(ResourceData resource, int quantity)
-    { 
+    {
+        Debug.Log("sample recieved");
         sample = resource;
         BeginResearch();
     }
 
+    void BeginResearch()
+    {
+        isResearching = true;
+    }
 
+    void FinishResearch()
+    {
+        GameManager.Instance.ScienceManager.ResearchComplete(sample, ScienceManager.Researcher.Analyser);
+        progress = 0;
+        isResearching = false;
+        sample = null;
+        requestResource = null;
+
+        ResearchComplete?.Invoke();
+    }
+}
+
+public interface IDoResearch
+{
+    public Action ResearchComplete { get; set; }    
 }
 
 public interface IRecieveResources

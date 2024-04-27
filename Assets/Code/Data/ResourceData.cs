@@ -24,7 +24,7 @@ public class ResourceData : ScriptableObject
     [Header("Variables")]
     [SerializeField] public byte Weight = 1;
     [SerializeField] public int ResearchValue;
-    [SerializeField] public int TicksToResearch;
+    [SerializeField] public float SecondsToResearch = 10;
 
     [Header("Crafting")] 
     [Tooltip("Machine crafted in")] public StructureData craftedIn;

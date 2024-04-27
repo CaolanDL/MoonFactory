@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
         ConstructionManager.DrawGhosts();
 
         // Do Batch Rendering
-        FloorTileRenderer.Tick();
+        FloorTileRenderer.Render();
         BatchRenderer.Render();
         ItemRenderer.Tick(); 
 

@@ -1,4 +1,5 @@
 ﻿using Logistics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
@@ -97,6 +98,111 @@ namespace RoverJobs
     }
 
 
+    public class CollectResources : Job
+    {
+        private SupplyPort targetPort;
+        private List<ResourceQuantity> resourcesToCollect;
+
+        public CollectResources(SupplyPort target, List<ResourceQuantity> resourcesToCollect)
+        {
+            this.targetPort = target;
+            this.resourcesToCollect = resourcesToCollect;
+        }
+
+        public override void OnStart()
+        {
+            StackJob(new TurnTowards(targetPort.parent.position));
+        }
+
+        public override void OnTick()
+        {
+            // Play collection animation on rover
+            // Then run this ->
+
+            foreach (var rq in resourcesToCollect)
+            {
+                if (rover.Inventory.TryAddResource(rq) == false) { throw new Exception("Rover attempted to exceed inventory capacity"); }
+                targetPort.CollectResource(rq);
+            }
+
+            PopJob();
+        }
+    }
+
+
+    public class DeliverResources : Job
+    {
+        private StructureGhost targetGhost;
+        private RequestPort targetPort;
+        private IRecieveResources targetRequestor;
+        private int2 target;
+        private List<ResourceQuantity> resourcesToDeliver;
+
+        public DeliverResources(int2 target, List<ResourceQuantity> resourcesToDeliver)
+        {
+            this.target = target;
+            this.resourcesToDeliver = resourcesToDeliver;
+        }
+
+        public override void OnStart()
+        {
+            var entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(target);
+
+            if (entity == null) { FailTask(); return; }
+
+            if (entity.GetType() == typeof(StructureGhost))
+            {
+                targetGhost = (StructureGhost)entity;
+            }
+            else if (entity.GetType().IsSubclassOf(typeof(Structure)) && ((Structure)entity).RequestPort != null)
+            {
+                targetPort = ((Structure)entity).RequestPort;
+            }
+            else if (entity.GetType().GetInterfaces().Contains(typeof(IRecieveResources)))
+            {
+                targetRequestor = (IRecieveResources)entity;
+            }
+
+            StackJob(new TurnTowards(target));
+        }
+
+        public override void OnTick()
+        {
+            // Play delivery animation on rover
+            // Then run this ->
+
+            if (targetPort != null)
+            {
+                foreach (var rq in resourcesToDeliver)
+                {
+                    targetPort.SupplyResources(rq);
+                }
+            }
+            if (targetGhost != null)
+            {
+                foreach (var rq in resourcesToDeliver)
+                {
+                    targetGhost.SupplyResources(rq);
+                }
+            }
+            if (targetRequestor != null)
+            {
+                foreach (var rq in resourcesToDeliver)
+                {
+                    targetRequestor.RecieveResources(rq.resource, rq.quantity);
+                }
+            }
+
+            foreach (var rq in resourcesToDeliver)
+            {
+                rover.Inventory.RemoveResource(rq);
+            }
+
+            PopJob();
+        }
+    }
+
+
     public class CollectionManifest
     {
         public List<SupplyPort> SupplyPorts = new();
@@ -152,7 +258,7 @@ namespace RoverJobs
         } 
     }
 
-
+     
     public static class SupplyFinder
     { 
         public static CollectionManifest GenerateManifestExact(IEnumerable<ResourceQuantity> resourcesToFind, int2 origin)

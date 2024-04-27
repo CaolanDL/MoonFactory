@@ -440,6 +440,8 @@ namespace Electrical
             } 
             bestRelays.Sort(SortNodeByDistanceToSelf);
 
+            if (bestRelays.Count == 0) return; //? Unsure why this is needed? Bestrelays returns as empty when only one relay is nearby
+
             CreateConnectionTo(bestRelays[0]);
         }
     }

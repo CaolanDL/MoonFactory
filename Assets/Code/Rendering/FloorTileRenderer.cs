@@ -33,7 +33,7 @@ public class FloorTileRenderer : MonoBehaviour
         }
     }
 
-    public void Tick()
+    public void Render()
     {
         DrawVisibleFloorTiles();
     }
@@ -70,15 +70,11 @@ public class FloorTileRenderer : MonoBehaviour
             {
                 for (int j = 0; j < 2; j++)
                 { 
-                    (tileLocation.x, tileLocation.y) = (camGridPos.x + (x - y + j) , camGridPos.y + (y + x + 1) );
-
-                    //(tileLocation.x, tileLocation.y) = (camGridPos.x, camGridPos.y);
+                    (tileLocation.x, tileLocation.y) = (camGridPos.x + (x - y + j) , camGridPos.y + (y + x + 1) ); 
 
                     currentFloorTile = (FloorTile)gameWorld.floorGrid.GetEntityAt(tileLocation);
 
-                    if (currentFloorTile == null) { continue; }
-
-                    //DrawTile(currentFloorTile); //Deprecated
+                    if (currentFloorTile == null) { continue; } 
 
                     QueueTile();
                     tilesRenderedThisFrame++;

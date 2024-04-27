@@ -215,18 +215,20 @@ namespace RoverTasks
     {
         ResourceData resource;
         int quantity;
+        int2 destination;
 
-        public SoftRequestResourceTask(ResourceData resource, int quantity)
+        public SoftRequestResourceTask(ResourceData resource, int quantity, int2 destination)
         {
             this.resource = resource;
             this.quantity = quantity; 
+            this.destination = destination;
         }
 
         public override List<Job> SetJobs()
         {
             return new()
             {
-
+                new CollectAndDeliverAsManyAsPossible(new ResourceQuantity(resource, quantity), destination), 
                 new FinishTask()
             };
         }

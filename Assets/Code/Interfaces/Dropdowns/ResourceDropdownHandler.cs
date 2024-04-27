@@ -20,26 +20,38 @@ public class ResourceDropdownHandler : MonoBehaviour
 
     public void SetCallback(Action<ResourceData> callback)
     {
-        callbackAction = callback;
+        callbackAction = callback; 
     }
 
     public void Populate(List<ResourceData> _resources)
     {
         resources = _resources;
 
+        dropdown.value = -1;
+
         if (resources == null) { throw new Exception("No resouces given to resource dropdown"); }
 
         options.Clear();
 
+        options.Add(new(""));
+
         foreach (ResourceData resource in resources)
             options.Add(new(resource.name, resource.sprite));
 
+        
+
         dropdown.ClearOptions();
-        dropdown.AddOptions(options);
+        dropdown.AddOptions(options); 
     }
 
     public void OptionSelected(TMP_Dropdown dropdown)
-    {
-        callbackAction?.Invoke(resources[dropdown.value]);
+    {  
+        if(dropdown.value == 0)
+        {
+            return;
+        }
+        callbackAction?.Invoke(resources[dropdown.value - 1]);  
     }
+
+
 }

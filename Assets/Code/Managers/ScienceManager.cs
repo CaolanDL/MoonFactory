@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class ScienceManager
 {
-    public int SciencePoints = 0; 
+    public int SciencePoints = 0;
+
+    public Action<int> PointsAdded;
 
     public enum Researcher
     {
@@ -18,9 +20,9 @@ public class ScienceManager
 
     Dictionary<Researcher, int> ResearchMultipliers = new()
     {
-        { Researcher.Analyser, 1 },
-        { Researcher.Rocket, 4 },
-        { Researcher.Railgun, 16 },
+        { Researcher.Analyser, 10 },
+        { Researcher.Rocket, 40 },
+        { Researcher.Railgun, 160 },
     };
 
     public ScienceManager()
@@ -42,12 +44,13 @@ public class ScienceManager
         return ResearchRegistries[researcher][resource];
     } 
 
-    public Action SciencePointsAdded;
+
 
     public void ResearchComplete(ResourceData resource, Researcher researcher)
     {
         ResearchRegistries[researcher][resource] = true;
-        SciencePoints += resource.ResearchValue * ResearchMultipliers[researcher];
-        SciencePointsAdded?.Invoke();
+        SciencePoints += resource.ResearchValue * ResearchMultipliers[researcher]; 
+
+        PointsAdded?.Invoke(SciencePoints);
     }
 }

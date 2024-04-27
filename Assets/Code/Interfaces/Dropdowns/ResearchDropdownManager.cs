@@ -6,35 +6,47 @@ using UnityEngine;
 
 public class ResearchDropdownManager : MonoBehaviour
 {
-    ResourceDropdownHandler dropdownHandler; 
+    ResourceDropdownHandler dropdownHandler;
+    IResearchInterface researchInterface;
     [SerializeField] ScienceManager.Researcher researcher;
     public IRequestResources researchRequestor;
+    ResourceData requestResource;
 
-    public Action<ResourceData> SetRequestResourceAction;
-
-    private void Awake()
-    {
-        var researchInterface = GetComponentInParent<IResearchInterface>();
-        researchRequestor = researchInterface.GetIRequestResources(); 
-        dropdownHandler = GetComponent<ResourceDropdownHandler>();
-        dropdownHandler.SetCallback(SetRequestResourceAction);
-        SetRequestResourceAction += SetRequestResource;
-    }
+    public Action<ResourceData> SetRequestResourceAction; 
 
     private void Start()
     {
+        researchInterface = GetComponentInParent<IResearchInterface>();
+        researchRequestor = researchInterface.GetIRequestResources();
+        dropdownHandler = GetComponent<ResourceDropdownHandler>();
+
+        SetRequestResourceAction += ChangeResource;
+        researchInterface.researcher.ResearchComplete += SetOptions;
+        dropdownHandler.SetCallback(SetRequestResourceAction);
+
+        SetOptions();
+    }
+
+    private void OnDestroy()
+    {
+        researchInterface.researcher.ResearchComplete -= SetOptions;
+    }
+
+    void SetOptions()
+    {
         List<ResourceData> resourceDatas = new();
 
-        foreach(var entry in GameManager.Instance.ScienceManager.ResearchRegistries[researcher])
+        foreach (var entry in GameManager.Instance.ScienceManager.ResearchRegistries[researcher])
         {
-            if(entry.Value == false) { resourceDatas.Add(entry.Key); }
+            if (entry.Value == false) { resourceDatas.Add(entry.Key); }
         }
 
         dropdownHandler.Populate(resourceDatas);
-    } 
-
-    void SetRequestResource(ResourceData resource)
-    {
-        researchRequestor.SetRequest(resource);
     }
+
+    void ChangeResource(ResourceData resource)
+    { 
+        requestResource = resource;
+        researchRequestor.SetRequest(requestResource);
+    } 
 }

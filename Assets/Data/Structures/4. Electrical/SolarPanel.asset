@@ -20,15 +20,17 @@ MonoBehaviour:
   displayObject: {fileID: 8149189864003149576, guid: 805b7a2ebf862fd449dbc4a7de5cd553,
     type: 3}
   size:
-    x: 1
-    y: 1
+    x: 3
+    y: 3
   requiredResources:
   - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
     quantity: 25
   timeToBuild: 99
-  CraftingFormulas: []
+  CraftableResources: []
   inputs: []
   outputs: []
+  ports: []
   ghostMesh: {fileID: 6801496783033904975, guid: b0e34ba1add339148b5b7a41f8159220,
     type: 3}
   ghostModels: []
+  unlocked: 1

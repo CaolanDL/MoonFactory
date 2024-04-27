@@ -165,7 +165,7 @@ public class RequestPort : Port
         if (TargetResource == null) return;
         if ( ManagedTask.taskExists ) return;
 
-        ManagedTask.TryCreateTask(new SoftRequestResourceTask(TargetResource, TargetQuantity));
+        ManagedTask.TryCreateTask(new SoftRequestResourceTask(TargetResource, TargetQuantity, parent.position));
     }
 
     /// <returns>Remainder after maximum resources accepted</returns>

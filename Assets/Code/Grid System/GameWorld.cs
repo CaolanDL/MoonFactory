@@ -13,13 +13,13 @@ public class GameWorld
 
     public Grid worldGrid = new Grid();
 
-    private TerrainGenerator terrainGenerator;
+    public TerrainGenerator TerrainGenerator;
 
     public static Action WorldInstanciated;
 
     public GameWorld(int seed)
     {
-        terrainGenerator = new TerrainGenerator(seed);
+        TerrainGenerator = new TerrainGenerator(seed);
         WorldInstanciated?.Invoke();
     }
 
@@ -81,7 +81,7 @@ public class GameWorld
 
     public FloorTile GenerateFloorTile(int2 position)
     {
-        FloorTileData newTileData = terrainGenerator.GenerateTileAt(position);
+        FloorTileData newTileData = TerrainGenerator.GenerateTileAt(position);
 
         FloorTile newFloorTile = new(newTileData);
 
@@ -339,7 +339,7 @@ public class Location // Size: 17 bytes
     public Entity RemoveEntity()
     {
         var entityToRemove = entity;
-        Grid.GetGrid(gridId).entities.Remove(entity);
+        Grid.GetGrid(gridId).entities.Remove(entity); 
         entity = null;
         return entityToRemove;
     }

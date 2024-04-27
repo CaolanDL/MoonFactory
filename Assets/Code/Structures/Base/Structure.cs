@@ -89,6 +89,28 @@ public abstract class Structure : Entity
         StructureConstructed?.Invoke(this);
 
         if (_electricalNode != null) { _electricalNode.Constructed(); }
+
+        FlattenTerrain();
+    }
+
+    void FlattenTerrain()
+    {
+        var occupyingLocations = GetOccupyingLocations();
+        var floorGrid = GameManager.Instance.GameWorld.floorGrid;
+
+        Debug.Log(occupyingLocations.Count);
+
+        foreach (var location in occupyingLocations)
+        {
+            var floorLocation = floorGrid.GetLocationAt(location.position);
+
+            if (location == null) { continue; } 
+            if (floorLocation == null) { continue; } 
+
+            floorLocation.RemoveEntity();
+            var newTile = new FloorTile(GameManager.Instance.GameWorld.TerrainGenerator.GenerateTopographyTile(position));
+            floorGrid.AddEntity(newTile, floorLocation.position);
+        } 
     }
 
     public void Demolish()
