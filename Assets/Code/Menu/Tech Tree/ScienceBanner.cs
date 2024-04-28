@@ -9,7 +9,7 @@ public class ScienceBanner : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.ScienceManager.PointsAdded += SetPoints;
+        GameManager.Instance.ScienceManager.PointsChanged += SetPoints;
     }
 
     void SetPoints(int points)

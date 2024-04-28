@@ -7,7 +7,7 @@ public class ScienceManager
 {
     public int SciencePoints = 0;
 
-    public Action<int> PointsAdded;
+    public Action<int> PointsChanged;
 
     public enum Researcher
     {
@@ -42,15 +42,19 @@ public class ScienceManager
     public bool IsResearchedIn(ResourceData resource, Researcher researcher)
     {
         return ResearchRegistries[researcher][resource];
-    } 
-
-
+    }  
 
     public void ResearchComplete(ResourceData resource, Researcher researcher)
     {
         ResearchRegistries[researcher][resource] = true;
         SciencePoints += resource.ResearchValue * ResearchMultipliers[researcher]; 
 
-        PointsAdded?.Invoke(SciencePoints);
+        PointsChanged?.Invoke(SciencePoints);
+    }
+
+    public void RemovePoints(int points)
+    {
+        SciencePoints -= points;
+        PointsChanged?.Invoke(SciencePoints);
     }
 }

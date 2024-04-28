@@ -11,8 +11,9 @@ public class HUDManager : MonoBehaviour
     [SerializeField] public GameObject MapMenu;
 
     [SerializeField] public MouseIconManager MouseIconManager;
-     
-    public StaticInterface openInterface; 
+
+    [SerializeField] Transform interfaceParent;
+    public StaticInterface openInterface;
 
     private void Start()
     {
@@ -25,7 +26,7 @@ public class HUDManager : MonoBehaviour
     {
         if(openInterface != null) { CloseInterface(); }
 
-        openInterface = Instantiate(interfacePrefab, transform).GetComponent<StaticInterface>();
+        openInterface = Instantiate(interfacePrefab, interfaceParent).GetComponent<StaticInterface>();
         openInterface.Init(entity, screenPosition + (Vector3.right * 20));
 
         return true;

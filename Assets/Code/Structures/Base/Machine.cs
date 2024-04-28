@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using ExtensionMethods;
 using Logistics;
 using UnityEngine; 
@@ -18,6 +18,7 @@ public class Machine : Structure
         for (int i = 0; i < StructureData.inputs.Count; i++) { InputInventories[i] = new(); }
         for (int i = 0; i < StructureData.outputs.Count; i++) { OutputInventories[i] = new(); }
 
+        AddPort();
         SetupCrafting(); 
     }
 
@@ -30,7 +31,14 @@ public class Machine : Structure
     public override void OnClicked(Vector3 mousePosition)
     {
         OpenInterfaceOnHUD(MenuData.Instance.CraftingMachineInterface, mousePosition);
-    } 
+    }
+
+    // Add supply request port components
+    private void AddPort()
+    {
+        SupplyPort = new(this);
+        SupplyPort.AddInventories(OutputInventories.ToList());
+    }
 
     // Input Output //
     #region Input Output 

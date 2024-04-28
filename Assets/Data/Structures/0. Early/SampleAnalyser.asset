@@ -21,7 +21,9 @@ MonoBehaviour:
   size:
     x: 1
     y: 1
-  requiredResources: []
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 846496dfeac5afa4781a190aff293cc6, type: 2}
+    quantity: 1
   timeToBuild: 99
   CraftableResources: []
   inputs: []

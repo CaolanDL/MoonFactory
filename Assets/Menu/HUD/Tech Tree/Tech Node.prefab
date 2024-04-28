@@ -467,11 +467,12 @@ GameObject:
   - component: {fileID: 7545035983192474914}
   - component: {fileID: 576573735608956506}
   - component: {fileID: 1433013036042146411}
+  - component: {fileID: 8819955643276722234}
   - component: {fileID: 4820875023260578763}
   - component: {fileID: 6169554855516456224}
   - component: {fileID: 2344999074332822790}
   m_Layer: 5
-  m_Name: ResearchNode
+  m_Name: Tech Node
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -521,8 +522,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae701904d81d8d54b99ac781003d58e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextNodes: []
-  Locked: 1
+  Tech: {fileID: 0}
+  Cost: 0
+  Connection: {fileID: 0}
+  background: {fileID: 4820875023260578763}
+  button: {fileID: 6169554855516456224}
+  techSprite: {fileID: 8995931590267244069}
+  nameText: {fileID: 4041861439163488220}
+  costText: {fileID: 1371685560320354590}
+--- !u!114 &8819955643276722234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5115399455850921260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12a6807508fdfda4caf6670941a97119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnPressed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1433013036042146411}
+        m_TargetAssemblyTypeName: TechTreeNode, Assembly-CSharp
+        m_MethodName: TryUnlock
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4820875023260578763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -586,7 +620,7 @@ MonoBehaviour:
       type: 3}
     m_PressedSprite: {fileID: 21300000, guid: 4fb50c756b2b00244a69bde9ceab5215, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 054d497f9be1b7e439b2c2322f43b4b9, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -597,7 +631,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4820875023260578763}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8819955643276722234}
+        m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
+        m_MethodName: WhenPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2344999074332822790
 MonoBehaviour:
   m_ObjectHideFlags: 0

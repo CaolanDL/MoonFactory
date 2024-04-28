@@ -6,9 +6,26 @@ public class TechTreeController : MonoBehaviour
 {
     [SerializeField] TechTreeNode FirstNode;
 
+    [Header("Node Colors")]
+    [SerializeField] public Color Unlocked;
+    [SerializeField] public Color Available;
+    [SerializeField] public Color Locked;
+
+    public Dictionary<TechTreeNode.State, Color> StateColors;
 
     private void Awake()
     {
-        //FirstNode.Unlock();
+        StateColors = new()
+        {
+            { TechTreeNode.State.Unlocked, Unlocked },
+            { TechTreeNode.State.Available, Available },
+            { TechTreeNode.State.Locked, Locked }
+        }; 
+    }
+
+    private void Start()
+    {
+        FirstNode.ChangeState(TechTreeNode.State.Available);
+        FirstNode.TryUnlock();
     }
 }
