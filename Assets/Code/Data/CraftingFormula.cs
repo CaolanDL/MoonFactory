@@ -21,6 +21,6 @@ public class CraftingFormula : ScriptableObject
     public void Unlock()
     {
         unlocked = true;
-        GlobalData.Instance.unlocked_CraftingFormulas.Add(this);
+        //GlobalData.Instance.unlocked_CraftingFormulas.Add(this);
     }
 } 

@@ -138,7 +138,7 @@ public class SupplyPort : Port
             int reservedQuantity = inventory.reservedResources[resourcesToFree.resource]; 
 
             if (reservedQuantity == 0) continue; 
-            var quantityToFree = Mathf.Clamp(reservedQuantity, 0, resourcesToFree.quantity);
+            var quantityToFree = Mathf.Clamp(resourcesToFree.quantity, 0, reservedQuantity);
 
             inventory.FreeResource(resourcesToFree.resource, quantityToFree);
             if(removeResources) inventory.RemoveResource(resourcesToFree.resource, quantityToFree);
@@ -147,6 +147,7 @@ public class SupplyPort : Port
             if (resourcesToFree.quantity <= 0) { return; }
         }
     }
+
 
     public void CollectResource(ResourceQuantity resourceQuantity)
     {

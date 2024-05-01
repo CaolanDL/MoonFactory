@@ -56,7 +56,7 @@ public class Machine : Structure
         return false;
 
 
-        // Deprecated ->
+/*        // Deprecated ->
 
         var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
@@ -99,7 +99,7 @@ public class Machine : Structure
             }
         }
 
-        return false;
+        return false;*/
     }
 
     public bool TryOutputItemFromInventory(ResourceData resource, int outputIndex)

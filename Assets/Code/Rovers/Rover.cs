@@ -15,12 +15,7 @@ public enum RoverModule
     Construction,
     Mining,
     Widget
-}
-
-
-//? There is something going wrong when cancelling tasks that a rover is actively completing. 
-//? The rover halts and blocks new tasks from being accepted by itself and other rovers.
-//? Other rovers will begin to accept new tasks once an unkown number tasks have been added, but the issue rover will never move again.
+} 
 
 public class Rover : Entity
 {

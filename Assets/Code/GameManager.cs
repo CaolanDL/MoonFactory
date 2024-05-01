@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public RoverManager RoverManager;
     public TaskManager TaskManager;
     public Electrical.SystemManager ElectricalSystemManager;
+    public AssetWarmer AssetWarmer;
 
     // Menu Instances
     public HUDManager HUDManager;
@@ -72,6 +73,10 @@ public class GameManager : MonoBehaviour
 
         BatchRenderer = GetComponent<BatchRenderer>();
         BatchRenderer.Init();
+
+        AssetWarmer = new();
+        AssetWarmer.Warmup();
+        AssetWarmer = null;
     }
 
     private void Start()
@@ -244,10 +249,10 @@ public class GameManager : MonoBehaviour
         {
             i.Unlock();
         }
-        foreach (CraftingFormula i in GlobalData.CraftingFormulas)
+/*        foreach (CraftingFormula i in GlobalData.CraftingFormulas)
         {
             i.Unlock();
-        }
+        }*/
     }
 
     public void AddLifespanGizmo(Vector3 worldPosition, int lifespan)

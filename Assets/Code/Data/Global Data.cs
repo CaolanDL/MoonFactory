@@ -19,8 +19,8 @@ public class GlobalData : ScriptableObject
     [SerializeField] public List<ResourceData> Resources;
     [NonSerialized] public List<ResourceData> unlocked_Resources = new();
 
-    [SerializeField] public List<CraftingFormula> CraftingFormulas;
-    [NonSerialized] public List<CraftingFormula> unlocked_CraftingFormulas = new();
+/*    [SerializeField] public List<CraftingFormula> CraftingFormulas;
+    [NonSerialized] public List<CraftingFormula> unlocked_CraftingFormulas = new();*/
 
 
     [Space(8), Header("Global Materials")]
