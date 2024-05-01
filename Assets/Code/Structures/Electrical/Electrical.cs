@@ -2,11 +2,12 @@
 using UnityEngine.PlayerLoop;
 
 public class PowerPylon : Structure
-{  
-    public override void OnConstructed()
+{
+    public override void OnInitialise()
     {
+        base.OnInitialise();
         ElectricalNode = new Electrical.Relay();
-    }
+    } 
 
     public override void OnClicked(Vector3 mousePosition)
     {
@@ -18,13 +19,13 @@ public class SolarPanel : Structure
 {
     Electrical.Input ElectricalInput;
 
-    public override void OnConstructed()
+    public override void OnInitialise()
     {
+        base.OnInitialise();
         ElectricalNode = new Electrical.Input();
         ElectricalInput = (Electrical.Input)ElectricalNode;
-
         ElectricalInput.MaxProduction = 100;
-    }
+    } 
 
     public override void OnTick()
     {

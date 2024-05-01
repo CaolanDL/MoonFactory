@@ -15,14 +15,14 @@ public class SingleStackInventoryElement : MonoBehaviour
 
     public void UpdateDisplay()
     {
-        if(resourceStack == null)
+        maxItems.SetText("/" + inventory.maxItems.ToString());
+        if (resourceStack == null)
         {
             image.sprite = MenuData.Instance.emptySprite;
-            counter.SetText($"<size=62%> Max {inventory.maxItems.ToString()}");
+            counter.SetText("0"); 
             return;
-        }
-
+        } 
         image.sprite = resourceStack.resource.sprite;
-        counter.SetText($"{resourceStack.quantity.ToString()}<size=62%> / {inventory.maxItems.ToString()}"); 
+        counter.SetText(resourceStack.quantity.ToString()); 
     } 
 }

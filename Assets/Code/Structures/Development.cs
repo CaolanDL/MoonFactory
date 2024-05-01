@@ -16,6 +16,10 @@ public class DebugOutput : Machine
         OutputInventories[0].maxWeight = 1;
 
         FillInventory();
+
+        //This sucks. Please refactor crafting to sub class of machine, then have hoppers and debug outputs just inherit from machine.
+        SupplyPort.Delete();
+        SupplyPort = null;
     }
 
     static float OutputInterval = 0.5f;

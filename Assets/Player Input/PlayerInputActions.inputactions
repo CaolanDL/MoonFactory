@@ -436,17 +436,6 @@
                 },
                 {
                     "name": "",
-                    "id": "96482e32-9831-4ca8-8915-72c71776c640",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Science Menu",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "1ba85804-2135-4acd-8ae6-5eaa2d5ace91",
                     "path": "<Keyboard>/x",
                     "interactions": "",

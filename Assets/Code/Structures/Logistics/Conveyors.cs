@@ -59,6 +59,12 @@ namespace Logistics
             int index = Mathf.CeilToInt((float)distance / Conveyor.Length) - 1;
             return chain.conveyors[index];
         }
+        public int GetConveyorIndex(Chain chain)
+        {
+            if (distance < Conveyor.Length) { return 0; }
+            int index = Mathf.CeilToInt((float)distance / Conveyor.Length) - 1;
+            return index;
+        }
 
         public Vector2 GetWorldPosition(Chain chain)
         {
@@ -296,16 +302,23 @@ namespace Logistics
 
         public void RemoveConveyor(Conveyor conveyor)
         {
-            DeleteItemsOnConveyor(conveyor);
+            Debug.Log("Removed Conveyor");
 
-            if (conveyors.IndexOf(conveyor) == 0 || conveyors.IndexOf(conveyor) == conveyors.Count - 1)
+            DeleteItemsOnConveyor(conveyor); 
+
+            if (conveyors.IndexOf(conveyor) == 0)
+            {
+                foreach(var item in items)
+                {
+                    item.distance -= Conveyor.Length;
+                }
+                conveyors.Remove(conveyor);
+            }
+            else if (conveyors.IndexOf(conveyor) == conveyors.Count - 1)
             {
                 conveyors.Remove(conveyor);
             }
-            else
-            {
-                Split(conveyor);
-            }
+            else Split(conveyor); 
         }
 
         void DeleteItemsOnConveyor(Conveyor conveyor)
@@ -323,11 +336,52 @@ namespace Logistics
         }
 
         public void Split(Conveyor conveyor)
-        {
-            //todo Add conveyor splitting logic here ASAP
-            //? Putting a red comment here to just get you to hurry up and do this.
+        {   
+            var aItems = new List<Item>();
+            var bItems = new List<Item>();
 
-            conveyors.Remove(conveyor);
+            int indexOfConveyor = conveyors.IndexOf(conveyor);
+
+            foreach(var item in items)
+            {
+                var itemConveyorIndex = item.GetConveyorIndex(this);    
+                if (itemConveyorIndex < indexOfConveyor)
+                {
+                    aItems.Add(item);
+                }
+                if (itemConveyorIndex > indexOfConveyor)
+                {
+                    bItems.Add(item);
+                }
+            } 
+
+            var aConveyors = conveyors.GetRange(0, indexOfConveyor);
+            var bConveyors = conveyors.GetRange(indexOfConveyor+1, conveyors.Count - indexOfConveyor - 1);
+
+            var aChain = new Chain();
+            aChain.conveyors = aConveyors;
+            aChain.items = aItems;
+            foreach (var c in aChain.conveyors) c.parentChain = aChain;
+
+            var bChain = new Chain();
+            bChain.conveyors = bConveyors;
+            bChain.items = bItems;
+            foreach(var c in bChain.conveyors) c.parentChain = bChain;
+            foreach (var item in bChain.items)
+            {
+                item.distance -= (indexOfConveyor+1) * Conveyor.Length;
+                //Debug.Log(item.distance);
+            }
+
+            conveyors[indexOfConveyor + 1].lastConveyor = null;
+            conveyors[indexOfConveyor - 1].nextConveyor = null;
+
+            items.Clear();
+            conveyors.Clear();
+            ChainManager.chains.Remove(this);
+
+            bChain.Update();
+            aChain.Update();
         }
 
         public void MergeWith(Chain otherChain, bool isChainInfront)

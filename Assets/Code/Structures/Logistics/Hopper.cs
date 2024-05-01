@@ -20,11 +20,14 @@ namespace Logistics
 
         public override void OnInitialise()
         {
-            base.OnInitialise(); 
-        } 
+            //base.OnInitialise();
 
-        public override void OnConstructed()
-        {
+            InputInventories = new Inventory[1];
+            OutputInventories = new Inventory[1];
+
+            InputInventories[0] = new Inventory();
+            OutputInventories[0] = new Inventory();
+
             inputInventory = InputInventories[0];
             storageInventory = OutputInventories[0];
 
@@ -33,13 +36,16 @@ namespace Logistics
             storageInventory.maxItems = maxItems;
             storageInventory.maxWeight = int.MaxValue;
 
-            AddPorts();
-
             pool.Add(this);
+        } 
+
+        public override void OnConstructed()
+        {
+            
         }
 
         // Add supply request port components
-        private void AddPorts()
+        public override void AddPorts()
         {
             SupplyPort = new(this);
             RequestPort = new(this);
@@ -62,9 +68,9 @@ namespace Logistics
         // This item rendering could be modified to update an array OnItemRecieved and OnItemOutput to reduce per frame overhead
         public override void OnFrameUpdate()
         {
-            if (OutputInventories[0].totalItems > 0)
+            if (storageInventory.totalItems > 0)
             {
-                for (int i = 0; i < OutputInventories[0].totalItems; i += renderGap)
+                for (int i = 0; i < storageInventory.totalItems; i += renderGap)
                 {
                     var n = i / renderGap;
                     DrawResourceAtIndex(n);

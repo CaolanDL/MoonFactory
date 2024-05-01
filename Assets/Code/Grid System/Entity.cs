@@ -64,8 +64,8 @@ public class Entity // 12 bytes
             yRange.y = temp;
         }
 
-        Debug.Log(xRange);
-        Debug.Log(yRange);
+        //Debug.Log(xRange);
+        //Debug.Log(yRange);
 
         return (xRange, yRange);
     }
@@ -100,7 +100,7 @@ public class Entity // 12 bytes
         {
             for (var y = yRange.x; y < yRange.y; y++)
             {
-                Debug.Log($"{x}, {y}");
+                //Debug.Log($"{x}, {y}");
                 list.Add(GameManager.Instance.GameWorld.worldGrid.GetLocationAt(new int2(x, y)));
             }
         }

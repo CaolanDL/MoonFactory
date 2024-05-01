@@ -54,5 +54,14 @@ public struct ResourceQuantity
         this.resource = resource;
         this.quantity = quantity;
     }
+
+    public static bool operator ==(ResourceQuantity a, ResourceQuantity b)
+    {
+        return a.resource == b.resource && a.quantity == b.quantity;
+    }
+    public static bool operator !=(ResourceQuantity a, ResourceQuantity b)
+    {
+        return !(a.resource == b.resource && a.quantity == b.quantity);
+    }
 }
 

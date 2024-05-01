@@ -20,5 +20,6 @@ public class CraftingDropdownManager : MonoBehaviour
     private void Start()
     {
         dropdownHandler.Populate(machineInterface.GetCraftableResources());
+        dropdownHandler.SetSelected(machineInterface.machine.craftingResource);
     }
 }

@@ -41,9 +41,14 @@ namespace RoverJobs
 
         public override void OnStart()
         {
-            var manifest = SupplyFinder.GenerateManifestExact(resourcesToFind, rover.GridPosition);
-            Debug.Log("Started Collect & Deliver Exactly");
+            var manifest = SupplyFinder.GenerateManifestExact(resourcesToFind, rover.GridPosition);  
+
             if (manifest.Orders.Count == 0) { FailTask(); return; }
+
+            var rtfList = resourcesToFind.ToList();
+            foreach(var rq in manifest.totalQuantities)
+                if (rtfList.Exists(x => x.resource == rq.resource && x.quantity == rq.quantity) == false) { FailTask(); Debug.Log("Failed to generate manifest"); return; }
+
             PopJob();
             StackJob(new ExcecuteCollectAndDeliver(manifest, destination));
         }
@@ -71,6 +76,7 @@ namespace RoverJobs
             superPath = PathFinder.FindSuperPath(rover.GridPosition, manifest.SupplyPorts.Select(p => p.parent.position).ToArray());
             if (superPath == null || superPath.Count == 0) { FailTask(); return; }
             superPath.AddLast(PathFinder.FindPathToAnyFreeNeighbor(superPath.Last().nodes.Last(), destination));
+
             manifest.ReserveResources();
         }
 
@@ -212,10 +218,10 @@ namespace RoverJobs
         public void Add(SupplyPort supplyPort, ResourceQuantity resourceQuantity)
         {
             if (SupplyPorts.Contains(supplyPort))
-            {
-                // I hate this doubling of code but I cant seem to find a better way with Unity c# :(
+            { 
                 if (Orders[supplyPort].Exists(rq => rq.resource == resourceQuantity.resource))
                 {
+                    // I hate this doubling of code but Unity c# doesn't have TryFind with out :(
                     var existingEntry = Orders[supplyPort].Find(rq => rq.resource == resourceQuantity.resource);
                     existingEntry.quantity += resourceQuantity.quantity;
                 }
@@ -229,8 +235,9 @@ namespace RoverJobs
 
             if (totalQuantities.Exists(rq => rq.resource == resourceQuantity.resource))
             {
-                var existingEntry = totalQuantities.Find(rq => rq.resource == resourceQuantity.resource);
-                existingEntry.quantity += resourceQuantity.quantity;
+                // I hate this doubling of code but Unity c# doesn't have TryFind with out :(
+                var entryIndex = totalQuantities.FindIndex(rq => rq.resource == resourceQuantity.resource);
+                totalQuantities[entryIndex] = new ResourceQuantity(totalQuantities[entryIndex].resource, totalQuantities[entryIndex].quantity + resourceQuantity.quantity);
             }
             else
             {
@@ -272,6 +279,11 @@ namespace RoverJobs
                 SearchPortsAndFillManifest(supplyPorts, manifest, rq); 
             } 
             manifest.SortPortsByDistance(origin);
+
+            foreach(var val in manifest.totalQuantities)
+            {
+                Debug.Log($"{val.resource} : {val.quantity}");
+            }
             return manifest;
         }  
 
@@ -289,17 +301,20 @@ namespace RoverJobs
         static void SearchPortsAndFillManifest(List<SupplyPort> supplyPortsToSearch, CollectionManifest manifestToFill, ResourceQuantity resourceQuantity)
         {
             int remaining = resourceQuantity.quantity;
+            Debug.Log($"Looking for {remaining} {resourceQuantity.resource}s");
             foreach (SupplyPort supplyPort in supplyPortsToSearch)
             {
                 int quantityAvailable = supplyPort.GetUnreservedQuantity(resourceQuantity.resource);
                 if (quantityAvailable <= 0) continue;
+                var quantityTakeable = Mathf.Clamp(quantityAvailable, 0, remaining);
 
-                var newRQ = new ResourceQuantity(resourceQuantity.resource, Mathf.Clamp(quantityAvailable, 0, remaining));
+                var newRQ = new ResourceQuantity(resourceQuantity.resource, quantityTakeable);
                 manifestToFill.Add(supplyPort, newRQ);
 
-                remaining -= quantityAvailable;
+                remaining -= quantityTakeable;
                 if (remaining <= 0) { break; }
             }
+            Debug.Log($"Found {resourceQuantity.quantity - remaining}");
         } 
 
         static List<SupplyPort> FindAllPortsContaining(IEnumerable<ResourceQuantity> resourcesToFind)

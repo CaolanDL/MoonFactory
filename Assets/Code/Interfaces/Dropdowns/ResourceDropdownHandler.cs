@@ -23,6 +23,11 @@ public class ResourceDropdownHandler : MonoBehaviour
         callbackAction = callback; 
     }
 
+    public void SetSelected(ResourceData resource)
+    {
+        dropdown.value = resources.IndexOf(resource)+1;
+    }
+
     public void Populate(List<ResourceData> _resources)
     {
         resources = _resources;

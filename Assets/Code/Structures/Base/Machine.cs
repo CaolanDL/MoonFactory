@@ -17,14 +17,14 @@ public class Machine : Structure
 
         for (int i = 0; i < StructureData.inputs.Count; i++) { InputInventories[i] = new(); }
         for (int i = 0; i < StructureData.outputs.Count; i++) { OutputInventories[i] = new(); }
+         
+        SetupCrafting();
 
-        AddPort();
-        SetupCrafting(); 
+        ElectricalNode = new Electrical.Sink();
     }
 
     public override void OnConstructed()
-    {
-        ElectricalNode = new Electrical.Sink();
+    { 
         base.OnConstructed(); 
     }
 
@@ -34,7 +34,7 @@ public class Machine : Structure
     }
 
     // Add supply request port components
-    private void AddPort()
+    public override void AddPorts()
     {
         SupplyPort = new(this);
         SupplyPort.AddInventories(OutputInventories.ToList());
@@ -550,6 +550,4 @@ public class Machine : Structure
         } */
 
     #endregion
-     
-
 }

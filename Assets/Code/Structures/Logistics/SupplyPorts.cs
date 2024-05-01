@@ -34,6 +34,7 @@ public class Port
     {
         foreach (Inventory inventory in LinkedInventories)
         {
+            if (inventory == null) { continue; }
             if (inventory.GetQuantityOf(resource) > 0) return true;
         }
         return false;
@@ -44,6 +45,7 @@ public class Port
         int quantityFound = 0;
         foreach (Inventory inventory in LinkedInventories)
         {
+            if (inventory == null) { continue; }
             quantityFound += inventory.GetQuantityOf(resourceQuantity.resource);
             if (quantityFound >= resourceQuantity.quantity) return true;
         }
@@ -55,6 +57,7 @@ public class Port
         int quantityFound = 0;
         foreach (Inventory inventory in LinkedInventories)
         {
+            if (inventory == null) { continue; }
             quantityFound += inventory.GetQuantityOf(resource);
         }
         return quantityFound;
@@ -63,8 +66,10 @@ public class Port
     public int GetUnreservedQuantity(ResourceData resource)
     {
         int quantityFound = 0;
+
         foreach (Inventory inventory in LinkedInventories)
         {
+            if(inventory == null) { continue; }
             quantityFound += inventory.GetUnreservedQuantityOf(resource);
         }
         return quantityFound;
@@ -75,12 +80,22 @@ public class Port
         int quantityFound = 0;
         foreach (Inventory inventory in LinkedInventories)
         {
+            if (inventory == null) { continue; }
             if (inventory.reservedResources.TryGetValue(resource, out int quantity))
             {
                 quantityFound += quantity;
             }
         }
         return quantityFound;
+    }
+
+    public virtual void Delete()
+    {
+        foreach(Inventory inventory in LinkedInventories)
+        {
+            if (inventory == null) { continue; }
+            inventory.reservedResources.Clear();
+        }
     }
 }
 
@@ -114,6 +129,8 @@ public class SupplyPort : Port
         }
     }
 
+    //? There is a bug where rovers will sometimes fail to free resources
+    //? I think this function might be the problem.
     public void FreeResource(ResourceQuantity resourcesToFree, bool removeResources = false)
     {
         foreach (Inventory inventory in LinkedInventories)
@@ -132,10 +149,18 @@ public class SupplyPort : Port
     }
 
     public void CollectResource(ResourceQuantity resourceQuantity)
-    { 
+    {
+        Debug.Log($"Collected:{resourceQuantity.quantity} {resourceQuantity.resource}s" );
+
         if(GetReservedQuantity(resourceQuantity.resource) == 0) throw new System.Exception("Tried to collect a resource that doesnt exist");
 
         FreeResource(resourceQuantity, removeResources: true); 
+    }
+
+    public override void Delete()
+    {
+        base.Delete();
+        Pool.Remove(this);
     }
 }
 
@@ -202,5 +227,11 @@ public class RequestPort : Port
         }
 
         return remainder;
+    }
+
+    public override void Delete()
+    {
+        base.Delete();
+        Pool.Remove(this);
     }
 }

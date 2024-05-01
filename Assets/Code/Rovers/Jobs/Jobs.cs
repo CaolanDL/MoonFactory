@@ -120,7 +120,7 @@ namespace RoverJobs
 
         public override void OnStart()
         {
-            if (path.length < 2) { rover.TaskFailed(); return; }
+            //if (path.length < 2) { rover.TaskFailed(); return; }
 
             rover.DisplayObject.PlayParticleEffect("MovingParticles");
 

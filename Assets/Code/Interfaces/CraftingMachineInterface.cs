@@ -14,7 +14,7 @@ public class CraftingMachineInterface : StaticInterface
 
     [SerializeField] public Slider PowerMeter;
 
-    private Machine machine;
+    public Machine machine;
     private StructureData structureData;
 
 

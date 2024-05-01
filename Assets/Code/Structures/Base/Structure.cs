@@ -83,14 +83,14 @@ public abstract class Structure : Entity
         DisplayObject = newDisplayGameObject.GetComponent<DisplayObject>();
 
         RegisterWorldSpacePorts(); 
-        ConnectOuputs(); 
-
-        OnConstructed(); 
-        StructureConstructed?.Invoke(this);
-
+        ConnectOuputs();
+        AddPorts(); 
         if (_electricalNode != null) { _electricalNode.Constructed(); }
 
-        FlattenTerrain();
+        FlattenTerrain(); 
+
+        OnConstructed();
+        StructureConstructed?.Invoke(this);
     }
 
     void FlattenTerrain()
@@ -98,7 +98,7 @@ public abstract class Structure : Entity
         var occupyingLocations = GetOccupyingLocations();
         var floorGrid = GameManager.Instance.GameWorld.floorGrid;
 
-        Debug.Log(occupyingLocations.Count);
+        //Debug.Log(occupyingLocations.Count);
 
         foreach (var location in occupyingLocations)
         {
@@ -111,7 +111,7 @@ public abstract class Structure : Entity
             var newTile = new FloorTile(GameManager.Instance.GameWorld.TerrainGenerator.GenerateTopographyTile(position));
             floorGrid.AddEntity(newTile, floorLocation.position);
         } 
-    }
+    } 
 
     public void Demolish()
     {
@@ -120,6 +120,8 @@ public abstract class Structure : Entity
         DisconnectInputs();
 
         RemoveEntity();
+
+        DeletePorts();
 
         DisplayObject.DemolishAnimation();
 
@@ -162,6 +164,17 @@ public abstract class Structure : Entity
             WorldSpacePorts.Add(port, worldSpaceTransform);
             WorldSpacePortTypes.Add(worldSpaceTransform, type); 
         }
+    }
+
+    public virtual void AddPorts()
+    {
+
+    }
+
+    public void DeletePorts()
+    {
+        if(SupplyPort != null) { SupplyPort.Delete(); SupplyPort = null; }
+        if (RequestPort != null) { RequestPort.Delete(); RequestPort = null; }
     }
 
     public virtual void ConnectOuputs()
