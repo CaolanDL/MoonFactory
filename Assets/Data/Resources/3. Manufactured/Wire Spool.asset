@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: Wire Spool
   m_EditorClassIdentifier: 
   description: 
-  resourceCategory: 0
+  resourceCategory: 2
   sprite: {fileID: 21300000, guid: 7ac5ac51deb841746afd8453ccf438ca, type: 3}
   mesh: {fileID: -6201754494085582955, guid: 5d0cbbb6f38a5604f99927936ed21b5b, type: 3}
   material: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
   Weight: 1
   ResearchValue: 1
   SecondsToResearch: 10
-  craftedIn: {fileID: 0}
-  timeToCraft: 1
+  craftedIn: {fileID: 11400000, guid: a37a355736d4b07488a29030642372f2, type: 2}
+  timeToCraft: 100
   quantityCrafted: 1
-  requiredResources: []
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 03aa95c2254ffdf49841024aa82555d2, type: 2}
+    quantity: 2

@@ -13,14 +13,18 @@ MonoBehaviour:
   m_Name: Sodium Battery Cell
   m_EditorClassIdentifier: 
   description: 
-  resourceCategory: 0
+  resourceCategory: 3
   sprite: {fileID: 21300000, guid: 6658f555c646ce949ab86e7f23cf8637, type: 3}
   mesh: {fileID: 7620100819862414965, guid: 0e1df707c4d3ff6418a3ab36fc860f62, type: 3}
   material: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
   Weight: 1
   ResearchValue: 1
   SecondsToResearch: 10
-  craftedIn: {fileID: 0}
-  timeToCraft: 1
+  craftedIn: {fileID: 11400000, guid: 20bde1a7a69af754482126f2aa79a0c2, type: 2}
+  timeToCraft: 385
   quantityCrafted: 1
-  requiredResources: []
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 36da3d2c1cba5d941ad6b20906301010, type: 2}
+    quantity: 3
+  - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
+    quantity: 2

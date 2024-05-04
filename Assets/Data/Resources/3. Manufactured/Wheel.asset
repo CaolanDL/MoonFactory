@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: Wheel
   m_EditorClassIdentifier: 
   description: 
-  resourceCategory: 0
+  resourceCategory: 2
   sprite: {fileID: 21300000, guid: cede70646e90655479c70e9e4b8ded95, type: 3}
   mesh: {fileID: -2309305249758762421, guid: 6ab320a0eb5cb5642b17b033e20acec5, type: 3}
   material: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
   Weight: 1
   ResearchValue: 1
   SecondsToResearch: 10
-  craftedIn: {fileID: 0}
-  timeToCraft: 1
+  craftedIn: {fileID: 11400000, guid: a37a355736d4b07488a29030642372f2, type: 2}
+  timeToCraft: 162
   quantityCrafted: 1
-  requiredResources: []
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
+    quantity: 2

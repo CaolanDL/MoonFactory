@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: Modular Frame
   m_EditorClassIdentifier: 
   description: 
-  resourceCategory: 0
+  resourceCategory: 2
   sprite: {fileID: 21300000, guid: 7ed22e7ad80bcb243853183f2f035ca9, type: 3}
   mesh: {fileID: 2360790457940763318, guid: 7868074b535b9674a9da3698175fb40c, type: 3}
   material: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
   Weight: 1
   ResearchValue: 1
   SecondsToResearch: 10
-  craftedIn: {fileID: 0}
-  timeToCraft: 1
+  craftedIn: {fileID: 11400000, guid: a37a355736d4b07488a29030642372f2, type: 2}
+  timeToCraft: 193
   quantityCrafted: 1
-  requiredResources: []
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 03aa95c2254ffdf49841024aa82555d2, type: 2}
+    quantity: 5

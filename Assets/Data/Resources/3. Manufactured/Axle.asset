@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Axle
   m_EditorClassIdentifier: 
   description: 
-  resourceCategory: 0
+  resourceCategory: 2
   sprite: {fileID: 21300000, guid: 47b6c6430eb8b934f93df9ad6175f14c, type: 3}
   mesh: {fileID: -5188884433204370104, guid: 735f10932203149439d7c748562213e7, type: 3}
   material: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}

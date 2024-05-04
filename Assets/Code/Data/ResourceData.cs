@@ -6,7 +6,9 @@ public enum ResourceCategory
 {
     Basic,
     Refined,
-    Manufactured
+    Manufactured,
+    Fabricated,
+    Assembled
 }
 
 [CreateAssetMenu(menuName = "MoonFactory/Resource Data")]

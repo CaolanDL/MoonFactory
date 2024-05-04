@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: Flash Memory Cell
   m_EditorClassIdentifier: 
   description: 
-  resourceCategory: 0
+  resourceCategory: 3
   sprite: {fileID: 21300000, guid: f8415a0805f54e941a5b31de2d65ee8c, type: 3}
   mesh: {fileID: -951831635170275184, guid: b8a2646155d731a408f450d6b64f5e79, type: 3}
   material: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
   Weight: 1
   ResearchValue: 1
   SecondsToResearch: 10
-  craftedIn: {fileID: 0}
-  timeToCraft: 1
+  craftedIn: {fileID: 11400000, guid: 20bde1a7a69af754482126f2aa79a0c2, type: 2}
+  timeToCraft: 1200
   quantityCrafted: 1
-  requiredResources: []
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 2207201ae852304419ed7110fe777223, type: 2}
+    quantity: 1
