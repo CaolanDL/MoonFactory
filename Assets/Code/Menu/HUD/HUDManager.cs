@@ -17,8 +17,8 @@ public class HUDManager : MonoBehaviour
 
     private void Start()
     {
-        ConstructionMenu.SetActive(false);
-        TechTree.SetActive(false);
+        ConstructionMenu.GetComponent<PopOutMenu>()?.SetState(true);
+        TechTree.GetComponent<PopOutMenu>()?.SetState(true);
         //MapMenu.SetActive(false);
     } 
 
@@ -55,14 +55,13 @@ public class HUDManager : MonoBehaviour
     {
         if (menu == null) { return; }
 
-        if (menu.activeInHierarchy)
-        {
-            menu.SetActive(false);
-        }
-        else
-        {
-            menu.SetActive(true);
-        }
+        var popout = menu.GetComponent<PopOutMenu>();
+
+        if (popout != null) { popout.Toggle(); }
+
+        var multipop = menu.GetComponent<MultiPopoutMenu>();
+
+        if (multipop != null) { multipop.Toggle(); }
     }
 
 

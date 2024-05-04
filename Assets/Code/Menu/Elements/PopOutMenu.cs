@@ -21,6 +21,30 @@ public class PopOutMenu : MonoBehaviour
         isHiding = !isHiding;
     }
 
+    public void SetState(bool hidden)
+    {
+        if (hidden)
+        {
+            transform.position = hiddenPosition.position;
+        }
+        else
+        {
+            transform.position = shownPosition.position;
+        }
+    }
+
+    public void Hide()
+    {
+        isMoving = true;
+        isHiding = true;
+    }
+
+    public void Show()
+    {
+        isMoving = true;
+        isHiding = false;
+    }
+
     private void Update()
     {
         if(isMoving)
