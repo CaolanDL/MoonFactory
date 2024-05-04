@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd942bfc70745c14eb6fe084aefa422c, type: 3}
-  m_Name: Iron-Nickel Alloy
+  m_Name: Glass Panels
   m_EditorClassIdentifier: 
   description: 
   resourceCategory: 1
-  sprite: {fileID: 21300000, guid: 65605874947b387478860ecf16940b08, type: 3}
+  sprite: {fileID: 21300000, guid: bc8a856d8082cf540b3453f126d8e04f, type: 3}
   mesh: {fileID: -4006973971434388648, guid: c398febfba7226f488d1d2420c08e925, type: 3}
-  material: {fileID: 2100000, guid: 0bb1532950ac1aa41b232068ce0451f1, type: 2}
+  material: {fileID: 2100000, guid: da92ea5002f7fe649b65882d08873cc9, type: 2}
   Weight: 1
   ResearchValue: 2
-  SecondsToResearch: 10
+  SecondsToResearch: 30.29
   craftedIn: {fileID: 11400000, guid: 7f8c0e689e30b1845b5b637bd58b3ef8, type: 2}
-  timeToCraft: 200
+  timeToCraft: 500
   quantityCrafted: 1
   requiredResources:
-  - resource: {fileID: 11400000, guid: 1bee85d2bcca951439eee9b1f3f790e1, type: 2}
-    quantity: 8
+  - resource: {fileID: 11400000, guid: a9d19c97311c16048a39e178742fe23a, type: 2}
+    quantity: 10

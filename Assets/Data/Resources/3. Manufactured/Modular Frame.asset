@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd942bfc70745c14eb6fe084aefa422c, type: 3}
+  m_Name: Modular Frame
+  m_EditorClassIdentifier: 
+  description: 
+  resourceCategory: 0
+  sprite: {fileID: 21300000, guid: 7ed22e7ad80bcb243853183f2f035ca9, type: 3}
+  mesh: {fileID: 2360790457940763318, guid: 7868074b535b9674a9da3698175fb40c, type: 3}
+  material: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
+  Weight: 1
+  ResearchValue: 1
+  SecondsToResearch: 10
+  craftedIn: {fileID: 0}
+  timeToCraft: 1
+  quantityCrafted: 1
+  requiredResources: []

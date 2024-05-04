@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd942bfc70745c14eb6fe084aefa422c, type: 3}
   m_Name: Iron-Nickel Oxide Powder
   m_EditorClassIdentifier: 
-  description: 
+  description: Iron-Nickel Oxide Powder
   resourceCategory: 0
-  sprite: {fileID: 21300000, guid: 7cf4792e0d13d014e8734fc4a4d01a01, type: 3}
+  sprite: {fileID: 21300000, guid: e57b1e2523c6950458e9e1cd0fe2215e, type: 3}
   mesh: {fileID: 1445429886155621308, guid: 95a0d8821b59970409df8e03c7531820, type: 3}
   material: {fileID: 2100000, guid: ac5748f9df7e11940b4bf964f7db66b1, type: 2}
   Weight: 1
-  ResearchValue: 2
+  ResearchValue: 1
   SecondsToResearch: 10
   craftedIn: {fileID: 11400000, guid: e12383a5d96bb5445a5c255c33453301, type: 2}
   timeToCraft: 50

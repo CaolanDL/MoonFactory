@@ -20,14 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Crushed Regolith
+  m_Name: Aluminium Oxide Powder
   m_Shader: {fileID: -6465566751694194690, guid: 63efbde7d4760354ab09c837e887952c,
     type: 3}
   m_Parent: {fileID: 2100000, guid: d4b15d8446ac0184e9b62b3ab2446d28, type: 2}
-  m_ModifiedSerializedProperties: 2
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -40,5 +40,5 @@ Material:
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _Color: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
+    - _Color: {r: 0.5411765, g: 0.73607856, b: 0.8, a: 1}
   m_BuildTextureStacks: []

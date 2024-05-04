@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Crushed Regolith
+  m_Name: Sodium Powder
   m_Shader: {fileID: -6465566751694194690, guid: 63efbde7d4760354ab09c837e887952c,
     type: 3}
   m_Parent: {fileID: 2100000, guid: d4b15d8446ac0184e9b62b3ab2446d28, type: 2}
@@ -40,5 +40,5 @@ Material:
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _Color: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
+    - _Color: {r: 0.9622642, g: 0.9011269, b: 0.21333215, a: 1}
   m_BuildTextureStacks: []

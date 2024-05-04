@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fd942bfc70745c14eb6fe084aefa422c, type: 3}
-  m_Name: Crushed Regolith
+  m_Name: Silica Powder
   m_EditorClassIdentifier: 
-  description: Crushed Regolith
+  description: Silica Crystals
   resourceCategory: 0
-  sprite: {fileID: 21300000, guid: e12ce026e5c35df44a9551d9ed09c066, type: 3}
+  sprite: {fileID: 21300000, guid: 595ee9979950bbe40b5f079aae6a4905, type: 3}
   mesh: {fileID: 1445429886155621308, guid: 95a0d8821b59970409df8e03c7531820, type: 3}
-  material: {fileID: 2100000, guid: fba90f201015e8748990e7465b3d2976, type: 2}
+  material: {fileID: 2100000, guid: 5a03c1fc6faa0fc42a26e7022b28a828, type: 2}
   Weight: 1
   ResearchValue: 1
   SecondsToResearch: 10
-  craftedIn: {fileID: 11400000, guid: 7722152ffd1341b438e76a1ede5271d2, type: 2}
-  timeToCraft: 25
+  craftedIn: {fileID: 11400000, guid: 2da3df366ff31c140927f5eafcfe6206, type: 2}
+  timeToCraft: 50
   quantityCrafted: 1
   requiredResources:
-  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+  - resource: {fileID: 11400000, guid: 846496dfeac5afa4781a190aff293cc6, type: 2}
     quantity: 1

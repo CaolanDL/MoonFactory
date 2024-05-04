@@ -6,7 +6,7 @@ public class PopOutMenu : MonoBehaviour
 {
     public Transform hiddenPosition;
     public Transform shownPosition;
-    public float speed;
+    public float speed = 3000;
     bool isHiding = true;
     bool isMoving = false;
 
