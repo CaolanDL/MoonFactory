@@ -194,7 +194,7 @@ namespace RoverTasks
         {
             return new()
             {
-                new GotoEntity(structure),
+                new GotoNeighbor(structure),
                 new DemolishStructure(structure),
                 new FinishTask()
             };

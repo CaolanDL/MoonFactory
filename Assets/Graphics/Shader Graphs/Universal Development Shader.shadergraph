@@ -824,20 +824,6 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
-                    "m_Id": "ce3a3334d5474e2099716a7c67d99787"
-                },
-                "m_SlotId": 1
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "0958a1d92cce431b9a1901e7c0184d85"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
                     "m_Id": "d4b63b79ded848b386049f5afd29d804"
                 },
                 "m_SlotId": 1
@@ -858,7 +844,7 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "ff660bc6d4364a56871c7528896cb4c4"
+                    "m_Id": "0958a1d92cce431b9a1901e7c0184d85"
                 },
                 "m_SlotId": 0
             }
@@ -1006,8 +992,8 @@
     ],
     "m_VertexContext": {
         "m_Position": {
-            "x": 684.9999389648438,
-            "y": 207.0
+            "x": 573.0,
+            "y": 238.0
         },
         "m_Blocks": [
             {

@@ -19,6 +19,8 @@ public enum RoverModule
 
 public class Rover : Entity
 {
+    public static bool DebugEnabled = false;
+
     public const float _MoveSpeed = 8f;
     public float MoveSpeed { get { return _MoveSpeed; } }
 
@@ -42,7 +44,9 @@ public class Rover : Entity
     public bool TaskWasFailed = false;
     public int FetchDelay = 0;
 
-    public static bool DebugEnabled = false;
+    public static float maxPowerLevel = 1f;
+    public float powerLevel = 0f;
+    static float taskPowerConsumption = maxPowerLevel / 5;
 
     // Float transform for visual position
     public SmallTransform SmallTransform = new();
@@ -118,13 +122,12 @@ public class Rover : Entity
 
     void HandleJobs()
     {
-        if(FetchDelay > 0) FetchDelay--;
+        if (FetchDelay > 0) FetchDelay--;
 
         // Cancel the active task if requested
         if (ActiveTask != null && ActiveTask.isCancelled)
         {
-            TaskCancelled();
-            //Debug.Log("Cancelled Task");
+            TaskCancelled(); 
         }
         // Handle the active Job
         if (JobStack.Count > 0)
@@ -139,18 +142,24 @@ public class Rover : Entity
             return;
         }
         // Add a fetch task job if no other job exists
-        if (FetchDelay < 1 && JobStack.Count == 0 && JobQueue.Count == 0)
+        if(JobStack.Count == 0 && JobQueue.Count == 0)
         {
-            EnqueueJob(new FetchTask());
-            ResetFetchDelay();
-            //Debug.Log("Queue Fetchtask");
-            return;
-        }
+            if (FetchDelay < 1 && powerLevel > 0)
+            {
+                EnqueueJob(new FetchTask());
+                ResetFetchDelay();
+                return;
+            }
+            if (powerLevel <= 0 && ActiveTask == null)
+            {
+                EnqueueJob(new GoCharge());
+                return;
+            } 
+        } 
         // Dequeue a job if the stack is empty
         if (JobStack.Count == 0 && JobQueue.Count > 0)
         {
-            StackJob(JobQueue.Dequeue());
-            //Debug.Log("Dequeue Task");
+            StackJob(JobQueue.Dequeue()); 
             return;
         }
     }
@@ -184,19 +193,25 @@ public class Rover : Entity
 
     public void TaskFailed()
     {  
-        var taskToFail = ActiveTask;
-        TaskManager.QueueTask(taskToFail);
-        ActiveTask.rover = null;
-        ClearTask();
-        taskToFail.OnFailed?.Invoke(); 
+        if(ActiveTask != null)
+        {
+            var taskToFail = ActiveTask;
+            TaskManager.QueueTask(taskToFail);
+            ActiveTask.rover = null;
+            taskToFail.OnFailed?.Invoke();
+        }
 
-        TaskWasFailed = true;
-        if (DebugEnabled) Debug.Log($"Rover Failed Task: {taskToFail}");
+        if (DebugEnabled) Debug.Log($"Rover Failed Task");
+
+        ClearTask(); 
+        TaskWasFailed = true; 
     }
 
     public void TaskFinished()
     {
         if (DebugEnabled) Debug.Log($"Rover Finished Task: {ActiveTask}");
+
+        powerLevel -= taskPowerConsumption;
 
         ActiveTask.OnCompleteCallback?.Invoke();
         ClearTask(); 
@@ -216,8 +231,7 @@ public class Rover : Entity
         JobQueue.Clear();
         JobStack.Clear();
 
-        DisplayObject.StopParticleEffect("MovingParticles"); 
-        //Debug.Log("Rover Cleared Task");
+        DisplayObject.StopParticleEffect("MovingParticles");  
     } 
 
     public void ResetFetchDelay()

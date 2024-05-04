@@ -1,10 +1,6 @@
 ﻿
 using UnityEngine;
 
-public class DecorLander : Structure
-{
-
-} 
 
 public class StaticDrill : Structure
 {

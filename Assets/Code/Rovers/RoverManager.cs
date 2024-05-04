@@ -44,6 +44,7 @@ public class RoverManager
         var widget = new Widget();
 
         Rovers.Add(widget);
+        RoverPositions.Add(widget, widget.GridPosition);
 
         var widgetDO = Object.Instantiate(RoverData.WidgetDisplayObject, new Vector3(location.x, 0, location.y), Quaternion.identity, GameManager.Instance.transform).GetComponent<DisplayObject>() ;
 

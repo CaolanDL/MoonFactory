@@ -2,9 +2,12 @@ using Logistics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoverInterface : StaticInterface
 {
+    [SerializeField] Slider powerSlider;
+
     public Rover rover;
 
     public override void Init(Entity entity, Vector3 screenPosition)
@@ -12,5 +15,10 @@ public class RoverInterface : StaticInterface
         this.rover = (Rover)entity;  
 
         transform.position = screenPosition; 
+    }
+
+    private void FixedUpdate()
+    {
+        powerSlider.value = rover.powerLevel / Rover.maxPowerLevel;
     }
 }

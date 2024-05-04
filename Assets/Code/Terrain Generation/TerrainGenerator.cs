@@ -15,6 +15,8 @@ public class TerrainGenerator
     {
         FloorTileData tile;
 
+        return TerrainGenerationData.Instance.displaceTile;
+
         tile = TryGenerateRubbleRegion();
         if (tile != null) return tile;
 

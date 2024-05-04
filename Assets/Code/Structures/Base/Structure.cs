@@ -87,7 +87,7 @@ public abstract class Structure : Entity
         AddPorts(); 
         if (_electricalNode != null) { _electricalNode.Constructed(); }
 
-        FlattenTerrain(); 
+        //FlattenTerrain();  
 
         OnConstructed();
         StructureConstructed?.Invoke(this);
@@ -108,10 +108,15 @@ public abstract class Structure : Entity
             if (floorLocation == null) { continue; } 
 
             floorLocation.RemoveEntity();
-            var newTile = new FloorTile(GameManager.Instance.GameWorld.TerrainGenerator.GenerateTopographyTile(position));
+            var newTile = new FloorTile(GameManager.Instance.GameWorld.TerrainGenerator.GenerateTileAt(position));
             floorGrid.AddEntity(newTile, floorLocation.position);
         } 
     } 
+
+    public virtual bool CanDemolish()
+    {
+        return true;
+    }
 
     public void Demolish()
     {

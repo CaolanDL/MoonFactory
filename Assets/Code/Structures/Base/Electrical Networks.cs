@@ -63,6 +63,7 @@ namespace Electrical
         public float TotalConsumption = 0f;
 
         public float PowerRatio;
+        /// <summary> Power ratio clamped 01 </summary>
         public float ClampedPowerRatio;
 
         public Network()

@@ -171,12 +171,8 @@ public class PlayerInputManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Rover")))
             {
-                Entity entity = hit.transform.gameObject.GetComponent<DisplayObject>().parentEntity;
-
-                if (entity.GetType() == typeof(Rover))
-                {
-                    ((Rover)entity).Clicked(Input.mousePosition);
-                }
+                Entity entity = hit.transform.gameObject.GetComponent<DisplayObject>().parentEntity; 
+                ((Rover)entity).Clicked(Input.mousePosition); 
             }
 
             else
@@ -249,6 +245,11 @@ public class PlayerInputManager : MonoBehaviour
                 if (entity.GetType().IsSubclassOf(typeof(Structure)))
                 {
                     var structure = (Structure)entity;
+
+                    if(structure.CanDemolish() == false)
+                    {
+
+                    }
 
                     if (DevFlags.InstantBuilding)
                     {

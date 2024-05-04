@@ -10,6 +10,9 @@ public class RenderData : ScriptableObject
 {
     public static RenderData Instance { get; private set; }
 
+    [Header("Animation Assets")]
+    public GameObject LanderSequence;
+
     [Header("Development")]
     public Material devgizmo_material;
 

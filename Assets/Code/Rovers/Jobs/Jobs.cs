@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System; 
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 using RoverTasks;
-using ExtensionMethods;
-using static UnityEngine.GraphicsBuffer;
+using ExtensionMethods; 
 
 namespace RoverJobs
 {
@@ -44,6 +42,21 @@ namespace RoverJobs
         public void FailTask()
         {
             rover.TaskFailed();
+        }
+
+
+        //------------------------------------------------------
+        public int SortDistanceToRover(Structure a, Structure b)
+        {
+            return FloatSort(Float2Extensions.DistanceBetween(rover.position, a.position), Float2Extensions.DistanceBetween(rover.position, b.position));
+        }
+
+        public static int FloatSort(float a, float b)
+        {
+            if (a == b) return 0;
+            else if (a < b) return -1;
+            else if (a > b) return 1;
+            else return 0;
         }
     }
 
@@ -95,6 +108,59 @@ namespace RoverJobs
             }
 
             PopJob();
+        }
+    }
+
+
+    public class GoCharge : Job
+    {
+        ChargingPad targetPad;
+
+        public override void OnStart()
+        {
+            ChargingPad.Pool.Sort(SortDistanceToRover);
+
+            foreach(var pad in ChargingPad.Pool)
+            {
+                if (pad.inUse == true) continue;
+                else
+                {
+                    targetPad = pad;
+                    targetPad.inUse = true;
+                    break;
+                }
+            }
+
+            if(targetPad == null)
+            {
+                FailTask(); return;
+            }
+
+            var path = PathFinder.FindPath(rover.GridPosition, targetPad.position);
+            if(path != null)
+            {
+                targetPad.inUse = true;
+                StackJob(new TurnTowards(targetPad.position + targetPad.rotation.ToInt2()));
+                StackJob(new TraversePath(path));
+            }
+            else
+            {
+                FailTask(); return;
+            }
+        }
+
+        public override void OnTick()
+        { 
+            if(rover.position.Equals(targetPad.position))
+            { 
+                rover.powerLevel += targetPad.powerSupply;
+            }
+            if(rover.powerLevel >= Rover.maxPowerLevel)
+            {
+                rover.powerLevel = Rover.maxPowerLevel;
+                targetPad.inUse = false;
+                PopJob();
+            }
         }
     }
 
@@ -204,13 +270,13 @@ namespace RoverJobs
         }
     }
 
-    public class GotoEntity : Job
+    public class GotoNeighbor : Job
     {
         Entity Entity;
 
         Path path;
 
-        public GotoEntity(Entity entity)
+        public GotoNeighbor(Entity entity)
         {
             this.Entity = entity;
         }
@@ -218,6 +284,29 @@ namespace RoverJobs
         public override void OnStart()
         {
             if (Entity != null) path = PathFinder.FindPathToAnyFreeNeighbor(rover.GridPosition, Entity.position);
+
+            if (path == null) { FailTask(); return; }
+
+            PopJob();
+
+            StackJob(new TraversePath(path));
+        }
+    }
+
+    public class GotoPosition : Job
+    {
+        int2 destination;
+
+        Path path;
+
+        public GotoPosition(int2 position)
+        {
+            this.destination = position;
+        }
+
+        public override void OnStart()
+        {
+            path = PathFinder.FindPath(rover.position, destination);
 
             if (path == null) { FailTask(); return; }
 

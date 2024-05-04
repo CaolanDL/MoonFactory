@@ -1,4 +1,5 @@
-﻿using Logistics;
+﻿using ExtensionMethods;
+using Logistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -366,7 +367,7 @@ namespace RoverJobs
 
             int SortDistanceToOrigin(SupplyPort a, SupplyPort b)
             {
-                return FloatSort(DistanceBetween(origin, a.parent.position), DistanceBetween(origin, b.parent.position));
+                return FloatSort(Float2Extensions.DistanceBetween(origin, a.parent.position), Float2Extensions.DistanceBetween(origin, b.parent.position));
             }
 
             static int FloatSort(float a, float b)
@@ -375,13 +376,7 @@ namespace RoverJobs
                 else if (a < b) return -1;
                 else if (a > b) return 1;
                 else return 0;
-            }
-
-            static float DistanceBetween(float2 a, float2 b)
-            {
-                float2 offset = a - b;
-                return (offset.x * offset.x) + (offset.y * offset.y);
-            }
+            } 
         }
     } 
 

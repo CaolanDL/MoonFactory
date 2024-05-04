@@ -155,9 +155,10 @@ public class GameManager : MonoBehaviour
         ElectricalSystemManager = new();
 
         // Start zone is generated
-        GameWorld.GenerateStartZone(); 
+        GameWorld.GenerateStartZone();
 
         // Descent vehicle animation plays
+        Instantiate(RenderData.LanderSequence);
 
         // UI startup animation plays
         HUDManager = Instantiate(MenuData.HUD, transform).GetComponent<HUDManager>();

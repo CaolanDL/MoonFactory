@@ -144,7 +144,8 @@ public static class PathFinder
 
             // Success Conditions
             if (entityType == typeof(Conveyor) ||
-                entityType == typeof(PowerPylon)
+                entityType == typeof(PowerPylon) ||
+                entityType == typeof(ChargingPad)
                 )
             {
                 return true;

@@ -20,6 +20,8 @@ public class TerrainGenerationData : ScriptableObject
 
     [NonSerialized] public  List<FloorTileData> tileRegistry = new();
 
+    [SerializeField] public FloorTileData displaceTile;
+
     public static int ChunkSize = 9;
 
     public static int StartZoneSize = 9;
@@ -59,6 +61,8 @@ public class TerrainGenerationData : ScriptableObject
         LoopListAndRegister(randomTiles);
         LoopListAndRegister(craterTiles);
         LoopListAndRegister(rubbleTiles);
+
+        tileRegistry.Add(displaceTile);
 
         void LoopListAndRegister(List<FloorTileData> list)
         {
