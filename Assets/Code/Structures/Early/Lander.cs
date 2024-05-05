@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Lander : Structure
 {
-    public float powerProduction = 50f;
-
-    public Electrical.Relay ElectricalRelay;
+    public float powerProduction = 50f;   
+    public Electrical.Relay ElectricalRelay; 
+    public Inventory inventory = new Inventory();
 
     public override bool CanDemolish()
     {
@@ -15,7 +15,12 @@ public class Lander : Structure
     
     public override void OnInitialise()
     {
-        base.OnInitialise();
+        base.OnInitialise(); 
+
+        AddStartingResources();
+
+        SupplyPort = new SupplyPort(this);
+        SupplyPort.AddInventory(inventory);
 
         ElectricalNode = new Electrical.Input();
         ((Electrical.Input)ElectricalNode).Production = powerProduction;
@@ -24,6 +29,16 @@ public class Lander : Structure
         {
             Parent = this
         };
+    }
+
+    void AddStartingResources()
+    {
+        inventory.maxItems = 10000; 
+
+        foreach (var rq in GlobalData.Instance.StarterResources)
+        {
+            inventory.TryAddResource(rq);
+        }
     }
 
     public override void OnConstructed()

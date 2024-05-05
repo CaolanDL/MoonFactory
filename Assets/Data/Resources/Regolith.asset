@@ -20,7 +20,7 @@ MonoBehaviour:
   Weight: 1
   ResearchValue: 1
   SecondsToResearch: 10
-  craftedIn: {fileID: 11400000, guid: dcdec8d0a3941b444bbe5f6ae58b6316, type: 2}
+  craftedIn: {fileID: 11400000, guid: 6b04b98578fc8ae4bb6db77aa10d8742, type: 2}
   timeToCraft: 0
   quantityCrafted: 0
   requiredResources: []

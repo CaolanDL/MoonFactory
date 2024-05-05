@@ -32,7 +32,7 @@ public class ConstructionMenuBuilder : MonoBehaviour
 
         buttons.Clear();
 
-        foreach(var structureData in GlobalData.Instance.Structures)
+        foreach(var structureData in GlobalData.Instance.unlocked_Structures)
         {
             Transform parent;
 
@@ -50,7 +50,9 @@ public class ConstructionMenuBuilder : MonoBehaviour
                     parent = ScienceBox.transform; break;
                 default:
                     parent = LogisticsBox.transform; break;
-            } 
+            }
+
+            parent.parent.gameObject.SetActive(true);
 
             var newButton = Instantiate(buildStructureButton, parent);
 

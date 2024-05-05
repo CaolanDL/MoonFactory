@@ -6,8 +6,14 @@ using UnityEngine.InputSystem;
 
 public class StructureTooltip : MonoBehaviour
 {
+    StructureData structure;
+
     public TextMeshProUGUI Title;
     public TextMeshProUGUI Description;
+    public Transform CraftablesContainer;
+
+    [SerializeField] GameObject ResourceIconPrefab;
+    List<GameObject> craftablesIcons = new();
 
     private void Start()
     {
@@ -16,9 +22,17 @@ public class StructureTooltip : MonoBehaviour
 
     public void Init(StructureData structureData)
     {
-        Title.SetText(structureData.screenname);
+        structure = structureData;
 
+        Title.SetText(structureData.screenname); 
         Description.SetText(structureData.description);
+
+        foreach(var craftable in structure.CraftableResources)
+        {
+            var icon = Instantiate(ResourceIconPrefab, CraftablesContainer);
+            icon.GetComponent<ResourceIcon>()?.SetDetails(craftable);
+            craftablesIcons.Add(icon);
+        }
 
         SetPosition();
     }

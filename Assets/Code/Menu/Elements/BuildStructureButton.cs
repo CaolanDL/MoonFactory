@@ -66,7 +66,7 @@ public class BuildStructureButton : MonoBehaviour
 
             else if (activeToolTip == null)
             {
-                activeToolTip = Instantiate(MenuData.Instance.BuildButtonTooltip, transform.parent.parent.parent);
+                activeToolTip = Instantiate(MenuData.Instance.BuildButtonTooltip, GameManager.Instance.HUDManager.transform);
                 activeToolTip.GetComponent<StructureTooltip>().Init(structureData);
 
             }

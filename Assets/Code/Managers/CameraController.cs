@@ -91,6 +91,11 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    public void ResetPosition()
+    {
+        position = Vector3.zero;
+    }
+
     public void InputMove()
     {
         Vector2 inputVector = InputActions.CameraControls.Move.ReadValue<Vector2>();

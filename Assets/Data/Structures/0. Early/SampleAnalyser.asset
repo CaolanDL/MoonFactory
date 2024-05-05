@@ -22,8 +22,12 @@ MonoBehaviour:
     x: 1
     y: 1
   requiredResources:
-  - resource: {fileID: 11400000, guid: 846496dfeac5afa4781a190aff293cc6, type: 2}
+  - resource: {fileID: 11400000, guid: 505d6e919bbaff9429b3af58fbc2d51d, type: 2}
     quantity: 1
+  - resource: {fileID: 11400000, guid: 6742daa3f24544b4aa2c78e8016b1561, type: 2}
+    quantity: 1
+  - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
+    quantity: 5
   timeToBuild: 99
   CraftableResources: []
   inputs: []

@@ -45,7 +45,7 @@ public class Rover : Entity
     public int FetchDelay = 0;
 
     public static float maxPowerLevel = 1f;
-    public float powerLevel = 0f;
+    public float powerLevel = maxPowerLevel;
     static float taskPowerConsumption = maxPowerLevel / 5;
 
     // Float transform for visual position
@@ -101,7 +101,11 @@ public class Rover : Entity
         HandleJobs();
 
         UpdateDOPosition();
+
+        OnTick();
     }
+
+    public virtual void OnTick() { }
 
     public void Clicked(Vector3 mousePosition)
     {
@@ -236,7 +240,7 @@ public class Rover : Entity
 
     public void ResetFetchDelay()
     {
-        FetchDelay = Random.Range(20, 120); 
+        FetchDelay = Random.Range(1, 3); 
     }
 
     // Modules // 
@@ -282,5 +286,12 @@ public class Widget : Rover
     public Widget()
     {
         Module = RoverModule.Widget;
+    }
+
+    public override void OnTick()
+    {
+        base.OnTick();
+
+        powerLevel = Mathf.Clamp01(powerLevel + 0.001f);
     }
 }

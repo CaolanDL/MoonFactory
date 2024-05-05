@@ -43,9 +43,14 @@ public class HUDManager : MonoBehaviour
     public void ToggleBuildMenu()
     {
         ToggleMenu(ConstructionMenu);
+        UpdateConstructionMenu(); 
+    } 
+
+    public void UpdateConstructionMenu()
+    {
         ConstructionMenu.GetComponent<ConstructionMenuBuilder>().UpdateList();
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
-    }  
+    }
 
     public void ToggleScienceMenu() { ToggleMenu(TechTree); } 
 
@@ -89,4 +94,8 @@ public class HUDManager : MonoBehaviour
         GameManager.Instance.CameraController.SwapViews();
     }
 
+    public void LanderButtonPressed()
+    {
+        GameManager.Instance.CameraController.ResetPosition();
+    }
 }

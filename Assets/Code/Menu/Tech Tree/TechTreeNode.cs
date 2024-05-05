@@ -56,6 +56,7 @@ public class TechTreeNode : MonoBehaviour
             ChangeState(State.Unlocked);
             Tech.Unlock();
             Connection.Unlock();
+            GameManager.Instance.HUDManager.UpdateConstructionMenu();
         }
     } 
 

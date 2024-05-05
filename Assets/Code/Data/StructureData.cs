@@ -61,12 +61,17 @@ public class StructureData : ScriptableObject
     }
 
     // Runtime Data //
-    public bool unlocked = true;
+    public bool unlocked = false;
 
     public void Unlock()
     {
+        if(unlocked) return;
+
         unlocked = true;
-        GlobalData.Instance.unlocked_Structures.Add(this);
+        if(GlobalData.Instance.unlocked_Structures.Contains(this) == false)
+        {
+            GlobalData.Instance.unlocked_Structures.Add(this);
+        } 
 
         foreach(ResourceData resource in CraftableResources)
         {

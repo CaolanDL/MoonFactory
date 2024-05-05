@@ -149,6 +149,8 @@ public class GameManager : MonoBehaviour
 
         // Initialise Game Managers Components
         ScienceManager = new();
+        ScienceManager.SetupNewGame();
+
         ConstructionManager = new(); 
         TaskManager = new();
         RoverManager = new();
@@ -162,6 +164,7 @@ public class GameManager : MonoBehaviour
 
         // UI startup animation plays
         HUDManager = Instantiate(MenuData.HUD, transform).GetComponent<HUDManager>();
+        HUDManager.GetComponentInChildren<TechTreeController>();
 
         // Tutorial toggle prompt
 
