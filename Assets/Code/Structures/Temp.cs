@@ -2,10 +2,6 @@
 using UnityEngine;
 
 
-public class StaticDrill : Structure
-{
-
-}
 
 public class RoverAssembler : Structure
 {

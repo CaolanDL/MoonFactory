@@ -21,11 +21,11 @@ public class Rover : Entity
 {
     public static bool DebugEnabled = false;
 
-    public const float _MoveSpeed = 8f;
-    public float MoveSpeed { get { return _MoveSpeed; } }
+    const float _MoveSpeed = 1f;
+    public virtual float MoveSpeed { get { return _MoveSpeed; } }
 
-    public const float _TurnSpeed = 12f;
-    public float TurnSpeed { get { return _TurnSpeed; } }
+    const float _TurnSpeed = 2f;
+    public virtual float TurnSpeed { get { return _TurnSpeed; } }
 
     public const float _CollectSpeed = 6f;
     public float CollectSpeed { get { return _CollectSpeed; } }
@@ -283,9 +283,16 @@ public class Rover : Entity
 
 public class Widget : Rover
 {
+    static float _MoveSpeed = 1f;
+    public override float MoveSpeed => _MoveSpeed;
+
+    static float _TurnSpeed = 2f;
+    public override float TurnSpeed => _TurnSpeed;
+
+
     public Widget()
     {
-        Module = RoverModule.Widget;
+        Module = RoverModule.Widget; 
     }
 
     public override void OnTick()

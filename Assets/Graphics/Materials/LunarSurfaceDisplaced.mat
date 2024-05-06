@@ -103,7 +103,7 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _Color_Intensity: 0.4
+    - _Color_Intensity: 0.6
     - _Crater_Size: 10
     - _Craters_Chance: 0.08
     - _Craters_Scale: 10
@@ -111,7 +111,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _Displacement: 0.01
+    - _Displacement: 0
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
@@ -128,7 +128,7 @@ Material:
     - _Level_Two: 0.1
     - _Level_Two_Mult: 0.4
     - _Metallic: 0
-    - _Normal_Height: 24
+    - _Normal_Height: 8
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0

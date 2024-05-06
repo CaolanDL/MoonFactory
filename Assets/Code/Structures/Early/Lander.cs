@@ -31,6 +31,18 @@ public class Lander : Structure
         };
     }
 
+    public override void OnConstructed()
+    {
+        base.OnConstructed();
+        ElectricalRelay.Constructed();
+    }
+
+    public override void OnDemolished()
+    {
+        base.OnDemolished();
+        ElectricalRelay.Demolished();
+    }
+
     void AddStartingResources()
     {
         inventory.maxItems = 10000; 
@@ -39,17 +51,5 @@ public class Lander : Structure
         {
             inventory.TryAddResource(rq);
         }
-    }
-
-    public override void OnConstructed()
-    {
-        base.OnConstructed();
-        ElectricalRelay.Constructed(); 
-    }
-
-    public override void OnDemolished()
-    {
-        base.OnDemolished();
-        ElectricalRelay.Demolished();
-    }
+    } 
 }

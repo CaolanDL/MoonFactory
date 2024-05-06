@@ -197,10 +197,10 @@ namespace RoverJobs
 
         public override void OnTick()
         {
-            foreach (var node in path.nodes)
+/*            foreach (var node in path.nodes)
             {
                 GameManager.Instance.AddLifespanGizmo(new Vector3(node.x, 0.25f, node.y), 100);
-            }
+            }*/
 
             if (rover.VisualPosition.Equals(nextNodePosition))
             {

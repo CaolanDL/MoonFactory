@@ -20,7 +20,7 @@ public class StructureTooltip : MonoBehaviour
         SetPosition();
     }
 
-    public void Init(StructureData structureData)
+    public void SetDetails(StructureData structureData)
     {
         structure = structureData;
 

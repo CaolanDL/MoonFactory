@@ -1,9 +1,10 @@
 using System;
 using TMPro;
-using UnityEngine; 
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TechTreeNode : MonoBehaviour
+public class TechTreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     TechTreeController techTree;
 
@@ -18,6 +19,9 @@ public class TechTreeNode : MonoBehaviour
     [SerializeField] Image techSprite;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text costText;
+
+    [SerializeField] GameObject ToolTipPrefab;
+    GameObject tooltip;
 
     [NonSerialized] public State state = State.Locked;
 
@@ -79,5 +83,18 @@ public class TechTreeNode : MonoBehaviour
         }
 
         this.state = state;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    { 
+        if (tooltip != null) return;
+
+        tooltip = Instantiate(ToolTipPrefab, GameManager.Instance.HUDManager.transform);
+        tooltip.GetComponent<StructureTooltip>().SetDetails(Tech);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Destroy(tooltip);
     }
 }

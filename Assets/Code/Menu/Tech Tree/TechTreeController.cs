@@ -11,6 +11,10 @@ public class TechTreeController : MonoBehaviour
     [SerializeField] public Color Available;
     [SerializeField] public Color Locked;
 
+    [Header("Connection Colors")]
+    [SerializeField] public Color Unlocked_Connection; 
+    [SerializeField] public Color Locked_Connection;
+
     public Dictionary<TechTreeNode.State, Color> StateColors;
 
     private void Awake()

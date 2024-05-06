@@ -15,7 +15,7 @@ MonoBehaviour:
   screenname: Sample Analyser
   description: 
   category: 4
-  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
+  sprite: {fileID: 21300000, guid: 1658fed48f27af941901d492e45fb0ca, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: 40cfda5de8b5b764a8e4f35e3149d558,
     type: 3}
   size:
@@ -37,7 +37,7 @@ MonoBehaviour:
       x: 0
       y: -1
     _rotation: 0
-  ghostMesh: {fileID: 2534964839176971238, guid: 174259d4fd8a71d40a0adda590ffa64b,
+  ghostMesh: {fileID: -1563147367181691618, guid: 174259d4fd8a71d40a0adda590ffa64b,
     type: 3}
   ghostModels: []
   unlocked: 1

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Utils;
 //using static UnityEditor.ShaderData;
 
@@ -209,7 +210,16 @@ public static class PathFinder
         Location location = _worldGrid.GetLocationAt(destination);
         Location[] neighbors = location.GetNeighbors().OrderBy(x => x.position.GridDistanceTo(origin)).ToArray();
         List<Location> validNeighbors = new();
-        Path path = null; 
+        Path path = null;
+
+        // Safely return a path consisting of only the destination location if origin is inside a neighbor already
+        if (neighbors.ToList().Exists(x => x.position.Equals(origin)))
+        {
+            int2[] int2s = new int2[1] {origin}; 
+            path = new Path(int2s);
+            path.destination = origin;
+            return path;
+        }
 
         for (int i = 0; i < 5; i++)
         { 

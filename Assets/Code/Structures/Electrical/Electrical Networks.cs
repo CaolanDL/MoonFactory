@@ -11,7 +11,7 @@ namespace Electrical
     {
         public static List<Network> networks = new();
         public static List<Relay> relays = new();
-
+        public static List<Node> nodes = new();
 
         public SystemManager()
         {
@@ -130,12 +130,15 @@ namespace Electrical
     public class Node
     {
         public Structure Parent;
+        public int2 parentPosition;
         public Network Network;
         public List<Connection> Connections = new();
         public bool CanConnect = true;
 
         public void Constructed()
         {
+            SystemManager.nodes.Add(this);
+            parentPosition = Parent.position;
             Parent.OnDemolishedEvent += Demolished; 
             OnConstructed();
         }
@@ -255,6 +258,9 @@ namespace Electrical
             nearbyNodes.AddRange(from structure in nearbyStructures
                                  where structure.ElectricalNode != null && (structure.ElectricalNode.GetType() == type || structure.ElectricalNode.GetType().IsSubclassOf(type))
                                  select structure.ElectricalNode);
+
+/*            List<Node> nodes = new();
+            nodes.AddRange(from node in SystemManager.nodes*/
 
             if (nearbyNodes.Count == 0) return null;
             else return nearbyNodes;

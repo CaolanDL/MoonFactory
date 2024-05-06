@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd942bfc70745c14eb6fe084aefa422c, type: 3}
+  m_Name: Computer
+  m_EditorClassIdentifier: 
+  description: 
+  resourceCategory: 4
+  sprite: {fileID: 21300000, guid: d49b2111b1a255d43ad271329ce5c7fc, type: 3}
+  mesh: {fileID: 870556930181619739, guid: 7b7f09f9a4aa6d943980ad85c9bb86b2, type: 3}
+  material: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
+  Weight: 0
+  ResearchValue: 4
+  SecondsToResearch: 60
+  craftedIn: {fileID: 11400000, guid: 56cfcdadb2ddaa94fa5449d9835dce4c, type: 2}
+  timeToCraft: 100
+  quantityCrafted: 1
+  requiredResources:
+  - resource: {fileID: 11400000, guid: eeee5fdeca2ba87479517fed0158cded, type: 2}
+    quantity: 1
+  - resource: {fileID: 11400000, guid: d32914b4c2ad4fa4b913ebeaad54a151, type: 2}
+    quantity: 2
+  - resource: {fileID: 11400000, guid: 27317114562aff14588422cbca7bec3a, type: 2}
+    quantity: 4
+  - resource: {fileID: 11400000, guid: d9fab779f66a6f041b90fc342887ea1e, type: 2}
+    quantity: 1

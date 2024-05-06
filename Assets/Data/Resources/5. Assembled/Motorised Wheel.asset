@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd942bfc70745c14eb6fe084aefa422c, type: 3}
+  m_Name: Motorised Wheel
+  m_EditorClassIdentifier: 
+  description: 
+  resourceCategory: 4
+  sprite: {fileID: 21300000, guid: 5812df86061fd734c9731b0208583cb5, type: 3}
+  mesh: {fileID: 8615034831787397356, guid: 59f068b45f20f124399f8b0bd20b1d67, type: 3}
+  material: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
+  Weight: 0
+  ResearchValue: 3
+  SecondsToResearch: 30
+  craftedIn: {fileID: 11400000, guid: 56cfcdadb2ddaa94fa5449d9835dce4c, type: 2}
+  timeToCraft: 50
+  quantityCrafted: 1
+  requiredResources:
+  - resource: {fileID: 11400000, guid: d350ffbae4b202b44baf32c086e425fa, type: 2}
+    quantity: 1
+  - resource: {fileID: 11400000, guid: f2a5b0aba6ea8aa4ab64fd045e7d22e6, type: 2}
+    quantity: 1

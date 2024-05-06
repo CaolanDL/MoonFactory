@@ -530,6 +530,8 @@ MonoBehaviour:
   techSprite: {fileID: 8995931590267244069}
   nameText: {fileID: 4041861439163488220}
   costText: {fileID: 1371685560320354590}
+  ToolTipPrefab: {fileID: 1213213408029545927, guid: e1402c0125a47d747b7fd68bb941f9f5,
+    type: 3}
 --- !u!114 &8819955643276722234
 MonoBehaviour:
   m_ObjectHideFlags: 0

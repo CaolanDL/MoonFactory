@@ -446,7 +446,7 @@ namespace RoverJobs
 
                     if (quantityInHopper > 0)
                     {
-                        if (PathFinder.FindPathToAnyFreeNeighbor((int2)rover.VisualPosition, hopper.position) == null) { continue; } // Hopper not reachable
+                        if (PathFinder.FindPathToAnyFreeNeighbor((int2)rover.GridPosition, hopper.position) == null) { continue; } // Hopper not reachable
 
                         var foundHopper = foundHoppers.Find(foundHoppers => foundHoppers.Hopper == hopper);
 

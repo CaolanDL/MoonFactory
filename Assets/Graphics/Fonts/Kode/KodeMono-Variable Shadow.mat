@@ -48,17 +48,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Ambient: 0.494
-    - _Bevel: 0.5
+    - _Ambient: 0.305
+    - _Bevel: 0.629
     - _BevelClamp: 0
     - _BevelOffset: 0
     - _BevelRoundness: 0
-    - _BevelWidth: 0.2
+    - _BevelWidth: 0.22
     - _BumpFace: 0
     - _BumpOutline: 0
     - _ColorMask: 15
     - _CullMode: 0
-    - _Diffuse: 0.372
+    - _Diffuse: 0.366
     - _FaceDilate: -0
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
@@ -67,7 +67,7 @@ Material:
     - _GlowOuter: 0.5
     - _GlowPower: 0.348
     - _GradientScale: 5
-    - _LightAngle: 5.4
+    - _LightAngle: 5.74
     - _MaskSoftnessX: 0
     - _MaskSoftnessY: 0
     - _OutlineSoftness: 0
@@ -75,15 +75,15 @@ Material:
     - _OutlineUVSpeedY: 0
     - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
-    - _Reflectivity: 8.66
+    - _Reflectivity: 6.47
     - _ScaleRatioA: 0.8
     - _ScaleRatioB: 0.65
-    - _ScaleRatioC: 0.5
+    - _ScaleRatioC: 0.5241935
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 1
     - _Sharpness: 0
-    - _SpecularPower: 3.14
+    - _SpecularPower: 3.12
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -91,7 +91,7 @@ Material:
     - _StencilWriteMask: 255
     - _TextureHeight: 512
     - _TextureWidth: 512
-    - _UnderlayDilate: 0.3
+    - _UnderlayDilate: 0.24
     - _UnderlayOffsetX: 0
     - _UnderlayOffsetY: -1
     - _UnderlaySoftness: 0
