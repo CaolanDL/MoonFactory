@@ -5,7 +5,7 @@ using UnityEngine;
 public class SampleAnalyser : Structure, IRecieveResources, IRequestResources, IDoResearch
 {
     ManagedTask RequestTask = new(); 
-    ResourceData requestResource; 
+    public ResourceData requestResource; 
     public ResourceData sample;
     public bool isResearching = false;
     public float progress = 0;
@@ -46,6 +46,11 @@ public class SampleAnalyser : Structure, IRecieveResources, IRequestResources, I
         requestResource = resource;
         if (!isResearching) { NewRequest(); }
     } 
+
+    public ResourceData GetRequest()
+    {
+        return requestResource;
+    }
 
     public void NewRequest()
     {
@@ -94,4 +99,9 @@ public interface IRequestResources
         SetRequest(resource, 1);
     }
     public void SetRequest(ResourceData resource, int quantity); 
+
+    public ResourceData GetRequest()
+    {
+        return null;
+    }
 }

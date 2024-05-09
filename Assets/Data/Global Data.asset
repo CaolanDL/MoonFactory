@@ -79,14 +79,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6b04b98578fc8ae4bb6db77aa10d8742, type: 2}
   StarterResources:
   - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
-    quantity: 5
+    quantity: 40
   - resource: {fileID: 11400000, guid: 03aa95c2254ffdf49841024aa82555d2, type: 2}
-    quantity: 2
+    quantity: 40
   - resource: {fileID: 11400000, guid: 3ee242ca696550040961d34f16706d45, type: 2}
-    quantity: 1
+    quantity: 2
   - resource: {fileID: 11400000, guid: 505d6e919bbaff9429b3af58fbc2d51d, type: 2}
     quantity: 1
   - resource: {fileID: 11400000, guid: 6742daa3f24544b4aa2c78e8016b1561, type: 2}
+    quantity: 4
+  - resource: {fileID: 11400000, guid: d350ffbae4b202b44baf32c086e425fa, type: 2}
+    quantity: 1
+  - resource: {fileID: 11400000, guid: f2a5b0aba6ea8aa4ab64fd045e7d22e6, type: 2}
+    quantity: 1
+  - resource: {fileID: 11400000, guid: 5133f1a46defeb14ca913447f5acd0f2, type: 2}
     quantity: 1
   mat_DevUniversal: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
   mat_Ghost: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}

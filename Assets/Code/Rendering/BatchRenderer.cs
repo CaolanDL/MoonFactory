@@ -149,6 +149,6 @@ public class ElectricalCoverageRenderer
             }
         }
 
-        BatchRenderer.RenderChunkedMatrixArray(chunkedMatrixArray, RenderData.Instance.TilePowerGizmo, RenderData.Instance.TransparentBlueGizmoMaterial);
+        BatchRenderer.RenderChunkedMatrixArray(chunkedMatrixArray, RenderData.Instance.TilePowerGizmo, RenderData.Instance.TilePowerGizmoMaterial);
     }
 }

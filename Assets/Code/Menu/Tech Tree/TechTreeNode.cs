@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,6 +13,9 @@ public class TechTreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     [SerializeField] public StructureData Tech;
     [SerializeField] public int Cost;
     [SerializeField] public TechTreeConnection Connection;
+    [SerializeField] public List<TechTreeNode> SubNodes;
+    TechTreeNode parentNode; 
+    bool isSubnode = false;
 
     [Space(24)]
     [SerializeField] Image background;
@@ -37,6 +41,12 @@ public class TechTreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         techTree = GetComponentInParent<TechTreeController>();
         SetDetails();
         ChangeState(State.Locked);
+
+        foreach(var node in SubNodes)
+        {
+            node.isSubnode = true;
+            node.parentNode = this;
+        }
     }
 
     void SetDetails()
@@ -48,24 +58,41 @@ public class TechTreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         costText.text = Cost.ToString();
     }
 
+    public void OnPressed()
+    {
+        if(isSubnode) { parentNode.OnPressed(); return; }
+        TryUnlock();
+    }
+
     public void TryUnlock()
-    { 
+    {  
         if(state != State.Available) { return; }
 
         var scienceManager = GameManager.Instance.ScienceManager;
 
-        if(scienceManager.SciencePoints >= Cost)
+        if (scienceManager.SciencePoints >= Cost)
         {
             scienceManager.RemovePoints(Cost); 
-            ChangeState(State.Unlocked);
             Tech.Unlock();
-            Connection.Unlock();
+            Connection?.Unlock();
             GameManager.Instance.HUDManager.UpdateConstructionMenu();
+
+            foreach (var node in SubNodes)
+            {
+                node.TryUnlock();
+            }
+
+            ChangeState(State.Unlocked);
         }
     } 
 
     public void ChangeState(State state)
     {
+        foreach(var node in SubNodes)
+        {
+            node.ChangeState(state);
+        }
+
         background.color = techTree.StateColors[state];
 
         if (state == State.Locked)

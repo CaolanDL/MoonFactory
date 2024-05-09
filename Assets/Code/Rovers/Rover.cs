@@ -283,10 +283,10 @@ public class Rover : Entity
 
 public class Widget : Rover
 {
-    static float _MoveSpeed = 1f;
+    static float _MoveSpeed = 1.5f;
     public override float MoveSpeed => _MoveSpeed;
 
-    static float _TurnSpeed = 2f;
+    static float _TurnSpeed = 3f;
     public override float TurnSpeed => _TurnSpeed;
 
 

@@ -25,6 +25,8 @@ MonoBehaviour:
     type: 3}
   TilePowerGizmo: {fileID: -2668541852928962441, guid: 3354458aa2a456945bf0815d3041d47a,
     type: 3}
+  TilePowerGizmoMaterial: {fileID: 2100000, guid: a4992b377aec83546843d2bbca0cb18b,
+    type: 2}
   BlueGizmoMaterial: {fileID: 2100000, guid: 9e0f6bc44e9809f4b9132213d36fb8bd, type: 2}
   TransparentBlueGizmoMaterial: {fileID: 2100000, guid: 9e0f6bc44e9809f4b9132213d36fb8bd,
     type: 2}

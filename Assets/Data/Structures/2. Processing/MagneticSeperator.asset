@@ -23,11 +23,13 @@ MonoBehaviour:
     x: 1
     y: 1
   requiredResources:
-  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
-    quantity: 25
+  - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
+    quantity: 6
+  - resource: {fileID: 11400000, guid: 5133f1a46defeb14ca913447f5acd0f2, type: 2}
+    quantity: 1
   timeToBuild: 99
-  CraftingFormulas:
-  - {fileID: 11400000, guid: d9bf0d968584ad646bd22827abde60f4, type: 2}
+  CraftableResources:
+  - {fileID: 11400000, guid: 1bee85d2bcca951439eee9b1f3f790e1, type: 2}
   inputs:
   - position:
       x: 0
@@ -38,6 +40,8 @@ MonoBehaviour:
       x: 0
       y: 1
     _rotation: 0
+  ports: []
   ghostMesh: {fileID: 7484016296445078928, guid: 658c28af342de2c4b8bd272dfeee7d3f,
     type: 3}
   ghostModels: []
+  unlocked: 0

@@ -2,12 +2,17 @@ using Logistics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HopperInterface : StaticInterface
 { 
-    public SingleStackInventoryElement InventoryElement; 
-    private Hopper hopper; 
-    private StructureData structureData; 
+    public SingleStackInventoryElement InventoryElement;
+
+    [SerializeField] Toggle requestToggle;
+    [SerializeField] Toggle supplyToggle;
+
+    public Hopper hopper; 
+    private StructureData structureData;
 
     public override void Init(Entity entity, Vector3 screenPosition)
     {
@@ -19,7 +24,10 @@ public class HopperInterface : StaticInterface
 
         SetDetails(structureData.sprite, structureData.screenname, structureData.description); 
 
-        InventoryElement.inventory = hopper.storageInventory; 
+        InventoryElement.inventory = hopper.storageInventory;
+
+        requestToggle.SetIsOnWithoutNotify(hopper.isRequestor);
+        supplyToggle.SetIsOnWithoutNotify(hopper.isSupplier);
     }
 
     public void Update()
@@ -56,6 +64,16 @@ public class HopperInterface : StaticInterface
 
     public void SetRequestResource(ResourceData resourceData)
     {
-        //hopper.requestResource = resourceData;
+        hopper.RequestPort.SetRequest(resourceData, 10);
+    }
+
+    public void SupplyToggleChanged(bool value)
+    {
+        hopper.isSupplier = value;
+    }
+
+    public void RequestToggleChanged(bool value)
+    {
+        hopper.isRequestor = value;
     }
 }

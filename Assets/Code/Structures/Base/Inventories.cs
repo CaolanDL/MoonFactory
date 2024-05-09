@@ -109,16 +109,9 @@ public class Inventory // 56 bytes
 
     public int GetMaxAcceptable(ResourceData resource)
     {
-        int nByWeight = (int)MathF.Floor(AvailableCapacityByWeight / resource.Weight); 
+        //int nByWeight = (int)MathF.Floor(AvailableCapacityByWeight / resource.Weight);  
 
-        if (nByWeight < AvailableCapacityByCount)
-        {
-            return nByWeight;
-        }
-        else
-        {
-            return AvailableCapacityByCount;
-        } 
+        return AvailableCapacityByCount; 
     }
 
     public int GetQuantityOf(ResourceData resource)

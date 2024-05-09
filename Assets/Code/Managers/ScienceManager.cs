@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class ScienceManager
 {
+    [NonSerialized] public List<StructureData> unlocked_Structures = new(); 
+    [NonSerialized] public List<ResourceData> unlocked_Resources = new();
+
     public int SciencePoints = 0;
 
     public Action<int> PointsChanged;
@@ -51,8 +54,8 @@ public class ScienceManager
         {
             r.unlocked = false;
         }
-        GlobalData.Instance.unlocked_Structures.Clear();
-        GlobalData.Instance.unlocked_Resources.Clear();
+        GameManager.Instance.ScienceManager.unlocked_Structures.Clear();
+        GameManager.Instance.ScienceManager.unlocked_Resources.Clear();
 
         foreach (var str in GlobalData.Instance.UnlockedOnStart)
         {

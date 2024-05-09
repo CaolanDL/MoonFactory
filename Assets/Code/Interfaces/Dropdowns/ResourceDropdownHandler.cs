@@ -25,7 +25,14 @@ public class ResourceDropdownHandler : MonoBehaviour
 
     public void SetSelected(ResourceData resource)
     {
-        dropdown.value = resources.IndexOf(resource)+1;
+        if(resources != null)
+        { 
+            dropdown.value = resources.IndexOf(resource) + 1;
+        }
+        else
+        {
+            dropdown.value = -1;
+        }
     }
 
     public void Populate(List<ResourceData> _resources)
@@ -57,6 +64,4 @@ public class ResourceDropdownHandler : MonoBehaviour
         }
         callbackAction?.Invoke(resources[dropdown.value - 1]);  
     }
-
-
 }

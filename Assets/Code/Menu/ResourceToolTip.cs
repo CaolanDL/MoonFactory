@@ -25,7 +25,7 @@ public class ResourceToolTip : MonoBehaviour
     }
 
     public void SetDetails(ResourceData resouce)
-    {
+    { 
         this.resource = resouce;
          
         tooltipSprite.sprite = resouce.sprite; 

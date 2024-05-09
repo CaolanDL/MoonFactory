@@ -48,7 +48,7 @@ namespace RoverJobs
         //------------------------------------------------------
         public int SortDistanceToRover(Structure a, Structure b)
         {
-            return FloatSort(Float2Extensions.DistanceBetween(rover.position, a.position), Float2Extensions.DistanceBetween(rover.position, b.position));
+            return FloatSort(Float2Extensions.DistanceBetween(rover.GridPosition, a.position), Float2Extensions.DistanceBetween(rover.GridPosition, b.position));
         }
 
         public static int FloatSort(float a, float b)
@@ -151,7 +151,7 @@ namespace RoverJobs
 
         public override void OnTick()
         { 
-            if(rover.position.Equals(targetPad.position))
+            if(rover.GridPosition.Equals(targetPad.position))
             { 
                 rover.powerLevel += targetPad.powerSupply;
             }
@@ -306,7 +306,7 @@ namespace RoverJobs
 
         public override void OnStart()
         {
-            path = PathFinder.FindPath(rover.position, destination);
+            path = PathFinder.FindPath(rover.GridPosition, destination);
 
             if (path == null) { FailTask(); return; }
 

@@ -32,7 +32,7 @@ public class ConstructionMenuBuilder : MonoBehaviour
 
         buttons.Clear();
 
-        foreach(var structureData in GlobalData.Instance.unlocked_Structures)
+        foreach(var structureData in GameManager.Instance.ScienceManager.unlocked_Structures)
         {
             Transform parent;
 

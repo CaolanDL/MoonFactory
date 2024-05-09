@@ -14,10 +14,10 @@ public class GlobalData : ScriptableObject
 
     [Header("Registry")]
     [SerializeField] public List<StructureData> Structures;
-    [NonSerialized] public List<StructureData> unlocked_Structures = new();
+    //[NonSerialized] public List<StructureData> unlocked_Structures = new();
 
     [SerializeField] public List<ResourceData> Resources;
-    [NonSerialized] public List<ResourceData> unlocked_Resources = new();
+    //[NonSerialized] public List<ResourceData> unlocked_Resources = new();
 
     [SerializeField] public List<StructureData> UnlockedOnStart = new();
     [SerializeField] public List<ResourceQuantity> StarterResources = new();

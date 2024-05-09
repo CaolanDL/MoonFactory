@@ -22,6 +22,7 @@ public class MenuData : ScriptableObject
     public GameObject HopperInterface;
     public GameObject RelayInterface;
     public GameObject SampleAnalyserInterface;
+    public GameObject LanderInterface;
 
     [Header("Interfaces Elements")]
     public GameObject InventoryElement;

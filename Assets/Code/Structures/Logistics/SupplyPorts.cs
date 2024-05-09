@@ -17,7 +17,7 @@ I need hoppers to be able to be prioritised over machines when rovers are search
 */
 
 public class Port
-{ 
+{
     public List<Inventory> LinkedInventories = new();
 
     public void AddInventory(Inventory inventory)
@@ -69,7 +69,7 @@ public class Port
 
         foreach (Inventory inventory in LinkedInventories)
         {
-            if(inventory == null) { continue; }
+            if (inventory == null) { continue; }
             quantityFound += inventory.GetUnreservedQuantityOf(resource);
         }
         return quantityFound;
@@ -91,7 +91,7 @@ public class Port
 
     public virtual void Delete()
     {
-        foreach(Inventory inventory in LinkedInventories)
+        foreach (Inventory inventory in LinkedInventories)
         {
             if (inventory == null) { continue; }
             inventory.reservedResources.Clear();
@@ -106,26 +106,26 @@ public class SupplyPort : Port
     public Structure parent;
 
     //public Dictionary<ResourceData, int> reservedResources;
-     
+
     public SupplyPort(Structure parent)
     {
         Pool.Add(this);
         this.parent = parent;
-    }  
+    }
 
     public void ReserveResource(ResourceQuantity resourcesToReserve)
-    {  
+    {
         foreach (Inventory inventory in LinkedInventories)
         {
             int freeQuantity = inventory.GetUnreservedQuantityOf(resourcesToReserve.resource);
 
-            if (freeQuantity == 0) continue; 
+            if (freeQuantity == 0) continue;
             var quantityToReserve = Mathf.Clamp(freeQuantity, 0, resourcesToReserve.quantity);
 
             inventory.ReserveResource(new ResourceQuantity(resourcesToReserve.resource, quantityToReserve));
 
-            resourcesToReserve.quantity -= quantityToReserve; 
-            if(resourcesToReserve.quantity <= 0) { return; }
+            resourcesToReserve.quantity -= quantityToReserve;
+            if (resourcesToReserve.quantity <= 0) { return; }
         }
     }
 
@@ -135,15 +135,15 @@ public class SupplyPort : Port
     {
         foreach (Inventory inventory in LinkedInventories)
         {
-            int reservedQuantity = inventory.reservedResources[resourcesToFree.resource]; 
+            int reservedQuantity = inventory.reservedResources[resourcesToFree.resource];
 
-            if (reservedQuantity == 0) continue; 
+            if (reservedQuantity == 0) continue;
             var quantityToFree = Mathf.Clamp(resourcesToFree.quantity, 0, reservedQuantity);
 
             inventory.FreeResource(resourcesToFree.resource, quantityToFree);
-            if(removeResources) inventory.RemoveResource(resourcesToFree.resource, quantityToFree);
+            if (removeResources) inventory.RemoveResource(resourcesToFree.resource, quantityToFree);
 
-            resourcesToFree.quantity -= quantityToFree; 
+            resourcesToFree.quantity -= quantityToFree;
             if (resourcesToFree.quantity <= 0) { return; }
         }
     }
@@ -151,11 +151,11 @@ public class SupplyPort : Port
 
     public void CollectResource(ResourceQuantity resourceQuantity)
     {
-        Debug.Log($"Collected:{resourceQuantity.quantity} {resourceQuantity.resource}s" );
+        Debug.Log($"Collected:{resourceQuantity.quantity} {resourceQuantity.resource}s");
 
-        if(GetReservedQuantity(resourceQuantity.resource) == 0) throw new System.Exception("Tried to collect a resource that doesnt exist");
+        if (GetReservedQuantity(resourceQuantity.resource) == 0) throw new System.Exception("Tried to collect a resource that doesnt exist");
 
-        FreeResource(resourceQuantity, removeResources: true); 
+        FreeResource(resourceQuantity, removeResources: true);
     }
 
     public override void Delete()
@@ -167,12 +167,11 @@ public class SupplyPort : Port
 
 public class RequestPort : Port
 {
-    public static List<RequestPort> Pool = new(); 
+    public static List<RequestPort> Pool = new();
     public Structure parent;
     ManagedTask ManagedTask = new();
-
-    ResourceData TargetResource; 
-    int TargetQuantity; 
+    public ResourceData TargetResource;
+    int TargetQuantity;
 
     public RequestPort(Structure parent)
     {
@@ -186,10 +185,12 @@ public class RequestPort : Port
         TargetQuantity = quantity;
     }
 
-    void TryRequest()
+    public void TryRequest()
     {
         if (TargetResource == null) return;
-        if ( ManagedTask.taskExists ) return;
+        if (ManagedTask.taskExists) return;
+
+        Debug.Log("Created Request Task");
 
         ManagedTask.TryCreateTask(new SoftRequestResourceTask(TargetResource, TargetQuantity, parent.position));
     }
@@ -203,19 +204,19 @@ public class RequestPort : Port
     {
         int remainder = quantity;
 
-        foreach(var inventory in LinkedInventories)
+        foreach (var inventory in LinkedInventories)
         {
             var maxAcceptable = inventory.GetMaxAcceptable(resource);
 
             if (inventory.GetQuantityOf(resource) > 0 && inventory.GetMaxAcceptable(resource) > 0)
             {
                 var n = math.clamp(remainder, 0, maxAcceptable);
-                if(inventory.TryAddResource(resource, n)) { remainder -= n; }
+                if (inventory.TryAddResource(resource, n)) { remainder -= n; }
                 if (n <= 0) { return 0; }
             }
         }
 
-        foreach(var inventory in LinkedInventories)
+        foreach (var inventory in LinkedInventories)
         {
             var maxAcceptable = inventory.GetMaxAcceptable(resource);
 

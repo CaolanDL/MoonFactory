@@ -172,7 +172,7 @@ public class ConstructionManager
                 for (int y = -Electrical.Relay.connectionRange; y <= Electrical.Relay.connectionRange; y++)
                 {
                     var _pos = new Vector3(x + ghostGridPosition.x, 0.05f, y + ghostGridPosition.y);
-                    Graphics.DrawMesh(RenderData.Instance.TilePowerGizmo, _pos, Quaternion.identity, RenderData.Instance.TransparentBlueGizmoMaterial, 0);
+                    Graphics.DrawMesh(RenderData.Instance.TilePowerGizmo, _pos, Quaternion.identity, RenderData.Instance.TilePowerGizmoMaterial, 0);
                 }
         }
     } 

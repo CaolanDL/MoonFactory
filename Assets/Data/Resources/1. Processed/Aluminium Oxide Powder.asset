@@ -21,7 +21,7 @@ MonoBehaviour:
   ResearchValue: 1
   SecondsToResearch: 10
   craftedIn: {fileID: 11400000, guid: 2da3df366ff31c140927f5eafcfe6206, type: 2}
-  timeToCraft: 25
+  timeToCraft: 150
   quantityCrafted: 1
   requiredResources:
   - resource: {fileID: 11400000, guid: 846496dfeac5afa4781a190aff293cc6, type: 2}

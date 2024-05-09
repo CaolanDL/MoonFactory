@@ -41,7 +41,10 @@ public class ResourceData : ScriptableObject
     public void Unlock()
     {
         unlocked = true;
-        GlobalData.Instance.unlocked_Resources.Add(this);
+        if (!GameManager.Instance.ScienceManager.unlocked_Resources.Contains(this))
+        { 
+            GameManager.Instance.ScienceManager.unlocked_Resources.Add(this);
+        }
     }
 }
 

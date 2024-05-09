@@ -20,10 +20,11 @@ public class HopperDropdownManager : MonoBehaviour
     private void Start()
     {
         dropdownHandler.Populate(GetResources());
+        dropdownHandler.SetSelected(hopperInterface.hopper.RequestPort.TargetResource);
     }
 
     List<ResourceData> GetResources()
     { 
-        return GameManager.Instance.GlobalData.unlocked_Resources; 
+        return GameManager.Instance.ScienceManager.unlocked_Resources; 
     }  
 }

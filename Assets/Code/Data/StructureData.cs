@@ -68,9 +68,9 @@ public class StructureData : ScriptableObject
         if(unlocked) return;
 
         unlocked = true;
-        if(GlobalData.Instance.unlocked_Structures.Contains(this) == false)
+        if(GameManager.Instance.ScienceManager.unlocked_Structures.Contains(this) == false)
         {
-            GlobalData.Instance.unlocked_Structures.Add(this);
+            GameManager.Instance.ScienceManager.unlocked_Structures.Add(this);
         } 
 
         foreach(ResourceData resource in CraftableResources)

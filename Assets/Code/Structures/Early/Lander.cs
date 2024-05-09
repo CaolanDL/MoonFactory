@@ -51,5 +51,10 @@ public class Lander : Structure
         {
             inventory.TryAddResource(rq);
         }
-    } 
+    }
+
+    public override void OnClicked(Vector3 mousePosition)
+    {
+        OpenInterfaceOnHUD(MenuData.Instance.LanderInterface, mousePosition);
+    }
 }

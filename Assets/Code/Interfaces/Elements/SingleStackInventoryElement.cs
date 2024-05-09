@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class SingleStackInventoryElement : MonoBehaviour
 {
+    [SerializeField] ResourceIcon icon;
+
     public Image image;
     public TextMeshProUGUI counter;
     public TextMeshProUGUI maxItems;
@@ -15,14 +17,17 @@ public class SingleStackInventoryElement : MonoBehaviour
 
     public void UpdateDisplay()
     {
-        maxItems.SetText("/" + inventory.maxItems.ToString());
+        maxItems.SetText(inventory.maxItems.ToString());
         if (resourceStack == null)
         {
+            icon.gameObject.SetActive(false);
             image.sprite = MenuData.Instance.emptySprite;
             counter.SetText("0"); 
             return;
-        } 
-        image.sprite = resourceStack.resource.sprite;
-        counter.SetText(resourceStack.quantity.ToString()); 
+        }
+        if(icon.gameObject == null) { return; }
+        icon.gameObject.SetActive(true);
+        icon.SetDetails(resourceStack.resource);
+        icon.SetCount(resourceStack.quantity); 
     } 
 }

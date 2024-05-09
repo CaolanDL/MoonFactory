@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class StructureTooltip : MonoBehaviour
 {
@@ -10,10 +11,12 @@ public class StructureTooltip : MonoBehaviour
 
     public TextMeshProUGUI Title;
     public TextMeshProUGUI Description;
+    public GameObject CraftablesHeader;
     public Transform CraftablesContainer;
+    public Transform RequirmentsContainer;
 
     [SerializeField] GameObject ResourceIconPrefab;
-    List<GameObject> craftablesIcons = new();
+    [SerializeField] GameObject ResourceIconCountPrefab; 
 
     private void Start()
     {
@@ -27,14 +30,27 @@ public class StructureTooltip : MonoBehaviour
         Title.SetText(structureData.screenname); 
         Description.SetText(structureData.description);
 
-        foreach(var craftable in structure.CraftableResources)
+        if(structure.CraftableResources.Count == 0)
         {
-            var icon = Instantiate(ResourceIconPrefab, CraftablesContainer);
-            icon.GetComponent<ResourceIcon>()?.SetDetails(craftable);
-            craftablesIcons.Add(icon);
+            Destroy(CraftablesContainer.gameObject);
+            Destroy(CraftablesHeader);
+        }
+        else
+        {
+            foreach (var craftable in structure.CraftableResources)
+            {
+                var icon = Instantiate(ResourceIconPrefab, CraftablesContainer);
+                icon.GetComponent<ResourceIcon>()?.SetDetails(craftable); 
+            }
+        } 
+        foreach (var rq in structure.requiredResources)
+        {
+            var icon = Instantiate(ResourceIconCountPrefab, RequirmentsContainer);
+            icon.GetComponent<ResourceIcon>()?.SetDetails(rq.resource);
+            icon.GetComponent<ResourceIcon>()?.SetCount(rq.quantity); 
         }
 
-        SetPosition();
+        SetPosition(); 
     }
 
     private void Update()

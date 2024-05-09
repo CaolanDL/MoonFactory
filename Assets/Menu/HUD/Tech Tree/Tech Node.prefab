@@ -525,6 +525,7 @@ MonoBehaviour:
   Tech: {fileID: 0}
   Cost: 0
   Connection: {fileID: 0}
+  SubNodes: []
   background: {fileID: 4820875023260578763}
   button: {fileID: 6169554855516456224}
   techSprite: {fileID: 8995931590267244069}
@@ -549,7 +550,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1433013036042146411}
         m_TargetAssemblyTypeName: TechTreeNode, Assembly-CSharp
-        m_MethodName: TryUnlock
+        m_MethodName: OnPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

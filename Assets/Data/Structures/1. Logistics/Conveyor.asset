@@ -22,10 +22,11 @@ MonoBehaviour:
     x: 1
     y: 1
   requiredResources:
-  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
-    quantity: 25
+  - resource: {fileID: 11400000, guid: 03aa95c2254ffdf49841024aa82555d2, type: 2}
+    quantity: 5
+  - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
+    quantity: 2
   timeToBuild: 10
-  CraftingFormulas: []
   CraftableResources: []
   inputs:
   - position:
@@ -44,4 +45,4 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}
   - mesh: {fileID: 8654884093285089175, guid: 8626fe02b00017f4ab3ae100f81fa2be, type: 3}
     material: {fileID: 2100000, guid: 49ea389af960b8044940149724111ecd, type: 2}
-  unlocked: 1
+  unlocked: 0

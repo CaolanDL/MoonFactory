@@ -5,7 +5,7 @@ using Electrical;
 using UnityEngine.UI;
 using TMPro;
 
-public class RelayInterface : StaticInterface
+public class ElectricalInterface : StaticInterface
 {
     [SerializeField] TextMeshProUGUI MaxInput;
     [SerializeField] TextMeshProUGUI Input; 
@@ -17,13 +17,13 @@ public class RelayInterface : StaticInterface
     [SerializeField] Slider OutputPowerMeter;
     [SerializeField] Slider PowerRatioMeter;
 
-    Relay Relay;
+    Node node;
 
     public override void Init(Entity entity, Vector3 screenPosition)
     {
         base.Init(entity, screenPosition);
 
-        Relay = (Relay)((PowerPylon)entity).ElectricalNode;
+        node = ((Structure)entity).ElectricalNode;
     }
 
     private void FixedUpdate()
@@ -35,14 +35,14 @@ public class RelayInterface : StaticInterface
     {
         base.UpdateUI();
 
-        if(Relay == null || Relay.Network == null) { WriteEmptyValues(); return; }
+        if(node == null || node.Network == null) { WriteEmptyValues(); return; }
 
         WriteFromNetwork();
     }
 
     void WriteFromNetwork()
     {
-        var network = Relay.Network;
+        var network = node.Network;
 
         MaxInput.text = network.MaxInput.ToString();
         Input.text = network.TotalInput.ToString();

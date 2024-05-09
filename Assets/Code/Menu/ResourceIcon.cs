@@ -7,11 +7,13 @@ public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 {
     [SerializeField] Image sprite;
     [SerializeField] TMP_Text iconName;
+    [SerializeField] TMP_Text counter;
 
     GameObject tooltip;
     [SerializeField] GameObject ToolTipPrefab;
 
-    ResourceData resource;
+    public ResourceData resource;
+    public int count;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -32,5 +34,14 @@ public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
         sprite.sprite = resource.sprite; 
         iconName.text = resource.name;   
+    }
+
+    public void SetCount(int count)
+    {
+        if(counter != null)
+        {
+            counter.text = count.ToString();
+            this.count = count;
+        }
     }
 }

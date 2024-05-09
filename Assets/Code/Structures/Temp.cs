@@ -38,7 +38,4 @@ public class Smelter : Structure
 
 }
 
-public class ElectrostaticSeperator : Structure
-{
 
-} 

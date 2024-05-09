@@ -1,4 +1,5 @@
-﻿using Logistics;
+﻿using ExtensionMethods;
+using Logistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -130,7 +131,7 @@ namespace Electrical
     public class Node
     {
         public Structure Parent;
-        public int2 parentPosition;
+        //public int2 parentPosition;
         public Network Network;
         public List<Connection> Connections = new();
         public bool CanConnect = true;
@@ -138,7 +139,7 @@ namespace Electrical
         public void Constructed()
         {
             SystemManager.nodes.Add(this);
-            parentPosition = Parent.position;
+            //parentPosition = Parent.position;
             Parent.OnDemolishedEvent += Demolished; 
             OnConstructed();
         }
@@ -247,7 +248,7 @@ namespace Electrical
         /// </summary> 
         public List<Node> FindNearbyNodesByType(Type type, int range)
         {
-            List<Location> nearbyLocations = GameManager.Instance.GameWorld.worldGrid.GetSquareRadius(Parent.position, range);
+/*            List<Location> nearbyLocations = GameManager.Instance.GameWorld.worldGrid.GetSquareRadius(Parent.position, range);
 
             List<Structure> nearbyStructures = new();
             nearbyStructures.AddRange(from location in nearbyLocations
@@ -257,13 +258,15 @@ namespace Electrical
             List<Node> nearbyNodes = new();
             nearbyNodes.AddRange(from structure in nearbyStructures
                                  where structure.ElectricalNode != null && (structure.ElectricalNode.GetType() == type || structure.ElectricalNode.GetType().IsSubclassOf(type))
-                                 select structure.ElectricalNode);
+                                 select structure.ElectricalNode);*/
 
-/*            List<Node> nodes = new();
-            nodes.AddRange(from node in SystemManager.nodes*/
+            List<Node> nodes = new();
+            nodes.AddRange(from node in SystemManager.nodes
+                           where node.Parent.position.GridDistanceTo(Parent.position) <= range && (node.GetType() == type || node.GetType().IsSubclassOf(type))
+                           select node);
 
-            if (nearbyNodes.Count == 0) return null;
-            else return nearbyNodes;
+            if (nodes.Count == 0) return null;
+            else return nodes;
         }
 
         public int SortNodeByDistanceToSelf(Node a, Node b)

@@ -37,20 +37,19 @@ namespace Logistics
             storageInventory.maxWeight = int.MaxValue;
 
             pool.Add(this);
-        } 
+
+            AddPorts();
+        }
 
         public override void OnConstructed()
         {
-            
+
         }
 
         // Add supply request port components
         public override void AddPorts()
         {
-            SupplyPort = new(this);
             RequestPort = new(this);
-
-            SupplyPort.AddInventory(storageInventory);
             RequestPort.AddInventory(storageInventory);
         }
 
@@ -59,10 +58,31 @@ namespace Logistics
             pool.Remove(this);
         }
 
+        int timer = 0;
+        int timerMax = 30;
+
         public override void OnTick()
         {
-            TransferAnythingRandom(InputInventories[0], OutputInventories[0]);
-            TryOutputAnything(0);
+            timer++;
+            if (timer > timerMax)
+            {
+                timer = 0;
+                TryOutputAnything(0);
+            }
+
+            TransferAnythingRandom(InputInventories[0], OutputInventories[0]); 
+
+            //Debug.Log(RequestPort.TargetResource);
+
+            if (isRequestor && RequestPort.TargetResource != null)
+            {
+                //Debug.Log(storageInventory.GetMaxAcceptable(RequestPort.TargetResource));
+
+                if (storageInventory.GetMaxAcceptable(RequestPort.TargetResource) > 0)
+                {
+                    RequestPort.TryRequest();
+                }
+            }
         }
 
         // This item rendering could be modified to update an array OnItemRecieved and OnItemOutput to reduce per frame overhead

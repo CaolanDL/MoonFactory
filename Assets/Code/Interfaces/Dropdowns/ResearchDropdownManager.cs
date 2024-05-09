@@ -12,6 +12,8 @@ public class ResearchDropdownManager : MonoBehaviour
     public IRequestResources researchRequestor;
     ResourceData requestResource;
 
+    bool isStarting = true;
+
     public Action<ResourceData> SetRequestResourceAction; 
 
     private void Start()
@@ -25,6 +27,10 @@ public class ResearchDropdownManager : MonoBehaviour
         dropdownHandler.SetCallback(SetRequestResourceAction);
 
         SetOptions();
+
+        dropdownHandler.SetSelected(researchRequestor.GetRequest());
+
+        isStarting = false;
     }
 
     private void OnDestroy()
@@ -38,7 +44,7 @@ public class ResearchDropdownManager : MonoBehaviour
 
         foreach (var entry in GameManager.Instance.ScienceManager.ResearchRegistries[researcher])
         {
-            if (GameManager.Instance.GlobalData.unlocked_Resources.Contains(entry.Key) && entry.Value == false) { resourceDatas.Add(entry.Key); }
+            if (GameManager.Instance.ScienceManager.unlocked_Resources.Contains(entry.Key) && entry.Value == false) { resourceDatas.Add(entry.Key); }
         }
 
         dropdownHandler.Populate(resourceDatas);
@@ -46,6 +52,7 @@ public class ResearchDropdownManager : MonoBehaviour
 
     void ChangeResource(ResourceData resource)
     { 
+        if(isStarting) { return; }
         requestResource = resource;
         researchRequestor.SetRequest(requestResource);
     } 

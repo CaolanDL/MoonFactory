@@ -17,6 +17,9 @@ public class Machine : Structure
 
         for (int i = 0; i < StructureData.inputs.Count; i++) { InputInventories[i] = new(); }
         for (int i = 0; i < StructureData.outputs.Count; i++) { OutputInventories[i] = new(); }
+
+        SupplyPort = new(this);
+        SupplyPort.AddInventories(OutputInventories.ToList());
          
         SetupCrafting();
 
