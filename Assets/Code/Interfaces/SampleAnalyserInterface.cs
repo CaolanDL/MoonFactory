@@ -19,11 +19,17 @@ public class SampleAnalyserInterface : StaticInterface, IResearchInterface
          
         sampleAnalyser = (SampleAnalyser)entity;
         researcher = sampleAnalyser;
+
+        TutorialProxy.Action?.Invoke(TutorialEvent.SampleAnalyserInterfaceOpened);
     }
 
-    private void Update()
+    public override void Update()
     {
+        base.Update();
+
         UpdateUI();
+
+        TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.OpenInterface);
     } 
 
     public override void UpdateUI()

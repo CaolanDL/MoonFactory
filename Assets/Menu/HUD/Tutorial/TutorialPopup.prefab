@@ -333,7 +333,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press the BUILD button to open the Construction Menu
+  m_text: 'Press the BUILD button to open the Construction Menu
+
+    This is another
+    line.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c1cc56b10ec9239468e23d1eae4f6d35, type: 2}
   m_sharedMaterial: {fileID: 7329216822478321281, guid: c1cc56b10ec9239468e23d1eae4f6d35,
@@ -375,7 +378,7 @@ MonoBehaviour:
   m_wordSpacing: 0
   m_lineSpacing: -5
   m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
+  m_paragraphSpacing: 42
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
@@ -464,7 +467,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSkippable: 1
-  skipText: {fileID: 5222122882283633654}
+  linkedEvent: 0
+  skipText: {fileID: 4993516156430092570}
 --- !u!114 &1099593931855215048
 MonoBehaviour:
   m_ObjectHideFlags: 0

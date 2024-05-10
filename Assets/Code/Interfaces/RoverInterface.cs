@@ -12,6 +12,8 @@ public class RoverInterface : StaticInterface
 
     public override void Init(Entity entity, Vector3 screenPosition)
     {
+        base.Init(entity, screenPosition);
+
         this.rover = (Rover)entity;  
 
         transform.position = screenPosition; 

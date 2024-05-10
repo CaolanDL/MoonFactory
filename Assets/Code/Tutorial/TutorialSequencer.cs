@@ -9,13 +9,26 @@ public class TutorialSequencer : MonoBehaviour
     int activePopupIndex = 0;
 
     private void Awake()
-    {
-        TutorialProxy.BeginTutorial += BeginTutorial;
-
+    { 
         foreach(TutorialPopup popup in popupSequence)
         {
             popup.gameObject.SetActive(false);
         }
+    }
+
+    private void OnEnable()
+    {
+        TutorialProxy.Action += GameEvent;
+    }
+
+    private void OnDisable()
+    {
+        TutorialProxy.Action -= GameEvent;
+    }
+
+    void GameEvent(TutorialEvent @event)
+    {
+        if (@event == TutorialEvent.BeginTutorial) { BeginTutorial(); } 
     }
 
     public void BeginTutorial()

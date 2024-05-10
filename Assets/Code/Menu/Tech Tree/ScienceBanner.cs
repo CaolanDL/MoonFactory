@@ -10,10 +10,18 @@ public class ScienceBanner : MonoBehaviour
     private void Awake()
     {
         GameManager.Instance.ScienceManager.PointsChanged += SetPoints;
+        GameManager.Instance.ScienceManager.ResearchCompleted += PlayAnimation;
     }
 
     void SetPoints(int points)
     {
         PointsText.text = points.ToString();
+    }
+
+    void PlayAnimation()
+    {
+        var pulse = PointsText.gameObject.AddComponent<GraphicsPulseOnce>();
+        pulse.Set(1.2f, 12f);
+
     }
 }

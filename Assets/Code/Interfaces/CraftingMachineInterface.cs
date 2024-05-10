@@ -37,6 +37,8 @@ public class CraftingMachineInterface : StaticInterface
 
     public override void Init(Entity entity, Vector3 screenPosition)
     {
+        base.Init(entity, screenPosition);
+
         this.machine = (Machine)entity;
 
         structureData = machine.StructureData;

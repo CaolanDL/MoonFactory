@@ -15,11 +15,17 @@ public class StaticDrillInterface : StaticInterface
         staticDrill = (StaticDrill)entity;
 
         inventory.linkedInventory = staticDrill.inventory;
+
+        TutorialProxy.Action?.Invoke(TutorialEvent.StaticDrillInterfaceOpened);
     }
 
-    private void Update()
+    public override void Update()
     {
+        base.Update();
+
         UpdateUI();
+
+        TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.OpenInterface);
     }
 
     public override void UpdateUI()

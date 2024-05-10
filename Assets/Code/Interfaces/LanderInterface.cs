@@ -15,13 +15,18 @@ public class LanderInterface : StaticInterface
         base.Init(entity, screenPosition);
 
         lander = (Lander)entity; 
+        inventory.linkedInventory = lander.inventory;
 
-        inventory.linkedInventory = lander.inventory;   
+        TutorialProxy.Action?.Invoke(TutorialEvent.LanderInterfaceOpened);
     }
 
-    private void Update()
+    public override void Update()
     {
+        base.Update();
+
         UpdateUI();
+
+        TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.OpenInterface);
     } 
 
     public override void UpdateUI()

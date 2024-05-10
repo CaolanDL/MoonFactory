@@ -18,7 +18,7 @@ public class Entity // 12 bytes
         get { return transform.position; }
         set { transform.position = value; }
     }
-    
+
     public sbyte rotation
     {
         get { return transform.rotation; }
@@ -38,9 +38,9 @@ public class Entity // 12 bytes
     }
 
     public Entity GetNeighbor(sbyte rotationFactor)
-    { 
+    {
         return GameManager.Instance.GameWorld.worldGrid.GetEntityAt(position + rotation.Rotate(rotationFactor).ToInt2());
-    } 
+    }
 
     public (int2 xRange, int2 yRange) GetOccupyRegion()
     {
@@ -51,9 +51,9 @@ public class Entity // 12 bytes
         var xRange = new int2(position.x, position.x + rSize.x);
         var yRange = new int2(position.y, position.y + rSize.y);
 
-        if(xRange.x > xRange.y)
+        if (xRange.x > xRange.y)
         {
-            var temp = xRange.x; 
+            var temp = xRange.x;
             xRange.x = xRange.y;
             xRange.y = temp;
         }
@@ -75,29 +75,29 @@ public class Entity // 12 bytes
     {
         var _region = region.Rotate(_rotation);
 
-/*        if (rotation == 1)
-        {
-            _region.y += 1;
-        }
-        if (rotation == 2)
-        {
-            _region.y += 1;
-            _region.x += 1;
-        }
-        if (rotation == 3)
-        {
-            _region.x += 1;
-        }*/
+        /*        if (rotation == 1)
+                {
+                    _region.y += 1;
+                }
+                if (rotation == 2)
+                {
+                    _region.y += 1;
+                    _region.x += 1;
+                }
+                if (rotation == 3)
+                {
+                    _region.x += 1;
+                }*/
 
         return _region;
     }
 
     public List<Location> GetOccupyingLocations()
     {
-        var list = new List<Location>();    
+        var list = new List<Location>();
         var (xRange, yRange) = GetOccupyRegion();
 
-        for(var x = xRange.x; x < xRange.y; x++)
+        for (var x = xRange.x; x < xRange.y; x++)
         {
             for (var y = yRange.x; y < yRange.y; y++)
             {
@@ -111,19 +111,27 @@ public class Entity // 12 bytes
 
     public void RenderSelectionOutline()
     {
-        int2 intCentre = new(centre.x, centre.y);
-        var trueCentre = position + intCentre.Rotate(rotation);
-        float sineTime = (Mathf.Sin(Time.time * 2f) + 1) / 2; // Sine 0 - 1 
-        var p = trueCentre.ToVector3() + (Vector3.up * (sineTime/8+0.01f));
-        var r = Quaternion.Euler(0, Time.time * 120f, 0);
-        var s = Vector3.one * ((size.x + size.y) / 2);
-        var matrix = Matrix4x4.TRS(p, r, s);
-        Graphics.DrawMesh(RenderData.Instance.SelectionGizmo, matrix, RenderData.Instance.SelectionGizmoMaterial, 0);
+        RenderSelectionOutline(RenderData.Instance.SelectionGizmoMaterial);
+    }
 
-        matrix = Matrix4x4.TRS(trueCentre.ToVector3(), Quaternion.identity, Vector3.one); 
+    public void RenderSelectionOutline(Material material)
+    {
+        float2 floatCentre = new(size.x / 2f, size.y / 2f);
+        var trueFloatCentre = position + floatCentre.Rotate(rotation);
+        var trueVecCentre = new Vector3(trueFloatCentre.x, 0, trueFloatCentre.y);
+        float sineTime = (Mathf.Sin(Time.time * 2f) + 1) / 2; // Sine 0 - 1 
+        var p = trueVecCentre + (Vector3.up * (sineTime / 8 + 0.01f));
+        var r = Quaternion.Euler(0, Time.time * 120f, 0);
+        float scaler = size.x > size.y ? size.x : size.y;
+        scaler = size.x == size.y ? ((size.x + size.y) / 2f) : scaler;
+        var s = Vector3.one * scaler;
+        var matrix = Matrix4x4.TRS(p, r, s);
+        Graphics.DrawMesh(RenderData.Instance.SelectionGizmo, matrix, material, 0);
+
+        matrix = Matrix4x4.TRS(trueVecCentre, Quaternion.identity, Vector3.one);
         Graphics.DrawMesh(RenderData.Instance.TilesGizmo, matrix, RenderData.Instance.TransparentBlueGizmoMaterial, 0);
 
-        Debug.Log("Rendered Selection Outline");
+        //Debug.Log("Rendered Selection Outline");
     }
 }
 
@@ -134,5 +142,5 @@ public class FloorTile : Entity // Size: 9 bytes
     public FloorTile(FloorTileData tileData)
     {
         this.data = tileData;
-    } 
+    }
 }

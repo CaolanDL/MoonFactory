@@ -19,6 +19,11 @@ public class RenderData : ScriptableObject
     [Header("Universal")]
     public Material UniversalMaterial;
 
+    [Header("Ghosts")]
+    public Material StructureGhost_Mouse;
+    public Material StructureGhost_Blocked;
+    public Material StructureGhost_World;
+
     [Header("Port Indication")]
     public Mesh Arrow;
     public Mesh TwoWayArrow;
@@ -36,6 +41,7 @@ public class RenderData : ScriptableObject
     [Space]
     public Mesh SelectionGizmo;
     public Material SelectionGizmoMaterial;
+    public Material SelectedInterfaceGizmoMaterial;
 
 
     [Header("Wire")]

@@ -1,19 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TutorialPopup : MonoBehaviour
 {
     [Header("Options")]
     [SerializeField] bool isSkippable = false;
-    [SerializeField] LinkedEvent linkedEvent;
-    public enum LinkedEvent
-    {
-
-    }
+    [SerializeField] bool isMoveable = false;
+    [SerializeField] TutorialEvent linkedEvent;
+    [SerializeField] TutorialTag popupTag;
 
     [Header("References")]
-    [SerializeField] GameObject skipText;
+    [SerializeField] TMP_Text skipText; 
     TutorialSequencer tutorialSequencer;
 
     private void Awake()
@@ -22,27 +21,34 @@ public class TutorialPopup : MonoBehaviour
 
         if (!isSkippable && skipText != null)
         {
-            Destroy(skipText);
+            skipText.text = "<s>Continue</s>";
         }
     }
 
-    void BindEvent()
+    private void OnEnable()
     {
-        switch (linkedEvent)
-        {
-            case LinkedEvent.None:
-                break;
-            case LinkedEvent.BuildButtonPressed:
-                TutorialProxy.BuildButtonPressed += AdvanceTutorial; break;
-            case LinkedEvent.StaticDrillSelected:
-                TutorialProxy.StaticDrillSelected += AdvanceTutorial; break;
-            case LinkedEvent.StaticDrillInterfaceOpened:
-                TutorialProxy.StaticDrillInterfaceOpened += AdvanceTutorial; break;
-            case LinkedEvent.LanderInterfaceOpened:
-                TutorialProxy.LanderInterfaceOpened += AdvanceTutorial; break;
-            case LinkedEvent.TechTreeOpened:
-                TutorialProxy.TechTreeOpened += AdvanceTutorial; break; 
-        }
+        TutorialProxy.Action += GameEvent;
+        TutorialProxy.SetPopupPosition += SetPosition;
+    }
+
+    private void OnDisable()
+    {
+        TutorialProxy.Action -= GameEvent;
+        TutorialProxy.SetPopupPosition -= SetPosition;
+    }
+
+    void GameEvent(TutorialEvent @event)
+    {
+        if(@event != linkedEvent) { return; }
+
+        AdvanceTutorial();
+    }
+
+    void SetPosition(Vector3 pos, TutorialTag tag)
+    {
+        if(tag != popupTag) return;
+        if(!isMoveable) return;
+        transform.position = pos;
     }
 
     public void PopupClicked()

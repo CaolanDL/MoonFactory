@@ -11,6 +11,7 @@ public class ScienceManager
     public int SciencePoints = 0;
 
     public Action<int> PointsChanged;
+    public Action ResearchCompleted;
 
     public enum Researcher
     {
@@ -74,6 +75,7 @@ public class ScienceManager
         SciencePoints += resource.ResearchValue * ResearchMultipliers[researcher]; 
 
         PointsChanged?.Invoke(SciencePoints);
+        ResearchCompleted?.Invoke();
     }
 
     public void RemovePoints(int points)

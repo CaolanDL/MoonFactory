@@ -12,6 +12,8 @@ public class StaticInterface : MonoBehaviour
 
     [SerializeField] Image spriteImage;
 
+    Entity entity = null;
+
     private void Awake()
     {
         Canvas.ForceUpdateCanvases();
@@ -20,6 +22,12 @@ public class StaticInterface : MonoBehaviour
     public virtual void Init(Entity entity, Vector3 screenPosition)
     {
         transform.position = screenPosition;
+        this.entity = entity;
+    }
+
+    public virtual void Update()
+    { 
+        entity.RenderSelectionOutline(RenderData.Instance.SelectedInterfaceGizmoMaterial);
     }
 
     public virtual void UpdateUI() { }

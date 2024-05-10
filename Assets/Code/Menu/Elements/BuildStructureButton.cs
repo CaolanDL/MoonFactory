@@ -51,6 +51,20 @@ public class BuildStructureButton : MonoBehaviour
         gameManager.ConstructionManager.StartPlacingGhosts(structureData);
 
         gameManager.GetComponent<PlayerInputManager>().ChangeInputState(PlayerInputManager.InputState.Construction);
+
+        HandlePressedTutorialEvents();
+    }
+
+    void HandlePressedTutorialEvents()
+    {
+        if (structureData.name == "StaticDrill")
+        {
+            TutorialProxy.Action?.Invoke(TutorialEvent.StaticDrillSelected);
+        }
+        if (structureData.name == "SampleAnalyser")
+        {
+            TutorialProxy.Action?.Invoke(TutorialEvent.SampleAnalyserSelected);
+        }
     }
 
 
@@ -83,5 +97,15 @@ public class BuildStructureButton : MonoBehaviour
         {
             if (activeToolTip != null) { Destroy(activeToolTip); }
         }
+
+        HandleUpdateTutorialEvents();
     } 
+
+    void HandleUpdateTutorialEvents()
+    {
+        if(structureData.name == "StaticDrill")
+        {
+            TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.SelectStaticDrill);
+        } 
+    }
 }

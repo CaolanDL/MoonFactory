@@ -106,6 +106,14 @@ namespace ExtensionMethods
         {
             return (i - Pivot).Rotate(angle) + Pivot;
         }
+
+        public static float2 Rotate(this float2 i, sbyte rotation)
+        {
+            float radian = -rotation * 90 * Mathf.Deg2Rad;
+            float _x = i.x * Mathf.Cos(radian) - i.y * Mathf.Sin(radian);
+            float _y = i.x * Mathf.Sin(radian) + i.y * Mathf.Cos(radian);
+            return new float2(_x, _y);
+        }
     }
 
     public static class SbyteRotationConversions

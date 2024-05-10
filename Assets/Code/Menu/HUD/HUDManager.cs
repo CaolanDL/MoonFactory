@@ -18,8 +18,7 @@ public class HUDManager : MonoBehaviour
     private void Start()
     {
         ConstructionMenu.GetComponent<PopOutMenu>()?.SetState(true);
-        TechTree.GetComponent<PopOutMenu>()?.SetState(true);
-        //MapMenu.SetActive(false);
+        TechTree.GetComponent<PopOutMenu>()?.SetState(true); 
     } 
 
     public bool OpenInterface(GameObject interfacePrefab, Entity entity, Vector3 screenPosition)
@@ -43,7 +42,9 @@ public class HUDManager : MonoBehaviour
     public void ToggleBuildMenu()
     {
         ToggleMenu(ConstructionMenu);
-        UpdateConstructionMenu(); 
+        UpdateConstructionMenu();
+
+        TutorialProxy.Action?.Invoke(TutorialEvent.BuildButtonPressed);
     } 
 
     public void UpdateConstructionMenu()
@@ -81,7 +82,7 @@ public class HUDManager : MonoBehaviour
     {
         ElectricalCoverageRenderer.enabled = !ElectricalCoverageRenderer.enabled;
 
-        // Enable electrical overlay post process
+        TutorialProxy.Action?.Invoke(TutorialEvent.PowerOverlayPressed);
     }
 
     public void HeatmapButtonPressed() { } 

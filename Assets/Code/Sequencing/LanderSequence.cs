@@ -23,6 +23,6 @@ public class LanderSequence : MonoBehaviour
         GameManager.Instance.ConstructionManager.ForceSpawnStructure(new int2(0, 0), 0, GlobalData.Instance.Structures.Find(x => x.name == "Lander"));
         Destroy(gameObject);
 
-        TutorialProxy.BeginTutorial?.Invoke();
+        TutorialProxy.Action?.Invoke(TutorialEvent.BeginTutorial);
     }
 }

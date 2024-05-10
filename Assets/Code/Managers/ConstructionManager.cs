@@ -107,7 +107,7 @@ public class ConstructionManager
 
                 var matrix = MatrixConstruction.CreateTransformMatrix(ghost.position, ghost.rotation);
 
-                Graphics.DrawMesh(ghost.structureData.ghostMesh, matrix, GlobalData.Instance.mat_Ghost, 0);
+                Graphics.DrawMesh(ghost.structureData.ghostMesh, matrix, RenderData.Instance.StructureGhost_World, 0);
 
                 foreach (StructureData.GhostModels ghostModel in ghost.structureData.ghostModels)
                 {
@@ -119,7 +119,7 @@ public class ConstructionManager
 
     public void DrawGhostAtMouse()
     {
-        Material activeGhostMaterial = GlobalData.Instance.mat_Ghost;
+        Material activeGhostMaterial = RenderData.Instance.StructureGhost_Mouse;
 
         int2 ghostGridPosition = GetMouseGhostPosition();
 
@@ -129,7 +129,7 @@ public class ConstructionManager
 
         if (GameManager.Instance.GameWorld.worldGrid.IsEntityAt(ghostGridPosition)) blocked = true; 
 
-        if (blocked) activeGhostMaterial = GlobalData.Instance.mat_GhostBlocked; 
+        if (blocked) activeGhostMaterial = RenderData.Instance.StructureGhost_Blocked; 
 
         var matrix = MatrixConstruction.CreateTransformMatrix(ghostGridPosition, _ghostRotation);
 

@@ -16,6 +16,12 @@ MonoBehaviour:
     type: 3}
   devgizmo_material: {fileID: 2100000, guid: ad0829fb8cfd0984fa87629c1d36a7e7, type: 2}
   UniversalMaterial: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
+  StructureGhost_Mouse: {fileID: 2100000, guid: ae3c9d81128617f488bc585ea3ca114c,
+    type: 2}
+  StructureGhost_Blocked: {fileID: 2100000, guid: 9db145911466da84bb7b0633b5e2507b,
+    type: 2}
+  StructureGhost_World: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8,
+    type: 2}
   Arrow: {fileID: 2782774259527958836, guid: 663b6f19701347045b5c7419e615dd8e, type: 3}
   TwoWayArrow: {fileID: -3127043776041327853, guid: 1db5738d78b3afe4289dadf511770ab6,
     type: 3}
@@ -35,6 +41,8 @@ MonoBehaviour:
   SelectionGizmo: {fileID: 6085599510407643196, guid: 29f0b83ff5db08a47a24a6cbc747076e,
     type: 3}
   SelectionGizmoMaterial: {fileID: 2100000, guid: 36ce10e7bff30d6439bbc5fcaa908326,
+    type: 2}
+  SelectedInterfaceGizmoMaterial: {fileID: 2100000, guid: a8190740c7850744fa663844f1c617bc,
     type: 2}
   wire_mesh: {fileID: 8077376627999728891, guid: 2c687e3cb05f5cc4488579610e17e11d,
     type: 3}

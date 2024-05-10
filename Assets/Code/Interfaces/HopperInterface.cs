@@ -28,12 +28,7 @@ public class HopperInterface : StaticInterface
 
         requestToggle.SetIsOnWithoutNotify(hopper.isRequestor);
         supplyToggle.SetIsOnWithoutNotify(hopper.isSupplier);
-    }
-
-    public void Update()
-    {
-        //Graphics.DrawMesh(GlobalData.Instance.gizmo_TileGrid, hopper.transform.ToMatrix(), GlobalData.Instance.mat_PulsingGizmo, 0);
-    }
+    } 
 
     public override void UpdateUI()
     {

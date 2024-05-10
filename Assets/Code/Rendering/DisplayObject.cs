@@ -5,18 +5,14 @@ using UnityEngine;
 public class DisplayObject : MonoBehaviour
 {
     [NonSerialized] public Entity parentEntity;
-
-    // Serialized Fields // 
+     
     public List<GameObject> primaryModels;
     [NonSerialized] public GameObject activeModel;
-    public List<GameObject> additiveModels;
-
-    public Dictionary<string, GameObject> particleSystems = new();
-
-    // Component References //
+    public List<GameObject> additiveModels; 
+    public Dictionary<string, GameObject> particleSystems = new(); 
     public Animator animator;
-
-    // Animation Data //
+    public Transform wireConnectionPoint;
+         
     private string activeAnimation;
 
 
@@ -113,6 +109,11 @@ public class DisplayObject : MonoBehaviour
 
     public Vector3 GetWireConnectionPoint()
     {
+        if(wireConnectionPoint != null)
+        {
+            return wireConnectionPoint.position;
+        }
+
         return transform.position + (Vector3.up * 0.5f);
     }
 } 

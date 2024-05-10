@@ -18,6 +18,12 @@ public class GraphicsPulseOnce : MonoBehaviour
         baseScale = transform.localScale;
     } 
 
+    public void Set(float scale , float frequency)
+    {
+        this.scale = scale;
+        this.frequency = frequency;
+    }
+
     // Update is called once per frame
     public void Update()
     { 

@@ -6,11 +6,16 @@
 
         isCrafter = true;
 
-        OutputInventories[0].maxItems = 32;
-        OutputInventories[0].maxTypes = 1;
-
-        InputInventories[0].maxItems = 32;
-        InputInventories[0].maxTypes = 1;
+        foreach(var inv in OutputInventories)
+        {
+            inv.maxItems = 32;
+            inv.maxTypes = 1;
+        }
+        foreach (var inv in InputInventories)
+        {
+            inv.maxItems = 32;
+            inv.maxTypes = 1;
+        }
     }
 
     public override void OnTick()

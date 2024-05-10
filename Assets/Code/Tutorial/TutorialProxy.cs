@@ -1,24 +1,28 @@
-using System; 
+using System;
+using UnityEngine;
+
+public enum TutorialEvent
+{
+    None,
+    BeginTutorial,
+    BuildButtonPressed,
+    PowerOverlayPressed,
+    StaticDrillSelected,
+    StaticDrillInterfaceOpened,
+    SampleAnalyserSelected,
+    SampleAnalyserInterfaceOpened,
+    LanderInterfaceOpened,
+    TechTreeOpened
+}
+
+public enum TutorialTag
+{
+    SelectStaticDrill,
+    OpenInterface
+}
 
 public class TutorialProxy
-{
-    public enum Events
-    {
-        None,
-        BeginTutorial,
-        BuildButtonPressed,
-        StaticDrillSelected,
-        StaticDrillInterfaceOpened,
-        LanderInterfaceOpened,
-        TechTreeOpened
-    }
-
-    public static Action<Events> Call { get; set; }
-
-    public static Action BeginTutorial; 
-    public static Action BuildButtonPressed;
-    public static Action StaticDrillSelected;
-    public static Action StaticDrillInterfaceOpened;
-    public static Action LanderInterfaceOpened;
-    public static Action TechTreeOpened;
+{  
+    public static Action<TutorialEvent> Action { get; set; }
+    public static Action<Vector3, TutorialTag> SetPopupPosition { get; set; }
 }
