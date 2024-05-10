@@ -76,29 +76,6 @@ public class MagneticSeperator : Machine
 }
 
 
-public class ElectrostaticSeperator : Machine
-{
-    public override void OnInitialise()
-    {
-        base.OnInitialise();
-
-        isCrafter = true;
-
-        OutputInventories[0].maxItems = 10;
-        OutputInventories[0].maxTypes = 1;
-
-        InputInventories[0].maxItems = 24;
-        InputInventories[0].maxTypes = 1;
-    }
-
-    public override void OnTick()
-    {
-        base.OnTick();
-
-        TryBeginCrafting();
-
-        TickCrafting();
-
-        TryOutputAnything(0);
-    } 
+public class ElectrostaticSeperator : GenericMachine
+{ 
 }

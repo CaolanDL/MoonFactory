@@ -37,4 +37,9 @@ public class StaticDrill : Structure
             }
         }
     }
+
+    public override void OnClicked(Vector3 mousePosition)
+    {
+        OpenInterfaceOnHUD(MenuData.Instance.StaticDrillInterface, mousePosition);
+    }
 }

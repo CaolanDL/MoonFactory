@@ -160,35 +160,49 @@ public class PlayerInputManager : MonoBehaviour
             return;
         }
 
+        Ray ray = cameraController.activeMainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit; 
 
-        if (inputActions.DefaultControls.Select.WasPressedThisFrame())
+        if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Rover")))
         {
             if (isMouseOverUI) { return; }
 
-            // Check if a rover was selected, else check if a structure was selected. 
-            Ray ray = cameraController.activeMainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            Entity entity = hit.transform.gameObject.GetComponent<DisplayObject>().parentEntity;  
+            var rover = ((Rover)entity);
 
-            if (Physics.Raycast(ray, out hit, 1000f, LayerMask.GetMask("Rover")))
-            {
-                Entity entity = hit.transform.gameObject.GetComponent<DisplayObject>().parentEntity; 
-                ((Rover)entity).Clicked(Input.mousePosition); 
+            rover.RenderRoverSelectionOutline();
+
+            if (inputActions.DefaultControls.Select.WasPressedThisFrame())
+            {  
+                rover.Clicked(Input.mousePosition); 
             }
+        }
+        else if (inputActions.DefaultControls.Select.WasPressedThisFrame())
+        {
+            if (isMouseOverUI) { return; } 
+             
+            Entity entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(MouseGridPositon);
 
-            else
+            if (entity != null)
             {
-                Entity entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(MouseGridPositon);
-
-                if (entity != null)
+                if (entity.GetType().IsSubclassOf(typeof(Structure)))
                 {
-                    if (entity.GetType().IsSubclassOf(typeof(Structure)))
-                    {
-                        ((Structure)entity).Clicked(Input.mousePosition);
-                    }
+                    ((Structure)entity).Clicked(Input.mousePosition);
                 }
-            }
-
+            } 
+             
             return;
+        }
+
+        RenderSelectGizmo();
+
+        void RenderSelectGizmo()
+        {
+            if(isMouseOverUI) { return; }
+            if(GameManager.Instance.GameWorld == null) { return; }
+
+            var entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(MouseGridPositon);
+            if (entity != null) { entity.RenderSelectionOutline(); }
         } 
     }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[AddComponentMenu("UI Effects/Spin")]
 public class GraphicsSpin : MonoBehaviour
 {
     [SerializeField] float speed;

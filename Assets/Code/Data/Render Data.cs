@@ -27,10 +27,16 @@ public class RenderData : ScriptableObject
 
     [Header("Gizmos")]
     public Mesh TileHighlightGizmo;
-    public Mesh TilePowerGizmo;
-    public Material TilePowerGizmoMaterial;
-    public Material BlueGizmoMaterial; 
+    public Mesh TilesGizmo;
+    public Material BlueGizmoMaterial;
     public Material TransparentBlueGizmoMaterial;
+    [Space]
+    public Mesh TilePowerGizmo;
+    public Material TilePowerGizmoMaterial; 
+    [Space]
+    public Mesh SelectionGizmo;
+    public Material SelectionGizmoMaterial;
+
 
     [Header("Wire")]
     public Mesh wire_mesh;

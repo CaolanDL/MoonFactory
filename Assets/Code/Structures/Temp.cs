@@ -1,39 +1,36 @@
-﻿
-using UnityEngine;
-
-
+﻿using UnityEngine; 
 
 public class RoverAssembler : Structure
 {
 
 } 
 
-public class FabricationPlant : Structure
+public class FabricationPlant : GenericMachine
 {
 
 }
 
-public class Manufacturer : Structure
+public class Manufacturer : GenericMachine
 {
 
 }
 
-public class Atomiser : Structure
+public class Atomiser : GenericMachine
 {
 
 }
 
-public class ElectrolisisChamber : Structure
+public class ElectrolisisChamber : GenericMachine
 {
 
 }
 
-public class Laboratory : Structure
+public class Laboratory : GenericMachine
 {
 
 }
 
-public class Smelter : Structure
+public class Smelter : GenericMachine
 {
 
 }

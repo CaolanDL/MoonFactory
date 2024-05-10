@@ -7,6 +7,7 @@ using Unity.Mathematics;
 using RoverJobs;
 using RoverTasks;
 using Random = UnityEngine.Random;
+using ExtensionMethods;
 
 public enum RoverModule
 {
@@ -21,10 +22,10 @@ public class Rover : Entity
 {
     public static bool DebugEnabled = false;
 
-    const float _MoveSpeed = 1f;
+    const float _MoveSpeed = 3f;
     public virtual float MoveSpeed { get { return _MoveSpeed; } }
 
-    const float _TurnSpeed = 2f;
+    const float _TurnSpeed = 3f;
     public virtual float TurnSpeed { get { return _TurnSpeed; } }
 
     public const float _CollectSpeed = 6f;
@@ -279,14 +280,24 @@ public class Rover : Entity
                 break;
         }
     }
+
+    public void RenderRoverSelectionOutline()
+    { 
+        float sineTime = (Mathf.Sin(Time.time * 2f) + 1) / 2; // Sine 0 - 1 
+        var p = new Vector3(VisualPosition.x, VisualPosition.y) + (Vector3.up * (sineTime / 8 + 0.01f));
+        var r = Quaternion.Euler(0, Time.time * 120f, 0);
+        var s = Vector3.one;
+        var matrix = Matrix4x4.TRS(p, r, s);
+        Graphics.DrawMesh(RenderData.Instance.SelectionGizmo, matrix, RenderData.Instance.SelectionGizmoMaterial, 0);
+    }
 }
 
 public class Widget : Rover
 {
-    static float _MoveSpeed = 1.5f;
+    static float _MoveSpeed = 2f;
     public override float MoveSpeed => _MoveSpeed;
 
-    static float _TurnSpeed = 3f;
+    static float _TurnSpeed = 4f;
     public override float TurnSpeed => _TurnSpeed;
 
 

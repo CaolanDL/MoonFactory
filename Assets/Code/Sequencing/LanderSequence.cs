@@ -22,5 +22,7 @@ public class LanderSequence : MonoBehaviour
         widget.DisplayObject.transform.rotation = Quaternion.Euler(0, 180, 0); 
         GameManager.Instance.ConstructionManager.ForceSpawnStructure(new int2(0, 0), 0, GlobalData.Instance.Structures.Find(x => x.name == "Lander"));
         Destroy(gameObject);
+
+        TutorialProxy.BeginTutorial?.Invoke();
     }
 }

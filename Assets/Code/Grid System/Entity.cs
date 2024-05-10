@@ -4,6 +4,7 @@ using DataStructs;
 using ExtensionMethods;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [Serializable]
 public class Entity // 12 bytes
@@ -106,6 +107,23 @@ public class Entity // 12 bytes
         }
 
         return list;
+    }
+
+    public void RenderSelectionOutline()
+    {
+        int2 intCentre = new(centre.x, centre.y);
+        var trueCentre = position + intCentre.Rotate(rotation);
+        float sineTime = (Mathf.Sin(Time.time * 2f) + 1) / 2; // Sine 0 - 1 
+        var p = trueCentre.ToVector3() + (Vector3.up * (sineTime/8+0.01f));
+        var r = Quaternion.Euler(0, Time.time * 120f, 0);
+        var s = Vector3.one * ((size.x + size.y) / 2);
+        var matrix = Matrix4x4.TRS(p, r, s);
+        Graphics.DrawMesh(RenderData.Instance.SelectionGizmo, matrix, RenderData.Instance.SelectionGizmoMaterial, 0);
+
+        matrix = Matrix4x4.TRS(trueCentre.ToVector3(), Quaternion.identity, Vector3.one); 
+        Graphics.DrawMesh(RenderData.Instance.TilesGizmo, matrix, RenderData.Instance.TransparentBlueGizmoMaterial, 0);
+
+        Debug.Log("Rendered Selection Outline");
     }
 }
 

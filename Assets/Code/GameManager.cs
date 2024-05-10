@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
 
     // Menu Instances
     public HUDManager HUDManager;
+    public TutorialSequencer TutorialSequencer;
 
     // Monobehavior Components
     public FloorTileRenderer FloorTileRenderer;
@@ -165,6 +166,7 @@ public class GameManager : MonoBehaviour
         // UI startup animation plays
         HUDManager = Instantiate(MenuData.HUD, transform).GetComponent<HUDManager>();
         HUDManager.GetComponentInChildren<TechTreeController>();
+        TutorialSequencer = HUDManager.GetComponentInChildren<TutorialSequencer>();
 
         // Tutorial toggle prompt
 
