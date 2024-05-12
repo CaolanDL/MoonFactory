@@ -176,6 +176,8 @@ namespace Electrical
 
         public void CreateConnectionTo(Node other)
         {
+            if (other == null) throw new Exception("Whaaaa>????");
+
             var newConnection = new Connection(this, other);
             Connections.Add(newConnection);
             other.Connections.Add(newConnection); 
@@ -451,6 +453,8 @@ namespace Electrical
             bestRelays.Sort(SortNodeByDistanceToSelf);
 
             if (bestRelays.Count == 0) return; //? Unsure why this is needed? Bestrelays returns as empty when only one relay is nearby
+
+            if (bestRelays[0] == null) return;
 
             CreateConnectionTo(bestRelays[0]);
         }

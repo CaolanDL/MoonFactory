@@ -1,4 +1,6 @@
 ﻿
+using ExtensionMethods;
+
 public class Crusher : Machine
 {
     public override void OnInitialise()
@@ -12,6 +14,23 @@ public class Crusher : Machine
 
         InputInventories[0].maxItems = 5; 
         InputInventories[0].maxTypes = 1;
+    }
+
+    public override void OnConstructed()
+    {
+        base.OnConstructed();
+
+        TutorialProxy.Action.Invoke(TutorialEvent.CrusherBuilt);
+    }
+
+    public override void OnFrameUpdate()
+    {
+        base.OnFrameUpdate();
+
+        if (TutorialProxy.IsActive)
+        {
+            TutorialProxy.SetPopupPosition(GameManager.Instance.CameraController.activeMainCamera.WorldToScreenPoint(DisplayObject.transform.position), TutorialTag.CrusherPosition);
+        }
     }
 
     public override void OnTick()
@@ -78,9 +97,11 @@ public class MagneticSeperator : Machine
 
 public class ElectrostaticSeperator : Machine
 {
-/*    public override void OnInitialise()
-    {
+    public override void OnInitialise()
+    { 
         base.OnInitialise();
+
+        ElectricalNode.Parent = this;
 
         isCrafter = true;
 
@@ -105,5 +126,5 @@ public class ElectrostaticSeperator : Machine
         TickCrafting();
 
         TryOutputAnything(0);
-    }*/
+    }
 }

@@ -67,6 +67,7 @@ public class WireRenderer
     {
         foreach(Electrical.Connection connection in Electrical.Connection.pool)
         {
+            if (connection.scale.magnitude < 0.1f) { continue; }
             var matrix = Matrix4x4.TRS(connection.origin, connection.rotation, connection.scale);
 
             chunkedMatrixArray.QueueMatrix(matrix);

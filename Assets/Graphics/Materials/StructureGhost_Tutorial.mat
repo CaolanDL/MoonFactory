@@ -20,17 +20,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StructureGhost_Mouse
+  m_Name: StructureGhost_Tutorial
   m_Shader: {fileID: -6465566751694194690, guid: f391b318a26304f4280adf74f670bd83,
     type: 3}
   m_Parent: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}
-  m_ModifiedSerializedProperties: 0
+  m_ModifiedSerializedProperties: 16
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2999
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -39,10 +39,13 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _FloodOpacity: 0.8
-    - _Overlay_Opacity: 0.225
-    - _Overlay_Toggle: 0
+    - _FloodOpacity: 1
+    - _Opacity: 1
+    - _Overlay_Opacity: 0.348
+    - _Overlay_Toggle: 1
+    - _QueueControl: 0
+    - _QueueOffset: -1
     m_Colors:
-    - _FloodColor: {r: 0.05032932, g: 0.8207547, b: 0.11750613, a: 0}
-    - _Overlay_Color: {r: 1, g: 1, b: 1, a: 0}
+    - _FloodColor: {r: 1, g: 1, b: 1, a: 0}
+    - _Overlay_Color: {r: 0.29803923, g: 0.68235296, b: 1, a: 0}
   m_BuildTextureStacks: []

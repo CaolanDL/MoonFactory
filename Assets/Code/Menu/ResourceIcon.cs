@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,18 +13,24 @@ public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     GameObject tooltip;
     [SerializeField] GameObject ToolTipPrefab;
 
-    public ResourceData resource;
-    public int count;
+    [NonSerialized] public ResourceData resource;
+    [NonSerialized] public int count;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (tooltip != null) return;
+        if (resource == null) return;
+        if (tooltip != null) return; 
 
         tooltip = Instantiate(ToolTipPrefab, GameManager.Instance.HUDManager.transform);
         tooltip.GetComponent<ResourceToolTip>().SetDetails(resource);
     }
 
     public void OnPointerExit(PointerEventData eventData)
+    {
+        DestroyTooltip();
+    }
+
+    public void DestroyTooltip()
     {
         Destroy(tooltip);
     }
@@ -32,8 +39,32 @@ public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         this.resource = resouce;
 
-        sprite.sprite = resource.sprite; 
-        iconName.text = resource.name;   
+        if(resource != null)
+        {  
+            SetSprite(resource.sprite);
+            SetName(resource.name);
+        }
+        else
+        {
+            SetSprite(MenuData.Instance.emptySprite);
+            SetName("None"); 
+        } 
+    }
+
+    void SetSprite(Sprite sprite)
+    {
+        if(this.sprite != null)
+        {
+            this.sprite.sprite = sprite;
+        }
+    }
+
+    void SetName(string name)
+    {
+        if(iconName != null)
+        {
+            iconName.text = name;
+        }
     }
 
     public void SetCount(int count)

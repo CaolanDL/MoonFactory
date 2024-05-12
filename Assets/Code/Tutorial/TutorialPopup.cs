@@ -62,7 +62,5 @@ public class TutorialPopup : MonoBehaviour
     public void AdvanceTutorial()
     {
         tutorialSequencer.AdvanceTutorial();
-    }
-
-
+    } 
 }

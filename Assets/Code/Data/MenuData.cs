@@ -28,6 +28,9 @@ public class MenuData : ScriptableObject
     [Header("Interfaces Elements")]
     public GameObject InventoryElement;
 
+    [Header("Resource Icons")]
+    public GameObject ResourceIcon_DropdownElement;
+
 
     [Header("Generic Sprites")]
     public Sprite emptySprite;

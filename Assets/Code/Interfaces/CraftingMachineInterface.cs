@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UI; 
 
 public class CraftingMachineInterface : StaticInterface
 {
@@ -26,6 +25,13 @@ public class CraftingMachineInterface : StaticInterface
     public List<ResourceData> GetCraftableResources()
     {
         return structureData.CraftableResources;
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        if (TutorialProxy.IsActive) TutorialProxy.SetPopupPosition(transform.position, TutorialTag.MachineInterfacePosition); 
     }
 
     public override void UpdateUI()
@@ -61,6 +67,8 @@ public class CraftingMachineInterface : StaticInterface
             OutputInvElements.Add(newElementComponent);
             newElementComponent.inventory = inventory;
         }
+
+        if (TutorialProxy.IsActive) TutorialProxy.Action?.Invoke(TutorialEvent.MachineInterfaceOpened);
     }
 
     public override void OnCloseInterface()
@@ -68,6 +76,8 @@ public class CraftingMachineInterface : StaticInterface
         base.OnCloseInterface();
 
         if (machine != null) { machine.OnInterfaceClosed(); }
+
+        if (TutorialProxy.IsActive) TutorialProxy.Action?.Invoke(TutorialEvent.MachineInterfaceClosed);
     }
 
     public void UpdateInputInventoryElements()

@@ -24,6 +24,7 @@ public class Machine : Structure
         SetupCrafting();
 
         ElectricalNode = new Electrical.Sink();
+        ElectricalNode.Parent = this;
     }
 
     public override void OnConstructed()

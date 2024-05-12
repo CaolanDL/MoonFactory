@@ -151,7 +151,7 @@ public class SupplyPort : Port
 
     public void CollectResource(ResourceQuantity resourceQuantity)
     {
-        Debug.Log($"Collected:{resourceQuantity.quantity} {resourceQuantity.resource}s");
+        //Debug.Log($"Collected:{resourceQuantity.quantity} {resourceQuantity.resource}s");
 
         if (GetReservedQuantity(resourceQuantity.resource) == 0) throw new System.Exception("Tried to collect a resource that doesnt exist");
 

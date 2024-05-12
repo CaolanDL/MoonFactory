@@ -11,8 +11,18 @@ public class Lander : Structure
     public override bool CanDemolish()
     {
         return false;
-    } 
-    
+    }
+
+    public override void OnFrameUpdate()
+    {
+        base.OnFrameUpdate();
+
+        if(TutorialProxy.IsActive)
+        {
+            TutorialProxy.SetPopupPosition?.Invoke(GameManager.Instance.CameraController.activeMainCamera.WorldToScreenPoint(DisplayObject.transform.position), TutorialTag.LanderPosition);
+        }
+    }
+
     public override void OnInitialise()
     {
         base.OnInitialise(); 

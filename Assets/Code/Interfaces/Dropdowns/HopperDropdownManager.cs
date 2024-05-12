@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class HopperDropdownManager : MonoBehaviour
 {
-    ResourceDropdownHandler dropdownHandler;
-
+    ResourceDropdownHandler dropdownHandler; 
     HopperInterface hopperInterface; 
 
     private void Awake()
@@ -14,7 +13,7 @@ public class HopperDropdownManager : MonoBehaviour
         dropdownHandler = GetComponent<ResourceDropdownHandler>();  
         hopperInterface = GetComponentInParent<HopperInterface>();
 
-        dropdownHandler.SetCallback(hopperInterface.SetRequestResource);  
+        dropdownHandler.callbackAction += hopperInterface.SetRequestResource; 
     }
 
     private void Start()
@@ -24,7 +23,10 @@ public class HopperDropdownManager : MonoBehaviour
     }
 
     List<ResourceData> GetResources()
-    { 
+    {
+        var resources = GameManager.Instance.ScienceManager.unlocked_Resources;
+        resources.Insert(0, null);
+
         return GameManager.Instance.ScienceManager.unlocked_Resources; 
     }  
 }

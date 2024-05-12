@@ -43,6 +43,11 @@ public class ConstructionManager
                 newGhostStructure.FinishConstruction();
             } 
         }
+
+        if(GhostStructureData.name == "StaticDrill")
+        {
+            TutorialProxy.Action?.Invoke(TutorialEvent.StaticDrillPlaced);
+        }
     }
 
     public void RotateGhost(sbyte direction)

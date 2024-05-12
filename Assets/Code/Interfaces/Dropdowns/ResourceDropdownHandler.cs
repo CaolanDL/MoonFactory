@@ -1,21 +1,23 @@
 using System; 
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine; 
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ResourceDropdownHandler : MonoBehaviour
-{
-    TMP_Dropdown dropdown;
+{ 
+    List<ResourceData> resources = new();
+    List<GameObject> resourceIconElements = new();
+    [SerializeField] ResourceIcon resourceIcon;
+    [SerializeField] TMP_Text ActiveItemLabel;
+    [SerializeField] Image ActiveItemImage;
+    [SerializeField] GameObject gridLayout;
 
-    List<ResourceData> resources;
-
-    List<TMP_Dropdown.OptionData> options = new();
-
-    public Action<ResourceData> callbackAction;
+    public Action<ResourceData> callbackAction;  
 
     private void Awake()
-    {
-        dropdown = GetComponent<TMP_Dropdown>();
+    { 
+        gridLayout.SetActive(false);
     }
 
     public void SetCallback(Action<ResourceData> callback)
@@ -23,37 +25,49 @@ public class ResourceDropdownHandler : MonoBehaviour
         callbackAction = callback; 
     }
 
+    public void OnPressed()
+    {
+        gridLayout.SetActive(!gridLayout.activeSelf);
+    }
+
+    public void OptionSelected(ResourceData resource)
+    { 
+        SetSelected(resource); 
+        callbackAction?.Invoke(resource);
+        gridLayout.SetActive(false);
+    } 
+
     public void SetSelected(ResourceData resource)
     {
-        if(resources != null)
-        { 
-            dropdown.value = resources.IndexOf(resource) + 1;
-        }
-        else
+        if(resource == null)
         {
-            dropdown.value = -1;
+            //resourceIcon.SetDetails(resource);
+            ActiveItemImage.sprite = MenuData.Instance.emptySprite;
+            ActiveItemLabel.text = "Select Option";
+            return;
         }
+        resourceIcon.SetDetails(resource);
+        //ActiveItemLabel.text = resource.name;
+        //ActiveItemImage.sprite = resource.sprite; 
     }
 
     public void Populate(List<ResourceData> _resources)
     {
         resources = _resources;
 
-        dropdown.value = -1;
+        foreach(var icon in resourceIconElements)
+        {
+            Destroy(icon);
+        }
+        resourceIconElements.Clear();
 
-        if (resources == null) { throw new Exception("No resouces given to resource dropdown"); }
-
-        options.Clear();
-
-        options.Add(new(""));
-
-        foreach (ResourceData resource in resources)
-            options.Add(new(resource.name, resource.sprite));
-
-        
-
-        dropdown.ClearOptions();
-        dropdown.AddOptions(options); 
+        foreach(ResourceData resource in resources)
+        {
+            var newIcon = Instantiate(MenuData.Instance.ResourceIcon_DropdownElement, gridLayout.transform);
+            var dropdownItem = newIcon.GetComponent<ResourceDropDownItem>();
+            dropdownItem.SetDetails(this, resource);
+            resourceIconElements.Add(newIcon);
+        } 
     }
 
     public void OptionSelected(TMP_Dropdown dropdown)
@@ -63,5 +77,5 @@ public class ResourceDropdownHandler : MonoBehaviour
             return;
         }
         callbackAction?.Invoke(resources[dropdown.value - 1]);  
-    }
+    } 
 }

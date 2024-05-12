@@ -1,15 +1,19 @@
-﻿using System.Collections;
+﻿using ExtensionMethods;
+using System.Collections;
 using UnityEngine;
 
 
 public class StaticDrill : Structure
 { 
-    public Inventory inventory = new Inventory();
+    public Inventory inventory = new Inventory(); 
+    ResourceData outputResource; 
 
-    ResourceData outputResource;
-
-
-
+    static int initialDelayTime = 25;
+    int initialDelay = 0;
+    static int miningDelay = 50; //1 second
+    int miningCountdown = miningDelay;
+    bool isMining;
+     
     public override void OnInitialise()
     {
         base.OnInitialise();
@@ -20,14 +24,29 @@ public class StaticDrill : Structure
 
         SupplyPort = new SupplyPort(this);
         SupplyPort.AddInventory(inventory);
+
+        ElectricalNode = new Electrical.Sink();
     }
 
+    public override void OnConstructed()
+    {
+        base.OnConstructed();
 
-    static int initialDelayTime = 25;
-    int initialDelay = 0;
-    static int miningDelay = 50; //1 second
-    int miningCountdown = miningDelay; 
-    bool isMining;
+        if (TutorialProxy.IsActive)
+        {
+            TutorialProxy.Action?.Invoke(TutorialEvent.StaticDrillBuilt);
+        }
+    }
+
+    public override void OnFrameUpdate()
+    {
+        base.OnFrameUpdate();
+        
+        if(TutorialProxy.IsActive)
+        {
+            TutorialProxy.SetPopupPosition?.Invoke(GameManager.Instance.CameraController.activeMainCamera.WorldToScreenPoint(DisplayObject.transform.position), TutorialTag.StaticDrillPosition);
+        }
+    }
 
     public override void OnTick()
     {

@@ -17,9 +17,31 @@ public class SampleAnalyser : Structure, IRecieveResources, IRequestResources, I
         GameManager.Instance.HUDManager.OpenInterface(MenuData.Instance.SampleAnalyserInterface, this, mousePosition);
     }
 
+    public override void OnInitialise()
+    {
+        base.OnInitialise();
+
+        ElectricalNode = new Electrical.Sink();
+    }
+
     public override void OnConstructed()
     {
         base.OnConstructed();
+
+        if (TutorialProxy.IsActive)
+        {
+            TutorialProxy.Action?.Invoke(TutorialEvent.SampleAnalyserBuilt);
+        }
+    }
+
+    public override void OnFrameUpdate()
+    {
+        base.OnFrameUpdate();
+
+        if (TutorialProxy.IsActive)
+        {
+            TutorialProxy.SetPopupPosition?.Invoke(GameManager.Instance.CameraController.activeMainCamera.WorldToScreenPoint(DisplayObject.transform.position), TutorialTag.AnalyserPosition);
+        }
     }
 
     public override void OnTick()

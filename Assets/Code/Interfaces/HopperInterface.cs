@@ -1,8 +1,6 @@
-using Logistics;
-using System.Collections;
-using System.Collections.Generic;
+using Logistics; 
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UI; 
 
 public class HopperInterface : StaticInterface
 { 
@@ -28,7 +26,19 @@ public class HopperInterface : StaticInterface
 
         requestToggle.SetIsOnWithoutNotify(hopper.isRequestor);
         supplyToggle.SetIsOnWithoutNotify(hopper.isSupplier);
-    } 
+
+        if (TutorialProxy.IsActive) TutorialProxy.Action?.Invoke(TutorialEvent.HopperInterfaceOpened);
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        if (TutorialProxy.IsActive)
+        {
+            TutorialProxy.SetPopupPosition(transform.position, TutorialTag.HopperInterfacePosition);
+        }
+    }
 
     public override void UpdateUI()
     {
@@ -55,11 +65,23 @@ public class HopperInterface : StaticInterface
         base.OnCloseInterface();
 
         if (hopper != null) { hopper.OnInterfaceClosed(); }
-    } 
+
+        if (TutorialProxy.IsActive) TutorialProxy.Action?.Invoke(TutorialEvent.HopperInterfaceClosed);
+    }
 
     public void SetRequestResource(ResourceData resourceData)
     {
-        hopper.RequestPort.SetRequest(resourceData, 10);
+        if (resourceData == null)
+        {
+            hopper.isRequestor = false;
+        }
+        else
+        {
+            hopper.RequestPort.SetRequest(resourceData, 10);
+            hopper.isRequestor = true;
+
+            if (TutorialProxy.IsActive) TutorialProxy.Action?.Invoke(TutorialEvent.HopperDropdownItemSelected);
+        }
     }
 
     public void SupplyToggleChanged(bool value)

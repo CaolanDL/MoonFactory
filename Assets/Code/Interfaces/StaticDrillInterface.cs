@@ -25,7 +25,7 @@ public class StaticDrillInterface : StaticInterface
 
         UpdateUI();
 
-        TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.OpenInterface);
+        TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.StaticDrillInterfacePosition);
     }
 
     public override void UpdateUI()
@@ -33,5 +33,17 @@ public class StaticDrillInterface : StaticInterface
         base.UpdateUI();
 
         inventory.UpdateDetails();
+    }
+
+    public override void OnCloseInterface()
+    {
+        base.OnCloseInterface();
+
+        TutorialProxy.Action?.Invoke(TutorialEvent.StaticDrillInterfaceClosed);
+    }
+
+    private void OnDisable()
+    {
+        TutorialProxy.Action?.Invoke(TutorialEvent.StaticDrillInterfaceClosed);
     }
 }

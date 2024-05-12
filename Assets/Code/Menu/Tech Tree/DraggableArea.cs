@@ -6,6 +6,8 @@ public class DraggableArea : UIMouseHover
 { 
     Vector2 offset = Vector2.zero;
 
+    float distanceMoved = 0f;
+
     // Update is called once per frame
     void Update()
     {
@@ -18,8 +20,13 @@ public class DraggableArea : UIMouseHover
         if (inputActions.UIControls.Click.IsPressed() && IsMouseOver)
         {
             var mouseDelta = inputActions.UIControls.PointDelta.ReadValue<Vector2>();
-
+            distanceMoved += mouseDelta.magnitude;
             transform.position += new Vector3(mouseDelta.x, mouseDelta.y, 0);
+
+            if(distanceMoved > 100f && TutorialProxy.IsActive)
+            {
+                TutorialProxy.Action?.Invoke(TutorialEvent.TechTreeMoved);
+            }
         }
 
         var zoom = inputActions.UIControls.Scroll.ReadValue<float>();

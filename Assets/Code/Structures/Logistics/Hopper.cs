@@ -43,7 +43,10 @@ namespace Logistics
 
         public override void OnConstructed()
         {
-
+            if (TutorialProxy.IsActive)
+            {
+                TutorialProxy.Action?.Invoke(TutorialEvent.HopperBuilt);
+            }
         }
 
         // Add supply request port components
@@ -111,6 +114,11 @@ namespace Logistics
                     resource.material,
                     0); ; ;
             }
+
+            if (TutorialProxy.IsActive)
+            {
+                TutorialProxy.SetPopupPosition(GameManager.Instance.CameraController.activeMainCamera.WorldToScreenPoint(DisplayObject.transform.position), TutorialTag.HopperPosition);
+            }
         }
 
         public override void OnClicked(Vector3 mousePosition)
@@ -123,7 +131,7 @@ namespace Logistics
             /*if (!isRequestor || requestTask.taskExists) return;
 
             requestTask.TryCreateTask(new SoftRequestResourceTask(requestResource, 1));*/
-        }
+        } 
     }
 
     public class Silo : Hopper

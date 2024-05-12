@@ -182,7 +182,7 @@ public static class PathFinder
     } 
 
 
-    public static LinkedList<Path> FindSuperPath(int2 origin, int2[] destinations)
+    public static LinkedList<Path> FindSuperPath(Rover rover, int2 origin, int2[] destinations)
     {
         LinkedList<Path> superPath = new();
 
@@ -190,7 +190,7 @@ public static class PathFinder
 
         for (int i = 0; i < destinations.Length; i++)
         {
-            Path subPath = FindPathToAnyFreeNeighbor(lastDestination, destinations[i]);
+            Path subPath = FindPathToAnyFreeNeighbor(rover, lastDestination, destinations[i]);
 
             if (subPath == null) return null;  // No path found;
 
@@ -203,7 +203,7 @@ public static class PathFinder
     }
 
 
-    public static Path FindPathToAnyFreeNeighbor(int2 origin, int2 destination)
+    public static Path FindPathToAnyFreeNeighbor(Rover rover, int2 origin, int2 destination)
     {
         _worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
@@ -272,8 +272,11 @@ public static class PathFinder
 
                 // find visually appealing rover distribution
                 if (pass < 1)
-                {
-                    if (RoverManager.RoverPositions.ContainsValue(neighbor.position)) continue; // Is there a rover here?
+                { 
+                    if (RoverManager.RoverPositions.ContainsValue(neighbor.position))
+                    {
+                        if (RoverManager.RoverPositions[rover].Equals(neighbor.position) == false) { continue; }
+                    }
                 }
 
                 // find locations without conveyors

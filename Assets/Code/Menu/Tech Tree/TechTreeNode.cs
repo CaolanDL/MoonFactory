@@ -83,6 +83,11 @@ public class TechTreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             }
 
             ChangeState(State.Unlocked);
+
+            if(TutorialProxy.IsActive && Tech.name == "Crusher")
+            {
+                TutorialProxy.Action?.Invoke(TutorialEvent.HopperUnlocked);
+            }
         }
     } 
 

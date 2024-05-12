@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
-    [SerializeField] public GameObject ConstructionMenu; 
+    [SerializeField] public GameObject ConstructionMenu;
     [SerializeField] public GameObject TechTree;
     [SerializeField] public GameObject MapMenu;
 
@@ -18,34 +18,34 @@ public class HUDManager : MonoBehaviour
     private void Start()
     {
         ConstructionMenu.GetComponent<PopOutMenu>()?.SetState(true);
-        TechTree.GetComponent<PopOutMenu>()?.SetState(true); 
-    } 
+        TechTree.GetComponent<PopOutMenu>()?.SetState(true);
+    }
 
     public bool OpenInterface(GameObject interfacePrefab, Entity entity, Vector3 screenPosition)
     {
-        if(openInterface != null) { CloseInterface(); }
+        if (openInterface != null) { CloseInterface(); }
 
         openInterface = Instantiate(interfacePrefab, interfaceParent).GetComponent<StaticInterface>();
         openInterface.Init(entity, screenPosition + (Vector3.right * 20));
 
         return true;
-    } 
+    }
 
     public void CloseInterface()
     {
         Destroy(openInterface.gameObject);
         openInterface = null;
-    } 
+    }
 
     // Menu Buttons //
-     
+
     public void ToggleBuildMenu()
     {
         ToggleMenu(ConstructionMenu);
         UpdateConstructionMenu();
 
         TutorialProxy.Action?.Invoke(TutorialEvent.BuildButtonPressed);
-    } 
+    }
 
     public void UpdateConstructionMenu()
     {
@@ -53,7 +53,11 @@ public class HUDManager : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
 
-    public void ToggleScienceMenu() { ToggleMenu(TechTree); } 
+    public void ToggleScienceMenu()
+    {
+        ToggleMenu(TechTree);
+        TutorialProxy.Action?.Invoke(TutorialEvent.TechTreeOpened);
+    }
 
     public void MapButtonPressed() { ToggleMenu(MapMenu); }
 
@@ -72,7 +76,7 @@ public class HUDManager : MonoBehaviour
 
 
     // Construction Tools //
-     
+
     public void BulldozeButtonPressed()
     {
         GameManager.Instance.PlayerInputManager.ChangeInputState(PlayerInputManager.InputState.Demolish);
@@ -85,7 +89,7 @@ public class HUDManager : MonoBehaviour
         TutorialProxy.Action?.Invoke(TutorialEvent.PowerOverlayPressed);
     }
 
-    public void HeatmapButtonPressed() { } 
+    public void HeatmapButtonPressed() { }
 
 
     // Viewport Swapping //

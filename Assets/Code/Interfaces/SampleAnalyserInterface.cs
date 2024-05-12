@@ -29,7 +29,7 @@ public class SampleAnalyserInterface : StaticInterface, IResearchInterface
 
         UpdateUI();
 
-        TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.OpenInterface);
+        TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.AnalyserInterfacePosition);
     } 
 
     public override void UpdateUI()

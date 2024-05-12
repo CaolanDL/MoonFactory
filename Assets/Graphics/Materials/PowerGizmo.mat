@@ -41,8 +41,13 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _Blend: 2
+    - _DstBlend: 1
+    - _DstBlendAlpha: 1
+    - _SrcBlend: 5
+    - _SrcBlendAlpha: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 0.7791244, b: 0, a: 0.36078432}
-    - _Color: {r: 1, g: 0.7791244, b: 0, a: 0.36078432}
+    - _BaseColor: {r: 1, g: 0.7791244, b: 0, a: 0.039215688}
+    - _Color: {r: 1, g: 0.7791244, b: 0, a: 0.039215688}
   m_BuildTextureStacks: []

@@ -26,7 +26,7 @@ public class LanderInterface : StaticInterface
 
         UpdateUI();
 
-        TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.OpenInterface);
+        TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.LanderInterfacePosition);
     } 
 
     public override void UpdateUI()
@@ -34,5 +34,17 @@ public class LanderInterface : StaticInterface
         base.UpdateUI();
 
         inventory.UpdateDetails();
-    } 
+    }
+
+    public override void OnCloseInterface()
+    {
+        base.OnCloseInterface();
+
+        TutorialProxy.Action?.Invoke(TutorialEvent.LanderInterfaceClosed);
+    }
+
+    private void OnDisable()
+    {
+        TutorialProxy.Action?.Invoke(TutorialEvent.LanderInterfaceClosed);
+    }
 }

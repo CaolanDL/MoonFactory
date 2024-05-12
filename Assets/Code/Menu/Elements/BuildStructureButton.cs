@@ -105,7 +105,11 @@ public class BuildStructureButton : MonoBehaviour
     {
         if(structureData.name == "StaticDrill")
         {
-            TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.SelectStaticDrill);
-        } 
+            TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.StaticDrillButtonPosition);
+        }
+        if (structureData.name == "SampleAnalyser")
+        {
+            TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.AnalyserButtonPosition);
+        }
     }
 }

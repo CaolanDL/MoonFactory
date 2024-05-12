@@ -17,6 +17,9 @@ public class SingleStackInventoryElement : MonoBehaviour
 
     public void UpdateDisplay()
     {
+        if (icon == null) { return; }
+        if (icon.gameObject == null) { return; }
+
         maxItems.SetText(inventory.maxItems.ToString());
         if (resourceStack == null)
         {
@@ -24,8 +27,7 @@ public class SingleStackInventoryElement : MonoBehaviour
             image.sprite = MenuData.Instance.emptySprite;
             counter.SetText("0"); 
             return;
-        }
-        if(icon.gameObject == null) { return; }
+        } 
         icon.gameObject.SetActive(true);
         icon.SetDetails(resourceStack.resource);
         icon.SetCount(resourceStack.quantity); 

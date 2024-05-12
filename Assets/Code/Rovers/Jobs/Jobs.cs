@@ -283,7 +283,7 @@ namespace RoverJobs
 
         public override void OnStart()
         {
-            if (Entity != null) path = PathFinder.FindPathToAnyFreeNeighbor(rover.GridPosition, Entity.position);
+            if (Entity != null) path = PathFinder.FindPathToAnyFreeNeighbor(rover, rover.GridPosition, Entity.position);
 
             if (path == null) { FailTask(); return; }
 

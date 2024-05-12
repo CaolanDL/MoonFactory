@@ -74,9 +74,9 @@ namespace RoverJobs
         {
             base.OnStart();
 
-            superPath = PathFinder.FindSuperPath(rover.GridPosition, manifest.SupplyPorts.Select(p => p.parent.position).ToArray());
+            superPath = PathFinder.FindSuperPath(rover, rover.GridPosition, manifest.SupplyPorts.Select(p => p.parent.position).ToArray());
             if (superPath == null || superPath.Count == 0) { FailTask(); return; }
-            superPath.AddLast(PathFinder.FindPathToAnyFreeNeighbor(superPath.Last().nodes.Last(), destination));
+            superPath.AddLast(PathFinder.FindPathToAnyFreeNeighbor(rover, superPath.Last().nodes.Last(), destination));
 
             manifest.ReserveResources();
         }
@@ -419,9 +419,9 @@ namespace RoverJobs
 
             if (!success) { FailTask(); return; }
 
-            _superPath = PathFinder.FindSuperPath((int2)rover.VisualPosition, foundHoppers.Select(foundHopper => foundHopper.Hopper.position).ToArray());
+            _superPath = PathFinder.FindSuperPath(rover, (int2)rover.VisualPosition, foundHoppers.Select(foundHopper => foundHopper.Hopper.position).ToArray());
             if (_superPath == null || _superPath.Count == 0) { FailTask(); return; }
-            _superPath.AddLast(PathFinder.FindPathToAnyFreeNeighbor(_superPath.Last().nodes.Last(), destination));
+            _superPath.AddLast(PathFinder.FindPathToAnyFreeNeighbor(rover, _superPath.Last().nodes.Last(), destination));
 
             PopJob();
             //StackJob(new ExcecuteCollectAndDeliver(_superPath, destination));
@@ -446,7 +446,7 @@ namespace RoverJobs
 
                     if (quantityInHopper > 0)
                     {
-                        if (PathFinder.FindPathToAnyFreeNeighbor((int2)rover.GridPosition, hopper.position) == null) { continue; } // Hopper not reachable
+                        if (PathFinder.FindPathToAnyFreeNeighbor(rover, (int2)rover.GridPosition, hopper.position) == null) { continue; } // Hopper not reachable
 
                         var foundHopper = foundHoppers.Find(foundHoppers => foundHoppers.Hopper == hopper);
 

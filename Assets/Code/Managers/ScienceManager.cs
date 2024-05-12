@@ -76,6 +76,11 @@ public class ScienceManager
 
         PointsChanged?.Invoke(SciencePoints);
         ResearchCompleted?.Invoke();
+
+        if (TutorialProxy.IsActive)
+        {
+            TutorialProxy.Action?.Invoke(TutorialEvent.ResearchComplete);
+        }
     }
 
     public void RemovePoints(int points)

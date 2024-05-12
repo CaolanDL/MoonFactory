@@ -116,7 +116,7 @@ public class Entity // 12 bytes
 
     public void RenderSelectionOutline(Material material)
     {
-        float2 floatCentre = new(size.x / 2f, size.y / 2f);
+        float2 floatCentre = new((float)size.x / 2f -0.5f, size.y / 2f - 0.5f);
         var trueFloatCentre = position + floatCentre.Rotate(rotation);
         var trueVecCentre = new Vector3(trueFloatCentre.x, 0, trueFloatCentre.y);
         float sineTime = (Mathf.Sin(Time.time * 2f) + 1) / 2; // Sine 0 - 1 
@@ -128,7 +128,7 @@ public class Entity // 12 bytes
         var matrix = Matrix4x4.TRS(p, r, s);
         Graphics.DrawMesh(RenderData.Instance.SelectionGizmo, matrix, material, 0);
 
-        matrix = Matrix4x4.TRS(trueVecCentre, Quaternion.identity, Vector3.one);
+        matrix = Matrix4x4.TRS(position.ToVector3(), Quaternion.identity, Vector3.one);
         Graphics.DrawMesh(RenderData.Instance.TilesGizmo, matrix, RenderData.Instance.TransparentBlueGizmoMaterial, 0);
 
         //Debug.Log("Rendered Selection Outline");
