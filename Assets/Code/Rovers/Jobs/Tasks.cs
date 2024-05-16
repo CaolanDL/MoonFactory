@@ -18,6 +18,7 @@ namespace RoverTasks
     public class Task
     {
         public static LinkedList<Task> Pool { get => TaskManager.Tasks; }
+        public Guid ID { get; set; }
 
         public Rover rover;
 
@@ -33,6 +34,11 @@ namespace RoverTasks
 
         public Action OnCompleteCallback;
         public Action OnCancelledCallback;
+
+        public Task()
+        {
+            ID = Guid.NewGuid();
+        }
 
         public void BuildJobs()
         {
@@ -165,7 +171,7 @@ namespace RoverTasks
     {
         StructureGhost ghost;
 
-        public BuildStructureTask(StructureGhost ghost)
+        public BuildStructureTask(StructureGhost ghost) : base()
         {
             this.ghost = ghost; 
         }
@@ -185,7 +191,7 @@ namespace RoverTasks
     {
         public Structure structure; 
 
-        public DemolishStructureTask(Structure structure)
+        public DemolishStructureTask(Structure structure) : base()
         {
             this.structure = structure;  
         }
@@ -216,8 +222,8 @@ namespace RoverTasks
         ResourceData resource;
         int quantity;
         int2 destination;
-
-        public SoftRequestResourceTask(ResourceData resource, int quantity, int2 destination)
+         
+        public SoftRequestResourceTask(ResourceData resource, int quantity, int2 destination) : base()
         {
             this.resource = resource;
             this.quantity = quantity; 
@@ -237,7 +243,7 @@ namespace RoverTasks
     // Mining Tasks Parent Class
     public class MiningTask : Task
     {
-        public MiningTask()
+        public MiningTask() : base()
         {
             Category = TaskCategory.Mining;
         }

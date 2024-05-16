@@ -410,16 +410,11 @@ namespace Logistics
     public class Conveyor : Structure
     {
         public static int Length = 60;
-
         public static float TurnStartOffset = 0.20f;
-
         public Chain parentChain;
-
         public Conveyor nextConveyor;
         public Conveyor lastConveyor;
-
         public int2 inputPosition;
-
         public TurnConfig turnConfig = new();
 
         public enum TurnConfig
@@ -429,14 +424,18 @@ namespace Logistics
             RightTurn
         }
 
-/*        public override void OnInitialise()
-        { 
-            inputPosition = new int2(0, -1).Rotate(rotation) + position; 
-        } */
+        public override bool highlightable { get => false; }
 
         public override void OnDemolished()
         { 
             parentChain.RemoveConveyor(this);
+        }
+
+        public override void OnConstructed()
+        {
+            base.OnConstructed();
+
+            if(TutorialProxy.IsActive) { TutorialProxy.Action?.Invoke(TutorialEvent.ConveyorBuilt); }
         }
 
         public override void ConnectOuputs()

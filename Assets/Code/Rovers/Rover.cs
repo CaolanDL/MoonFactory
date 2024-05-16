@@ -37,13 +37,16 @@ public class Rover : Entity
     public Inventory Inventory = new();
     public RoverModule Module = RoverModule.None;
 
-    public Task ActiveTask;
+    public Task ActiveTask; 
     public readonly Queue<Job> JobQueue = new Queue<Job>();
     public readonly Stack<Job> JobStack = new Stack<Job>();
     public bool JobWasPopped= false;
     public bool JobWasStacked = false;
-    public bool TaskWasFailed = false;
+    public bool TaskWasFailed = false; 
     public int FetchDelay = 0;
+    public List<Guid> recentTaskIDs = new();
+    public int MemoryClearDelay = 50 * 5;
+    public int MemoryClearTimer = 0;
 
     public static float maxPowerLevel = 1f;
     public float powerLevel = maxPowerLevel;
@@ -100,6 +103,7 @@ public class Rover : Entity
     public void Tick()
     {
         HandleJobs();
+        HandleTaskMemory();
 
         UpdateDOPosition();
 
@@ -124,6 +128,17 @@ public class Rover : Entity
     }
 
     // Task & Job Management //
+
+    void HandleTaskMemory()
+    {
+        MemoryClearTimer++;
+
+        if(MemoryClearTimer > MemoryClearDelay)
+        {
+            recentTaskIDs.Clear();
+            MemoryClearTimer = 0;
+        }
+    }
 
     void HandleJobs()
     {

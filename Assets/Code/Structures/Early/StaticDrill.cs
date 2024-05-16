@@ -78,12 +78,12 @@ public class StaticDrill : Structure
 
     void StartedMining()
     {
-        DisplayObject.SetLoopingAnimation("Drilling");
+        DisplayObject.PlayAnimation("Drilling");
     }
 
     void StoppedMining()
     {
-        DisplayObject.SetLoopingAnimation("Idle");
+        DisplayObject.PlayAnimation("Idle");
     }
 
     public override void OnClicked(Vector3 mousePosition)

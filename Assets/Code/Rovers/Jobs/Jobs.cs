@@ -100,9 +100,15 @@ namespace RoverJobs
                     break;
             }
 
+            if (rover.ActiveTask != null && rover.recentTaskIDs.Contains(rover.ActiveTask.ID))
+            {
+                rover.TaskFailed();
+            }
+
             if (rover.ActiveTask != null)
             {
                 rover.ActiveTask.rover = rover;
+                rover.recentTaskIDs.Add(rover.ActiveTask.ID);
                 rover.ActiveTask.BuildJobs();
                 rover.ActiveTask.OnFetched?.Invoke();
             }
@@ -189,6 +195,7 @@ namespace RoverJobs
             //if (path.length < 2) { rover.TaskFailed(); return; }
 
             rover.DisplayObject.PlayParticleEffect("MovingParticles");
+            rover.DisplayObject.CrossfadeAnimation("Moving", 0.5f); 
 
             Structure.StructureConstructed += EvaluatePathInterruption; // Subscribe to structure build completion for evaluating path interuption.
 
@@ -264,6 +271,7 @@ namespace RoverJobs
             PopJob();
 
             rover.DisplayObject.StopParticleEffect("MovingParticles");
+            rover.DisplayObject.CrossfadeAnimation("Idle", 0.5f);
 
             // Unsubscribe events
             Structure.StructureConstructed -= EvaluatePathInterruption;
@@ -371,7 +379,7 @@ namespace RoverJobs
 
         public override void OnTick()
         {
-            if (lifeSpan >= structureGhost.structureData.timeToBuild && isComplete != true)
+            if (lifeSpan >= 10 && isComplete != true)
             {
                 structureGhost.FinishConstruction();
                 isComplete = true;

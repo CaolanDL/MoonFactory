@@ -123,16 +123,21 @@ namespace RoverJobs
 
         public override void OnTick()
         {
-            // Play collection animation on rover
-            // Then run this ->
-
-            foreach (var rq in resourcesToCollect)
+            if(lifeSpan == 1)
             {
-                if (rover.Inventory.TryAddResource(rq) == false) { throw new Exception("Rover attempted to exceed inventory capacity"); }
-                targetPort.CollectResource(rq);
-            }
+                rover.DisplayObject.CrossfadeAnimation("CollectResource", 0.5f);
+            } 
 
-            PopJob();
+            if(rover.DisplayObject.IsAnimationPlaying("CollectResource") == false && lifeSpan > 50)
+            {
+                foreach (var rq in resourcesToCollect)
+                {
+                    if (rover.Inventory.TryAddResource(rq) == false) { throw new Exception("Rover attempted to exceed inventory capacity"); }
+                    targetPort.CollectResource(rq);
+                }
+
+                PopJob();
+            } 
         }
     }
 
@@ -175,37 +180,45 @@ namespace RoverJobs
 
         public override void OnTick()
         {
+            if (lifeSpan == 1)
+            {
+                rover.DisplayObject.CrossfadeAnimation("DeliverResource", 0.5f);
+            }
+
             // Play delivery animation on rover
             // Then run this ->
 
-            if (targetPort != null)
-            {
-                foreach (var rq in resourcesToDeliver)
+            if (rover.DisplayObject.IsAnimationPlaying("DeliverResource") == false && lifeSpan > 50)
+            { 
+                if (targetPort != null)
                 {
-                    targetPort.SupplyResources(rq);
+                    foreach (var rq in resourcesToDeliver)
+                    {
+                        targetPort.SupplyResources(rq);
+                    }
                 }
-            }
-            if (targetGhost != null)
-            {
-                foreach (var rq in resourcesToDeliver)
+                if (targetGhost != null)
                 {
-                    targetGhost.SupplyResources(rq);
+                    foreach (var rq in resourcesToDeliver)
+                    {
+                        targetGhost.SupplyResources(rq);
+                    }
                 }
-            }
-            if (targetRequestor != null)
-            {
-                foreach (var rq in resourcesToDeliver)
+                if (targetRequestor != null)
                 {
-                    targetRequestor.RecieveResources(rq.resource, rq.quantity);
+                    foreach (var rq in resourcesToDeliver)
+                    {
+                        targetRequestor.RecieveResources(rq.resource, rq.quantity);
+                    }
                 }
-            }
 
-            foreach (var rq in resourcesToDeliver)
-            {
-                rover.Inventory.RemoveResource(rq);
-            }
+                foreach (var rq in resourcesToDeliver)
+                {
+                    rover.Inventory.RemoveResource(rq);
+                }
 
-            PopJob();
+                PopJob(); 
+            }
         }
     }
 

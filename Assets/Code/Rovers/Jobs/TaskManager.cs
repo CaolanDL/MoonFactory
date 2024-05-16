@@ -58,9 +58,9 @@ public class TaskManager
     {
         Task task;
 
-        if(Tasks.Count == 0) { return null; }
+        if (Tasks.Count == 0) { return null; }
 
-        if(category == TaskCategory.All)
+        if (category == TaskCategory.All)
         {
             task = Tasks.First.Value;
             Tasks.RemoveFirst();
@@ -69,15 +69,36 @@ public class TaskManager
                 if (task.Category == _category.Key)
                     _category.Value.PopTask();
             return task;
-        } 
-        else 
+        }
+        else
             foreach (var _category in CategoryManagers)
                 if (category == _category.Key)
                 {
                     var _task = _category.Value.PopTask();
                     Tasks.Remove(_task);
                     return _task;
-                } 
+                }
+        return null;
+    }
+
+    public static Task PeekTask(TaskCategory category)
+    {
+        Task task;
+
+        if (Tasks.Count == 0) { return null; }
+
+        if (category == TaskCategory.All)
+        {
+            task = Tasks.First.Value;  
+            return task;
+        }
+        else
+            foreach (var _category in CategoryManagers)
+                if (category == _category.Key)
+                {
+                    var _task = _category.Value.PeekTask(); 
+                    return _task;
+                }
         return null;
     }
 }
@@ -93,6 +114,13 @@ public class TaskCategoryManager
         tasks.RemoveFirst();
         if(TaskManager.Tasks.First== task)
             TaskManager.Tasks.RemoveFirst(); 
+        return task.Value;
+    }
+
+    public Task PeekTask()
+    {
+        if (tasks.Count == 0) return null;
+        var task = tasks.First;
         return task.Value;
     }
 

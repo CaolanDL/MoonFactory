@@ -115,10 +115,12 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _Fine_Noise_Intensity: 0.1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Height: 16
+    - _Level_Fine_Noise: 12
     - _Level_Five: 4
     - _Level_Four: 1
     - _Level_One: 0.03

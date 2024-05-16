@@ -54,6 +54,10 @@ namespace ExtensionMethods
         {
             return Mathf.Abs(origin.x - target.x) + Mathf.Abs(origin.y - target.y);
         }
+        public static int WeightedGridDistanceTo(this int2 origin, int2 target)
+        {
+            return Mathf.Abs(origin.x - target.x) * Mathf.Abs(origin.y - target.y);
+        }
     }
 
     public static class VectorExtensions
@@ -113,6 +117,11 @@ namespace ExtensionMethods
             float _x = i.x * Mathf.Cos(radian) - i.y * Mathf.Sin(radian);
             float _y = i.x * Mathf.Sin(radian) + i.y * Mathf.Cos(radian);
             return new float2(_x, _y);
+        }
+
+        public static Vector3 ToScreenPosition(this Vector3 v)
+        {
+            return GameManager.Instance.CameraController.activeMainCamera.WorldToScreenPoint(v);
         }
     }
 

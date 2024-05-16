@@ -122,7 +122,7 @@ public static class PathFinder
 
         float Hueristic(Location next, Location current)
         {
-            var distanceFromDestination = Mathf.Abs(next.position.x - destination.x) + Mathf.Abs(next.position.y - destination.y);
+            var weightedDistanceFromDestination = Mathf.Abs(next.position.x - destination.x) + Mathf.Abs(next.position.y - destination.y);
 
             // Turning cost 
             int turnCost = 0; 
@@ -134,7 +134,7 @@ public static class PathFinder
                     ? 0 : 20;
             }  
 
-            return distanceFromDestination + turnCost;
+            return weightedDistanceFromDestination + turnCost;
         }
 
         bool IsTraversable(Location location)
@@ -208,7 +208,7 @@ public static class PathFinder
         _worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
         Location location = _worldGrid.GetLocationAt(destination);
-        Location[] neighbors = location.GetNeighbors().OrderBy(x => x.position.GridDistanceTo(origin)).ToArray();
+        Location[] neighbors = location.GetNeighbors().OrderBy(x => x.position.WeightedGridDistanceTo(origin)).ToArray();
         List<Location> validNeighbors = new();
         Path path = null;
 
@@ -322,7 +322,10 @@ public static class PathFinder
             if (location == null) return false;
 
             if (location.entity != null)
-                if (location.entity.GetType() == typeof(Structure)) return false;
+            {
+                if (location.entity.GetType() == typeof(StructureGhost)) return true;
+                if (location.entity.GetType().IsSubclassOf(typeof(Structure))) return false;
+            }
 
             return true;
         }

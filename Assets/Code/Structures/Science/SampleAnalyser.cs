@@ -90,7 +90,7 @@ public class SampleAnalyser : Structure, IRecieveResources, IRequestResources, I
     void BeginResearch()
     {
         isResearching = true;
-        DisplayObject.SetLoopingAnimation("Analysing");
+        DisplayObject.PlayAnimation("Analysing");
     }
 
     void FinishResearch()
@@ -103,7 +103,7 @@ public class SampleAnalyser : Structure, IRecieveResources, IRequestResources, I
 
         ResearchComplete?.Invoke();
 
-        DisplayObject.SetLoopingAnimation("Idle");
+        DisplayObject.PlayAnimation("Idle");
     }
 }
 

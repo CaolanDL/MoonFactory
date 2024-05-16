@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Generic; 
 using DataStructs;
 using ExtensionMethods;
 using Unity.Mathematics;
-using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine; 
 
 [Serializable]
 public class Entity // 12 bytes
 {
-    public TinyTransform transform; // 9 bytes
-
+    public TinyTransform transform; // 9 bytes 
     public byte gridId; // 1 byte
+    public byte2 size = new(1, 1); // 2 bytes
+    public virtual bool highlightable { get => true; }
 
     public int2 position
     {
@@ -23,9 +23,7 @@ public class Entity // 12 bytes
     {
         get { return transform.rotation; }
         set { transform.rotation = value; }
-    }
-
-    public byte2 size = new(1, 1); // 2 bytes
+    } 
 
     public byte2 centre
     {
@@ -116,6 +114,7 @@ public class Entity // 12 bytes
 
     public void RenderSelectionOutline(Material material)
     {
+        if (!highlightable) return;
         float2 floatCentre = new((float)size.x / 2f -0.5f, size.y / 2f - 0.5f);
         var trueFloatCentre = position + floatCentre.Rotate(rotation);
         var trueVecCentre = new Vector3(trueFloatCentre.x, 0, trueFloatCentre.y);

@@ -1,5 +1,6 @@
 ﻿using System; 
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
  
 public class DisplayObject : MonoBehaviour
@@ -60,18 +61,25 @@ public class DisplayObject : MonoBehaviour
         {
             Destroy(gameObject); 
         }
-    }
+    } 
 
-    public void PlayAnimationOnce(string animationName)
-    {
-
-    }
-
-    public void SetLoopingAnimation(string animationName)
+    public void PlayAnimation(string animationName)
     {
         if(animator == null) { return; }
 
         animator.Play(animationName); 
+    }
+
+    public void CrossfadeAnimation(string animationName, float duration)
+    {
+        if (animator == null) { return; }
+
+        animator.CrossFadeInFixedTime(animationName, duration);
+    }
+
+    public bool IsAnimationPlaying(string animationName)
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsName(animationName);
     }
 
     public void SetActiveModel(string modelName)

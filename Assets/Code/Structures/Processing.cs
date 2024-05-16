@@ -20,7 +20,7 @@ public class Crusher : Machine
     {
         base.OnConstructed();
 
-        TutorialProxy.Action.Invoke(TutorialEvent.CrusherBuilt);
+        if (TutorialProxy.IsActive) TutorialProxy.Action?.Invoke(TutorialEvent.CrusherBuilt);
     }
 
     public override void OnFrameUpdate()
@@ -46,13 +46,13 @@ public class Crusher : Machine
 
     public override void OnBeginCrafting()
     {
-        DisplayObject.SetLoopingAnimation("Crushing");
+        DisplayObject.PlayAnimation("Crushing");
         DisplayObject.PlayParticleEffect("CrushingParticles");
     }
 
     public override void OnStopCrafting() 
     {
-        DisplayObject.SetLoopingAnimation("Idle");
+        DisplayObject.PlayAnimation("Idle");
         DisplayObject.StopParticleEffect("CrushingParticles");
     }
 }
