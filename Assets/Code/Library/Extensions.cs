@@ -58,6 +58,14 @@ namespace ExtensionMethods
         {
             return Mathf.Abs(origin.x - target.x) * Mathf.Abs(origin.y - target.y);
         }
+        public static int LongestSideDistance(this int2 origin, int2 target)
+        {
+            var x = origin.x - target.x;
+            var y = origin.y - target.y;
+
+            if(x > y) { return Mathf.Abs(x); }
+            else { return Mathf.Abs(y); } 
+        }
     }
 
     public static class VectorExtensions

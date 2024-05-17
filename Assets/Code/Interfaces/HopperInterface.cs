@@ -36,7 +36,7 @@ public class HopperInterface : StaticInterface
 
         if (TutorialProxy.IsActive)
         {
-            TutorialProxy.SetPopupPosition(transform.position, TutorialTag.HopperInterfacePosition);
+            TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.HopperInterfacePosition);
         }
     }
 

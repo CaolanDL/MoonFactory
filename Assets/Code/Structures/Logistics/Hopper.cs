@@ -117,7 +117,7 @@ namespace Logistics
 
             if (TutorialProxy.IsActive)
             {
-                TutorialProxy.SetPopupPosition(GameManager.Instance.CameraController.activeMainCamera.WorldToScreenPoint(DisplayObject.transform.position), TutorialTag.HopperPosition);
+                TutorialProxy.SetPopupPosition?.Invoke(GameManager.Instance.CameraController.activeMainCamera.WorldToScreenPoint(DisplayObject.transform.position), TutorialTag.HopperPosition);
             }
         }
 

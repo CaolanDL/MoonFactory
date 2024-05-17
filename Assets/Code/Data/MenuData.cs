@@ -31,6 +31,8 @@ public class MenuData : ScriptableObject
     [Header("Resource Icons")]
     public GameObject ResourceIcon_DropdownElement;
 
+    [Header("Animation Effects")]
+    public Component PulseOnce;
 
     [Header("Generic Sprites")]
     public Sprite emptySprite;

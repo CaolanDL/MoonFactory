@@ -250,7 +250,7 @@ namespace Electrical
         /// </summary> 
         public List<Node> FindNearbyNodesByType(Type type, int range)
         {
-/*            List<Location> nearbyLocations = GameManager.Instance.GameWorld.worldGrid.GetSquareRadius(Parent.position, range);
+/*          List<Location> nearbyLocations = GameManager.Instance.GameWorld.worldGrid.GetSquareRadius(Parent.position, range);
 
             List<Structure> nearbyStructures = new();
             nearbyStructures.AddRange(from location in nearbyLocations
@@ -264,7 +264,7 @@ namespace Electrical
 
             List<Node> nodes = new();
             nodes.AddRange(from node in SystemManager.nodes
-                           where node.Parent.position.GridDistanceTo(Parent.position) <= range && (node.GetType() == type || node.GetType().IsSubclassOf(type))
+                           where node.Parent.position.LongestSideDistance(Parent.position) <= range && (node.GetType() == type || node.GetType().IsSubclassOf(type))
                            select node);
 
             if (nodes.Count == 0) return null;

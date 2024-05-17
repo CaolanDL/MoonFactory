@@ -12,6 +12,7 @@ public class CraftingMachineInterface : StaticInterface
     public List<SingleStackInventoryElement> OutputInvElements;
 
     [SerializeField] public Slider PowerMeter;
+    public Transform CraftingCog;
 
     public Machine machine;
     private StructureData structureData;
@@ -31,14 +32,19 @@ public class CraftingMachineInterface : StaticInterface
     {
         base.Update();
 
-        if (TutorialProxy.IsActive) TutorialProxy.SetPopupPosition(transform.position, TutorialTag.MachineInterfacePosition); 
+        if (TutorialProxy.IsActive) TutorialProxy.SetPopupPosition?.Invoke(transform.position, TutorialTag.MachineInterfacePosition);
+
+        if (machine.isCrafting)
+        {
+            CraftingCog.transform.Rotate(0, 0, 12);
+        }
     }
 
     public override void UpdateUI()
     {
         UpdateInputInventoryElements();
         UpdateOuputInventoryElements();
-        UpdatePowerMeter();
+        UpdatePowerMeter(); 
     }
 
     public override void Init(Entity entity, Vector3 screenPosition)

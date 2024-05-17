@@ -69,10 +69,11 @@ public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void SetCount(int count)
     {
-        if(counter != null)
+        if(counter != null && this.count != count)
         {
             counter.text = count.ToString();
             this.count = count;
-        }
+            gameObject.AddComponent<GraphicsPulseOnce>();
+        } 
     }
 }

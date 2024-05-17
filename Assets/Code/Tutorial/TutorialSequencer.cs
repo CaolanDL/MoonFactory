@@ -113,19 +113,19 @@ public class TutorialSequencer : MonoBehaviour
         {
             mtx = Matrix4x4.TRS(hopper_transform.position.ToVector3(), hopper_transform.rotation.ToQuaternion(), Vector3.one);
             Graphics.DrawMesh(hopper, mtx, material, 0);
-            TutorialProxy.SetPopupPosition(hopper_transform.position.ToVector3().ToScreenPosition(), TutorialTag.HopperIndicatorPosition);
+            TutorialProxy.SetPopupPosition?.Invoke(hopper_transform.position.ToVector3().ToScreenPosition(), TutorialTag.HopperIndicatorPosition);
         }
         if (RenderCrusherIndicator)
         {
             mtx = Matrix4x4.TRS(crusher_transform.position.ToVector3(), crusher_transform.rotation.ToQuaternion(), Vector3.one);
             Graphics.DrawMesh(crusher, mtx, material, 0);
-            TutorialProxy.SetPopupPosition(crusher_transform.position.ToVector3().ToScreenPosition(), TutorialTag.CrusherIndicatorPosition);
+            TutorialProxy.SetPopupPosition?.Invoke(crusher_transform.position.ToVector3().ToScreenPosition(), TutorialTag.CrusherIndicatorPosition);
         }
         if (RenderConveyorIndicator)
         {
             mtx = Matrix4x4.TRS(conveyor_transform.position.ToVector3(), crusher_transform.rotation.ToQuaternion(), Vector3.one);
             Graphics.DrawMesh(conveyor, mtx, material, 0);
-            TutorialProxy.SetPopupPosition(conveyor_transform.position.ToVector3().ToScreenPosition(), TutorialTag.ConveyorIndicatorPosition);
+            TutorialProxy.SetPopupPosition?.Invoke(conveyor_transform.position.ToVector3().ToScreenPosition(), TutorialTag.ConveyorIndicatorPosition);
         }
     }
 }

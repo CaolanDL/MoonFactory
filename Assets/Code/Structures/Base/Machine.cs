@@ -370,6 +370,7 @@ public class Machine : Structure
         craftingCountdown = craftingResource.timeToCraft;
         isCrafting = true;
 
+        DisplayObject.CrossfadeAnimation("Crafting", 0.25f);
         OnBeginCrafting();
 
         return true;
@@ -385,6 +386,7 @@ public class Machine : Structure
 
         if (TryBeginCrafting()) return;
 
+        DisplayObject.CrossfadeAnimation("Idle", 0.25f);
         OnStopCrafting();
     }
 

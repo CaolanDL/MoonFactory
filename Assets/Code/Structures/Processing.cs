@@ -29,7 +29,7 @@ public class Crusher : Machine
 
         if (TutorialProxy.IsActive)
         {
-            TutorialProxy.SetPopupPosition(GameManager.Instance.CameraController.activeMainCamera.WorldToScreenPoint(DisplayObject.transform.position), TutorialTag.CrusherPosition);
+            TutorialProxy.SetPopupPosition?.Invoke(GameManager.Instance.CameraController.activeMainCamera.WorldToScreenPoint(DisplayObject.transform.position), TutorialTag.CrusherPosition);
         }
     }
 

@@ -6,8 +6,8 @@ using UnityEngine.InputSystem.Controls;
 [AddComponentMenu("UI Effects/Pulse Once")]
 public class GraphicsPulseOnce : MonoBehaviour
 {
-    [SerializeField] float scale = 1f;
-    [SerializeField] float frequency = 1f;
+    [SerializeField] float scale = 0.1f;
+    [SerializeField] float frequency = 16f;
 
     Vector3 baseScale = Vector3.one;
     float ElapsedTime = 0f;

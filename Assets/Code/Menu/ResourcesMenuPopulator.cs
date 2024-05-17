@@ -12,6 +12,7 @@ public class ResourcesMenuPopulator : MonoBehaviour
         foreach(var r in GameManager.Instance.GlobalData.Resources)
         {
             var newEmpty = Instantiate(empty, transform);
+            newEmpty.SetActive(true);
             var ri = Instantiate(ResourceIcon, newEmpty.transform);
             ri.GetComponent<ResourceIcon>()?.SetDetails(r);
         }

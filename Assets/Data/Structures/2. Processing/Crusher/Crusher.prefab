@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &37717458779009961
 Transform:
   m_ObjectHideFlags: 0
@@ -4830,6 +4830,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &5674127047287531667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7470855486279564780}
+  m_Layer: 0
+  m_Name: WirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7470855486279564780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5674127047287531667}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.175, y: 0.631, z: -0.127}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4834109678323069399}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8149189864003149576
 GameObject:
   m_ObjectHideFlags: 0
@@ -4862,6 +4893,8 @@ Transform:
   m_Children:
   - {fileID: 4156003957075518121}
   - {fileID: 37717458779009961}
+  - {fileID: 8335803773090787226}
+  - {fileID: 7470855486279564780}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6456619551741797326
@@ -4877,9 +4910,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   primaryModels:
-  - {fileID: 3667837993095985171}
+  - {fileID: 8711485539215193376}
   additiveModels: []
-  animator: {fileID: 0}
+  animator: {fileID: 678014811454392633}
+  wireConnectionPoint: {fileID: 0}
 --- !u!1001 &4478740670800446786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4943,6 +4977,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crusher
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f41f1ddebd7b6ca468b14487854065c1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4985,3 +5024,108 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4478740670800446786}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8368814147731884145
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4834109678323069399}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 750f6581ffe252143aef2a83a9bca4df,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 750f6581ffe252143aef2a83a9bca4df,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 750f6581ffe252143aef2a83a9bca4df,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 750f6581ffe252143aef2a83a9bca4df,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 750f6581ffe252143aef2a83a9bca4df,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 750f6581ffe252143aef2a83a9bca4df,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 750f6581ffe252143aef2a83a9bca4df,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 750f6581ffe252143aef2a83a9bca4df,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 750f6581ffe252143aef2a83a9bca4df,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 750f6581ffe252143aef2a83a9bca4df,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 750f6581ffe252143aef2a83a9bca4df,
+        type: 3}
+      propertyPath: m_Name
+      value: Crusher_Animated
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 750f6581ffe252143aef2a83a9bca4df,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 678014811454392633}
+  m_SourcePrefab: {fileID: 100100000, guid: 750f6581ffe252143aef2a83a9bca4df, type: 3}
+--- !u!4 &8335803773090787226 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 750f6581ffe252143aef2a83a9bca4df,
+    type: 3}
+  m_PrefabInstance: {fileID: 8368814147731884145}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8711485539215193376 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 750f6581ffe252143aef2a83a9bca4df,
+    type: 3}
+  m_PrefabInstance: {fileID: 8368814147731884145}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &678014811454392633
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8711485539215193376}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 487e8809c1d4d664fb859dc0000a1b78, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

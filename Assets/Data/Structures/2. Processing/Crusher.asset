@@ -42,7 +42,7 @@ MonoBehaviour:
       y: 1
     _rotation: 0
   ports: []
-  ghostMesh: {fileID: 1157356984485749078, guid: f41f1ddebd7b6ca468b14487854065c1,
+  ghostMesh: {fileID: -1923961124556739132, guid: d05eb01a057adff45a7d8d4d4691ceeb,
     type: 3}
   ghostModels: []
   unlocked: 1
