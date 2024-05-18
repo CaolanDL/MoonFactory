@@ -10,6 +10,8 @@ public class HUDManager : MonoBehaviour
     [SerializeField] public GameObject TechTree;
     [SerializeField] public GameObject MapMenu;
 
+    public Transform WorldIconContainer;
+
     [SerializeField] public MouseIconManager MouseIconManager;
 
     [SerializeField] Transform interfaceParent;

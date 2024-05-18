@@ -1,5 +1,38 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100614221958351491
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5139489496549050372}
+  m_Layer: 0
+  m_Name: Game Lighting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5139489496549050372
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100614221958351491}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8077082405876866472}
+  - {fileID: 6985755207687298605}
+  m_Father: {fileID: 2637558899944990924}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &506395907949957631
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,7 +64,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2637558899944990924}
+  m_Father: {fileID: 5139489496549050372}
   m_LocalEulerAnglesHint: {x: 60, y: 45, z: 90}
 --- !u!108 &6359796303691609492
 Light:
@@ -235,7 +268,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2637558899944990924}
+  m_Father: {fileID: 5139489496549050372}
   m_LocalEulerAnglesHint: {x: 60, y: 45, z: 90}
 --- !u!108 &2635779608424311986
 Light:
@@ -332,7 +365,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6927341652014228582}
   - component: {fileID: 4636742442174799327}
-  - component: {fileID: 3674505349193467208}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -370,39 +402,6 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
---- !u!114 &3674505349193467208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3794916911880735417}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_MoveRepeatDelay: 0.5
-  m_MoveRepeatRate: 0.1
-  m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: e10cb07d33ca66240ad6c6d3f025e590,
-    type: 3}
-  m_PointAction: {fileID: -5375695573270658134, guid: e10cb07d33ca66240ad6c6d3f025e590,
-    type: 3}
-  m_MoveAction: {fileID: 0}
-  m_SubmitAction: {fileID: 0}
-  m_CancelAction: {fileID: 0}
-  m_LeftClickAction: {fileID: -6635523809947615255, guid: e10cb07d33ca66240ad6c6d3f025e590,
-    type: 3}
-  m_MiddleClickAction: {fileID: 0}
-  m_RightClickAction: {fileID: 0}
-  m_ScrollWheelAction: {fileID: 0}
-  m_TrackedDevicePositionAction: {fileID: 0}
-  m_TrackedDeviceOrientationAction: {fileID: 0}
-  m_DeselectOnBackgroundClick: 1
-  m_PointerBehavior: 0
-  m_CursorLockBehavior: 0
 --- !u!1 &4297340192349639762
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,9 +575,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6442788782149159075}
-  - {fileID: 8077082405876866472}
-  - {fileID: 6985755207687298605}
   - {fileID: 6927341652014228582}
+  - {fileID: 5139489496549050372}
   - {fileID: 8998092667739159706}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -601,6 +599,8 @@ MonoBehaviour:
   MenuData: {fileID: 11400000, guid: fef9a16f6097abf41ba6a2acaba9d475, type: 2}
   RoverData: {fileID: 11400000, guid: 31f0757be67bcbb48bc06ecd172165ec, type: 2}
   HUDManager: {fileID: 0}
+  TutorialSequencer: {fileID: 0}
+  GameLighting: {fileID: 100614221958351491}
   FloorTileRenderer: {fileID: 8208045981605999340}
   ItemRenderer: {fileID: 8754063972972500991}
   BatchRenderer: {fileID: 7462157466248319354}
@@ -1296,7 +1296,7 @@ PrefabInstance:
     - target: {fileID: 2388117094326814471, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 85.7487
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2638829709471817685, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}
@@ -1336,7 +1336,7 @@ PrefabInstance:
     - target: {fileID: 2901377444576638990, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 252.7487
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2901377444576638990, guid: 6778086d57e5fe042a437210573861ac,
         type: 3}

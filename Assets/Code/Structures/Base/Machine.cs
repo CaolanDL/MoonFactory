@@ -29,7 +29,19 @@ public class Machine : Structure
 
     public override void OnConstructed()
     { 
-        base.OnConstructed(); 
+        base.OnConstructed();
+
+        if (GameManager.Instance.Lander != null)
+        { 
+            DumpToLander(InputInventories);
+            DumpToLander(OutputInventories);
+        }
+        void DumpToLander(Inventory[] inventories)
+        {
+            foreach (Inventory inventory in inventories)
+                foreach (var stack in inventory.stacks)
+                    GameManager.Instance.Lander?.inventory.TryAddResource(new ResourceQuantity(stack.resource, stack.quantity));
+        }
     }
 
     public override void OnClicked(Vector3 mousePosition)

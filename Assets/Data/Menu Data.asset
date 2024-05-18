@@ -19,6 +19,8 @@ MonoBehaviour:
   HUD: {fileID: 5208321704792210768, guid: da97c697ec104794f97b769a51c7df26, type: 3}
   BuildButtonTooltip: {fileID: 1213213408029545927, guid: e1402c0125a47d747b7fd68bb941f9f5,
     type: 3}
+  GenericTooltipPrefab: {fileID: 3529387148823965609, guid: 4e34c048476911546844ab76b9bb64c0,
+    type: 3}
   ModularInterface: {fileID: 0}
   RoverInterface: {fileID: 1452811590041402077, guid: 074ddf08676b28e449723e1101904783,
     type: 3}
@@ -38,4 +40,7 @@ MonoBehaviour:
     type: 3}
   ResourceIcon_DropdownElement: {fileID: 4251607146544866085, guid: 681fd1463dbb28340a36b8c0ba68817d,
     type: 3}
+  PulseOnce: {fileID: 0}
   emptySprite: {fileID: 21300000, guid: 6e65be19100f13442877ed3825b1b0c3, type: 3}
+  DemolishSprite: {fileID: 4917355450951719707, guid: bf68999a21f53cf49ad9aa56ef8a76fd,
+    type: 3}

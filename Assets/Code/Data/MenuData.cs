@@ -14,6 +14,7 @@ public class MenuData : ScriptableObject
 
     [Header("Tool Tips")]
     public GameObject BuildButtonTooltip;
+    public GameObject GenericTooltipPrefab;
 
     [Header("Interfaces")]
     public GameObject ModularInterface;
@@ -36,7 +37,7 @@ public class MenuData : ScriptableObject
 
     [Header("Generic Sprites")]
     public Sprite emptySprite;
-
+    public GameObject DemolishSprite;
 
 
     public static MenuData Instance;

@@ -299,7 +299,7 @@ public class Rover : Entity
     public void RenderRoverSelectionOutline()
     { 
         float sineTime = (Mathf.Sin(Time.time * 2f) + 1) / 2; // Sine 0 - 1 
-        var p = new Vector3(VisualPosition.x, VisualPosition.y) + (Vector3.up * (sineTime / 8 + 0.01f));
+        var p = new Vector3(VisualPosition.x, 0, VisualPosition.y) + (Vector3.up * (sineTime / 8 + 0.01f));
         var r = Quaternion.Euler(0, Time.time * 120f, 0);
         var s = Vector3.one;
         var matrix = Matrix4x4.TRS(p, r, s);
@@ -309,10 +309,10 @@ public class Rover : Entity
 
 public class Widget : Rover
 {
-    static float _MoveSpeed = 2f;
+    static float _MoveSpeed = 1.2f;
     public override float MoveSpeed => _MoveSpeed;
 
-    static float _TurnSpeed = 4f;
+    static float _TurnSpeed = 2.8f;
     public override float TurnSpeed => _TurnSpeed;
 
 

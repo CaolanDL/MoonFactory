@@ -38,6 +38,12 @@ public class GameManager : MonoBehaviour
     public HUDManager HUDManager;
     public TutorialSequencer TutorialSequencer;
 
+    // GameObjects
+    public GameObject GameLighting;
+
+    //Runtime References
+    public Lander Lander;
+
     // Monobehavior Components
     public FloorTileRenderer FloorTileRenderer;
     public ItemRenderer ItemRenderer;
@@ -147,6 +153,7 @@ public class GameManager : MonoBehaviour
 
         // Create new gameWorld
         GameWorld = new GameWorld(seed);
+        GameLighting.SetActive(true);
 
         // Initialise Game Managers Components
         ScienceManager = new();

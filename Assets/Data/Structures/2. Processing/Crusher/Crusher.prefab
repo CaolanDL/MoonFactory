@@ -4913,7 +4913,7 @@ MonoBehaviour:
   - {fileID: 8711485539215193376}
   additiveModels: []
   animator: {fileID: 678014811454392633}
-  wireConnectionPoint: {fileID: 0}
+  wireConnectionPoint: {fileID: 7470855486279564780}
 --- !u!1001 &4478740670800446786
 PrefabInstance:
   m_ObjectHideFlags: 0

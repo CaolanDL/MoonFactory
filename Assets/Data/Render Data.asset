@@ -16,6 +16,8 @@ MonoBehaviour:
     type: 3}
   devgizmo_material: {fileID: 2100000, guid: ad0829fb8cfd0984fa87629c1d36a7e7, type: 2}
   UniversalMaterial: {fileID: 2100000, guid: dc78b735219765940baf154a36bac702, type: 2}
+  ConstructedEffect: {fileID: 4787759024738772650, guid: 1fef3d79a15c749488f28e1228d60ab6,
+    type: 3}
   StructureGhost_Mouse: {fileID: 2100000, guid: ae3c9d81128617f488bc585ea3ca114c,
     type: 2}
   StructureGhost_Blocked: {fileID: 2100000, guid: 9db145911466da84bb7b0633b5e2507b,
@@ -27,6 +29,7 @@ MonoBehaviour:
     type: 3}
   ArrowOutputMaterial: {fileID: 2100000, guid: aaf3dad24ffc8d140b2f1fd51c084db7, type: 2}
   ArrowInputMaterial: {fileID: 2100000, guid: 4b9e2c61465009f40aea2ed8207c9764, type: 2}
+  DemolishIcon: {fileID: 2800000, guid: 228d0e4a85ca38b488e724dd64d14c86, type: 3}
   TileHighlightGizmo: {fileID: -6997785974547370836, guid: bd0e8dc30d0d4034284b4c8eb9e169e7,
     type: 3}
   TilesGizmo: {fileID: -2103533393138579091, guid: 2ebadecb188dadc47996c84639d8d254,
@@ -44,6 +47,8 @@ MonoBehaviour:
     type: 2}
   SelectedInterfaceGizmoMaterial: {fileID: 2100000, guid: a8190740c7850744fa663844f1c617bc,
     type: 2}
+  Rubble: []
+  RubbleMaterial: {fileID: 0}
   wire_mesh: {fileID: 8077376627999728891, guid: 2c687e3cb05f5cc4488579610e17e11d,
     type: 3}
   wire_material: {fileID: 2100000, guid: ed863dbc4a590d942aa608b5d7d82e5c, type: 2}

@@ -39,6 +39,8 @@ public class Lander : Structure
         {
             Parent = this
         };
+
+        GameManager.Instance.Lander = this;
     }
 
     public override void OnConstructed()
@@ -55,7 +57,7 @@ public class Lander : Structure
 
     void AddStartingResources()
     {
-        inventory.maxItems = 10000; 
+        inventory.maxItems = int.MaxValue-100; 
 
         foreach (var rq in GlobalData.Instance.StarterResources)
         {

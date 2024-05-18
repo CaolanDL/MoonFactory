@@ -42,6 +42,8 @@ public abstract class Structure : Entity
     bool isInterfaceOpen = false;
     static StaticInterface activeInterface;
 
+    GameObject demolishIcon = null;
+
     public void Initialise()
     {
         base.size = new DataStructs.byte2(StructureData.size.x, StructureData.size.y);
@@ -87,7 +89,9 @@ public abstract class Structure : Entity
         AddPorts(); 
         if (_electricalNode != null) { _electricalNode.Constructed(); }
 
-        //FlattenTerrain();  
+        var effect = GameObject.Instantiate(RenderData.Instance.ConstructedEffect, DisplayObject.transform.position , Quaternion.identity, DisplayObject.transform);
+        effect.transform.localScale = Vector3.one * (size.x * size.y);
+        DisplayObject.gameObject.AddComponent<ShakeOnAwake>();
 
         OnConstructed();
         StructureConstructed?.Invoke(this);
@@ -120,19 +124,17 @@ public abstract class Structure : Entity
 
     public void Demolish()
     {
-        Structures.Remove(this);
-
-        DisconnectInputs();
-
-        RemoveEntity();
-
-        DeletePorts();
-
-        DisplayObject.DemolishAnimation();
-
-        OnDemolishedEvent?.Invoke();
-
+        GameObject.Destroy(demolishIcon); demolishIcon = null;
+        Structures.Remove(this); 
+        DisconnectInputs(); 
+        RemoveEntity(); 
+        DeletePorts(); 
+        DisplayObject.DemolishAnimation(); 
+        OnDemolishedEvent?.Invoke(); 
         OnDemolished();
+        if(GameManager.Instance.Lander != null) 
+            foreach(var rq in StructureData.requiredResources) 
+                GameManager.Instance.Lander?.inventory.TryAddResource(rq); 
     }
 
     public void Tick()
@@ -142,6 +144,20 @@ public abstract class Structure : Entity
 
     public void FrameUpdate()
     {
+        if (flaggedForDemolition && demolishIcon == null)
+        {
+            demolishIcon = GameObject.Instantiate(MenuData.Instance.DemolishSprite, GameManager.Instance.HUDManager.WorldIconContainer);
+        }
+        if(demolishIcon != null)
+        {
+            demolishIcon.transform.position = DisplayObject.transform.position.ToScreenPosition();
+            demolishIcon.transform.localScale = Vector3.one / GameManager.Instance.CameraController.zoom;
+            if (!flaggedForDemolition)
+            {
+                GameObject.Destroy(demolishIcon);
+            }
+        }
+
         OnFrameUpdate();
     }
 

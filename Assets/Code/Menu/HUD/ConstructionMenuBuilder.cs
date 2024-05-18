@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class ConstructionMenuBuilder : MonoBehaviour
 {  
-    [SerializeField] GridLayoutGroup LogisticsBox;
-    [SerializeField] GridLayoutGroup ProcessingBox;
-    [SerializeField] GridLayoutGroup ManufacturingBox;
-    [SerializeField] GridLayoutGroup PowerBox;
-    [SerializeField] GridLayoutGroup ScienceBox; 
+    [SerializeField] Transform LogisticsBox;
+    [SerializeField] Transform ProcessingBox;
+    [SerializeField] Transform ManufacturingBox;
+    [SerializeField] Transform PowerBox;
+    [SerializeField] Transform ScienceBox; 
 
     [SerializeField] GameObject buildStructureButton;
 

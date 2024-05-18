@@ -19,6 +19,9 @@ public class RenderData : ScriptableObject
     [Header("Universal")]
     public Material UniversalMaterial;
 
+    [Header("Effects")]
+    public GameObject ConstructedEffect;
+
     [Header("Ghosts")]
     public Material StructureGhost_Mouse;
     public Material StructureGhost_Blocked;
@@ -29,6 +32,9 @@ public class RenderData : ScriptableObject
     public Mesh TwoWayArrow;
     public Material ArrowOutputMaterial;
     public Material ArrowInputMaterial;
+
+    [Header("Icons")]
+    public Texture DemolishIcon;
 
     [Header("Gizmos")]
     public Mesh TileHighlightGizmo;
@@ -43,6 +49,9 @@ public class RenderData : ScriptableObject
     public Material SelectionGizmoMaterial;
     public Material SelectedInterfaceGizmoMaterial;
 
+    [Header("Terrain")]
+    public List<Mesh> Rubble;
+    public Material RubbleMaterial;
 
     [Header("Wire")]
     public Mesh wire_mesh;
@@ -51,6 +60,8 @@ public class RenderData : ScriptableObject
     [Header("Bridges")] 
     public Mesh BridgeSegment;
     public Mesh BridgePlatform;
+
+
 
 
 

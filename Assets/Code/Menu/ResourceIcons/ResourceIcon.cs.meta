@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 1d79e4aa703c0904cbcb2aee508fc9b8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - sprite: {instanceID: 0}
+  - iconName: {instanceID: 0}
+  - Tooltip: {instanceID: 0}
+  - tooltipName: {instanceID: 0}
+  - quantityProduced: {instanceID: 0}
+  - machineName: {instanceID: 0}
+  - machineSprite: {instanceID: 0}
+  - RequirementsLayout: {instanceID: 0}
+  - CraftingRequirmentPrefab: {fileID: 9091409838740684491, guid: d8ecd4e27037050408a825f0c52c216a,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

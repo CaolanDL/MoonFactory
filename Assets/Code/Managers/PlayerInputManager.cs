@@ -1,8 +1,6 @@
 ﻿using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems;
-
-
+using UnityEngine.EventSystems; 
 
 #region Input Example Comment
 // Input Example:
@@ -22,8 +20,7 @@ using UnityEngine.EventSystems;
 // Each frame a queue of player iputs is created
 //     The InputHandler stack is iterated through calling the relevent inputs, if an input succeedes it is removed from the queue 
 #endregion
-
-
+ 
 public class PlayerInputManager : MonoBehaviour
 {
     public InputState inputState = InputState.Default;
@@ -296,9 +293,7 @@ public class PlayerInputManager : MonoBehaviour
             GotoDefaultInputState();
             return;
         }
-    }
-
-
+    } 
 
     public void UpdateSpatialMousePosition()
     { 

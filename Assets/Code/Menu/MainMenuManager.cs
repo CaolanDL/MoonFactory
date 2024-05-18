@@ -5,6 +5,7 @@ using UnityEngine;
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField] GameObject NewGameDialogue;
+    [SerializeField] Canvas canvas;
 
     #region Singleton Instanciate
     public static MainMenuManager Instance { get; private set; }
@@ -34,7 +35,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void StartNewGamePressed()
     {
-        Instantiate(NewGameDialogue, transform);
+        Instantiate(NewGameDialogue, canvas.transform);
     }
 
     public void CloseMenu()
