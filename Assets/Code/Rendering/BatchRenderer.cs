@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using ExtensionMethods;
+using Meteorites;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -9,6 +11,7 @@ public class BatchRenderer : MonoBehaviour
     BridgeRenderer platformRenderer = new();
     public ItemRenderer ItemRenderer { get { return GameManager.Instance.ItemRenderer; } }
     ElectricalCoverageRenderer electricalCoverageRenderer = new();
+    MeteorRenderer meteorRenderer = new();
 
     public void Init()
     {
@@ -26,6 +29,7 @@ public class BatchRenderer : MonoBehaviour
         wireRenderer.RenderAll();
         gizmoRenderer.Render();
         platformRenderer.RenderAll();
+        meteorRenderer.RenderVisible();
 
         electricalCoverageRenderer.TryRender();
     } 
@@ -151,5 +155,61 @@ public class ElectricalCoverageRenderer
         }
 
         BatchRenderer.RenderChunkedMatrixArray(chunkedMatrixArray, RenderData.Instance.TilePowerGizmo, RenderData.Instance.TilePowerGizmoMaterial);
+    }
+}
+
+public class MeteorRenderer
+{
+    private CameraController cameraController;
+    private Dictionary<ModelData, ChunkedMatrixArray> matrixArrays = new(); 
+
+    public void RenderVisible()
+    {
+        cameraController = GameManager.Instance.CameraController;
+        var gameWorld = GameManager.Instance.GameWorld;
+
+        var VisibleRange = cameraController.GetLocalVisibleRange();
+        int2 camGridPos = cameraController.CameraGridPosition;
+        var tileLocation = new int2();
+
+        for (int x = VisibleRange.x - 1; x < VisibleRange.y + 1; x++)
+        {
+            for (int y = VisibleRange.x - 1; y < VisibleRange.y + 1; y++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    (tileLocation.x, tileLocation.y) = (camGridPos.x + (x - y + j), camGridPos.y + (y + x + 1));
+                    var entity = gameWorld.worldGrid.GetEntityAt(tileLocation);
+                    Meteorite meteorite = null;
+                    if (entity != null && entity.GetType() == typeof(Meteorite))
+                    {
+                        meteorite = (Meteorite)entity;
+                    }
+                    else continue;
+
+                    var v = meteorite.position.ToVector3();
+                    var r = meteorite.rotation.ToQuaternion();
+                    var s = Vector3.one * meteorite.scale;
+                    var matrix = Matrix4x4.TRS(v, r, s);
+
+                    QueueModel(meteorite.modelData, matrix);
+                }
+            }
+        }
+
+        foreach(var kvp in matrixArrays)
+        {
+            BatchRenderer.RenderChunkedMatrixArray(kvp.Value, kvp.Key.Mesh, kvp.Key.Material);
+        }
+    }
+
+    void QueueModel(ModelData modelData, Matrix4x4 matrix)
+    { 
+        if(matrixArrays.ContainsKey(modelData) == false)
+        {
+            matrixArrays.Add(modelData, new());
+        }
+
+        matrixArrays[modelData].QueueMatrix(matrix);
     }
 }

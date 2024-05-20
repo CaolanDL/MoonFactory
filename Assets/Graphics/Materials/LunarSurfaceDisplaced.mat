@@ -103,7 +103,7 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _Color_Intensity: 0.6
+    - _Color_Intensity: 0.5
     - _Crater_Size: 10
     - _Craters_Chance: 0.08
     - _Craters_Scale: 10

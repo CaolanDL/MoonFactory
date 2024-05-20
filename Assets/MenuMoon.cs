@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MenuMoon : MonoBehaviour
-{ 
-
+{  
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(Vector3.up, Time.deltaTime*4, Space.Self);
+        transform.Rotate(Vector3.up, Time.deltaTime*1.5f, Space.Self);
     }
 }

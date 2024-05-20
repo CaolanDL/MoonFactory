@@ -52,6 +52,12 @@ public class GameManager : MonoBehaviour
     public CameraController CameraController;
     public PlayerInputManager PlayerInputManager;
 
+    // Main Menu
+    public GameObject MainMenuCameraPrefab;
+    [NonSerialized] public Camera _mainMenuCamera;
+    public GameObject MainMenu;
+    public GameObject SplashScreen;
+
     // Global Events
     public static Action OnGameExit;
     public static Action OnSaveLoad;
@@ -87,15 +93,11 @@ public class GameManager : MonoBehaviour
     }
 
     private void Start()
-    {
-#if UNITY_EDITOR
-        if (DevFlags.SkipMainMenu) { CreateNewGame("DevGame"); DebugUnlockAll(); return; }
-#endif
-
+    {  
         if (Application.isMobilePlatform) { Instantiate(MenuData.MobilePlatformWarning); return; }
-          
-        OpenMainMenu();
-    }
+
+        PlaySplashScreen();
+    } 
 
     #region Singleton Instanciation
     public static GameManager Instance { get; private set; }
@@ -146,6 +148,8 @@ public class GameManager : MonoBehaviour
 
     public void CreateNewGame(string saveName)
     {
+        DestroyMainMenuCamera();
+
         // User input save file name
 
         // Random seed is chosen
@@ -183,17 +187,37 @@ public class GameManager : MonoBehaviour
          
     }
 
-    public void OpenMainMenu()
-    {
-        Instantiate(MenuData.mainMenu, transform);
-    }
-
     void ExitToMenu()
     {
         // Save game to file
         // Unload gameworld
         // Destroy HUD
         // Load main menu scene
+    }
+
+    public void PlaySplashScreen()
+    { 
+        Instantiate(SplashScreen);
+    }
+
+    public void OpenMainMenu()
+    {  
+        Instantiate(MenuData.mainMenu);
+    }
+
+    public void SpawnMainMenuCamera()
+    { 
+        if(_mainMenuCamera == null)
+            _mainMenuCamera = Instantiate(MainMenuCameraPrefab, transform).GetComponent<Camera>(); 
+    }
+
+    public void DestroyMainMenuCamera()
+    {
+        if (_mainMenuCamera != null)
+        {
+            Destroy(_mainMenuCamera.gameObject);
+            _mainMenuCamera = null;
+        }
     }
 
     void LoadSave()

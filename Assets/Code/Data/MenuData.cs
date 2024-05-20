@@ -6,6 +6,7 @@ using UnityEngine;
 public class MenuData : ScriptableObject
 {
     [Header("Main Menu")]
+    public GameObject SplashScreen;
     public GameObject mainMenu;
     public GameObject MobilePlatformWarning;
 

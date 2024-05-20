@@ -19,7 +19,7 @@ public enum RoverModule
 } 
 
 public class Rover : Entity
-{
+{ 
     public static bool DebugEnabled = false;
 
     const float _MoveSpeed = 3f;

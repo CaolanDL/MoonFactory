@@ -1,7 +1,9 @@
 ﻿using DataStructs;
 using ExtensionMethods;
+using Meteorites;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -90,7 +92,24 @@ public class GameWorld
             worldGrid.AddLocation(position);
         }
 
+        GenerateMeteorite(position);
+
         return newFloorTile;
+    }
+
+    public void GenerateMeteorite(int2 position)
+    {
+        var terrainData = TerrainGenerationData.Instance;
+
+        if (Mathf.Abs(position.x) + Mathf.Abs(position.y) < TerrainGenerationData.StartZoneSize) { return; }
+        
+        if (Random.Range(0f, 1f) < terrainData.chanceToSpawnMeteorite)
+        {
+            var randomModel = terrainData.MeteorModels[Random.Range(0, terrainData.MeteorModels.Length)];
+            var meteorite = new Meteorite(randomModel, Random.Range(terrainData.minMeteoriteScale, terrainData.maxMeteoriteScale));
+            meteorite.position = position;
+            worldGrid.TryAddEntity(meteorite, position, (sbyte)Random.Range(0,3));
+        }
     }
 
     ////

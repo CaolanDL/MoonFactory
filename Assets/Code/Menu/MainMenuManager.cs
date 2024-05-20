@@ -5,7 +5,7 @@ using UnityEngine;
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField] GameObject NewGameDialogue;
-    [SerializeField] Canvas canvas;
+    [SerializeField] Canvas Canvas;
 
     #region Singleton Instanciate
     public static MainMenuManager Instance { get; private set; }
@@ -24,22 +24,36 @@ public class MainMenuManager : MonoBehaviour
     #endregion
 
     private void Awake()
-    {
+    { 
         MakeSingleton(); 
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.DestroyMainMenuCamera();
     }
 
     private void Start()
     {
+        GameManager.Instance.SpawnMainMenuCamera();
+        Canvas.worldCamera = GameManager.Instance._mainMenuCamera; 
+
         Canvas.ForceUpdateCanvases();
     }
 
     public void StartNewGamePressed()
     {
-        Instantiate(NewGameDialogue, canvas.transform);
+        Instantiate(NewGameDialogue, Canvas.transform);
+    }
+
+    public void ExitGamePressed()
+    {
+        Application.Quit();
     }
 
     public void CloseMenu()
     {
+        GameManager.Instance.DestroyMainMenuCamera();
         Destroy(gameObject);
-    }
+    } 
 }

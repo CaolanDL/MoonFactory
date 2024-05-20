@@ -8,7 +8,18 @@ using UnityEngine;
 public class TerrainGenerationData : ScriptableObject
 { 
     public static TerrainGenerationData Instance { get; private set; }
-     
+
+    public static int ChunkSize = 9;
+    public static int StartZoneSize = 9;
+    public float GenerationScalar = 9;
+
+    [SerializeField] public float chanceToSpawnMeteorite = 0.02f;
+    [SerializeField] public float maxMeteoriteScale = 0.5f;
+    [SerializeField] public float minMeteoriteScale = 1f;
+
+    [SerializeField] public FloorTileData displaceTile;
+
+    [SerializeField] public ModelData[] MeteorModels;
 
     [SerializeField] public List<FloorTileData> topographyTiles;
      
@@ -18,16 +29,7 @@ public class TerrainGenerationData : ScriptableObject
 
     [SerializeField] public List<FloorTileData> rubbleTiles;
 
-    [NonSerialized] public  List<FloorTileData> tileRegistry = new();
-
-    [SerializeField] public FloorTileData displaceTile;
-
-    public static int ChunkSize = 9;
-
-    public static int StartZoneSize = 9;
-
-    public float GenerationScalar = 9;
- 
+    [NonSerialized] public  List<FloorTileData> tileRegistry = new(); 
 
     private void OnValidate()
     {
