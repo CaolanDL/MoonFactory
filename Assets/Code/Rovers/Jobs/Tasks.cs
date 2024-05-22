@@ -187,21 +187,21 @@ namespace RoverTasks
         }
     }
      
-    public class DemolishStructureTask : ConstructionTask
+    public class DemolishTask : ConstructionTask
     {
-        public Structure structure; 
+        public Entity entity; 
 
-        public DemolishStructureTask(Structure structure) : base()
+        public DemolishTask(Entity entity) : base()
         {
-            this.structure = structure;  
+            this.entity = entity;  
         }
 
         public override List<Job> SetJobs()
         {
             return new()
             {
-                new GotoNeighbor(structure),
-                new DemolishStructure(structure),
+                new GotoNeighbor(entity),
+                new Demolish(entity),
                 new FinishTask()
             };
         }

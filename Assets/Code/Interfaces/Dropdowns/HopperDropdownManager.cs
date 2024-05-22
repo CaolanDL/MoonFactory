@@ -24,9 +24,10 @@ public class HopperDropdownManager : MonoBehaviour
 
     List<ResourceData> GetResources()
     {
-        var resources = GameManager.Instance.ScienceManager.unlocked_Resources;
+        var resources = new List<ResourceData>();
+        resources.AddRange(GameManager.Instance.ScienceManager.unlocked_Resources); 
         resources.Insert(0, null);
 
-        return GameManager.Instance.ScienceManager.unlocked_Resources; 
+        return resources; 
     }  
 }

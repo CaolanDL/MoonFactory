@@ -1,4 +1,5 @@
-﻿using Unity.Mathematics;
+﻿using MoonFactory.Interfaces;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems; 
 
@@ -253,14 +254,11 @@ public class PlayerInputManager : MonoBehaviour
                 {
                     ((StructureGhost)entity).Cancel();
                 }
-                if (entity.GetType().IsSubclassOf(typeof(Structure)))
+                else if (entity.GetType().IsSubclassOf(typeof(Structure)))
                 {
                     var structure = (Structure)entity;
 
-                    if(structure.CanDemolish() == false)
-                    {
-
-                    }
+                    if(structure.CanDemolish() == false) return;  
 
                     if (DevFlags.InstantBuilding)
                     {
@@ -268,14 +266,13 @@ public class PlayerInputManager : MonoBehaviour
                         return;
                     }
 
-                    if (structure.flaggedForDemolition != true)
-                    {
-                        structure.FlagForDemolition();
-                    }
-                    else
-                    {
-                        structure.CancelDemolition();
-                    } 
+                    if (structure.flaggedForDemolition != true) structure.FlagForDemolition(); 
+                    else structure.CancelDemolition(); 
+                }
+                else if(entity is IDemolishable)
+                {
+                    var demolishable = (IDemolishable)entity;
+                    demolishable.ToggleDemolition();
                 }
             }
 

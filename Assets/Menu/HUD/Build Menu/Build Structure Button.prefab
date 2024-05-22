@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2.1316986}
-  m_SizeDelta: {x: 0, y: 19.876503}
+  m_AnchoredPosition: {x: 0, y: 2.57}
+  m_SizeDelta: {x: 0, y: 17.4488}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1639526915722467886
 CanvasRenderer:
@@ -65,11 +65,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hello this is my name
+  m_text: 'Name Text
+
+    awdawdawdwda'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c1cc56b10ec9239468e23d1eae4f6d35, type: 2}
-  m_sharedMaterial: {fileID: 7329216822478321281, guid: c1cc56b10ec9239468e23d1eae4f6d35,
-    type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: dbc54ca5c45c3e54293bb86937054239, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -93,12 +94,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5.7
+  m_fontSize: 7
   m_fontSizeBase: 12
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 2
-  m_fontSizeMax: 12
+  m_fontSizeMin: 7
+  m_fontSizeMax: 10
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -109,7 +110,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -175,7 +176,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 82, y: 82}
+  m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &561639021829505833
 CanvasRenderer:

@@ -3,7 +3,8 @@ using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 using RoverTasks;
-using ExtensionMethods; 
+using ExtensionMethods;
+using MoonFactory.Interfaces;
 
 namespace RoverJobs
 {
@@ -388,25 +389,27 @@ namespace RoverJobs
         }
     }
 
-    public class DemolishStructure : Job
+    public class Demolish : Job
     {
-        Structure structure;
+        Entity entity;
+        IDemolishable demolishable;
 
-        public DemolishStructure(Structure structure)
+        public Demolish(Entity entity)
         {
-            this.structure = structure;
+            this.entity = entity;
+            this.demolishable = (IDemolishable)entity;
         }
 
         public override void OnStart()
         {
-            StackJob(new TurnTowards(structure.position));
+            StackJob(new TurnTowards(entity.position));
         }
 
         public override void OnTick()
         {
-            if (lifeSpan > structure.StructureData.timeToBuild && isComplete == false)
+            if (lifeSpan > demolishable.DemolishTime && isComplete == false)
             {
-                structure.Demolish();
+                demolishable.Demolish();
 
                 isComplete = true;
 

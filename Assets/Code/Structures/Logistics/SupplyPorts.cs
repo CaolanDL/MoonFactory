@@ -190,7 +190,7 @@ public class RequestPort : Port
         if (TargetResource == null) return;
         if (ManagedTask.taskExists) return;
 
-        Debug.Log("Created Request Task");
+        //Debug.Log("Created Request Task");
 
         ManagedTask.TryCreateTask(new SoftRequestResourceTask(TargetResource, TargetQuantity, parent.position));
     }

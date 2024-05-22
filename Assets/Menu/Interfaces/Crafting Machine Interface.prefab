@@ -1891,7 +1891,7 @@ MonoBehaviour:
   m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 60, y: 6}
+  m_CellSize: {x: 60, y: 60}
   m_Spacing: {x: 6, y: 6}
   m_Constraint: 0
   m_ConstraintCount: 3
@@ -3582,12 +3582,12 @@ PrefabInstance:
     - target: {fileID: 4679353464601286051, guid: 45bda334fff54ec4bbb73ce5b6220b73,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -14
       objectReference: {fileID: 0}
     - target: {fileID: 4679353464601286051, guid: 45bda334fff54ec4bbb73ce5b6220b73,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5635857371545789570, guid: 45bda334fff54ec4bbb73ce5b6220b73,
         type: 3}
@@ -3694,6 +3694,11 @@ PrefabInstance:
       propertyPath: gridLayout
       value: 
       objectReference: {fileID: 5419699321795172528}
+    - target: {fileID: 8462354195380021155, guid: 45bda334fff54ec4bbb73ce5b6220b73,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8503371012895791468, guid: 45bda334fff54ec4bbb73ce5b6220b73,
         type: 3}
       propertyPath: m_fontSize

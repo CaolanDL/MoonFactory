@@ -315,7 +315,7 @@ namespace RoverJobs
         static void SearchPortsAndFillManifest(List<SupplyPort> supplyPortsToSearch, CollectionManifest manifestToFill, ResourceQuantity resourceQuantity)
         {
             int remaining = resourceQuantity.quantity;
-            Debug.Log($"Looking for {remaining} {resourceQuantity.resource}s");
+            //Debug.Log($"Looking for {remaining} {resourceQuantity.resource}s");
             foreach (SupplyPort supplyPort in supplyPortsToSearch)
             {
                 int quantityAvailable = supplyPort.GetUnreservedQuantity(resourceQuantity.resource);
@@ -328,7 +328,7 @@ namespace RoverJobs
                 remaining -= quantityTakeable;
                 if (remaining <= 0) { break; }
             }
-            Debug.Log($"Found {resourceQuantity.quantity - remaining}");
+            //Debug.Log($"Found {resourceQuantity.quantity - remaining}");
         } 
 
         static List<SupplyPort> FindAllPortsContaining(IEnumerable<ResourceQuantity> resourcesToFind)

@@ -15,7 +15,7 @@ MonoBehaviour:
   screenname: Electrostatic Seperator
   description: '[Description]'
   category: 2
-  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
+  sprite: {fileID: 21300000, guid: 09e9300abeb99b34faa6d993833a4e91, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: c406c7feaa172ea4aa6bb764e7fb7d21,
     type: 3}
   size:
@@ -41,7 +41,7 @@ MonoBehaviour:
       y: 2
     _rotation: 0
   ports: []
-  ghostMesh: {fileID: -5567327975415270192, guid: dadc2167d9a022545b15be5144f32f8d,
+  ghostMesh: {fileID: -2273317604866170001, guid: b993dfe398a42a3468e7b65319e0cbf6,
     type: 3}
   ghostModels: []
   unlocked: 1

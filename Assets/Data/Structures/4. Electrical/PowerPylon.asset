@@ -15,7 +15,7 @@ MonoBehaviour:
   screenname: Power Pylon
   description: Automatically connects to structures, adding them a power network.
   category: 1
-  sprite: {fileID: 21300000, guid: 11a34082e7ee84043a2428494f4fbfd1, type: 3}
+  sprite: {fileID: 21300000, guid: 84aad04c88bb90b4090ef3f8710815d9, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: f997452cbb92f7846b1cea244fac2ca7,
     type: 3}
   size:
@@ -29,7 +29,7 @@ MonoBehaviour:
   inputs: []
   outputs: []
   ports: []
-  ghostMesh: {fileID: 6291026919435153079, guid: 8774bc98b2201ad459f3507db22436ea,
+  ghostMesh: {fileID: 4943137659923926857, guid: 8774bc98b2201ad459f3507db22436ea,
     type: 3}
   ghostModels: []
   unlocked: 1

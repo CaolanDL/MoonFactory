@@ -36,7 +36,7 @@ public class CraftingMachineInterface : StaticInterface
 
         if (machine.isCrafting)
         {
-            CraftingCog.transform.Rotate(0, 0, 12);
+            CraftingCog.transform.Rotate(0, 0, 100 * Time.deltaTime);
         }
     }
 

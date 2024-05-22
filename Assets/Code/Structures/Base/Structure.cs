@@ -1,5 +1,6 @@
 using ExtensionMethods;
 using Logistics;
+using MoonFactory.Interfaces;
 using RoverTasks;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Reflection;
 using Unity.Mathematics; 
 using UnityEngine;
 
-public abstract class Structure : Entity
+public abstract class Structure : Entity, IDemolishable
 {
     public static Action<Structure> StructureConstructed;
     public event Action OnDemolishedEvent;
@@ -38,6 +39,8 @@ public abstract class Structure : Entity
             _electricalNode.Parent = this;
         }
     }
+
+    
 
     bool isInterfaceOpen = false;
     static StaticInterface activeInterface;
@@ -341,11 +344,25 @@ public abstract class Structure : Entity
     public virtual void OnFrameUpdate() { }
 
     public virtual void OnClicked(Vector3 mousePosition) { }
+     
 
+    public int DemolishTime => StructureData.timeToBuild;
+
+    public void ToggleDemolition()
+    {
+        if (flaggedForDemolition)
+        {
+            CancelDemolition();
+        }
+        else
+        {
+            FlagForDemolition();
+        }
+    }
 
     public void FlagForDemolition()
     {
-        var demolishTask = new RoverTasks.DemolishStructureTask(this);
+        var demolishTask = new RoverTasks.DemolishTask(this);
 
         flaggedForDemolition = true;
 
@@ -357,8 +374,7 @@ public abstract class Structure : Entity
         demolishTask.CancelTask();
 
         flaggedForDemolition = false;
-    }
-
+    } 
 
     public void OpenInterfaceOnHUD(GameObject interfacePrefab, Vector3 mousePosition)
     {
@@ -384,7 +400,7 @@ public abstract class Structure : Entity
     public void OnInterfaceClosed()
     {
         isInterfaceOpen = false;
-    }
+    } 
 }
 
 // Reference: http://www.jkfill.com/2010/12/29/self-registering-factories-in-c-sharp/
