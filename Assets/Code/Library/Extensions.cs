@@ -58,6 +58,9 @@ namespace ExtensionMethods
         {
             return Mathf.Abs(origin.x - target.x) * Mathf.Abs(origin.y - target.y);
         }
+        /// <summary>
+        /// returns the longest side of the square region between two points
+        /// </summary> 
         public static int LongestSideDistance(this int2 origin, int2 target)
         {
             var x = origin.x - target.x;

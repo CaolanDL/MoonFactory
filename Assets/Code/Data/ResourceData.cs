@@ -33,40 +33,9 @@ public class ResourceData : ScriptableObject
     [Tooltip("Duration in Ticks (s*50)")] public short timeToCraft = 1;
     [Tooltip("Duration in Ticks (s*50)")] public short quantityCrafted = 1;
     [SerializeField] public List<ResourceQuantity> requiredResources;
-
-
-    //Runtime Data
-    [NonSerialized] public bool unlocked = false;
-
+        
     public void Unlock()
-    {
-        unlocked = true;
-        if (!GameManager.Instance.ScienceManager.unlocked_Resources.Contains(this))
-        { 
-            GameManager.Instance.ScienceManager.unlocked_Resources.Add(this);
-        }
+    { 
+        GameManager.Instance?.ScienceManager?.TryUnlockResource(this);
     }
-}
-
-[Serializable]
-public struct ResourceQuantity
-{
-    [SerializeField] public ResourceData resource;
-    [SerializeField] public int quantity;
-
-    public ResourceQuantity(ResourceData resource, int quantity)
-    {
-        this.resource = resource;
-        this.quantity = quantity;
-    }
-
-    public static bool operator ==(ResourceQuantity a, ResourceQuantity b)
-    {
-        return a.resource == b.resource && a.quantity == b.quantity;
-    }
-    public static bool operator !=(ResourceQuantity a, ResourceQuantity b)
-    {
-        return !(a.resource == b.resource && a.quantity == b.quantity);
-    }
-}
-
+} 

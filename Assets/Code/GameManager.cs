@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     public RoverManager RoverManager;
     public TaskManager TaskManager;
     public Electrical.SystemManager ElectricalSystemManager;
-    public AssetWarmer AssetWarmer;
+    public AssetWarmer AssetWarmer; 
 
     // Menu Instances
     public HUDManager HUDManager;
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
 
     //Runtime References
     public Lander Lander;
+    public AudioSource AudioSource;
 
     // Monobehavior Components
     public FloorTileRenderer FloorTileRenderer;
@@ -51,6 +52,8 @@ public class GameManager : MonoBehaviour
 
     public CameraController CameraController;
     public PlayerInputManager PlayerInputManager;
+
+    public AudioManager AudioManager;
 
     // Main Menu
     public GameObject MainMenuCameraPrefab;
@@ -87,6 +90,8 @@ public class GameManager : MonoBehaviour
         BatchRenderer = GetComponent<BatchRenderer>();
         BatchRenderer.Init();
 
+        AudioManager = GetComponent<AudioManager>();
+
         AssetWarmer = new();
         AssetWarmer.Warmup();
         AssetWarmer = null;
@@ -118,7 +123,8 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if(GameWorld == null) { return; }
-        //Read Player inputs
+        
+        GameWorld.OnUpdate();
          
         // Draw Ghosts
         ConstructionManager.DrawGhosts();
@@ -161,7 +167,7 @@ public class GameManager : MonoBehaviour
 
         // Initialise Game Managers Components
         ScienceManager = new();
-        ScienceManager.SetupNewGame();
+        ScienceManager.SetupNewGame(); 
 
         ConstructionManager = new(); 
         TaskManager = new();

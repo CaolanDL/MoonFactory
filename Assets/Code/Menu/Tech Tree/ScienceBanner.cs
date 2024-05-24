@@ -9,8 +9,29 @@ public class ScienceBanner : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Instance.ScienceManager.PointsChanged += SetPoints;
-        GameManager.Instance.ScienceManager.ResearchCompleted += PlayAnimation;
+        SubscribeToEvents();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeFromEvents();
+    }
+
+    private void OnDestroy()
+    {
+        UnsubscribeFromEvents();
+    }
+
+    void SubscribeToEvents()
+    {
+        ScienceManager.SciencePointsChanged += SetPoints;
+        ScienceManager.ResearchCompleted += PlayAnimation;
+    }
+
+    void UnsubscribeFromEvents()
+    {
+        ScienceManager.SciencePointsChanged -= SetPoints;
+        ScienceManager.ResearchCompleted -= PlayAnimation;
     }
 
     void SetPoints(int points)
@@ -18,10 +39,9 @@ public class ScienceBanner : MonoBehaviour
         PointsText.text = points.ToString();
     }
 
-    void PlayAnimation()
+    void PlayAnimation(ResourceData r, int p)
     {
         var pulse = PointsText.gameObject.AddComponent<GraphicsPulseOnce>();
-        pulse.Set(1.2f, 12f);
-
+        pulse.Set(1.2f, 12f); 
     }
 }

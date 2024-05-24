@@ -5,13 +5,15 @@ using UnityEngine;
 
 public class ScienceManager
 {
-    [NonSerialized] public List<StructureData> unlocked_Structures = new(); 
-    [NonSerialized] public List<ResourceData> unlocked_Resources = new();
+    [NonSerialized] public List<StructureData> unlocked_structures = new(); 
+    [NonSerialized] public List<ResourceData> unlocked_resources = new();
 
     public int SciencePoints = 0;
 
-    public Action<int> PointsChanged;
-    public Action ResearchCompleted;
+    public static Action<int> SciencePointsChanged;
+    public static Action<ResourceData, int> ResearchCompleted;
+    public static Action<ResourceData> OnResourceUnlocked;
+    public static Action<StructureData> OnStructureUnlocked;
 
     public enum Researcher
     {
@@ -46,17 +48,9 @@ public class ScienceManager
     public void SetupNewGame()
     {
         var structures = GlobalData.Instance.Structures;
-
-        foreach (var str in structures)
-        {
-            str.unlocked = false;  
-        }
-        foreach(var r in GlobalData.Instance.Resources)
-        {
-            r.unlocked = false;
-        }
-        GameManager.Instance.ScienceManager.unlocked_Structures.Clear();
-        GameManager.Instance.ScienceManager.unlocked_Resources.Clear();
+ 
+        GameManager.Instance.ScienceManager.unlocked_structures.Clear();
+        GameManager.Instance.ScienceManager.unlocked_resources.Clear();
 
         foreach (var str in GlobalData.Instance.UnlockedOnStart)
         {
@@ -72,10 +66,11 @@ public class ScienceManager
     public void ResearchComplete(ResourceData resource, Researcher researcher)
     {
         ResearchRegistries[researcher][resource] = true;
-        SciencePoints += resource.ResearchValue * ResearchMultipliers[researcher]; 
+        var pointsToAdd = resource.ResearchValue * ResearchMultipliers[researcher];
+        SciencePoints += pointsToAdd; 
 
-        PointsChanged?.Invoke(SciencePoints);
-        ResearchCompleted?.Invoke();
+        SciencePointsChanged?.Invoke(SciencePoints);
+        ResearchCompleted?.Invoke(resource, pointsToAdd);
 
         if (TutorialProxy.IsActive)
         {
@@ -86,6 +81,20 @@ public class ScienceManager
     public void RemovePoints(int points)
     {
         SciencePoints -= points;
-        PointsChanged?.Invoke(SciencePoints);
+        SciencePointsChanged?.Invoke(SciencePoints);
+    }
+
+    public void TryUnlockStructure(StructureData structure)
+    {
+        if (unlocked_structures.Contains(structure)) return; 
+        unlocked_structures.Add(structure);
+        OnStructureUnlocked?.Invoke(structure);
+    }
+
+    public void TryUnlockResource(ResourceData resource)
+    {
+        if (unlocked_resources.Contains(resource)) return;
+        unlocked_resources.Add(resource);
+        OnResourceUnlocked?.Invoke(resource);
     }
 }

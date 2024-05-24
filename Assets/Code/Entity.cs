@@ -107,12 +107,12 @@ public class Entity // 12 bytes
         return list;
     }
 
-    public void RenderSelectionOutline()
+    public virtual void RenderSelectionOutline()
     {
         RenderSelectionOutline(RenderData.Instance.SelectionGizmoMaterial);
     }
 
-    public void RenderSelectionOutline(Material material)
+    public virtual void RenderSelectionOutline(Material material)
     {
         if (!highlightable) return;
         float2 floatCentre = new((float)size.x / 2f -0.5f, size.y / 2f - 0.5f);

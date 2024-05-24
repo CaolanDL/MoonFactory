@@ -401,16 +401,13 @@ namespace Electrical
             List<Node> nearbyComponents = FindNearbyNodesByType(typeof(Component), connectionRange);
             if (nearbyComponents == null || nearbyComponents.Count == 0) return;
 
-            List<Component> invalidComponents = new();
+            List<Component> validComponents = new();
 
             foreach (Component component in nearbyComponents) 
-                if(component.Connections.Count > 0) 
-                    invalidComponents.Add(component);
+                if(component.Connections.Count == 0)
+                    validComponents.Add(component); 
 
-            foreach (Component component in invalidComponents)
-                nearbyComponents.Remove(component);
-
-            foreach (Component component in nearbyComponents)
+            foreach (Component component in validComponents)
                 CreateConnectionTo(component);
         }
     }
@@ -452,7 +449,7 @@ namespace Electrical
             } 
             bestRelays.Sort(SortNodeByDistanceToSelf);
 
-            if (bestRelays.Count == 0) return; //? Unsure why this is needed? Bestrelays returns as empty when only one relay is nearby
+            if (bestRelays.Count == 0) return;
 
             if (bestRelays[0] == null) return;
 

@@ -5,7 +5,24 @@ using Unity.Mathematics;
 
 public class LanderSequence : MonoBehaviour
 {
+    [SerializeField] float initialDelay = 2.0f;
+    float delayTime = 1f;
+    bool hasStartedAnimation = false;
+
     [SerializeField] List<ParticleSystem> particles = new();
+
+    Animator Animator;
+
+    private void Awake()
+    {
+        Animator = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        if(delayTime > 0f) { delayTime -= Time.deltaTime / initialDelay; }
+        if(delayTime < 0f && !hasStartedAnimation) { Animator.Play("LandingSequence"); hasStartedAnimation = true; }
+    }
 
     public void Landed()
     {
@@ -25,5 +42,7 @@ public class LanderSequence : MonoBehaviour
         Destroy(gameObject);
 
         TutorialProxy.Action?.Invoke(TutorialEvent.BeginTutorial);
+
+        GameManager.Instance.AudioManager.StartMusic();
     }
 }

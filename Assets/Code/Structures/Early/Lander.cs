@@ -8,6 +8,8 @@ public class Lander : Structure
     public Electrical.Relay ElectricalRelay; 
     public Inventory inventory = new Inventory();
 
+    override public bool PlayConstructedAnimation { get => false; }
+
     public override bool CanDemolish()
     {
         return false;
@@ -44,8 +46,7 @@ public class Lander : Structure
     }
 
     public override void OnConstructed()
-    {
-        base.OnConstructed();
+    { 
         ElectricalRelay.Constructed();
     }
 

@@ -296,7 +296,7 @@ public class Rover : Entity
         }
     }
 
-    public void RenderRoverSelectionOutline()
+    public override void RenderSelectionOutline(Material material)
     { 
         float sineTime = (Mathf.Sin(Time.time * 2f) + 1) / 2; // Sine 0 - 1 
         var p = new Vector3(VisualPosition.x, 0, VisualPosition.y) + (Vector3.up * (sineTime / 8 + 0.01f));
@@ -304,27 +304,5 @@ public class Rover : Entity
         var s = Vector3.one;
         var matrix = Matrix4x4.TRS(p, r, s);
         Graphics.DrawMesh(RenderData.Instance.SelectionGizmo, matrix, RenderData.Instance.SelectionGizmoMaterial, 0);
-    }
-}
-
-public class Widget : Rover
-{
-    static float _MoveSpeed = 1.2f;
-    public override float MoveSpeed => _MoveSpeed;
-
-    static float _TurnSpeed = 2.8f;
-    public override float TurnSpeed => _TurnSpeed;
-
-
-    public Widget()
-    {
-        Module = RoverModule.Widget; 
-    }
-
-    public override void OnTick()
-    {
-        base.OnTick();
-
-        powerLevel = Mathf.Clamp01(powerLevel + 0.001f);
     }
 }

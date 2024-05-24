@@ -1,32 +1,33 @@
-﻿using MoonFactory.Interfaces;
-using RoverTasks;
-using System.Collections;
+﻿using ExtensionMethods;
+using MoonFactory.Interfaces;
+using RoverTasks; 
 using UnityEngine;
 
 namespace Meteorites
 {
     public class Meteorite : Entity, IDemolishable
-    {
+    { 
         public ModelData modelData; 
         public float scale;
 
         public Meteorite(ModelData modelData, float scale) : base()
         {
             this.modelData = modelData;
-            this.scale = scale;
+            this.scale = scale; 
         }
 
         public ManagedTask demolishTask = new();
         public bool flaggedForDemolition;
         GameObject demolishIcon;
 
-        public int DemolishTime => 50*5;
+        public int DemolishTime => 50*5;  
 
         public void Demolish()
         {
             GameObject.Destroy(demolishIcon); demolishIcon = null; 
             RemoveEntity();
             //Spawn Demolish Particles 
+            GameManager.Instance.GameWorld.meteorites.Remove(this);
         }
 
         public void ToggleDemolition()
@@ -47,5 +48,22 @@ namespace Meteorites
             demolishTask.CancelTask(); 
             flaggedForDemolition = false;
         } 
+
+        public void TryUpdate()
+        {
+            if (flaggedForDemolition && demolishIcon == null)
+            {
+                demolishIcon = GameObject.Instantiate(MenuData.Instance.DemolishSprite, GameManager.Instance.HUDManager.WorldIconContainer);
+            }
+            if (demolishIcon != null)
+            {
+                demolishIcon.transform.position = position.ToVector3().ToScreenPosition();
+                demolishIcon.transform.localScale = Vector3.one / GameManager.Instance.CameraController.zoom;
+                if (!flaggedForDemolition)
+                {
+                    GameObject.Destroy(demolishIcon);
+                }
+            }
+        }
     }
 }

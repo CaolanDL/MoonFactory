@@ -409,6 +409,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OptionsMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""683b0764-b560-4f87-a707-911d6ccb5395"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -466,6 +475,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Demolish"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e95a89b-2321-4ba9-bde3-021fe74427e6"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OptionsMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -510,6 +530,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_HUDControls_BuildMenu = m_HUDControls.FindAction("Build Menu", throwIfNotFound: true);
         m_HUDControls_ScienceMenu = m_HUDControls.FindAction("Science Menu", throwIfNotFound: true);
         m_HUDControls_Demolish = m_HUDControls.FindAction("Demolish", throwIfNotFound: true);
+        m_HUDControls_OptionsMenu = m_HUDControls.FindAction("OptionsMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -768,6 +789,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_HUDControls_BuildMenu;
     private readonly InputAction m_HUDControls_ScienceMenu;
     private readonly InputAction m_HUDControls_Demolish;
+    private readonly InputAction m_HUDControls_OptionsMenu;
     public struct HUDControlsActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -775,6 +797,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @BuildMenu => m_Wrapper.m_HUDControls_BuildMenu;
         public InputAction @ScienceMenu => m_Wrapper.m_HUDControls_ScienceMenu;
         public InputAction @Demolish => m_Wrapper.m_HUDControls_Demolish;
+        public InputAction @OptionsMenu => m_Wrapper.m_HUDControls_OptionsMenu;
         public InputActionMap Get() { return m_Wrapper.m_HUDControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -793,6 +816,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Demolish.started += instance.OnDemolish;
             @Demolish.performed += instance.OnDemolish;
             @Demolish.canceled += instance.OnDemolish;
+            @OptionsMenu.started += instance.OnOptionsMenu;
+            @OptionsMenu.performed += instance.OnOptionsMenu;
+            @OptionsMenu.canceled += instance.OnOptionsMenu;
         }
 
         private void UnregisterCallbacks(IHUDControlsActions instance)
@@ -806,6 +832,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Demolish.started -= instance.OnDemolish;
             @Demolish.performed -= instance.OnDemolish;
             @Demolish.canceled -= instance.OnDemolish;
+            @OptionsMenu.started -= instance.OnOptionsMenu;
+            @OptionsMenu.performed -= instance.OnOptionsMenu;
+            @OptionsMenu.canceled -= instance.OnOptionsMenu;
         }
 
         public void RemoveCallbacks(IHUDControlsActions instance)
@@ -856,5 +885,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnBuildMenu(InputAction.CallbackContext context);
         void OnScienceMenu(InputAction.CallbackContext context);
         void OnDemolish(InputAction.CallbackContext context);
+        void OnOptionsMenu(InputAction.CallbackContext context);
     }
 }

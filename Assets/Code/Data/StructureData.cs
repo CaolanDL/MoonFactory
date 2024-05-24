@@ -58,26 +58,11 @@ public class StructureData : ScriptableObject
     {
         public Mesh mesh;
         public Material material;
-    }
-
-    // Runtime Data //
-    public bool unlocked = false;
+    } 
 
     public void Unlock()
     {
-        if(unlocked) return;
-
-        unlocked = true;
-        if(GameManager.Instance.ScienceManager.unlocked_Structures.Contains(this) == false)
-        {
-            GameManager.Instance.ScienceManager.unlocked_Structures.Add(this);
-        } 
-
-        foreach(ResourceData resource in CraftableResources)
-        {
-            if(resource.unlocked == false)
-                resource.Unlock();
-        }
+        GameManager.Instance?.ScienceManager?.TryUnlockStructure(this);
     }
 }
 

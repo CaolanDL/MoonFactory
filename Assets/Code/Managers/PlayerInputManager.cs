@@ -70,9 +70,8 @@ public class PlayerInputManager : MonoBehaviour
 
         if (GameManager.Instance.GameWorld == null) return;
 
-        HandleCameraMove();
-
-        HandleHUDInpts();
+        HandleCameraMove(); 
+        HandleHUDInputs();
 
         if (!isMouseOverUI)
         {
@@ -115,9 +114,14 @@ public class PlayerInputManager : MonoBehaviour
         cameraController.InputZoom();
     }
 
-    public void HandleHUDInpts()
+    public void HandleHUDInputs()
     {
         var HUDManager = GameManager.Instance.HUDManager;
+
+        if (inputActions.HUDControls.OptionsMenu.WasPressedThisFrame())
+        {
+            HUDManager.ToggleOptionsMenu();
+        }
 
         if (inputActions.HUDControls.BuildMenu.WasPressedThisFrame())
         {
@@ -168,7 +172,7 @@ public class PlayerInputManager : MonoBehaviour
             Entity entity = hit.transform.gameObject.GetComponent<DisplayObject>().parentEntity;  
             var rover = ((Rover)entity);
 
-            rover.RenderRoverSelectionOutline();
+            rover.RenderSelectionOutline();
 
             if (inputActions.DefaultControls.Select.WasPressedThisFrame())
             {  

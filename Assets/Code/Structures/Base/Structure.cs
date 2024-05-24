@@ -33,19 +33,18 @@ public abstract class Structure : Entity, IDemolishable
     {
         get => _electricalNode;
         set
-        {   // Bind a new Electrical Node and initialise it;
-            //? Might be code smell; Maybe Dangerous; Should work but consider migration to Init method or node constructor, passing structure.
+        { 
             _electricalNode = value;
             _electricalNode.Parent = this;
         }
-    }
-
-    
+    } 
 
     bool isInterfaceOpen = false;
     static StaticInterface activeInterface;
 
     GameObject demolishIcon = null;
+
+    public virtual bool PlayConstructedAnimation { get => true; }
 
     public void Initialise()
     {
@@ -92,15 +91,21 @@ public abstract class Structure : Entity, IDemolishable
         AddPorts(); 
         if (_electricalNode != null) { _electricalNode.Constructed(); }
 
-        var effect = GameObject.Instantiate(RenderData.Instance.ConstructedEffect, DisplayObject.transform.position , Quaternion.identity, DisplayObject.transform);
-        effect.transform.localScale = Vector3.one * (size.x * size.y);
-        DisplayObject.gameObject.AddComponent<ShakeOnAwake>();
+        if (PlayConstructedAnimation)
+        {
+            var effect = GameObject.Instantiate(RenderData.Instance.ConstructedEffect, DisplayObject.transform.position, Quaternion.identity, DisplayObject.transform);
+            effect.transform.localScale = Vector3.one * (size.x * size.y);
+            DisplayObject.gameObject.AddComponent<ShakeOnAwake>();
+        } 
 
         OnConstructed();
         StructureConstructed?.Invoke(this);
     }
 
-    void FlattenTerrain()
+    public virtual void OnConstructed() { }
+
+    
+    void FlattenTerrain() // From Legacy Terrain System
     {
         var occupyingLocations = GetOccupyingLocations();
         var floorGrid = GameManager.Instance.GameWorld.floorGrid;
@@ -125,6 +130,36 @@ public abstract class Structure : Entity, IDemolishable
         return true;
     }
 
+    public int DemolishTime => StructureData.timeToBuild;
+
+    public void ToggleDemolition()
+    {
+        if (flaggedForDemolition)
+        {
+            CancelDemolition();
+        }
+        else
+        {
+            FlagForDemolition();
+        }
+    }
+
+    public void FlagForDemolition()
+    {
+        var demolishTask = new RoverTasks.DemolishTask(this);
+
+        flaggedForDemolition = true;
+
+        this.demolishTask.TryCreateTask(demolishTask);
+    }
+
+    public void CancelDemolition()
+    {
+        demolishTask.CancelTask();
+
+        flaggedForDemolition = false;
+    }
+
     public void Demolish()
     {
         GameObject.Destroy(demolishIcon); demolishIcon = null;
@@ -138,7 +173,9 @@ public abstract class Structure : Entity, IDemolishable
         if(GameManager.Instance.Lander != null) 
             foreach(var rq in StructureData.requiredResources) 
                 GameManager.Instance.Lander?.inventory.TryAddResource(rq); 
-    }
+    } 
+
+    public virtual void OnDemolished() { }
 
     public void Tick()
     {
@@ -335,46 +372,13 @@ public abstract class Structure : Entity, IDemolishable
         return false;
     } 
 
-    public virtual void OnConstructed() { }
 
-    public virtual void OnDemolished() { }
 
     public virtual void OnTick() { }
 
     public virtual void OnFrameUpdate() { }
 
-    public virtual void OnClicked(Vector3 mousePosition) { }
-     
-
-    public int DemolishTime => StructureData.timeToBuild;
-
-    public void ToggleDemolition()
-    {
-        if (flaggedForDemolition)
-        {
-            CancelDemolition();
-        }
-        else
-        {
-            FlagForDemolition();
-        }
-    }
-
-    public void FlagForDemolition()
-    {
-        var demolishTask = new RoverTasks.DemolishTask(this);
-
-        flaggedForDemolition = true;
-
-        this.demolishTask.TryCreateTask(demolishTask);
-    }
-
-    public void CancelDemolition()
-    {
-        demolishTask.CancelTask();
-
-        flaggedForDemolition = false;
-    } 
+    public virtual void OnClicked(Vector3 mousePosition) { } 
 
     public void OpenInterfaceOnHUD(GameObject interfacePrefab, Vector3 mousePosition)
     {

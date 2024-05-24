@@ -19,8 +19,9 @@ public class StaticDrill : Structure
         base.OnInitialise();
 
         outputResource = StructureData.CraftableResources[0];
+        outputResource.Unlock();
 
-        inventory.maxItems = 10;
+        inventory.maxItems = 32;
 
         SupplyPort = new SupplyPort(this);
         SupplyPort.AddInventory(inventory);

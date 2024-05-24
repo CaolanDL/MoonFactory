@@ -240,8 +240,8 @@ public class Inventory // 56 bytes
         return stacks.Find(i => i.resource == resource);
     } 
 
-    public void ClearInventory(ResourceData resource, int quantity)
+/*    public void ClearInventory(ResourceData resource, int quantity)
     {
 
-    }
+    }*/
 }

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
+    [SerializeField] public GameObject OptionsMenu;
+
     [SerializeField] public GameObject ConstructionMenu;
     [SerializeField] public GameObject TechTree;
     [SerializeField] public GameObject MapMenu;
@@ -38,8 +40,12 @@ public class HUDManager : MonoBehaviour
         Destroy(openInterface.gameObject);
         openInterface = null;
     }
+     
 
-    // Menu Buttons //
+    public void ToggleOptionsMenu()
+    {
+        OptionsMenu.SetActive(!OptionsMenu.activeSelf);
+    }
 
     public void ToggleBuildMenu()
     {
@@ -63,6 +69,7 @@ public class HUDManager : MonoBehaviour
 
     public void MapButtonPressed() { ToggleMenu(MapMenu); }
 
+
     public void ToggleMenu(GameObject menu)
     {
         if (menu == null) { return; }
@@ -75,6 +82,7 @@ public class HUDManager : MonoBehaviour
 
         if (multipop != null) { multipop.Toggle(); }
     }
+
 
 
     // Construction Tools //

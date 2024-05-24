@@ -44,7 +44,7 @@ public class ResearchDropdownManager : MonoBehaviour
 
         foreach (var entry in GameManager.Instance.ScienceManager.ResearchRegistries[researcher])
         {
-            if (GameManager.Instance.ScienceManager.unlocked_Resources.Contains(entry.Key) && entry.Value == false) { resourceDatas.Add(entry.Key); }
+            if (GameManager.Instance.ScienceManager.unlocked_resources.Contains(entry.Key) && entry.Value == false) { resourceDatas.Add(entry.Key); }
         }
 
         dropdownHandler.Populate(resourceDatas);

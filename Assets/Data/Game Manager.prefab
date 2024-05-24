@@ -59,13 +59,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 506395907949957631}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.56098557, y: -0.09229599, z: 0.43045935, w: 0.7010574}
+  m_LocalRotation: {x: 0.2876063, y: -0.4156269, z: 0.64597416, w: 0.5720614}
   m_LocalPosition: {x: 0, y: 0.915, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5139489496549050372}
-  m_LocalEulerAnglesHint: {x: 60, y: 45, z: 90}
+  m_LocalEulerAnglesHint: {x: 60, y: -12, z: 90}
 --- !u!108 &6359796303691609492
 Light:
   m_ObjectHideFlags: 0
@@ -87,7 +87,7 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
+    m_Strength: 0.95
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
@@ -596,6 +596,7 @@ GameObject:
   - component: {fileID: 7462157466248319354}
   - component: {fileID: 7753882727360442230}
   - component: {fileID: 8718522128751908372}
+  - component: {fileID: 6156054648721789221}
   - component: {fileID: 3243265478779609162}
   m_Layer: 0
   m_Name: Game Manager
@@ -643,6 +644,7 @@ MonoBehaviour:
   HUDManager: {fileID: 0}
   TutorialSequencer: {fileID: 0}
   GameLighting: {fileID: 100614221958351491}
+  AudioSource: {fileID: 0}
   FloorTileRenderer: {fileID: 8208045981605999340}
   ItemRenderer: {fileID: 8754063972972500991}
   BatchRenderer: {fileID: 7462157466248319354}
@@ -742,6 +744,19 @@ MonoBehaviour:
     y: 0
   isMouseOverUI: 1
   cameraController: {fileID: 7753882727360442230}
+--- !u!114 &6156054648721789221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5097026221170367744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08e86ca5532bec4191f0291d7aa445e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MusicTracks: []
 --- !u!82 &3243265478779609162
 AudioSource:
   m_ObjectHideFlags: 0
@@ -752,11 +767,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
+  m_audioClip: {fileID: 8300000, guid: 904fa6a56da751f4b9908cab4047fb86, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

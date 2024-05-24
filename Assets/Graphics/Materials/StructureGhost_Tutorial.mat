@@ -40,7 +40,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _FloodOpacity: 1
-    - _Opacity: 1
+    - _Opacity: 0.5
     - _Overlay_Opacity: 0.348
     - _Overlay_Toggle: 1
     - _QueueControl: 0

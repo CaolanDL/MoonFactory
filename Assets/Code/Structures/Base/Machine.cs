@@ -392,6 +392,8 @@ public class Machine : Structure
     {
         OutputInventories[0].TryAddResource(craftingResource, craftingResource.quantityCrafted);
 
+        craftingResource.Unlock();
+
         isCrafting = false;
 
         OnCraft();

@@ -11,11 +11,12 @@ using Random = UnityEngine.Random;
 
 public class GameWorld
 {
-    public Grid floorGrid = new Grid();
-
+    public Grid floorGrid = new Grid(); 
     public Grid worldGrid = new Grid();
 
     public TerrainGenerator TerrainGenerator;
+
+    public List<Meteorite> meteorites = new();
 
     public static Action WorldInstanciated;
 
@@ -23,6 +24,14 @@ public class GameWorld
     {
         TerrainGenerator = new TerrainGenerator(seed);
         WorldInstanciated?.Invoke();
+    }
+
+    public void OnUpdate()
+    {
+        foreach(var m in meteorites)
+        {
+            m.TryUpdate();
+        }
     }
 
     public void OnFixedUpdate()
@@ -109,6 +118,7 @@ public class GameWorld
             var meteorite = new Meteorite(randomModel, Random.Range(terrainData.minMeteoriteScale, terrainData.maxMeteoriteScale));
             meteorite.position = position;
             worldGrid.TryAddEntity(meteorite, position, (sbyte)Random.Range(0,3));
+            meteorites.Add(meteorite);
         }
     }
 

@@ -88,7 +88,30 @@ public struct SmallTransform
     {
         return new int2(Mathf.RoundToInt(i.position.x), Mathf.RoundToInt(i.position.y));
     }
+} 
+
+[Serializable]
+public struct ResourceQuantity
+{
+    [SerializeField] public ResourceData resource;
+    [SerializeField] public int quantity;
+
+    public ResourceQuantity(ResourceData resource, int quantity)
+    {
+        this.resource = resource;
+        this.quantity = quantity;
+    }
+
+    public static bool operator ==(ResourceQuantity a, ResourceQuantity b)
+    {
+        return a.resource == b.resource && a.quantity == b.quantity;
+    }
+    public static bool operator !=(ResourceQuantity a, ResourceQuantity b)
+    {
+        return !(a.resource == b.resource && a.quantity == b.quantity);
+    }
 }
+
 
 namespace DataStructs
 {

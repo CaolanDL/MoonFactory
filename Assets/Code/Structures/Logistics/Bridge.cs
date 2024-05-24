@@ -28,6 +28,13 @@ public class Bridge : Structure
         ElevatorHeight = ElevatorMaxHeight;
     }
 
+    public override void OnDemolished()
+    {
+        base.OnDemolished();
+
+        Link.Destroy();
+    }
+
     void SearchForLinkage()
     {
         var worldGrid = GameManager.Instance.GameWorld.worldGrid;
@@ -265,6 +272,16 @@ public class Bridge : Structure
                 return true;
             }
             return false;
+        }
+
+        public void Destroy()
+        {
+            Pool.Remove(this);
+
+            foreach (var platform in platforms)
+            {
+                GameManager.Instance.Lander.inventory.TryAddResource(new(platform.resource, 1));
+            }
         }
     }
 
