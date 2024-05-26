@@ -147,7 +147,8 @@ namespace Electrical
         public void Demolished()
         {
             CanConnect = false;
-            DestroyAllConnections(); 
+            DestroyAllConnections();
+            SystemManager.nodes.Remove(this);
             Parent.OnDemolishedEvent -= Demolished;
             OnDemolished();
         }
@@ -325,7 +326,8 @@ namespace Electrical
 
             var difference = aConnectionPoint - bConnectionPoint;
 
-            rotation = Quaternion.LookRotation(difference, Vector3.up);
+            if (difference.Equals(Vector3.zero)) rotation = quaternion.identity;
+            else rotation = Quaternion.LookRotation(difference, Vector3.up);
 
             scale = new Vector3(1, 1, 1 * difference.magnitude);
         }
@@ -355,8 +357,9 @@ namespace Electrical
 
     public class Relay : Node
     {
-        public static int connectionRange = 4;
-        public static int MaxRelayConnections = 4;
+        public static int defaultConnectionRange = 4;
+        public int connectionRange = 4;
+        public int MaxRelayConnections = 4;
 
         public override void OnConstructed()
         {

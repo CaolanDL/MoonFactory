@@ -38,7 +38,7 @@ namespace Logistics
 
             pool.Add(this);
 
-            AddPorts();
+            //AddPorts();
         }
 
         public override void OnConstructed()

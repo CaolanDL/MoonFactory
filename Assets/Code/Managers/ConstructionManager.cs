@@ -80,11 +80,7 @@ public class ConstructionManager
         var yRange = new int2(position.y, position.y + rSize.y);
 
         return (xRange, yRange);
-    }
-
-    /*    int2 GetOriginOffset(int2 origin, Vector2 centre, sbyte rotation)
-        { 
-        }*/
+    } 
 
     /// <summary>
     /// Force a structure to spawn at a location. Development use only.
@@ -173,8 +169,8 @@ public class ConstructionManager
 
         if(GhostStructureData.name == "PowerPylon")
         {
-            for (int x = -Electrical.Relay.connectionRange; x <= Electrical.Relay.connectionRange; x++)
-                for (int y = -Electrical.Relay.connectionRange; y <= Electrical.Relay.connectionRange; y++)
+            for (int x = -Electrical.Relay.defaultConnectionRange; x <= Electrical.Relay.defaultConnectionRange; x++)
+                for (int y = -Electrical.Relay.defaultConnectionRange; y <= Electrical.Relay.defaultConnectionRange; y++)
                 {
                     var _pos = new Vector3(x + ghostGridPosition.x, 0.05f, y + ghostGridPosition.y);
                     Graphics.DrawMesh(RenderData.Instance.TilePowerGizmo, _pos, Quaternion.identity, RenderData.Instance.TilePowerGizmoMaterial, 0);

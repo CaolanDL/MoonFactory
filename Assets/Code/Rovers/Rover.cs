@@ -8,6 +8,7 @@ using RoverJobs;
 using RoverTasks;
 using Random = UnityEngine.Random;
 using ExtensionMethods;
+using UnityEngine.Rendering;
 
 public enum RoverModule
 {
@@ -295,6 +296,8 @@ public class Rover : Entity
                 break;
         }
     }
+
+    public void PlaySound(AudioClip audioClip, float volume) => DisplayObject.PlaySound(audioClip, volume); 
 
     public override void RenderSelectionOutline(Material material)
     { 

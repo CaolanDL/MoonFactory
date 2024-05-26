@@ -39,8 +39,7 @@ public class HUDManager : MonoBehaviour
     {
         Destroy(openInterface.gameObject);
         openInterface = null;
-    }
-     
+    } 
 
     public void ToggleOptionsMenu()
     {
@@ -90,13 +89,14 @@ public class HUDManager : MonoBehaviour
     public void BulldozeButtonPressed()
     {
         GameManager.Instance.PlayerInputManager.ChangeInputState(PlayerInputManager.InputState.Demolish);
+        AudioManager.Instance.PlaySound(AudioData.Instance.UI_BuildButton, 0.8f); 
     }
 
     public void ElectricalCoverageButtonPressed()
     {
-        ElectricalCoverageRenderer.enabled = !ElectricalCoverageRenderer.enabled;
-
+        ElectricalCoverageRenderer.enabled = !ElectricalCoverageRenderer.enabled; 
         TutorialProxy.Action?.Invoke(TutorialEvent.PowerOverlayPressed);
+        AudioManager.Instance.PlaySound(AudioData.Instance.UI_ElectricalOverlay, 0.8f);
     }
 
     public void HeatmapButtonPressed() { }

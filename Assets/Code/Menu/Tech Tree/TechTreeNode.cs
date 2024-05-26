@@ -61,12 +61,14 @@ public class TechTreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPressed()
     {
         if(isSubnode) { parentNode.OnPressed(); return; }
-        TryUnlock();
+        var success = TryUnlock();
+        if (success && !isSubnode) AudioManager.Instance.PlaySound(AudioData.Instance.UI_ScienceNodeUnlocked);
+        else;// Play failed to unlock sound 
     }
 
-    public void TryUnlock()
+    public bool TryUnlock()
     {  
-        if(state != State.Available) { return; }
+        if(state != State.Available) { return false; }
 
         var scienceManager = GameManager.Instance.ScienceManager;
 
@@ -87,8 +89,12 @@ public class TechTreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             if(TutorialProxy.IsActive && Tech.name == "Crusher")
             {
                 TutorialProxy.Action?.Invoke(TutorialEvent.HopperUnlocked);
-            }
+            } 
+
+            return true;    
         }
+
+        return false;
     } 
 
     public void ChangeState(State state)

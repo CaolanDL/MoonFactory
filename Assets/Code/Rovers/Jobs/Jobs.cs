@@ -192,9 +192,7 @@ namespace RoverJobs
         }
 
         public override void OnStart()
-        {
-            //if (path.length < 2) { rover.TaskFailed(); return; }
-
+        { 
             rover.DisplayObject.PlayParticleEffect("MovingParticles");
             rover.DisplayObject.CrossfadeAnimation("Moving", 0.5f); 
 
@@ -204,11 +202,7 @@ namespace RoverJobs
         }
 
         public override void OnTick()
-        {
-/*            foreach (var node in path.nodes)
-            {
-                GameManager.Instance.AddLifespanGizmo(new Vector3(node.x, 0.25f, node.y), 100);
-            }*/
+        { 
 
             if (rover.VisualPosition.Equals(nextNodePosition))
             {
@@ -289,6 +283,10 @@ namespace RoverJobs
         {
             this.Entity = entity;
         }
+        public GotoNeighbor(int2 int2)
+        {
+            this.Entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(int2);
+        }
 
         public override void OnStart()
         {
@@ -344,7 +342,8 @@ namespace RoverJobs
         }
 
         public override void OnStart()
-        {
+        { 
+
             //_baseRotation = rover.rotation;
             _currentRotation = rover.VisualRotation;
 
@@ -376,6 +375,12 @@ namespace RoverJobs
         public BuildStructure(StructureGhost structureGhost)
         {
             this.structureGhost = structureGhost;
+        }
+
+        public override void OnStart()
+        {
+            base.OnStart();
+            rover.PlaySound(AudioData.Instance.Rover_Constructing, 1f);
         }
 
         public override void OnTick()

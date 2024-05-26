@@ -128,3 +128,8 @@ public class ElectrostaticSeperator : Machine
         TryOutputAnything(0);
     }
 }
+
+public class Smelter : GenericMachine
+{
+
+}

@@ -23,16 +23,26 @@ public class TutorialPopup : MonoBehaviour
         {
             skipText.text = "<s>Continue</s>";
         }
-    }
 
-    private void OnEnable()
+        SubscribeEvents();
+    } 
+    private void OnEnable() => SubscribeEvents(); 
+
+    private void OnDisable() => UnsubscribeEvents();  
+    private void OnDestroy() => UnsubscribeEvents(); 
+
+    bool isSubscribed = false;
+    void SubscribeEvents()
     {
+        if(isSubscribed) { return; }
+        isSubscribed = true;
         TutorialProxy.Action += GameEvent;
         TutorialProxy.SetPopupPosition += SetPosition;
     }
-
-    private void OnDisable()
+    void UnsubscribeEvents()
     {
+        if (!isSubscribed) { return; }
+        isSubscribed = false;
         TutorialProxy.Action -= GameEvent;
         TutorialProxy.SetPopupPosition -= SetPosition;
     }

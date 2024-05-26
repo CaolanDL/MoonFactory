@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public TerrainGenerationData WorldGenerationData;
     [SerializeField] public MenuData MenuData;
     [SerializeField] public RoverData RoverData;
+    [SerializeField] public AudioData AudioData;
 
     // Manager Components
     public GameWorld GameWorld;
@@ -77,6 +78,7 @@ public class GameManager : MonoBehaviour
         GlobalData.MakeSingleton();
         WorldGenerationData.MakeSingleton();
         MenuData.MakeSingleton();  
+        AudioData.MakeSingleton();
 
         CameraController = GetComponent<CameraController>();
         PlayerInputManager = GetComponent<PlayerInputManager>();
@@ -91,6 +93,7 @@ public class GameManager : MonoBehaviour
         BatchRenderer.Init();
 
         AudioManager = GetComponent<AudioManager>();
+        AudioManager.Instance = AudioManager;
 
         AssetWarmer = new();
         AssetWarmer.Warmup();
@@ -155,6 +158,7 @@ public class GameManager : MonoBehaviour
     public void CreateNewGame(string saveName)
     {
         DestroyMainMenuCamera();
+        AudioManager.StopMusic();
 
         // User input save file name
 
@@ -204,6 +208,7 @@ public class GameManager : MonoBehaviour
     public void PlaySplashScreen()
     { 
         Instantiate(SplashScreen);
+        AudioManager.PlayMainMenuMusic();
     }
 
     public void OpenMainMenu()

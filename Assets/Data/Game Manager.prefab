@@ -598,6 +598,7 @@ GameObject:
   - component: {fileID: 8718522128751908372}
   - component: {fileID: 6156054648721789221}
   - component: {fileID: 3243265478779609162}
+  - component: {fileID: 5760696505546857107}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -641,6 +642,7 @@ MonoBehaviour:
     type: 2}
   MenuData: {fileID: 11400000, guid: fef9a16f6097abf41ba6a2acaba9d475, type: 2}
   RoverData: {fileID: 11400000, guid: 31f0757be67bcbb48bc06ecd172165ec, type: 2}
+  AudioData: {fileID: 11400000, guid: 608e6463b940c7a4eb165dc3daa87996, type: 2}
   HUDManager: {fileID: 0}
   TutorialSequencer: {fileID: 0}
   GameLighting: {fileID: 100614221958351491}
@@ -650,6 +652,7 @@ MonoBehaviour:
   BatchRenderer: {fileID: 7462157466248319354}
   CameraController: {fileID: 7753882727360442230}
   PlayerInputManager: {fileID: 8718522128751908372}
+  AudioManager: {fileID: 0}
   MainMenuCameraPrefab: {fileID: 1194135670754023932, guid: c77b6586f46f2a34986da1be4415c5f3,
     type: 3}
   MainMenu: {fileID: 6591914507216965253, guid: f3ceeb9026ae29b4e89afbbf9125e3fe,
@@ -756,7 +759,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08e86ca5532bec4191f0291d7aa445e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MusicTracks: []
+  MainMenuMusic: {fileID: 8300000, guid: 59b761da0b0e1f3469c9c860c49718dd, type: 3}
+  MusicTracks:
+  - {fileID: 8300000, guid: 10edc32f049bbfc4c94e3ae3a38fc449, type: 3}
+  MusicSource: {fileID: 3243265478779609162}
+  SFXSource: {fileID: 5760696505546857107}
 --- !u!82 &3243265478779609162
 AudioSource:
   m_ObjectHideFlags: 0
@@ -766,9 +773,10 @@ AudioSource:
   m_GameObject: {fileID: 5097026221170367744}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8766044513513158706, guid: d6d2bada458d0124882b7887e4203938,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 904fa6a56da751f4b9908cab4047fb86, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -781,6 +789,103 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &5760696505546857107
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5097026221170367744}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -5540808940633004612, guid: d6d2bada458d0124882b7887e4203938,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0

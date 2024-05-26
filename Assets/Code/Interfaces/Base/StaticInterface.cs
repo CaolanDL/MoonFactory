@@ -17,6 +17,7 @@ public class StaticInterface : MonoBehaviour
     private void Awake()
     {
         Canvas.ForceUpdateCanvases();
+        AudioManager.Instance.PlaySound(AudioData.Instance.UI_InterfaceOpen);
     }
 
     public virtual void Init(Entity entity, Vector3 screenPosition)
@@ -60,7 +61,8 @@ public class StaticInterface : MonoBehaviour
     public void CloseInterface()
     {
         OnCloseInterface();
-        GameManager.Instance.HUDManager.CloseInterface(); 
+        GameManager.Instance.HUDManager.CloseInterface();
+        AudioManager.Instance.PlaySound(AudioData.Instance.UI_InterfaceClose);
     }
 
     public virtual void OnCloseInterface()

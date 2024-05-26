@@ -35,16 +35,27 @@ public class TutorialSequencer : MonoBehaviour
         {
             popup.gameObject.SetActive(false);
         }
-    }
+        SubscribeEvents();
+    }  
+     
+    private void OnEnable() => SubscribeEvents();
 
-    private void OnEnable()
+    private void OnDisable() => UnsubscribeEvents();
+
+    private void OnDestroy() => UnsubscribeEvents();
+
+    bool isSubscribed = false;
+    void SubscribeEvents()
     {
+        if (isSubscribed) { return; }
+        isSubscribed = true;
         TutorialProxy.IsActive = true;
         TutorialProxy.Action += GameEvent;
     }
-
-    private void OnDisable()
+    void UnsubscribeEvents()
     {
+        if (!isSubscribed) { return; }
+        isSubscribed = false;
         TutorialProxy.IsActive = false;
         TutorialProxy.Action -= GameEvent;
     }

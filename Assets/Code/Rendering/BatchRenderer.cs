@@ -141,9 +141,9 @@ public class ElectricalCoverageRenderer
 
         foreach(var relay in Relays)
         {
-            for (int x = -Electrical.Relay.connectionRange-1; x <= Electrical.Relay.connectionRange+1; x++)
+            for (int x = -relay.connectionRange-1; x <= relay.connectionRange+1; x++)
             {
-                for (int y = -Electrical.Relay.connectionRange-1; y <= Electrical.Relay.connectionRange+1; y++)
+                for (int y = -relay.connectionRange-1; y <= relay.connectionRange+1; y++)
                 { 
                     var pos = new Vector3(x + relay.Parent.position.x, 0.05f, y + relay.Parent.position.y);
                     if (coveredPositions.Contains(pos)) { continue; }

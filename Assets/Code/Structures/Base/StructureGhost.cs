@@ -20,7 +20,9 @@ public class StructureGhost : Entity
     }
 
     public void OnPlaced()
-    { }
+    {
+        AudioManager.Instance?.PlaySound(AudioData.Instance.Tool_PlaceGhost,0.8f);
+    }
 
     int queueDelay = 75;
 

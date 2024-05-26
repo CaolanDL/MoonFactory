@@ -39,8 +39,9 @@ public class Lander : Structure
 
         ElectricalRelay = new()
         {
-            Parent = this
+            Parent = this 
         };
+        ElectricalRelay.connectionRange = 6;
 
         GameManager.Instance.Lander = this;
     }

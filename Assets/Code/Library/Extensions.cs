@@ -63,11 +63,11 @@ namespace ExtensionMethods
         /// </summary> 
         public static int LongestSideDistance(this int2 origin, int2 target)
         {
-            var x = origin.x - target.x;
-            var y = origin.y - target.y;
+            var x = Mathf.Abs(origin.x - target.x);
+            var y = Mathf.Abs(origin.y - target.y);
 
-            if(x > y) { return Mathf.Abs(x); }
-            else { return Mathf.Abs(y); } 
+            if(x > y) return x; 
+            else return y; 
         }
     }
 

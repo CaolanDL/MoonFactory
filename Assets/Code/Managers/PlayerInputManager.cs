@@ -62,6 +62,11 @@ public class PlayerInputManager : MonoBehaviour
     public void ChangeInputState(InputState newInputState)
     {
         inputState = newInputState;
+
+        if(newInputState == InputState.Construction)
+        {
+            AudioManager.Instance.PlaySound(AudioData.Instance.UI_BuildButton);
+        }
     }
 
     private void Update()
@@ -257,6 +262,7 @@ public class PlayerInputManager : MonoBehaviour
                 if (entity.GetType() == typeof(StructureGhost))
                 {
                     ((StructureGhost)entity).Cancel();
+                    PlayCancelSound();
                 }
                 else if (entity.GetType().IsSubclassOf(typeof(Structure)))
                 {
@@ -267,22 +273,31 @@ public class PlayerInputManager : MonoBehaviour
                     if (DevFlags.InstantBuilding)
                     {
                         structure.Demolish();
+                        PlayDemolishSound();
                         return;
                     }
 
-                    if (structure.flaggedForDemolition != true) structure.FlagForDemolition(); 
+                    if (structure.flaggedForDemolition != true)
+                    {
+                        structure.FlagForDemolition();
+                        PlayDemolishSound();
+                    }
                     else structure.CancelDemolition(); 
                 }
                 else if(entity is IDemolishable)
                 {
                     var demolishable = (IDemolishable)entity;
                     demolishable.ToggleDemolition();
+                    PlayDemolishSound();
                 }
             }
 
             lastEntity = entity;
 
             return;
+
+            void PlayDemolishSound() => AudioManager.Instance.PlaySound(AudioData.Instance.Tool_Bulldoze, 1f);
+            void PlayCancelSound() => AudioManager.Instance.PlaySound(AudioData.Instance.Tool_DeleteGhost, 1f);
         }
         if (inputActions.DefaultControls.Select.WasReleasedThisFrame())
         {

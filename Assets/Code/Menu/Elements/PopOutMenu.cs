@@ -16,9 +16,9 @@ public class PopOutMenu : MonoBehaviour
     }
 
     public void Toggle()
-    {
-        isMoving = true;
-        isHiding = !isHiding;
+    {  
+        if(isHiding) { Show(); }
+        else { Hide(); }
     }
 
     public void SetState(bool hidden)
@@ -37,12 +37,16 @@ public class PopOutMenu : MonoBehaviour
     {
         isMoving = true;
         isHiding = true;
+
+        AudioManager.Instance.PlaySound(AudioData.Instance.UI_MenuClose, 0.5f);
     }
 
     public void Show()
     {
         isMoving = true;
         isHiding = false;
+
+        AudioManager.Instance.PlaySound(AudioData.Instance.UI_MenuOpen, 0.5f);
     }
 
     private void Update()

@@ -8,7 +8,7 @@ public class RoverInterface : StaticInterface
 {
     [SerializeField] Slider powerSlider;
 
-    public Rover rover;
+    public Rover rover; 
 
     public override void Init(Entity entity, Vector3 screenPosition)
     {
@@ -16,7 +16,9 @@ public class RoverInterface : StaticInterface
 
         this.rover = (Rover)entity;  
 
-        transform.position = screenPosition; 
+        transform.position = screenPosition;
+
+        AudioManager.Instance.PlaySound(AudioData.Instance.UI_WidgetInterfaceOpened);
     }
 
     private void FixedUpdate()

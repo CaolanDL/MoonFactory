@@ -28,11 +28,4 @@ public class ElectrolisisChamber : GenericMachine
 public class Laboratory : GenericMachine
 {
 
-}
-
-public class Smelter : GenericMachine
-{
-
-}
-
-
+} 

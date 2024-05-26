@@ -1,6 +1,7 @@
 ﻿using ExtensionMethods;
 using Logistics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
@@ -21,40 +22,55 @@ namespace RoverJobs
 
         public override void OnStart()
         {
-            var manifest = SupplyFinder.GenerateManifestLoose(resourceToFind, rover.GridPosition);
-            if (manifest.Orders.Count == 0) { FailTask(); return; }
-            PopJob();
-            StackJob(new ExcecuteCollectAndDeliver(manifest, destination));
+            resourceToFind = SupplyFinder.CullSearchByExistingInventory(resourceToFind, rover.Inventory);
+            // If the rover doesnt already have all the resources go find them.
+            if(resourceToFind.quantity > 0)
+            {
+                var manifest = SupplyFinder.GenerateManifestLoose(resourceToFind, rover.GridPosition);
+                if (manifest.Orders.Count == 0 && rover.Inventory.GetQuantityOf(resourceToFind.resource) == 0) { FailTask(); return; }
+                if(manifest.Orders.Count > 0)
+                {
+                    PopJob();
+                    StackJob(new ExcecuteCollectAndDeliver(manifest, destination));
+                    return;
+                } 
+            }
+            // If the rover has the resources already then go deliver them
+            StackJob(new GotoNeighbor(destination));
+            var quantityToDeliver = Mathf.Clamp(rover.Inventory.GetQuantityOf(resourceToFind.resource), 0, resourceToFind.quantity);
+            var resourcesToDeliver = new List<ResourceQuantity>() { new(resourceToFind.resource, quantityToDeliver) };
+            StackJob(new DeliverResources(destination, resourcesToDeliver));
         }
     }
 
 
     public class CollectDeliverExactly : Job
     {
-        IEnumerable<ResourceQuantity> resourcesToFind;
+        List<ResourceQuantity> resourcesToFind;
         int2 destination;
 
         public CollectDeliverExactly(IEnumerable<ResourceQuantity> resourcesToFind, int2 destination)
         {
-            this.resourcesToFind = resourcesToFind;
+            this.resourcesToFind = resourcesToFind.ToList();
             this.destination = destination;
         }
 
         public override void OnStart()
-        {
-            var manifest = SupplyFinder.GenerateManifestExact(resourcesToFind, rover.GridPosition);  
+        { 
+            resourcesToFind = SupplyFinder.CullSearchByExistingInventory(resourcesToFind, rover.Inventory);
+
+            var manifest = SupplyFinder.GenerateManifestExact(resourcesToFind, rover.GridPosition);
 
             if (manifest.Orders.Count == 0) { FailTask(); return; }
 
             var rtfList = resourcesToFind.ToList();
-            foreach(var rq in manifest.totalQuantities)
+            foreach (var rq in manifest.totalQuantities)
                 if (rtfList.Exists(x => x.resource == rq.resource && x.quantity == rq.quantity) == false) { FailTask(); Debug.Log("Failed to generate manifest"); return; }
 
             PopJob();
             StackJob(new ExcecuteCollectAndDeliver(manifest, destination));
         }
     }
-
 
     public class ExcecuteCollectAndDeliver : Job
     {
@@ -123,12 +139,13 @@ namespace RoverJobs
 
         public override void OnTick()
         {
-            if(lifeSpan == 1)
+            if (lifeSpan == 1)
             {
                 rover.DisplayObject.CrossfadeAnimation("CollectResource", 0.5f);
-            } 
+                rover.PlaySound(AudioData.Instance.Rover_CollectResource, 1f);
+            }
 
-            if(rover.DisplayObject.IsAnimationPlaying("CollectResource") == false && lifeSpan > 50)
+            if (rover.DisplayObject.IsAnimationPlaying("CollectResource") == false && lifeSpan > 50)
             {
                 foreach (var rq in resourcesToCollect)
                 {
@@ -137,7 +154,7 @@ namespace RoverJobs
                 }
 
                 PopJob();
-            } 
+            }
         }
     }
 
@@ -183,13 +200,14 @@ namespace RoverJobs
             if (lifeSpan == 1)
             {
                 rover.DisplayObject.CrossfadeAnimation("DeliverResource", 0.5f);
+                rover.PlaySound(AudioData.Instance.Rover_DeliverResource, 1f);
             }
 
             // Play delivery animation on rover
             // Then run this ->
 
             if (rover.DisplayObject.IsAnimationPlaying("DeliverResource") == false && lifeSpan > 50)
-            { 
+            {
                 if (targetPort != null)
                 {
                     foreach (var rq in resourcesToDeliver)
@@ -217,7 +235,7 @@ namespace RoverJobs
                     rover.Inventory.RemoveResource(rq);
                 }
 
-                PopJob(); 
+                PopJob();
             }
         }
     }
@@ -232,7 +250,7 @@ namespace RoverJobs
         public void Add(SupplyPort supplyPort, ResourceQuantity resourceQuantity)
         {
             if (SupplyPorts.Contains(supplyPort))
-            { 
+            {
                 if (Orders[supplyPort].Exists(rq => rq.resource == resourceQuantity.resource))
                 {
                     // I hate this doubling of code but Unity c# doesn't have TryFind with out :(
@@ -276,33 +294,33 @@ namespace RoverJobs
                     supplyPort.ReserveResource(rq);
                 }
             }
-        } 
+        }
     }
 
-     
+
     public static class SupplyFinder
-    { 
+    {
         public static CollectionManifest GenerateManifestExact(IEnumerable<ResourceQuantity> resourcesToFind, int2 origin)
         {
             List<SupplyPort> supplyPorts = FindAllPortsContaining(resourcesToFind);
             supplyPorts = SortPortsByDistance(supplyPorts, origin);
 
-            CollectionManifest manifest = new CollectionManifest(); 
+            CollectionManifest manifest = new CollectionManifest();
             foreach (ResourceQuantity rq in resourcesToFind)
             {
-                SearchPortsAndFillManifest(supplyPorts, manifest, rq); 
-            } 
+                SearchPortsAndFillManifest(supplyPorts, manifest, rq);
+            }
             manifest.SortPortsByDistance(origin);
 
-            foreach(var val in manifest.totalQuantities)
+            foreach (var val in manifest.totalQuantities)
             {
                 Debug.Log($"{val.resource} : {val.quantity}");
             }
             return manifest;
-        }  
+        }
 
         public static CollectionManifest GenerateManifestLoose(ResourceQuantity resourceToFind, int2 origin)
-        { 
+        {
             List<SupplyPort> supplyPorts = FindAllPortsContaining(resourceToFind);
             supplyPorts = SortPortsByDistance(supplyPorts, origin);
 
@@ -310,6 +328,37 @@ namespace RoverJobs
             SearchPortsAndFillManifest(supplyPorts, manifest, resourceToFind);
             manifest.SortPortsByDistance(origin);
             return manifest;
+        }
+
+
+        public static ResourceQuantity CullSearchByExistingInventory(ResourceQuantity resourceToFind, Inventory inventory)
+        {
+            ResourceQuantity newSearch = resourceToFind; 
+
+            if(inventory.stacks.Exists(stack => stack.resource == newSearch.resource))
+            {
+                var stack = inventory.GetStack(newSearch.resource);
+                var newQuanity = newSearch.quantity - stack.quantity;
+                if (newQuanity > 0) newSearch = new(newSearch.resource, newQuanity);
+                else newSearch = new(newSearch.resource, 0); 
+            } 
+            return newSearch;
+        }
+        public static List<ResourceQuantity> CullSearchByExistingInventory(List<ResourceQuantity> resourcesToFind, Inventory inventory)
+        {
+            List<ResourceQuantity> newList = new();
+            newList.AddRange(resourcesToFind);
+            foreach (var stack in inventory.stacks)
+            {
+                if (resourcesToFind.Exists(rq => rq.resource == stack.resource))
+                {
+                    var rqindex = newList.FindIndex(rq => rq.resource == stack.resource);
+                    var newQuanity = newList[rqindex].quantity - stack.quantity;
+                    if (newQuanity > 0) newList[rqindex] = new(newList[rqindex].resource, newQuanity);
+                    else newList.RemoveAt(rqindex);
+                }
+            }
+            return newList;
         }
 
         static void SearchPortsAndFillManifest(List<SupplyPort> supplyPortsToSearch, CollectionManifest manifestToFill, ResourceQuantity resourceQuantity)
@@ -329,7 +378,7 @@ namespace RoverJobs
                 if (remaining <= 0) { break; }
             }
             //Debug.Log($"Found {resourceQuantity.quantity - remaining}");
-        } 
+        }
 
         static List<SupplyPort> FindAllPortsContaining(IEnumerable<ResourceQuantity> resourcesToFind)
         {
@@ -354,21 +403,21 @@ namespace RoverJobs
                 foundPorts.Add(supplyPort);
             }
             return foundPorts;
-        }  
+        }
 
-/*        public static void ReserveResources(CollectionManifest manifest)
-        {
-            foreach (var order in manifest.Orders)
-            {
-                SupplyPort supplyPort = order.Key;
-                List<ResourceQuantity> resources = order.Value;
-
-                foreach(ResourceQuantity rq in resources)
+        /*        public static void ReserveResources(CollectionManifest manifest)
                 {
-                    supplyPort.ReserveResource(rq);
-                } 
-            }
-        }*/
+                    foreach (var order in manifest.Orders)
+                    {
+                        SupplyPort supplyPort = order.Key;
+                        List<ResourceQuantity> resources = order.Value;
+
+                        foreach(ResourceQuantity rq in resources)
+                        {
+                            supplyPort.ReserveResource(rq);
+                        } 
+                    }
+                }*/
 
         public static List<SupplyPort> SortPortsByDistance(List<SupplyPort> supplyPorts, int2 origin)
         {
@@ -389,9 +438,9 @@ namespace RoverJobs
                 else if (a < b) return -1;
                 else if (a > b) return 1;
                 else return 0;
-            } 
+            }
         }
-    } 
+    }
 
 
     public class FoundHopper

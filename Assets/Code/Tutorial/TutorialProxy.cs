@@ -53,9 +53,9 @@ public enum TutorialTag
     HopperIndicatorPosition
 }
 
-public class TutorialProxy
+public static class TutorialProxy
 {
     public static bool IsActive = false;
-    public static Action<TutorialEvent> Action { get; set; }
-    public static Action<Vector3, TutorialTag> SetPopupPosition { get; set; }
+    public static Action<TutorialEvent> Action;
+    public static Action<Vector3, TutorialTag> SetPopupPosition;
 }

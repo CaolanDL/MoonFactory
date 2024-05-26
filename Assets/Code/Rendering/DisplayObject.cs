@@ -10,15 +10,23 @@ public class DisplayObject : MonoBehaviour
     public List<GameObject> primaryModels;
     [NonSerialized] public GameObject activeModel;
     public List<GameObject> additiveModels; 
+
     public Dictionary<string, GameObject> particleSystems = new(); 
+
     public Animator animator;
     public Transform wireConnectionPoint;
-         
-    private string activeAnimation;
 
+    public AudioSource audioSource;
+         
+    private string activeAnimation; 
 
     private void Awake()
     {
+        if(GetComponent<AudioSource>() == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
         if (primaryModels.Count == 0)
         {
             primaryModels.Add(GetComponentInChildren<MeshRenderer>().gameObject);
@@ -110,9 +118,9 @@ public class DisplayObject : MonoBehaviour
         particleSystems[name].SetActive(false);
     }
 
-    public void PlaySound()
+    public void PlaySound(AudioClip audioClip, float volume)
     {
-
+        audioSource.PlayOneShot(audioClip, volume);
     }
 
     public Vector3 GetWireConnectionPoint()

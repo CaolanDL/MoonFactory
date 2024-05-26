@@ -12,3 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec231df8a718dcf42b9b82653cc9c4ae, type: 3}
   m_Name: Audio Data
   m_EditorClassIdentifier: 
+  UI_MenuOpen: {fileID: 8300000, guid: ac8e44c8cc062d04ba28233879087349, type: 3}
+  UI_MenuClose: {fileID: 8300000, guid: a2fa04575eca18e40b678b9a37a38790, type: 3}
+  UI_InterfaceOpen: {fileID: 8300000, guid: b594fdc924b0fbc4e98b106d6bea11fe, type: 3}
+  UI_InterfaceClose: {fileID: 0}
+  UI_BuildButton: {fileID: 8300000, guid: ee6e4ec369e77c74d805140fe5a89ac6, type: 3}
+  UI_ScienceNodeUnlocked: {fileID: 8300000, guid: 88b73722dbfed29498822904a87c0142,
+    type: 3}
+  UI_ElectricalOverlay: {fileID: 8300000, guid: bf0406c3b8fe77d489f9e90697283a63,
+    type: 3}
+  UI_Bulldoze: {fileID: 8300000, guid: 3f832aaf90e5dd44ba0810903522a96b, type: 3}
+  UI_PopupResearchComplete: {fileID: 8300000, guid: ecca87656e78fb54e8de4fd4f49e5225,
+    type: 3}
+  UI_PopupUnlock: {fileID: 8300000, guid: ecca87656e78fb54e8de4fd4f49e5225, type: 3}
+  Tool_PlaceGhost: {fileID: 8300000, guid: c42e8e07e94a82349bdc43e8d81b4861, type: 3}
+  Tool_DeleteGhost: {fileID: 8300000, guid: aa480bd9c8bc60e4ea4b69d9cd88f366, type: 3}
+  Tool_Bulldoze: {fileID: 8300000, guid: d5855d2d2675c3441b4a857432bdca84, type: 3}
+  World_StructureConstructed: {fileID: 8300000, guid: d329e14b779c6934ca541073535b81d3,
+    type: 3}
+  World_StructureDemolished: {fileID: 8300000, guid: 7b84fe84c3b8e9c4ea99f985b7152c6c,
+    type: 3}
+  UI_WidgetInterfaceOpened: {fileID: 8300000, guid: b42364d521d68804eb79bc564709dd3b,
+    type: 3}
+  Rover_CollectResource: {fileID: 8300000, guid: 267cadb01f8afb644be475dc9c1e7c1c,
+    type: 3}
+  Rover_DeliverResource: {fileID: 8300000, guid: 267cadb01f8afb644be475dc9c1e7c1c,
+    type: 3}
+  Rover_Constructing: {fileID: 8300000, guid: d5fb8969d6c4f714c9668559c571005f, type: 3}
+  Rover_Idle: {fileID: 0}

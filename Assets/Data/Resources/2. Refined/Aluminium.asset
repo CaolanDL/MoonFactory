@@ -16,7 +16,7 @@ MonoBehaviour:
   resourceCategory: 1
   sprite: {fileID: 21300000, guid: 1bbe84516ad5ece49a4b38f045d68032, type: 3}
   mesh: {fileID: -4006973971434388648, guid: c398febfba7226f488d1d2420c08e925, type: 3}
-  material: {fileID: 2100000, guid: 0500029b69d3abc439bfb7e1f5b7ac28, type: 2}
+  material: {fileID: 2100000, guid: 0bb1532950ac1aa41b232068ce0451f1, type: 2}
   Weight: 1
   ResearchValue: 2
   SecondsToResearch: 30.07

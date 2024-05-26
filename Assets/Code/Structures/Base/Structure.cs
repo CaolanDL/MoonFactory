@@ -96,6 +96,7 @@ public abstract class Structure : Entity, IDemolishable
             var effect = GameObject.Instantiate(RenderData.Instance.ConstructedEffect, DisplayObject.transform.position, Quaternion.identity, DisplayObject.transform);
             effect.transform.localScale = Vector3.one * (size.x * size.y);
             DisplayObject.gameObject.AddComponent<ShakeOnAwake>();
+            DisplayObject.PlaySound(AudioData.Instance.World_StructureConstructed, 0.8f);
         } 
 
         OnConstructed();
