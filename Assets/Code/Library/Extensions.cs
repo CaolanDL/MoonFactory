@@ -103,18 +103,11 @@ namespace ExtensionMethods
         }
 
         public static Vector2 FastRotate(this Vector2 i, float radians)
-        {   
-            return new Vector2(xRotate(), yRotate());
+        {
+            float xTrns() => i.x * Mathf.Cos(radians) - i.y * Mathf.Sin(radians);
+            float yTrns() => i.x * Mathf.Sin(radians) + i.y * Mathf.Cos(radians);
 
-            float xRotate()
-            {
-                return  i.x * Mathf.Cos(radians) - i.y * Mathf.Sin(radians);
-            }
-
-            float yRotate()
-            {
-                return i.x * Mathf.Sin(radians) + i.y * Mathf.Cos(radians);
-            } 
+            return new Vector2(xTrns(), yTrns()); 
         }
 
         public static Vector2 RotateAround(this Vector2 i, Vector2 Pivot, float angle)
@@ -246,4 +239,5 @@ namespace ExtensionMethods
             return Mathf.Sqrt((a * a) + (b * b));
         }
     }
+     
 }

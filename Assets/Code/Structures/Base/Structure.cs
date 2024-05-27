@@ -108,7 +108,7 @@ public abstract class Structure : Entity, IDemolishable
     
     void FlattenTerrain() // From Legacy Terrain System
     {
-        var occupyingLocations = GetOccupyingLocations();
+        var occupyingLocations = GetOccupyingLocations(this);
         var floorGrid = GameManager.Instance.GameWorld.floorGrid;
 
         //Debug.Log(occupyingLocations.Count);

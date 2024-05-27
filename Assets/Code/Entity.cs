@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DataStructs;
 using ExtensionMethods;
 using Unity.Mathematics;
-using UnityEngine; 
+using UnityEngine;
 
 [Serializable]
 public class Entity // 12 bytes
@@ -23,7 +23,7 @@ public class Entity // 12 bytes
     {
         get { return transform.rotation; }
         set { transform.rotation = value; }
-    } 
+    }
 
     public byte2 centre
     {
@@ -40,72 +40,41 @@ public class Entity // 12 bytes
         return GameManager.Instance.GameWorld.worldGrid.GetEntityAt(position + rotation.Rotate(rotationFactor).ToInt2());
     }
 
-    public (int2 xRange, int2 yRange) GetOccupyRegion()
+
+    public static (int2 xRange, int2 yRange) GetOccupyingRegion(Entity entity)
     {
-        var rSize = new int2(size.x, size.y);
+        return GetOccupyingRegion(entity.position, entity.size.ToInt2(), entity.rotation);
+    }
+    public static (int2 xRange, int2 yRange) GetOccupyingRegion(int2 position, int2 size, sbyte rotation)
+    {
+        var trueSize = new int2(size.x - 1, size.y - 1).Rotate(rotation);
 
-        rSize = RotateGridRegionAroundOrigin(rSize, rotation);
+        var xRange = new int2(position.x, position.x + trueSize.x);
+        var yRange = new int2(position.y, position.y + trueSize.y);
 
-        var xRange = new int2(position.x, position.x + rSize.x);
-        var yRange = new int2(position.y, position.y + rSize.y);
-
-        if (xRange.x > xRange.y)
-        {
-            var temp = xRange.x;
-            xRange.x = xRange.y;
-            xRange.y = temp;
-        }
-
-        if (yRange.x > yRange.y)
-        {
-            var temp = yRange.x;
-            yRange.x = yRange.y;
-            yRange.y = temp;
-        }
-
-        //Debug.Log(xRange);
-        //Debug.Log(yRange);
+        if (xRange.x > xRange.y) (xRange.x, xRange.y) = (xRange.y, xRange.x);
+        if (yRange.x > yRange.y) (yRange.x, yRange.y) = (yRange.y, yRange.x);
 
         return (xRange, yRange);
     }
+     
 
-    public int2 RotateGridRegionAroundOrigin(int2 region, sbyte _rotation)
+    public static List<Location> GetOccupyingLocations(Entity entity)
     {
-        var _region = region.Rotate(_rotation);
-
-        /*        if (rotation == 1)
-                {
-                    _region.y += 1;
-                }
-                if (rotation == 2)
-                {
-                    _region.y += 1;
-                    _region.x += 1;
-                }
-                if (rotation == 3)
-                {
-                    _region.x += 1;
-                }*/
-
-        return _region;
+        return GetOccupyingLocations(entity.position, entity.size.ToInt2(), entity.rotation, Grid.GetGrid(entity.gridId));
     }
-
-    public List<Location> GetOccupyingLocations()
+    public static List<Location> GetOccupyingLocations(int2 position, int2 size, sbyte rotation, Grid grid)
     {
         var list = new List<Location>();
-        var (xRange, yRange) = GetOccupyRegion();
+        var (xRange, yRange) = GetOccupyingRegion(position, size, rotation);
 
-        for (var x = xRange.x; x < xRange.y; x++)
-        {
-            for (var y = yRange.x; y < yRange.y; y++)
-            {
-                //Debug.Log($"{x}, {y}");
-                list.Add(GameManager.Instance.GameWorld.worldGrid.GetLocationAt(new int2(x, y)));
-            }
-        }
+        for (var x = xRange.x; x <= xRange.y; x++) 
+            for (var y = yRange.x; y <= yRange.y; y++) 
+                list.Add(grid.GetLocationAt(new int2(x, y))); 
 
         return list;
     }
+
 
     public virtual void RenderSelectionOutline()
     {

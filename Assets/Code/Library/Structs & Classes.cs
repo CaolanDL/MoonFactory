@@ -141,7 +141,12 @@ namespace DataStructs
         public static byte2 operator +(byte2 a, byte2 b) => new byte2(a.x + b.x, a.y + b.y);
 
         public static byte2 operator -(byte2 a, byte2 b) => new byte2(a.x - b.x, a.y - b.y);
-         
+        
+
+        public int2 ToInt2()
+        {
+            return new int2(x, y);
+        }
     }
 }
 

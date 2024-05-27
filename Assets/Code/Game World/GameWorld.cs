@@ -6,17 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
-
+using static UnityEditor.PlayerSettings;
 using Random = UnityEngine.Random;
 
 public class GameWorld
 {
     public Grid floorGrid = new Grid(); 
     public Grid worldGrid = new Grid();
-
-    public TerrainGenerator TerrainGenerator;
-
     public List<Meteorite> meteorites = new();
+
+    public TerrainGenerator TerrainGenerator; 
 
     public static Action WorldInstanciated;
 
@@ -36,28 +35,25 @@ public class GameWorld
 
     public void OnFixedUpdate()
     {
-        AddNewVisibleTiles();
+        GenerateVisibleRegion();
     }
 
-    public void AddNewVisibleTiles()
+    public void GenerateVisibleRegion()
     {
-        int2 tileLocation;
-
+        int2 tileLocation; 
         (var xVisibleRange, var yVisibleRange) = GameManager.Instance.CameraController.GetIsometricVisibleRange();
 
-        for (int x = xVisibleRange.x; x < xVisibleRange.y; x++)
-        {
-            for (int y = yVisibleRange.x; y < yVisibleRange.y; y++)
-            {
-                (tileLocation.x, tileLocation.y) = (x, y);
+        GenerateRegion(xVisibleRange, yVisibleRange);
 
-                // Generate new floor tiles
-                if (GameManager.Instance.GameWorld.floorGrid.grid.ContainsKey(tileLocation) == false)
-                {
-                    GameManager.Instance.GameWorld.GenerateFloorTile(tileLocation);
-                }
-            }
-        }
+        //todo Generation Sequence:
+        //1. Generate new Locations in visible region + (32 on each side)
+        //   Store list of all new Locations
+        //   Store list of new Locations outside of visible range
+        //2. Dice roll on each Location outside of visible range for spawning a crater
+        //   If crater would intersect with any existing entity do not spawn the crater
+        //3. Dice roll on each new location for spawning a meteorite
+        //   If meteorite is ontop of crater or intersects with an existing entity do not spawn the meteorite
+        //4. Fill all remaining floor locations with displacement tiles
     }
 
     public void GenerateChunk(int2 position)
@@ -87,7 +83,7 @@ public class GameWorld
             {
                 GenerateFloorTile(new int2(x, y));
             }
-        }
+        } 
     }
 
     public FloorTile GenerateFloorTile(int2 position)
@@ -98,7 +94,7 @@ public class GameWorld
 
         if (floorGrid.TryAddEntity(newFloorTile, position, (sbyte)Random.Range(0, 3)) != null)
         {
-            worldGrid.AddLocation(position);
+            worldGrid.GetOrAddLocation(position);
         }
 
         GenerateMeteorite(position);
@@ -162,7 +158,7 @@ public class Grid
         return grids.Find(grid => grid.id == _id);
     }
 
-    public Location AddLocation(int2 position)
+    public Location GetOrAddLocation(int2 position)
     {
         if (LocationExists(position)) return grid[position];
 
@@ -189,53 +185,44 @@ public class Grid
         else return null;
     }
 
-    public Entity AddEntity(Entity entity, int2 position)
-    {
-        return TryAddEntity(entity, position, 0);
-    }
+    /// <summary>
+    /// ! Avoid calling this. Use TryAddEntity() instead.
+    /// </summary> 
+    public Entity AddEntity(Entity entity, int2 position) => TryAddEntity(entity, position, 0); 
 
-    static byte2 singleTileSize = new byte2(1, 1);
+
+    static byte2 singleTileSize = new byte2(1, 1); 
 
     public Entity TryAddEntity(Entity entity, int2 position, sbyte rotation)
-    {
-        if (true || entity.size.Equals(singleTileSize))
-        {
-            Location location = AddLocation(position);
-
-            if (IsEntityAt(position)) return null;
-
-            location.entity = entity;
-        }
-
-        /*else
-        {
-            for (int x = 0; x < entity.size.x; x++)
-            {
-                for (int y = 0; y < entity.size.y; y++)
-                {
-                    var offsetPosition = position + (new int2(x, y).Rotate(rotation));
-
-                    Location location = AddLocation(offsetPosition);
-
-                    if (IsEntityAt(offsetPosition)) return null;
-
-                    location.entity = entity;
-                }
-            }
-        }*/
-
-        entity.position = position;
-
-        entity.rotation = rotation;
-
+    { 
+        entity.position = position; 
+        entity.rotation = rotation; 
         entity.gridId = id;
+
+        if (entity.size.Equals(singleTileSize))
+        {
+            Location location = GetOrAddLocation(position); 
+            if (IsEntityAt(position)) return null; 
+            location.entity = entity;
+        } 
+        else
+        {
+            var occupyLocations = Entity.GetOccupyingLocations(entity);
+
+            foreach(var location in occupyLocations) 
+                if(location.entity != null) return null; 
+
+            GetLocationAt(position).entity = entity;
+            foreach(var location in occupyLocations) 
+                location.entity = entity;  
+        }
 
         return entity;
     }
 
     public Entity RemoveEntity(int2 position)
     {
-        if (grid.ContainsKey(position) != true) return null;
+        if (grid.ContainsKey(position) != true) return null; 
 
         return grid[position].RemoveEntity();
     }
@@ -326,16 +313,16 @@ public class Grid
         }*/ 
 }
 
-
+/// <summary>
+/// A Location in the World Grid
+/// </summary>
 public class Location // Size: 17 bytes
 {
     public int2 position; // 8 bytes
 
     public byte gridId; // 1 bytes
 
-    public Entity entity; // 8 bytes 
-
-    //public static Location empty = new Location() { position = new int2(int.MaxValue, int.MaxValue) };
+    public Entity entity; // 8 bytes  
 
     public int2 GetChunk()
     {
@@ -367,9 +354,16 @@ public class Location // Size: 17 bytes
 
     public Entity RemoveEntity()
     {
+        if(entity == null) { return null; }
         var entityToRemove = entity;
         Grid.GetGrid(gridId).entities.Remove(entity); 
         entity = null;
+
+        foreach(var location in Entity.GetOccupyingLocations(entityToRemove))
+        {
+            location.entity = null;
+        }
+
         return entityToRemove;
     }
 }

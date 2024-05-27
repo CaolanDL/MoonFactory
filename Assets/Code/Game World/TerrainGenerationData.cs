@@ -19,15 +19,12 @@ public class TerrainGenerationData : ScriptableObject
 
     [SerializeField] public FloorTileData displaceTile;
 
-    [SerializeField] public ModelData[] MeteorModels;
+    [SerializeField] public ModelData[] MeteorModels; 
+    [SerializeField] public List<CraterData> Craters;
 
-    [SerializeField] public List<FloorTileData> topographyTiles;
-     
-    [SerializeField] public List<FloorTileData> randomTiles;
-
-    [SerializeField] public List<FloorTileData> craterTiles;
-
-    [SerializeField] public List<FloorTileData> rubbleTiles;
+    //[SerializeField] public List<FloorTileData> topographyTiles; 
+    //[SerializeField] public List<FloorTileData> randomTiles; 
+    //[SerializeField] public List<FloorTileData> rubbleTiles;
 
     [NonSerialized] public  List<FloorTileData> tileRegistry = new(); 
 
@@ -59,10 +56,10 @@ public class TerrainGenerationData : ScriptableObject
     {
         tileRegistry.Clear();
 
-        LoopListAndRegister(topographyTiles);
+/*        LoopListAndRegister(topographyTiles);
         LoopListAndRegister(randomTiles);
         LoopListAndRegister(craterTiles);
-        LoopListAndRegister(rubbleTiles);
+        LoopListAndRegister(rubbleTiles);*/
 
         tileRegistry.Add(displaceTile);
 

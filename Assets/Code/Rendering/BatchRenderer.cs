@@ -145,7 +145,7 @@ public class ElectricalCoverageRenderer
             {
                 for (int y = -relay.connectionRange-1; y <= relay.connectionRange+1; y++)
                 { 
-                    var pos = new Vector3(x + relay.Parent.position.x, 0.05f, y + relay.Parent.position.y);
+                    var pos = new Vector3(x + relay.Parent.position.x, 0.001f, y + relay.Parent.position.y);
                     if (coveredPositions.Contains(pos)) { continue; }
                     coveredPositions.Add(pos);
                     var matrix = Matrix4x4.TRS(pos, Quaternion.identity, Vector3.one); 

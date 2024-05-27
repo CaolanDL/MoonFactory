@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using ExtensionMethods; 
+using ExtensionMethods;
+using DataStructs;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class ConstructionManager
 {
@@ -28,6 +30,8 @@ public class ConstructionManager
     public void PlaceGhost(double2 mousePosition)
     {
         var ghostGridPosition = GetMouseGhostPosition();
+
+        if(IsGhostBlocked(ghostGridPosition)) { return; }
 
         var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
@@ -120,19 +124,18 @@ public class ConstructionManager
 
     public void DrawGhostAtMouse()
     {
-        Material activeGhostMaterial = RenderData.Instance.StructureGhost_Mouse;
-
-        int2 ghostGridPosition = GetMouseGhostPosition();
-
+        Material activeGhostMaterial;
+        int2 ghostOrigin = GetMouseGhostPosition();
         bool blocked = false;
 
         //TODO Large structures should be blocked from being built when overlapping other large objects. This will require some thinking and some time. 
 
-        if (GameManager.Instance.GameWorld.worldGrid.IsEntityAt(ghostGridPosition)) blocked = true; 
+        blocked = IsGhostBlocked(ghostOrigin);
 
-        if (blocked) activeGhostMaterial = RenderData.Instance.StructureGhost_Blocked; 
+        if (blocked) activeGhostMaterial = RenderData.Instance.StructureGhost_Blocked;
+        else activeGhostMaterial = RenderData.Instance.StructureGhost_Mouse;
 
-        var matrix = MatrixConstruction.CreateTransformMatrix(ghostGridPosition, _ghostRotation);
+        var matrix = MatrixConstruction.CreateTransformMatrix(ghostOrigin, _ghostRotation);
 
         Graphics.DrawMesh(GhostStructureData.ghostMesh, matrix, activeGhostMaterial, 0);
 
@@ -159,7 +162,7 @@ public class ConstructionManager
         {
             Matrix4x4 _matrix = Matrix4x4.TRS
             (
-                (transform.position.Rotate(_ghostRotation) + ghostGridPosition).ToVector3() + (Vector3.up * 0.2f),
+                (transform.position.Rotate(_ghostRotation) + ghostOrigin).ToVector3() + (Vector3.up * 0.2f),
                 transform.rotation.Rotate(_ghostRotation).ToQuaternion(),
                 Vector3.one * 0.2f
             );
@@ -172,9 +175,26 @@ public class ConstructionManager
             for (int x = -Electrical.Relay.defaultConnectionRange; x <= Electrical.Relay.defaultConnectionRange; x++)
                 for (int y = -Electrical.Relay.defaultConnectionRange; y <= Electrical.Relay.defaultConnectionRange; y++)
                 {
-                    var _pos = new Vector3(x + ghostGridPosition.x, 0.05f, y + ghostGridPosition.y);
+                    var _pos = new Vector3(x + ghostOrigin.x, 0.05f, y + ghostOrigin.y);
                     Graphics.DrawMesh(RenderData.Instance.TilePowerGizmo, _pos, Quaternion.identity, RenderData.Instance.TilePowerGizmoMaterial, 0);
                 }
         }
-    } 
+    }
+
+
+    static byte2 singleTileSize = new byte2(1, 1);
+    bool IsGhostBlocked(int2 ghostOrigin)
+    {
+        if (GameManager.Instance.GameWorld.worldGrid.IsEntityAt(ghostOrigin)) return true;
+
+        if (!GhostStructureData.size.Equals(singleTileSize))
+        {
+            var occupyLocations = Entity.GetOccupyingLocations(ghostOrigin, GhostStructureData.size, GhostRotation, GameManager.Instance.GameWorld.worldGrid);
+
+            foreach(var location in occupyLocations) 
+                if(location.entity != null) 
+                    return true;  
+        } 
+        return false;
+    }
 } 
