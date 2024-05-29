@@ -121,7 +121,7 @@ public abstract class Structure : Entity, IDemolishable
             if (floorLocation == null) { continue; } 
 
             floorLocation.RemoveEntity();
-            var newTile = new FloorTile(GameManager.Instance.GameWorld.TerrainGenerator.GenerateTileAt(position));
+            var newTile = new FloorTile(TerrainGenerationData.Instance.displaceTile);
             floorGrid.AddEntity(newTile, floorLocation.position);
         } 
     } 

@@ -70,7 +70,7 @@ public class Entity // 12 bytes
 
         for (var x = xRange.x; x <= xRange.y; x++) 
             for (var y = yRange.x; y <= yRange.y; y++) 
-                list.Add(grid.GetLocationAt(new int2(x, y))); 
+                list.Add(grid.GetOrAddLocation(new int2(x, y))); 
 
         return list;
     }

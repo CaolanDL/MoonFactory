@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c959649ace52a934799d95e3909b1b57, type: 3}
+  m_Name: ArcadeCabinet
+  m_EditorClassIdentifier: 
+  screenname: Arcade Machine
+  description: Runs some strange sort of software known as a "Video Game"
+  category: 4
+  sprite: {fileID: 21300000, guid: df79ab254a1c185468f89cdc805a6540, type: 3}
+  displayObject: {fileID: 4330987287618367385, guid: 63fece01349a3234581dd9cf9a970b0f,
+    type: 3}
+  size:
+    x: 1
+    y: 1
+  requiredResources:
+  - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
+    quantity: 4
+  timeToBuild: 99
+  CraftableResources: []
+  inputs: []
+  outputs: []
+  ports: []
+  ghostMesh: {fileID: -2164405602835657622, guid: c15ecb8b1911e7845a17bffe86c12e32,
+    type: 3}
+  ghostModels: []

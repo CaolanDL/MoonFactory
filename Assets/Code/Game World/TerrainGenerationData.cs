@@ -9,16 +9,18 @@ public class TerrainGenerationData : ScriptableObject
 { 
     public static TerrainGenerationData Instance { get; private set; }
 
-    public static int ChunkSize = 9;
-    public static int StartZoneSize = 9;
-    public float GenerationScalar = 9;
-
+    public static int ChunkGenerationDistance = 5;
+    public static int ChunkSize = 28;
+    public static int StartZoneSize = 16;
+    //public float GenerationScalar = 9;
+    [Space]
     [SerializeField] public float chanceToSpawnMeteorite = 0.02f;
     [SerializeField] public float maxMeteoriteScale = 0.5f;
     [SerializeField] public float minMeteoriteScale = 1f;
-
+    [Space]
+    [SerializeField] public float chanceToSpawnCrater = 0.02f;
+    [Space]
     [SerializeField] public FloorTileData displaceTile;
-
     [SerializeField] public ModelData[] MeteorModels; 
     [SerializeField] public List<CraterData> Craters;
 

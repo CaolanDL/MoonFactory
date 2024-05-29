@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed07c09d42bff264f861564a26d9cdce, type: 3}
   m_Name: Menu Data
   m_EditorClassIdentifier: 
+  SplashScreen: {fileID: 0}
   mainMenu: {fileID: 6591914507216965253, guid: f3ceeb9026ae29b4e89afbbf9125e3fe,
     type: 3}
   MobilePlatformWarning: {fileID: 2846562734260813511, guid: a1694f366d031164b83db085eeb65076,
@@ -35,6 +36,8 @@ MonoBehaviour:
   LanderInterface: {fileID: 1452811590041402077, guid: 819a5361b28a1f448a341b6753cb90ad,
     type: 3}
   StaticDrillInterface: {fileID: 1452811590041402077, guid: a103efbe715da4f418fdf5e965aa8e86,
+    type: 3}
+  ArcadeInterface: {fileID: 151012457491988207, guid: 904626a6080e43245b41eb93c7222ac6,
     type: 3}
   InventoryElement: {fileID: 5989839607907215971, guid: 20fb51a43e319da48b135c1fe96c623c,
     type: 3}

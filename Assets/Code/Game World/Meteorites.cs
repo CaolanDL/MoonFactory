@@ -3,7 +3,7 @@ using MoonFactory.Interfaces;
 using RoverTasks; 
 using UnityEngine;
 
-namespace Meteorites
+namespace Terrain
 {
     public class Meteorite : Entity, IDemolishable
     { 
@@ -25,9 +25,8 @@ namespace Meteorites
         public void Demolish()
         {
             GameObject.Destroy(demolishIcon); demolishIcon = null; 
-            RemoveEntity();
-            //Spawn Demolish Particles 
-            GameManager.Instance.GameWorld.meteorites.Remove(this);
+            RemoveEntity(); 
+            GameManager.Instance.GameWorld.meteorites.Remove(position);
         }
 
         public void ToggleDemolition()

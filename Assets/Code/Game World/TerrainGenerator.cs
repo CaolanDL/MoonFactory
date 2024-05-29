@@ -1,4 +1,4 @@
-﻿using Unity.Mathematics;
+﻿/*using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,4 +17,4 @@ public class TerrainGenerator
         return TerrainGenerationData.Instance.displaceTile; 
     }
 }
-
+*/

@@ -25,7 +25,7 @@ public class AssetWarmer
         WarmupDraw(renderData.Arrow, renderData.BlueGizmoMaterial);
         WarmupDraw(renderData.Arrow, renderData.TransparentBlueGizmoMaterial);
         WarmupDraw(renderData.Arrow, renderData.UniversalMaterial);
-        WarmupDraw(renderData.Arrow, globalData.mat_Tile);  
+        WarmupDraw(renderData.Arrow, globalData.TerrainMaterial);  
     }
 
     void WarmupDraw(Mesh mesh, Material material)

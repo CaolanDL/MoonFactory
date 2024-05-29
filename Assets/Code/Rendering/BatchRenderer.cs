@@ -1,8 +1,9 @@
 ﻿using ExtensionMethods;
-using Meteorites;
+using Terrain;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using System;
 
 public class BatchRenderer : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class BatchRenderer : MonoBehaviour
     BridgeRenderer platformRenderer = new();
     public ItemRenderer ItemRenderer { get { return GameManager.Instance.ItemRenderer; } }
     ElectricalCoverageRenderer electricalCoverageRenderer = new();
-    MeteorRenderer meteorRenderer = new();
+    TerrainDetailsRenderer terrainRenderer = new();
 
     public void Init()
     {
@@ -29,7 +30,7 @@ public class BatchRenderer : MonoBehaviour
         wireRenderer.RenderAll();
         gizmoRenderer.Render();
         platformRenderer.RenderAll();
-        meteorRenderer.RenderVisible();
+        terrainRenderer.RenderVisible();
 
         electricalCoverageRenderer.TryRender();
     } 
@@ -50,6 +51,118 @@ public class BatchRenderer : MonoBehaviour
         }
 
         chunkedMatrixArray.Reset();
+    }
+}
+
+public class TerrainDetailsRenderer
+{
+    private CameraController cameraController;
+    private Dictionary<ModelData, ChunkedMatrixArray> meteorMatrixArrays = new();
+    private Dictionary<Mesh, ChunkedMatrixArray> craterMatrixArrays = new();
+
+    public void RenderVisible()
+    {
+        cameraController = GameManager.Instance.CameraController;
+        var gameWorld = GameManager.Instance.GameWorld;
+
+        var VisibleRange = cameraController.GetLocalVisibleRange();
+        int2 camGridPos = cameraController.CameraGridPosition; 
+
+/*        for (int x = VisibleRange.x - 2; x < VisibleRange.y + 2; x++)
+        {
+            for (int y = VisibleRange.x - 2; y < VisibleRange.y + 2; y++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    (tileLocation.x, tileLocation.y) = (camGridPos.x + (x - y + j), camGridPos.y + (y + x + 1));
+                      
+                    Meteorite meteorite = null;
+                    if (gameWorld.meteorites.TryGetValue(tileLocation, out var m))
+                    {
+                        meteorite = m;
+                    }
+                    else continue;
+
+                    var v = meteorite.position.ToVector3();
+                    var r = meteorite.rotation.ToQuaternion();
+                    var s = Vector3.one * meteorite.scale;
+                    var matrix = Matrix4x4.TRS(v, r, s);
+
+                    QueueModel(meteorite.modelData, matrix);
+                }
+            }
+        }*/
+
+        // Queue Visible Meteors
+        ForIsometricRange((position) =>
+        { 
+            if (gameWorld.meteorites.TryGetValue(position, out var meteorite))
+            { 
+                var v = meteorite.position.ToVector3();
+                var r = meteorite.rotation.ToQuaternion();
+                var s = Vector3.one * meteorite.scale;
+                var matrix = Matrix4x4.TRS(v, r, s);
+
+                QueueMeteor(meteorite.modelData, matrix);
+            }  
+        });
+
+        // Queue Visible Craters
+        ForIsometricRange((position) =>
+        { 
+            if (gameWorld.craters.TryGetValue(position, out var crater))
+            { 
+                var v = crater.position.ToVector3();
+                var r = crater.rotation.ToQuaternion();
+                var s = Vector3.one;
+                var matrix = Matrix4x4.TRS(v, r, s);
+
+                QueueCrater(crater.craterData.mesh, matrix);
+            }
+        });
+
+
+        void ForIsometricRange(Action<int2> action)
+        {
+            for (int x = VisibleRange.x - 12; x < VisibleRange.y + 12; x++)
+            {
+                for (int y = VisibleRange.x - 12; y < VisibleRange.y + 12; y++)
+                {
+                    for (int j = 0; j < 2; j++)
+                    { 
+                        action(new(camGridPos.x + (x - y + j), camGridPos.y + (y + x + 1)));
+                    }
+                }
+            }
+        }
+
+        foreach (var kvp in meteorMatrixArrays)
+        {
+            BatchRenderer.RenderChunkedMatrixArray(kvp.Value, kvp.Key.Mesh, kvp.Key.Material);
+        }
+        foreach (var kvp in craterMatrixArrays)
+        {
+            BatchRenderer.RenderChunkedMatrixArray(kvp.Value, kvp.Key, GlobalData.Instance.TerrainMaterial);
+        }
+    }
+
+    void QueueMeteor(ModelData modelData, Matrix4x4 matrix)
+    {
+        if (meteorMatrixArrays.ContainsKey(modelData) == false)
+        {
+            meteorMatrixArrays.Add(modelData, new());
+        }
+
+        meteorMatrixArrays[modelData].QueueMatrix(matrix);
+    }
+    void QueueCrater(Mesh mesh, Matrix4x4 matrix)
+    {
+        if (craterMatrixArrays.ContainsKey(mesh) == false)
+        {
+            craterMatrixArrays.Add(mesh, new());
+        }
+
+        craterMatrixArrays[mesh].QueueMatrix(matrix);
     }
 }
 
@@ -158,58 +271,3 @@ public class ElectricalCoverageRenderer
     }
 }
 
-public class MeteorRenderer
-{
-    private CameraController cameraController;
-    private Dictionary<ModelData, ChunkedMatrixArray> matrixArrays = new(); 
-
-    public void RenderVisible()
-    {
-        cameraController = GameManager.Instance.CameraController;
-        var gameWorld = GameManager.Instance.GameWorld;
-
-        var VisibleRange = cameraController.GetLocalVisibleRange();
-        int2 camGridPos = cameraController.CameraGridPosition;
-        var tileLocation = new int2();
-
-        for (int x = VisibleRange.x - 1; x < VisibleRange.y + 1; x++)
-        {
-            for (int y = VisibleRange.x - 1; y < VisibleRange.y + 1; y++)
-            {
-                for (int j = 0; j < 2; j++)
-                {
-                    (tileLocation.x, tileLocation.y) = (camGridPos.x + (x - y + j), camGridPos.y + (y + x + 1));
-                    var entity = gameWorld.worldGrid.GetEntityAt(tileLocation);
-                    Meteorite meteorite = null;
-                    if (entity != null && entity.GetType() == typeof(Meteorite))
-                    {
-                        meteorite = (Meteorite)entity;
-                    }
-                    else continue;
-
-                    var v = meteorite.position.ToVector3();
-                    var r = meteorite.rotation.ToQuaternion();
-                    var s = Vector3.one * meteorite.scale;
-                    var matrix = Matrix4x4.TRS(v, r, s);
-
-                    QueueModel(meteorite.modelData, matrix);
-                }
-            }
-        }
-
-        foreach(var kvp in matrixArrays)
-        {
-            BatchRenderer.RenderChunkedMatrixArray(kvp.Value, kvp.Key.Mesh, kvp.Key.Material);
-        }
-    }
-
-    void QueueModel(ModelData modelData, Matrix4x4 matrix)
-    { 
-        if(matrixArrays.ContainsKey(modelData) == false)
-        {
-            matrixArrays.Add(modelData, new());
-        }
-
-        matrixArrays[modelData].QueueMatrix(matrix);
-    }
-}

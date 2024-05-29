@@ -488,6 +488,178 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Arcade"",
+            ""id"": ""04df3d39-4e80-470b-8237-e725781e66bc"",
+            ""actions"": [
+                {
+                    ""name"": ""Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""ea350768-e472-481f-b020-4d4b2c7705c5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""43ffec81-a8ae-4bf1-b80b-51da6a60a8e3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""e3fe150c-8a11-405a-83cb-66a991af1b0a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""e80735ae-540d-437f-b373-7004243a467f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Joystick"",
+                    ""type"": ""Value"",
+                    ""id"": ""2fdee02b-901a-42a6-8925-43600c704c35"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Action"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e766f50-cd50-457b-b9b0-ba2dfabc6275"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3a5c913a-aa21-4e8d-b986-d07a70a23520"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""81b7f406-a422-427a-b339-80f35e78c0d7"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1017a179-8e4b-4698-a12c-5f9b19ba8d86"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""67692102-bea8-4104-bb3d-23bbc898d030"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""5c012a13-241d-4466-9c8d-c54cc1594f6f"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Joystick"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""62c40ea4-cd79-495e-94b1-4b1f3bbc39f4"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Joystick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""0d1b29c2-63b4-4f55-acfe-8697716dd9a5"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Joystick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""4527a8e4-0b1f-4610-8989-8f306de3e198"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Joystick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""bb30b441-9222-4ce4-8411-a820166ab3b2"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Joystick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8dfc7148-2505-4fc4-95d1-8267fc0e31e9"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -531,6 +703,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_HUDControls_ScienceMenu = m_HUDControls.FindAction("Science Menu", throwIfNotFound: true);
         m_HUDControls_Demolish = m_HUDControls.FindAction("Demolish", throwIfNotFound: true);
         m_HUDControls_OptionsMenu = m_HUDControls.FindAction("OptionsMenu", throwIfNotFound: true);
+        // Arcade
+        m_Arcade = asset.FindActionMap("Arcade", throwIfNotFound: true);
+        m_Arcade_Up = m_Arcade.FindAction("Up", throwIfNotFound: true);
+        m_Arcade_Down = m_Arcade.FindAction("Down", throwIfNotFound: true);
+        m_Arcade_Left = m_Arcade.FindAction("Left", throwIfNotFound: true);
+        m_Arcade_Right = m_Arcade.FindAction("Right", throwIfNotFound: true);
+        m_Arcade_Joystick = m_Arcade.FindAction("Joystick", throwIfNotFound: true);
+        m_Arcade_Action = m_Arcade.FindAction("Action", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -852,6 +1032,92 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public HUDControlsActions @HUDControls => new HUDControlsActions(this);
+
+    // Arcade
+    private readonly InputActionMap m_Arcade;
+    private List<IArcadeActions> m_ArcadeActionsCallbackInterfaces = new List<IArcadeActions>();
+    private readonly InputAction m_Arcade_Up;
+    private readonly InputAction m_Arcade_Down;
+    private readonly InputAction m_Arcade_Left;
+    private readonly InputAction m_Arcade_Right;
+    private readonly InputAction m_Arcade_Joystick;
+    private readonly InputAction m_Arcade_Action;
+    public struct ArcadeActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public ArcadeActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Up => m_Wrapper.m_Arcade_Up;
+        public InputAction @Down => m_Wrapper.m_Arcade_Down;
+        public InputAction @Left => m_Wrapper.m_Arcade_Left;
+        public InputAction @Right => m_Wrapper.m_Arcade_Right;
+        public InputAction @Joystick => m_Wrapper.m_Arcade_Joystick;
+        public InputAction @Action => m_Wrapper.m_Arcade_Action;
+        public InputActionMap Get() { return m_Wrapper.m_Arcade; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ArcadeActions set) { return set.Get(); }
+        public void AddCallbacks(IArcadeActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ArcadeActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ArcadeActionsCallbackInterfaces.Add(instance);
+            @Up.started += instance.OnUp;
+            @Up.performed += instance.OnUp;
+            @Up.canceled += instance.OnUp;
+            @Down.started += instance.OnDown;
+            @Down.performed += instance.OnDown;
+            @Down.canceled += instance.OnDown;
+            @Left.started += instance.OnLeft;
+            @Left.performed += instance.OnLeft;
+            @Left.canceled += instance.OnLeft;
+            @Right.started += instance.OnRight;
+            @Right.performed += instance.OnRight;
+            @Right.canceled += instance.OnRight;
+            @Joystick.started += instance.OnJoystick;
+            @Joystick.performed += instance.OnJoystick;
+            @Joystick.canceled += instance.OnJoystick;
+            @Action.started += instance.OnAction;
+            @Action.performed += instance.OnAction;
+            @Action.canceled += instance.OnAction;
+        }
+
+        private void UnregisterCallbacks(IArcadeActions instance)
+        {
+            @Up.started -= instance.OnUp;
+            @Up.performed -= instance.OnUp;
+            @Up.canceled -= instance.OnUp;
+            @Down.started -= instance.OnDown;
+            @Down.performed -= instance.OnDown;
+            @Down.canceled -= instance.OnDown;
+            @Left.started -= instance.OnLeft;
+            @Left.performed -= instance.OnLeft;
+            @Left.canceled -= instance.OnLeft;
+            @Right.started -= instance.OnRight;
+            @Right.performed -= instance.OnRight;
+            @Right.canceled -= instance.OnRight;
+            @Joystick.started -= instance.OnJoystick;
+            @Joystick.performed -= instance.OnJoystick;
+            @Joystick.canceled -= instance.OnJoystick;
+            @Action.started -= instance.OnAction;
+            @Action.performed -= instance.OnAction;
+            @Action.canceled -= instance.OnAction;
+        }
+
+        public void RemoveCallbacks(IArcadeActions instance)
+        {
+            if (m_Wrapper.m_ArcadeActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IArcadeActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ArcadeActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ArcadeActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ArcadeActions @Arcade => new ArcadeActions(this);
     private int m_DesktopSchemeIndex = -1;
     public InputControlScheme DesktopScheme
     {
@@ -886,5 +1152,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnScienceMenu(InputAction.CallbackContext context);
         void OnDemolish(InputAction.CallbackContext context);
         void OnOptionsMenu(InputAction.CallbackContext context);
+    }
+    public interface IArcadeActions
+    {
+        void OnUp(InputAction.CallbackContext context);
+        void OnDown(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
+        void OnJoystick(InputAction.CallbackContext context);
+        void OnAction(InputAction.CallbackContext context);
     }
 }

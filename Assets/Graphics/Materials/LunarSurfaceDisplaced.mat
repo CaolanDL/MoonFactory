@@ -130,7 +130,7 @@ Material:
     - _Level_Two: 0.1
     - _Level_Two_Mult: 0.4
     - _Metallic: 0
-    - _Normal_Height: 8
+    - _Normal_Height: 6
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0

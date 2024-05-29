@@ -130,16 +130,14 @@ namespace Electrical
 
     public class Node
     {
-        public Structure Parent;
-        //public int2 parentPosition;
+        public Structure Parent; 
         public Network Network;
         public List<Connection> Connections = new();
         public bool CanConnect = true;
 
         public void Constructed()
         {
-            SystemManager.nodes.Add(this);
-            //parentPosition = Parent.position;
+            SystemManager.nodes.Add(this); 
             Parent.OnDemolishedEvent += Demolished; 
             OnConstructed();
         }
@@ -163,8 +161,7 @@ namespace Electrical
 
             if (IsConnectedTo(node)) { return false; }
             if (node.CanConnect == false) { return false; }
-
-            //! Big Smart: Only connect to node, if none of its connected nodes are already connected to this one 
+             
             foreach (var connection in node.Connections)
             {
                 var otherNode = connection.GetOther(node);
@@ -310,9 +307,7 @@ namespace Electrical
         public Vector3 origin;
         public Quaternion rotation;
         public Vector3 scale;
-
-        // public object LineBetweenA&B
-
+  
         public Connection(Node a, Node b)
         {
             this.a = a;
@@ -333,13 +328,11 @@ namespace Electrical
         }
 
         public void Init()
-        {
-            // Create new LineBetweenA&B (a.entity.location)
+        { 
         }
 
         public void Destroy()
-        {
-            // Destory LineBetweenA&B
+        { 
             a.Connections.Remove(this);
             b.Connections.Remove(this);
 
@@ -445,10 +438,10 @@ namespace Electrical
             var bestNetwork = nearbyRelays[0].Network;
             List<Node> bestRelays = new();
             // Remove all relays that are not part of the best network.
-            foreach(var relay in nearbyRelays)
+            foreach(var node in nearbyRelays)
             {
-                if(relay.Network == null) continue;
-                if(relay.Network == bestNetwork) bestRelays.Add(relay); 
+                if(node.Network == null) continue;
+                if(node.Network == bestNetwork) bestRelays.Add(node); 
             } 
             bestRelays.Sort(SortNodeByDistanceToSelf);
 
@@ -460,7 +453,7 @@ namespace Electrical
         }
     }
 
-    public class Input : Component
+    public class Input : Relay
     {
         public float MaxProduction = 10f;
         public float Production = 1f;

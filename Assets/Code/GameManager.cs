@@ -177,9 +177,9 @@ public class GameManager : MonoBehaviour
         TaskManager = new();
         RoverManager = new();
         ElectricalSystemManager = new();
-
+/*
         // Start zone is generated
-        GameWorld.GenerateStartZone();
+        GameWorld.GenerateStartZone();*/
 
         // Descent vehicle animation plays
         Instantiate(RenderData.LanderSequence);

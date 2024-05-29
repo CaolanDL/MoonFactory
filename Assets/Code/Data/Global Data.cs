@@ -28,7 +28,7 @@ public class GlobalData : ScriptableObject
     public Material mat_Ghost;
     public Material mat_GhostBlocked;
     [Space]
-    public Material mat_Tile;
+    public Material TerrainMaterial;
 
 
     [Space(8), Header("Gizmos")]

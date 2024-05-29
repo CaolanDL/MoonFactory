@@ -752,10 +752,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3243265478779609162, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
+        type: 3}
+      propertyPath: rolloffMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5097026221170367744, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
         type: 3}
       propertyPath: m_Name
       value: Game Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156054648721789221, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
+        type: 3}
+      propertyPath: MainMenuMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 0e60b22244e659141bf17301635174a1, type: 3}
+    - target: {fileID: 7753882727360442230, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
+        type: 3}
+      propertyPath: maxZoom
+      value: 38
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

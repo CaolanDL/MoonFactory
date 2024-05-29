@@ -15,7 +15,7 @@ MonoBehaviour:
   screenname: Smelter
   description: Used to smelt away oxidisation thus refining metals.
   category: 2
-  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
+  sprite: {fileID: 21300000, guid: b526f3ea045706e4faf1072f89f190cc, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: a03f8f56cf80859448ecb41583f8c0ed,
     type: 3}
   size:
@@ -45,4 +45,3 @@ MonoBehaviour:
   ghostMesh: {fileID: 2089099178740792526, guid: 77e3c6862668a2743ae74479b09dba3f,
     type: 3}
   ghostModels: []
-  unlocked: 1

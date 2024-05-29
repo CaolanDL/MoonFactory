@@ -2,10 +2,12 @@
 using UnityEngine;
 
 
+//? Lander is not connecting to machines until a power pylon is placed next to it?
+
 public class Lander : Structure
 {
     public float powerProduction = 50f;   
-    public Electrical.Relay ElectricalRelay; 
+    //public Electrical.Relay ElectricalRelay; 
     public Inventory inventory = new Inventory();
 
     override public bool PlayConstructedAnimation { get => false; }
@@ -36,25 +38,26 @@ public class Lander : Structure
 
         ElectricalNode = new Electrical.Input();
         ((Electrical.Input)ElectricalNode).Production = powerProduction;
+        ((Electrical.Input)ElectricalNode).connectionRange = 6;
 
-        ElectricalRelay = new()
+        /*ElectricalRelay = new()
         {
             Parent = this 
         };
-        ElectricalRelay.connectionRange = 6;
+        ElectricalRelay.connectionRange = 6;*/
 
         GameManager.Instance.Lander = this;
     }
 
     public override void OnConstructed()
     { 
-        ElectricalRelay.Constructed();
+        /*ElectricalRelay.Constructed();*/
     }
 
     public override void OnDemolished()
     {
         base.OnDemolished();
-        ElectricalRelay.Demolished();
+        /*ElectricalRelay.Demolished();*/
     }
 
     void AddStartingResources()

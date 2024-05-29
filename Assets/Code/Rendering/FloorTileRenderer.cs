@@ -20,7 +20,7 @@ public class FloorTileRenderer : MonoBehaviour
     {
         cameraController = GetComponent<CameraController>();
 
-        renderParams = new RenderParams(GameManager.Instance.GlobalData.mat_Tile);
+        renderParams = new RenderParams(GameManager.Instance.GlobalData.TerrainMaterial);
     }
 
     public void Init()
@@ -38,19 +38,14 @@ public class FloorTileRenderer : MonoBehaviour
         DrawVisibleFloorTiles();
     }
 
-    // Cached instanced to improve garbage collection perf
+    // Cached instanced to improve garbage collection perf <- This is non factual I think, Still Learning how this gets compiled.
+    // Pretty sure this compiles exactly the same as using var in the loop.
 
-    GameWorld gameWorld;
-
-    FloorTile currentFloorTile;
-
-
-    int2 tileLocation;
-
-    int2 xVisibleRange;
-
-    int2 yVisibleRange;
-
+    GameWorld gameWorld; 
+    FloorTile currentFloorTile; 
+    int2 tileLocation; 
+    int2 xVisibleRange; 
+    int2 yVisibleRange; 
 
     void DrawVisibleFloorTiles()
     {
@@ -72,10 +67,10 @@ public class FloorTileRenderer : MonoBehaviour
                 { 
                     (tileLocation.x, tileLocation.y) = (camGridPos.x + (x - y + j) , camGridPos.y + (y + x + 1) ); 
 
-                    currentFloorTile = (FloorTile)gameWorld.floorGrid.GetEntityAt(tileLocation);
-
-                    if (currentFloorTile == null) { continue; } 
-
+                    var currentEntity = gameWorld.floorGrid.GetEntityAt(tileLocation); 
+                    if (currentEntity is null || currentEntity is not FloorTile) { continue; } 
+                    currentFloorTile = (FloorTile)currentEntity; 
+                    
                     QueueTile();
                     tilesRenderedThisFrame++;
                 } 
@@ -133,7 +128,7 @@ public class FloorTileRenderer : MonoBehaviour
     {
         Vector3 worldPosition = new Vector3(gridPosition.x, 0, gridPosition.y);
 
-        Graphics.DrawMesh(tileData.mesh, worldPosition, quaternion.identity, GlobalData.Instance.mat_Tile, 0);
+        Graphics.DrawMesh(tileData.mesh, worldPosition, quaternion.identity, GlobalData.Instance.TerrainMaterial, 0);
     }
 
 }
