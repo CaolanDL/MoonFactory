@@ -5,10 +5,14 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class CameraController3D : MonoBehaviour
 {
     [SerializeField] public Camera activeMainCamera;
+    [SerializeField] public VolumeProfile postProcProfile;
+    [SerializeField] public DepthOfField dof;
 
     [SerializeField] int renderDistance = 20;
 
@@ -23,7 +27,7 @@ public class CameraController3D : MonoBehaviour
     [Space]
     [SerializeField] Transform OrbitSpin;
     [SerializeField] public float spinSpeed = 0.32f;
-    private float _spin = 45;
+    private float _spin = -45;
     public float spin
     {
         get { return _spin; }
@@ -61,6 +65,11 @@ public class CameraController3D : MonoBehaviour
         set { _targetZoom = Mathf.Clamp(value, minZoom, maxZoom); }
     }
 
+    private void Awake()
+    {
+        postProcProfile.TryGet<DepthOfField>(out dof);
+    }
+
     private void LateUpdate()
     { 
         OrbitSpin.localRotation = Quaternion.Euler(0, spin, 0); // Set camera spin
@@ -68,6 +77,7 @@ public class CameraController3D : MonoBehaviour
 
         zoom = Mathf.SmoothDamp(zoom, targetZoom, ref zoomVelocity, 0.1f, 36f);
         OrbitOffset.localPosition = new Vector3(0, 0, -zoom); // Set Zoom
+        dof.focusDistance.value = zoom;
 
         OrbitOrigin.position = position; // Set Camera Position
     }

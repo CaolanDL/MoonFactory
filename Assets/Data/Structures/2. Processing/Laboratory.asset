@@ -15,17 +15,22 @@ MonoBehaviour:
   screenname: Laboratory
   description: Used to cook meth, re-animate the dead, and also create silicon crystals
   category: 2
-  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
+  sprite: {fileID: 21300000, guid: daf664f1f6ba6324e9996ca09212f35e, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: 58941b8c46ede5843a8fc37abee6cd42,
     type: 3}
   size:
     x: 2
     y: 2
   requiredResources:
-  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
-    quantity: 25
+  - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
+    quantity: 10
+  - resource: {fileID: 11400000, guid: 03aa95c2254ffdf49841024aa82555d2, type: 2}
+    quantity: 10
   timeToBuild: 99
-  CraftableResources: []
+  CraftableResources:
+  - {fileID: 11400000, guid: 36da3d2c1cba5d941ad6b20906301010, type: 2}
+  - {fileID: 11400000, guid: 2207201ae852304419ed7110fe777223, type: 2}
+  - {fileID: 11400000, guid: ade9b5d5abbb1e7428491797c94bded7, type: 2}
   inputs:
   - position:
       x: 0
@@ -41,7 +46,6 @@ MonoBehaviour:
       y: 2
     _rotation: 0
   ports: []
-  ghostMesh: {fileID: 8975217756501383161, guid: ae658def57913a840afdcabc917cb464,
+  ghostMesh: {fileID: 4237188414213446680, guid: ae658def57913a840afdcabc917cb464,
     type: 3}
   ghostModels: []
-  unlocked: 1

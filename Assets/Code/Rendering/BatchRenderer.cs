@@ -124,9 +124,9 @@ public class TerrainDetailsRenderer
 
         void ForIsometricRange(Action<int2> action)
         {
-            for (int x = VisibleRange.x; x < VisibleRange.y; x++)
+            for (int x = VisibleRange.x - 8; x < VisibleRange.y + 8; x++)
             {
-                for (int y = VisibleRange.x; y < VisibleRange.y; y++)
+                for (int y = VisibleRange.x - 8; y < VisibleRange.y + 8; y++)
                 {
                     for (int j = 0; j < 2; j++)
                     { 

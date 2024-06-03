@@ -434,7 +434,7 @@ namespace Electrical
 
         public void ConnectToNearbyRelays()
         {
-            Debug.Log("Starting Connection");
+           // Debug.Log("Starting Connection");
             if (Connections.Count > 0) return;
 
             List<Node> nearbyRelays = FindNearbyNodesByType(typeof(Relay), connectionRange);
@@ -449,13 +449,13 @@ namespace Electrical
                 if(node.Network == bestNetwork) bestRelays.Add(node); 
             } 
             bestRelays.Sort(SortNodeByDistanceToSelf);
-            Debug.Log("Testing Count");
+            //Debug.Log("Testing Count");
 
             if (bestRelays.Count == 0) return; 
             if (bestRelays[0] == null) return;
 
             CreateConnectionTo(bestRelays[0]);
-            Debug.Log("Connected to something");
+            //Debug.Log("Connected to something");
         }
     }
 

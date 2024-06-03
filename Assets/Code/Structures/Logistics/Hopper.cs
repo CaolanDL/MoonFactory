@@ -9,8 +9,8 @@ namespace Logistics
     {
         public static List<Hopper> pool = new List<Hopper>();
 
-        public static int maxItems = 16;
-        public static int renderGap = 1;
+        public static int maxItems = 128;
+        public static int renderGap = 8;
 
         public Inventory inputInventory;
         public Inventory storageInventory;

@@ -23,12 +23,13 @@ MonoBehaviour:
     x: 3
     y: 3
   requiredResources:
-  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
-    quantity: 25
+  - resource: {fileID: 11400000, guid: 03aa95c2254ffdf49841024aa82555d2, type: 2}
+    quantity: 20
   timeToBuild: 99
-  CraftingFormulas: []
+  CraftableResources: []
   inputs: []
   outputs: []
+  ports: []
   ghostMesh: {fileID: -6161859482150698858, guid: d067fa762a5bae44e83197dda6ebcf40,
     type: 3}
   ghostModels: []

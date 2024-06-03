@@ -9,10 +9,10 @@ public class Crusher : Machine
 
         isCrafter = true;
 
-        OutputInventories[0].maxItems = 10; 
+        OutputInventories[0].maxItems = 32; 
         OutputInventories[0].maxTypes = 1;
 
-        InputInventories[0].maxItems = 5; 
+        InputInventories[0].maxItems = 12; 
         InputInventories[0].maxTypes = 1;
     }
 
@@ -65,10 +65,10 @@ public class MagneticSeperator : Machine
 
         isCrafter = true;
 
-        OutputInventories[0].maxItems = 10; 
+        OutputInventories[0].maxItems = 24; 
         OutputInventories[0].maxTypes = 1;
 
-        InputInventories[0].maxItems = 24; 
+        InputInventories[0].maxItems = 32; 
         InputInventories[0].maxTypes = 1;
     }
 

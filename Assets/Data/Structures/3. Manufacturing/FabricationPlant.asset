@@ -23,10 +23,15 @@ MonoBehaviour:
     x: 2
     y: 2
   requiredResources:
-  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+  - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
     quantity: 25
   timeToBuild: 99
-  CraftableResources: []
+  CraftableResources:
+  - {fileID: 11400000, guid: d32914b4c2ad4fa4b913ebeaad54a151, type: 2}
+  - {fileID: 11400000, guid: 33f84905fe7869f4ea7ffbe657857e59, type: 2}
+  - {fileID: 11400000, guid: 505d6e919bbaff9429b3af58fbc2d51d, type: 2}
+  - {fileID: 11400000, guid: 75c7a7199ef714c4c81c272d95516e9b, type: 2}
+  - {fileID: 11400000, guid: 27317114562aff14588422cbca7bec3a, type: 2}
   inputs:
   - position:
       x: 0
@@ -53,4 +58,3 @@ MonoBehaviour:
   ghostMesh: {fileID: 8423671646281324818, guid: 6fd680c5450887347955ba872f6a28cf,
     type: 3}
   ghostModels: []
-  unlocked: 1

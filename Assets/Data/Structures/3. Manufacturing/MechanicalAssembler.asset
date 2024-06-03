@@ -23,11 +23,21 @@ MonoBehaviour:
     x: 2
     y: 2
   requiredResources:
-  - resource: {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
+  - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
     quantity: 25
   timeToBuild: 99
-  CraftingFormulas: []
-  CraftableResources: []
+  CraftableResources:
+  - {fileID: 11400000, guid: 8f84145541d56d449a45eb4c424bebf8, type: 2}
+  - {fileID: 11400000, guid: 89cd3a65ea7b575479cf4ff18309a1e3, type: 2}
+  - {fileID: 11400000, guid: 75e6062a00713f44d87bd56180df6b1b, type: 2}
+  - {fileID: 11400000, guid: eeee5fdeca2ba87479517fed0158cded, type: 2}
+  - {fileID: 11400000, guid: f2a5b0aba6ea8aa4ab64fd045e7d22e6, type: 2}
+  - {fileID: 11400000, guid: 5133f1a46defeb14ca913447f5acd0f2, type: 2}
+  - {fileID: 11400000, guid: 24e684855b181b045b5c3c040c8d18c8, type: 2}
+  - {fileID: 11400000, guid: 0269bcbc6eb64694589ca8a4f5818b54, type: 2}
+  - {fileID: 11400000, guid: 55fcb95eb0f29eb45b5514ea2c1ee49f, type: 2}
+  - {fileID: 11400000, guid: 8b1812edaa59fbf42b4c2404ec11aff6, type: 2}
+  - {fileID: 11400000, guid: f254d7672123b6548bbcca0671d3dd43, type: 2}
   inputs:
   - position:
       x: 0
@@ -54,4 +64,3 @@ MonoBehaviour:
   ghostMesh: {fileID: -6188161795047023275, guid: 9450df16ded2fe3408e7fd109925918a,
     type: 3}
   ghostModels: []
-  unlocked: 1

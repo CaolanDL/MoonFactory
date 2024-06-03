@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1.1
+  m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0, g: 0, b: 0, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 5dbb079a58f4b574dbae92952c62f294, type: 2}
@@ -33,12 +33,12 @@ RenderSettings:
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
   m_DefaultReflectionMode: 0
-  m_DefaultReflectionResolution: 512
+  m_DefaultReflectionResolution: 1024
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.011310233, g: 0.010389285, b: 0.011566778, a: 1}
+  m_IndirectSpecularColor: {r: 0.012135687, g: 0.0110747535, b: 0.012535619, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -98,7 +98,8 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: dd7e5a95345d56945a4947c5f61623dd,
+    type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -123,12 +124,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!20 &858951217 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 7176258000031522209, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-    type: 3}
-  m_PrefabInstance: {fileID: 6023452988525603525}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &980152952 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9065274673057177581, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
@@ -479,12 +474,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1049663708}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1541418955 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3493438987334964525, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-    type: 3}
-  m_PrefabInstance: {fileID: 6023452988525603525}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1544450766 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5849718620596144642, guid: 6778086d57e5fe042a437210573861ac,
@@ -768,61 +757,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Game Manager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7303187250104571920, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      propertyPath: m_Name
-      value: Orbit Pitch
-      objectReference: {fileID: 0}
-    - target: {fileID: 7577564672604919665, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      propertyPath: maxZoom
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 7577564672604919665, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      propertyPath: maxPitch
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 7577564672604919665, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      propertyPath: maxSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7577564672604919665, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      propertyPath: minPitch
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 7577564672604919665, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      propertyPath: spinSpeed
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7577564672604919665, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      propertyPath: tiltSpeed
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7577564672604919665, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      propertyPath: OrbitPitch
-      value: 
-      objectReference: {fileID: 1541418955}
-    - target: {fileID: 7577564672604919665, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      propertyPath: renderDistance
-      value: 28
-      objectReference: {fileID: 0}
-    - target: {fileID: 7577564672604919665, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      propertyPath: activeMainCamera
-      value: 
-      objectReference: {fileID: 858951217}
-    - target: {fileID: 7577564672604919665, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
-        type: 3}
-      propertyPath: motionSmoothness
-      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
