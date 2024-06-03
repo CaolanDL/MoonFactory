@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -11,7 +12,7 @@ public class TerrainGenerationData : ScriptableObject
 
     public static int ChunkGenerationDistance = 5;
     public static int ChunkSize = 28;
-    public static int StartZoneSize = 16;
+    public static int StartZoneSize = 24;
     //public float GenerationScalar = 9;
     [Space]
     [SerializeField] public float chanceToSpawnMeteorite = 0.02f;
@@ -19,16 +20,19 @@ public class TerrainGenerationData : ScriptableObject
     [SerializeField] public float minMeteoriteScale = 1f;
     [Space]
     [SerializeField] public float chanceToSpawnCrater = 0.02f;
+    [SerializeField] public float chanceToSpawnRubble = 0.1f;
     [Space]
     [SerializeField] public FloorTileData displaceTile;
+    [SerializeField] public FloorTileData[] Tiles;
     [SerializeField] public ModelData[] MeteorModels; 
     [SerializeField] public List<CraterData> Craters;
+    [SerializeField] public ModelData[] Rubble;
 
     //[SerializeField] public List<FloorTileData> topographyTiles; 
     //[SerializeField] public List<FloorTileData> randomTiles; 
     //[SerializeField] public List<FloorTileData> rubbleTiles;
 
-    [NonSerialized] public  List<FloorTileData> tileRegistry = new(); 
+    [NonSerialized] public List<FloorTileData> tileRegistry = new(); 
 
     private void OnValidate()
     {
@@ -58,10 +62,7 @@ public class TerrainGenerationData : ScriptableObject
     {
         tileRegistry.Clear();
 
-/*        LoopListAndRegister(topographyTiles);
-        LoopListAndRegister(randomTiles);
-        LoopListAndRegister(craterTiles);
-        LoopListAndRegister(rubbleTiles);*/
+        LoopListAndRegister(Tiles.ToList()); 
 
         tileRegistry.Add(displaceTile);
 

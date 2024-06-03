@@ -25,6 +25,7 @@ MonoBehaviour:
   UI_PopupResearchComplete: {fileID: 8300000, guid: ecca87656e78fb54e8de4fd4f49e5225,
     type: 3}
   UI_PopupUnlock: {fileID: 8300000, guid: ecca87656e78fb54e8de4fd4f49e5225, type: 3}
+  UI_Error: {fileID: 8300000, guid: 15c71c25c5982f34e8ed4c0ec3e48ac9, type: 3}
   Tool_PlaceGhost: {fileID: 8300000, guid: c42e8e07e94a82349bdc43e8d81b4861, type: 3}
   Tool_DeleteGhost: {fileID: 8300000, guid: aa480bd9c8bc60e4ea4b69d9cd88f366, type: 3}
   Tool_Bulldoze: {fileID: 8300000, guid: d5855d2d2675c3441b4a857432bdca84, type: 3}

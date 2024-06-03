@@ -16,7 +16,33 @@ MonoBehaviour:
   maxMeteoriteScale: 0.8
   minMeteoriteScale: 0.3
   chanceToSpawnCrater: 0.002
+  chanceToSpawnRubble: 0.1
   displaceTile: {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  Tiles:
+  - {fileID: 11400000, guid: 065a79a3e27c43141b9b9f03e6a4f99b, type: 2}
+  - {fileID: 11400000, guid: 9ce618c0664e2954f8c9c56504e3d8da, type: 2}
+  - {fileID: 11400000, guid: 844997c06e5bae44f9c038df7171cb0a, type: 2}
+  - {fileID: 11400000, guid: 726ad1af0cd34c3478a8ee5903264d95, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
+  - {fileID: 11400000, guid: f061dd41d076bf44b8fc6f3e66696406, type: 2}
   MeteorModels:
   - {fileID: 11400000, guid: 80aa615742779f44ba212cc3c43a1887, type: 2}
   - {fileID: 11400000, guid: 5262342822a1a3645bd5afc73b0be7d2, type: 2}
@@ -26,3 +52,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 38b889e633781d145a6209624e2fcb1d, type: 2}
   - {fileID: 11400000, guid: d4b662e4bc23fd74599ebf55b26cb35b, type: 2}
   - {fileID: 11400000, guid: 54df8c1f66122f8478b82be3acc171e1, type: 2}
+  Rubble:
+  - {fileID: 11400000, guid: c734ae1c539308d47ba37878a24b1cc1, type: 2}
+  - {fileID: 11400000, guid: 540a3875d01877e4baaee846747ae357, type: 2}
+  - {fileID: 11400000, guid: dbf99076e3968f2419fd5f3c130f3f30, type: 2}
+  - {fileID: 11400000, guid: c54070f0d9084ac42be7b5e5ed4fc529, type: 2}

@@ -44,6 +44,12 @@ public class BuildStructureButton : MonoBehaviour
 
     public void ButtonPressed()
     {
+        if (!TutorialProxy.IsBuildingAllowed(structureData))
+        {
+            PlayErrorSound();
+            return;
+        }
+
         var gameManager = GameManager.Instance;
 
         gameManager.GetComponent<PlayerInputManager>().ChangeInputState(PlayerInputManager.InputState.Default);
@@ -54,6 +60,8 @@ public class BuildStructureButton : MonoBehaviour
 
         HandlePressedTutorialEvents();
     }
+
+    void PlayErrorSound() => AudioManager.Instance.PlaySound(AudioData.Instance.UI_Error); 
 
     void HandlePressedTutorialEvents()
     {

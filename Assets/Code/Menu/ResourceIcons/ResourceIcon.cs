@@ -30,6 +30,9 @@ public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         DestroyTooltip();
     }
 
+    private void OnDisable() => DestroyTooltip(); 
+    private void OnDestroy() => DestroyTooltip(); 
+
     public void DestroyTooltip()
     {
         Destroy(tooltip);

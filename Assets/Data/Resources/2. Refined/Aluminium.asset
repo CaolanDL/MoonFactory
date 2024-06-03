@@ -25,4 +25,4 @@ MonoBehaviour:
   quantityCrafted: 1
   requiredResources:
   - resource: {fileID: 11400000, guid: 1684389b2533c524a86b74105a78ab63, type: 2}
-    quantity: 10
+    quantity: 2

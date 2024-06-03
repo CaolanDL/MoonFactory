@@ -1,3 +1,4 @@
+using ExtensionMethods;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class PongBall : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rigidbody.AddForce(Vector2.left * startSpeed);
+        var force = (Vector2.left * startSpeed).Rotate((Random.value - 0.5f) * 25f);
+        rigidbody.AddForce(force);
     }
 }

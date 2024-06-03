@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 955f6eb5197a0244fa053c16e69f553f, type: 3}
-  m_Name: TopographyTile
+  m_Script: {fileID: 11500000, guid: 5d46f4f125abeec4bb9fb1565c2d49e4, type: 3}
+  m_Name: Rubble 1
   m_EditorClassIdentifier: 
-  mesh: {fileID: 6125122955090766722, guid: cf121182f52cb894a8c05de538bcf4c1, type: 3}
-  chanceToSpawn: 1
+  Mesh: {fileID: 6843208748145408863, guid: e71a67e6325efed4591b50b9ad15cf5c, type: 3}
+  Material: {fileID: 2100000, guid: aa95504ad140166438feaf23b3d93ed4, type: 2}

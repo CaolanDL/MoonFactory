@@ -80,9 +80,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6b04b98578fc8ae4bb6db77aa10d8742, type: 2}
   StarterResources:
   - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
-    quantity: 40
+    quantity: 52
   - resource: {fileID: 11400000, guid: 03aa95c2254ffdf49841024aa82555d2, type: 2}
-    quantity: 40
+    quantity: 52
   - resource: {fileID: 11400000, guid: 3ee242ca696550040961d34f16706d45, type: 2}
     quantity: 2
   - resource: {fileID: 11400000, guid: 505d6e919bbaff9429b3af58fbc2d51d, type: 2}

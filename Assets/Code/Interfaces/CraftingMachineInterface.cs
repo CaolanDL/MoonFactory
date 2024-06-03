@@ -12,6 +12,7 @@ public class CraftingMachineInterface : StaticInterface
     public List<SingleStackInventoryElement> OutputInvElements;
 
     [SerializeField] public Slider PowerMeter;
+    [SerializeField] public Slider CraftingMeter;
     public Transform CraftingCog;
 
     public Machine machine;
@@ -37,14 +38,16 @@ public class CraftingMachineInterface : StaticInterface
         if (machine.isCrafting)
         {
             CraftingCog.transform.Rotate(0, 0, 100 * Time.deltaTime);
-        }
+        } 
+
+        CraftingMeter.value = 1f - machine.craftingCountdown;
     }
 
     public override void UpdateUI()
     {
         UpdateInputInventoryElements();
         UpdateOuputInventoryElements();
-        UpdatePowerMeter(); 
+        UpdateMeters(); 
     }
 
     public override void Init(Entity entity, Vector3 screenPosition)
@@ -116,9 +119,10 @@ public class CraftingMachineInterface : StaticInterface
         }
     }
 
-    public void UpdatePowerMeter()
+    public void UpdateMeters()
     {
         if (PowerMeter == null || machine == null) { return; }
+
         if (machine.ElectricalNode == null)
         {
             PowerMeter.value = 0;
@@ -133,6 +137,6 @@ public class CraftingMachineInterface : StaticInterface
         {
             PowerMeter.value = machine.ElectricalNode.Network.ClampedPowerRatio;
             return;
-        } 
+        }  
     }
 }

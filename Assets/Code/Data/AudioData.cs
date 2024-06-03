@@ -21,6 +21,8 @@ public class AudioData : ScriptableObject
     public AudioClip UI_PopupResearchComplete;
     public AudioClip UI_PopupUnlock;
 
+    public AudioClip UI_Error;
+
     [Header("Tool Sounds")]
     public AudioClip Tool_PlaceGhost;
     public AudioClip Tool_DeleteGhost;
@@ -36,6 +38,7 @@ public class AudioData : ScriptableObject
     public AudioClip Rover_DeliverResource;
     public AudioClip Rover_Constructing;
     public AudioClip Rover_Idle;
+
 
     #region Singleton Instance
     public static AudioData Instance { get; private set; }

@@ -20,7 +20,21 @@ public class StructureTooltip : MonoBehaviour
 
     private void Start()
     {
-        SetPosition();
+        SetStartPosition();
+    }
+
+    Vector3 velocity = Vector3.zero;
+    private void Update()
+    {
+        transform.position = Vector3.SmoothDamp(transform.position, Input.mousePosition, ref velocity, 0.1f);
+    } 
+
+    void SetStartPosition()
+    {
+        var mousePos = Mouse.current.position.value;
+        transform.position = new Vector3(mousePos.x, mousePos.y, 0);
+
+        Canvas.ForceUpdateCanvases();
     }
 
     public void SetDetails(StructureData structureData)
@@ -30,7 +44,7 @@ public class StructureTooltip : MonoBehaviour
         Title.SetText(structureData.screenname); 
         Description.SetText(structureData.description);
 
-        if(structure.CraftableResources.Count == 0)
+/*        if(structure.CraftableResources.Count == 0)
         {
             Destroy(CraftablesContainer.gameObject);
             Destroy(CraftablesHeader);
@@ -42,7 +56,7 @@ public class StructureTooltip : MonoBehaviour
                 var icon = Instantiate(ResourceIconPrefab, CraftablesContainer);
                 icon.GetComponent<ResourceIcon>()?.SetDetails(craftable); 
             }
-        } 
+        } */
         foreach (var rq in structure.requiredResources)
         {
             var icon = Instantiate(ResourceIconCountPrefab, RequirmentsContainer);
@@ -50,19 +64,6 @@ public class StructureTooltip : MonoBehaviour
             icon.GetComponent<ResourceIcon>()?.SetCount(rq.quantity); 
         }
 
-        SetPosition(); 
-    }
-
-    private void Update()
-    {
-        SetPosition();
-    }
-
-    void SetPosition()
-    {
-        var mousePos = Mouse.current.position.value;
-        transform.position = new Vector3(mousePos.x, mousePos.y, 0);
-
-        Canvas.ForceUpdateCanvases();
-    }
+        SetStartPosition(); 
+    } 
 }

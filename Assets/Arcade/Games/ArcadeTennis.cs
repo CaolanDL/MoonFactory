@@ -12,31 +12,34 @@ public class ArcadeTennis : MonoBehaviour
     public ArcadeActions arcadeActions;
 
     InputAction ia_up;
-    InputAction ia_down; 
+    InputAction ia_down;
 
-    
     private void Awake()
     {
-        arcadeManager = GetComponentInParent<ArcadeManager>();  
-        
+        arcadeManager = GetComponentInParent<ArcadeManager>();
+
         ia_up = arcadeManager.playerInputActions.Arcade.Up;
-        ia_down = arcadeManager.playerInputActions.Arcade.Down; 
+        ia_down = arcadeManager.playerInputActions.Arcade.Down;
 
         initalypos = playerPaddle.position.y;
     }
 
     float initalypos = 0;
     [SerializeField] Rigidbody2D playerPaddle;
+    [SerializeField] Rigidbody2D AIPaddle;
+    [SerializeField] Rigidbody2D Puck;
     [SerializeField] float paddleRange = 2f;
     [SerializeField] float paddleSpeed = 100f;
 
     private void Update()
     {
         float input = 0;
-        if(ia_up.IsPressed()) input = Time.deltaTime * paddleSpeed;
-        if(ia_down.IsPressed()) input = -Time.deltaTime * paddleSpeed;
+        if (ia_up.IsPressed()) input = Time.deltaTime * paddleSpeed;
+        if (ia_down.IsPressed()) input = -Time.deltaTime * paddleSpeed;
 
         var newPosition = Mathf.Clamp(playerPaddle.position.y + input, -paddleRange + initalypos, paddleRange + initalypos);
         playerPaddle.MovePosition(new(playerPaddle.position.x, newPosition));
+
+        AIPaddle.position = Vector2.MoveTowards(AIPaddle.position, new(AIPaddle.position.x, Puck.transform.position.y), Time.deltaTime * paddleSpeed * 0.05f); 
     }
 }

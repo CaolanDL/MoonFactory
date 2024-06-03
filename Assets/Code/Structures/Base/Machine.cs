@@ -286,7 +286,7 @@ public class Machine : Structure
         {
             craftingResource = newCraftingResource;
 
-            craftingCountdown = craftingResource.timeToCraft; 
+            craftingCountdown = 1f; //craftingResource.timeToCraft; 
         }
     } 
 
@@ -294,7 +294,7 @@ public class Machine : Structure
     {
         if (isCrafting)
         {
-            craftingCountdown -= ElectricalNode.Network.ClampedPowerRatio;
+            craftingCountdown -= 1f / craftingResource.timeToCraft;
 
             if (craftingCountdown < 0)
             {
@@ -379,7 +379,7 @@ public class Machine : Structure
             }
         }
 
-        craftingCountdown = craftingResource.timeToCraft;
+        craftingCountdown = 1;
         isCrafting = true;
 
         DisplayObject.CrossfadeAnimation("Crafting", 0.25f);

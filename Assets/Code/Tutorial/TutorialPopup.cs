@@ -1,6 +1,9 @@
+using ExtensionMethods;
+using Logistics;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class TutorialPopup : MonoBehaviour
@@ -10,6 +13,10 @@ public class TutorialPopup : MonoBehaviour
     [SerializeField] bool isMoveable = false;
     [SerializeField] TutorialEvent linkedEvent;
     [SerializeField] TutorialTag popupTag;
+
+    [SerializeField] public StructureData indicatedStructure;
+    [SerializeField] public int2 indicatedLocation;
+    [SerializeField] public sbyte indicatedRotation;
 
     [Header("References")]
     [SerializeField] TMP_Text skipText; 
@@ -25,7 +32,20 @@ public class TutorialPopup : MonoBehaviour
         }
 
         SubscribeEvents();
-    } 
+    }
+
+    private void Update()
+    {
+        TryRenderIndicator();
+    }
+
+    void TryRenderIndicator()
+    {
+        if (indicatedStructure == null) return;
+        var mtx = Matrix4x4.TRS(indicatedLocation.ToVector3(), indicatedRotation.ToQuaternion(), Vector3.one);
+        Graphics.DrawMesh(indicatedStructure.ghostMesh, mtx, tutorialSequencer.indicatorMaterial, 0);
+    }
+
     private void OnEnable() => SubscribeEvents(); 
 
     private void OnDisable() => UnsubscribeEvents();  

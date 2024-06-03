@@ -32,7 +32,7 @@ public class SolarPanel : Structure
     {
         base.OnConstructed();
 
-        ElectricalInput.Constructed();
+        //ElectricalInput.Constructed();
     }
 
     public override void OnTick()

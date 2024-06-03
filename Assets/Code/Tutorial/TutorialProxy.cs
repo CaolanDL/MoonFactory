@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 public enum TutorialEvent
@@ -55,7 +56,20 @@ public enum TutorialTag
 
 public static class TutorialProxy
 {
+    public static TutorialSequencer TutorialSequencer;
     public static bool IsActive = false;
     public static Action<TutorialEvent> Action;
     public static Action<Vector3, TutorialTag> SetPopupPosition;
+    public static bool IsBuildingAllowed(StructureData structureData)
+    {
+        if(!IsActive) return true;
+        if(TutorialSequencer == null) return true; 
+        return TutorialSequencer.IsBuildingAllowed(structureData);
+    }
+    public static bool IsPlacementCorrect(int2 pos, sbyte rot)
+    {
+        if (!IsActive) return true;
+        if (TutorialSequencer == null) return true;
+        return TutorialSequencer.IsPlacementCorrect(pos, rot);
+    }
 }

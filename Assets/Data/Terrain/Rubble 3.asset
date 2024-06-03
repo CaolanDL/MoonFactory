@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d46f4f125abeec4bb9fb1565c2d49e4, type: 3}
+  m_Name: Rubble 3
+  m_EditorClassIdentifier: 
+  Mesh: {fileID: 1375827909635459307, guid: c81b66a717904634a803dbc2d2109252, type: 3}
+  Material: {fileID: 2100000, guid: aa95504ad140166438feaf23b3d93ed4, type: 2}

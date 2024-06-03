@@ -188,16 +188,19 @@ public class GameWorld
                 }
             }
         };
-
-        /// Fill all remaining floor locations with displacement tiles  
-        foreach (var coord in coordsToGenerate) GameManager.Instance.GameWorld.GenerateFloorTile(coord);
-
-        /// Dice roll on each location for spawning a meteorite
+         
+        
         foreach (var coord in coordsToGenerate)
         {
-            if (Mathf.Abs(coord.x) + Mathf.Abs(coord.y) < TerrainGenerationData.StartZoneSize) { continue; }
-            TryGenerateMeteorite(coord);
-        }
+            /// Fill all remaining floor locations with displacement tiles  
+            GameManager.Instance.GameWorld.GenerateFloorTile(coord);
+
+            /// Dice roll on each location for spawning a meteorite
+            if (Mathf.Abs(coord.x) + Mathf.Abs(coord.y) > TerrainGenerationData.StartZoneSize)
+            {
+                TrySpawnMeteorite(coord);
+            } 
+        } 
 
         void ForInRange(int2 xRange, int2 yRange, ref bool @break, Action<int2> action)
         {
@@ -221,7 +224,7 @@ public class GameWorld
 
     public FloorTile GenerateFloorTile(int2 position)
     {
-        FloorTile newFloorTile = new(TerrainGenerationData.Instance.displaceTile);
+        FloorTile newFloorTile = new(RandomTile());
 
         worldGrid.GetOrAddLocation(position);
         floorGrid.GetOrAddLocation(position);
@@ -231,23 +234,32 @@ public class GameWorld
         return newFloorTile;
     }
 
-    public void TryGenerateMeteorite(int2 position)
+    public FloorTileData RandomTile()
+    {
+        var terrainData = TerrainGenerationData.Instance; 
+        var tile = terrainData.Tiles[Random.Range(0, terrainData.Tiles.Length)]; 
+        return tile;
+    }
+
+    public bool TrySpawnMeteorite(int2 position)
     {
         var terrainData = TerrainGenerationData.Instance;
 
-        if (Mathf.Abs(position.x) + Mathf.Abs(position.y) < TerrainGenerationData.StartZoneSize) { return; }
+        if (Mathf.Abs(position.x) + Mathf.Abs(position.y) < TerrainGenerationData.StartZoneSize) { return false; }
 
         if (Random.value < terrainData.chanceToSpawnMeteorite)
         {
-            if (floorGrid.GetEntityAt(position) is not FloorTile) { return; }
+            if (floorGrid.GetEntityAt(position) is not FloorTile) { return false; }
 
             var randomModel = terrainData.MeteorModels[Random.Range(0, terrainData.MeteorModels.Length)];
             var meteorite = new Meteorite(randomModel, Random.Range(terrainData.minMeteoriteScale, terrainData.maxMeteoriteScale));
             meteorite.position = position;
             worldGrid.TryAddEntity(meteorite, position, (sbyte)Random.Range(0, 3));
             meteorites.Add(position, meteorite);
+            return true;
         }
-    }
+        return false;
+    } 
 }
 
 

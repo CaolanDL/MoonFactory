@@ -112,7 +112,7 @@ public class FloorTileRenderer : MonoBehaviour
 
     void QueueTile()
     {
-        if (currentFloorTile == null) return;
+        if (currentFloorTile == null) return; 
 
         matrixArrays[currentFloorTile.data].QueueMatrix(currentFloorTile.transform);
     }

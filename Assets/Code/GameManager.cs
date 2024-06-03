@@ -8,7 +8,11 @@ using UnityEngine.UIElements;
 
 public static class DevFlags
 {
+#if UNITY_EDITOR
+    public static bool SkipMainMenu = true;
+#else
     public static bool SkipMainMenu = false;
+#endif
     public static bool InstantBuilding = false;
 }
 
@@ -101,7 +105,8 @@ public class GameManager : MonoBehaviour
     }
 
     private void Start()
-    {  
+    {
+        if (DevFlags.SkipMainMenu) { CreateNewGame(""); return; }
         if (Application.isMobilePlatform) { Instantiate(MenuData.MobilePlatformWarning); return; }
 
         PlaySplashScreen();

@@ -24,7 +24,7 @@ public class Lander : Structure
         if(TutorialProxy.IsActive)
         {
             TutorialProxy.SetPopupPosition?.Invoke(GameManager.Instance.CameraController.activeMainCamera.WorldToScreenPoint(DisplayObject.transform.position), TutorialTag.LanderPosition);
-        }
+        } 
     }
 
     public override void OnInitialise()
@@ -37,8 +37,10 @@ public class Lander : Structure
         SupplyPort.AddInventory(inventory);
 
         ElectricalNode = new Electrical.Input();
-        ((Electrical.Input)ElectricalNode).Production = powerProduction;
-        ((Electrical.Input)ElectricalNode).connectionRange = 6;
+        var eInput = (Electrical.Input)ElectricalNode;
+        eInput.Production = powerProduction;
+        eInput.MaxProduction = powerProduction;
+        eInput.connectionRange = 6;  
 
         /*ElectricalRelay = new()
         {

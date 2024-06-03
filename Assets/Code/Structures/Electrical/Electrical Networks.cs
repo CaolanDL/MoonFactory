@@ -156,8 +156,7 @@ namespace Electrical
 
         public bool TryConnectCleanly(Node node, int MaxConnections)
         {
-            if (Connections.Count > MaxConnections) return false;
-            if (node.Connections.Count > MaxConnections) return false;
+            if (Connections.Count > MaxConnections) return false; 
 
             if (IsConnectedTo(node)) { return false; }
             if (node.CanConnect == false) { return false; }
@@ -352,14 +351,16 @@ namespace Electrical
     {
         public static int defaultConnectionRange = 4;
         public int connectionRange = 4;
-        public int MaxRelayConnections = 4;
+        public int MaxRelayConnections = 100;
 
         public override void OnConstructed()
         {
             base.OnConstructed();
-            SystemManager.relays.Add(this); 
+            SystemManager.relays.Add(this);
             TryConnect();
-        }
+
+            if(Network == null) CreateNetwork();
+        } 
 
         public override void OnDemolished()
         {
@@ -408,61 +409,59 @@ namespace Electrical
         }
     }
 
+
+    public class Input : Relay
+    {
+        public float MaxProduction = 10f;
+        public float Production = 1f;
+
+        public override void OnConstructed()
+        { 
+            base.OnConstructed(); 
+        }
+    }
+
+
     public class Component : Node
     {
         public int connectionRange = 6;
 
-        public override void OnConstructed()
-        {
-            ConnectToNearbyRelays();
-        }
+        public override void OnConstructed() => ConnectToNearbyRelays();
 
-        public override void OnDemolished()
-        {
-            DestroyAllConnections();
-        }
+        public override void OnDemolished() => DestroyAllConnections();
 
-        public override void OnConnectionDestroyed()
-        {
-            Disconnect();
-        }
+        public override void OnConnectionDestroyed() => Disconnect();
 
         public void ConnectToNearbyRelays()
         {
+            Debug.Log("Starting Connection");
             if (Connections.Count > 0) return;
 
-            List<Node> nearbyRelays = FindNearbyNodesByType(typeof(Relay), connectionRange);   
+            List<Node> nearbyRelays = FindNearbyNodesByType(typeof(Relay), connectionRange);
             if (nearbyRelays == null || nearbyRelays.Count == 0) return;
 
             nearbyRelays.Sort(SortNodesByNetworkCapacity);  
             var bestNetwork = nearbyRelays[0].Network;
-            List<Node> bestRelays = new();
-            // Remove all relays that are not part of the best network.
+            List<Node> bestRelays = new(); 
             foreach(var node in nearbyRelays)
             {
                 if(node.Network == null) continue;
                 if(node.Network == bestNetwork) bestRelays.Add(node); 
             } 
             bestRelays.Sort(SortNodeByDistanceToSelf);
+            Debug.Log("Testing Count");
 
-            if (bestRelays.Count == 0) return;
-
+            if (bestRelays.Count == 0) return; 
             if (bestRelays[0] == null) return;
 
             CreateConnectionTo(bestRelays[0]);
+            Debug.Log("Connected to something");
         }
-    }
-
-    public class Input : Relay
-    {
-        public float MaxProduction = 10f;
-        public float Production = 1f;
     }
 
     public class Sink : Component
     {
         public float MaxConsumption = 10f;
         public float Consumption = 10f;
-    }
-     
+    } 
 }

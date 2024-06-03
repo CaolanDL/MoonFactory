@@ -39,10 +39,8 @@ MonoBehaviour:
       y: -1
     _rotation: 0
   ports: []
-  ghostMesh: {fileID: 0}
+  ghostMesh: {fileID: 8839668481900891436, guid: 57960da66b5a6e241a86010faa83236b,
+    type: 3}
   ghostModels:
-  - mesh: {fileID: 8839668481900891436, guid: 57960da66b5a6e241a86010faa83236b, type: 3}
-    material: {fileID: 2100000, guid: f2e8e5d499d5db849800f1186a96d0c8, type: 2}
   - mesh: {fileID: 8654884093285089175, guid: 23b0fed4105589844902026f559ff904, type: 3}
     material: {fileID: 2100000, guid: 49ea389af960b8044940149724111ecd, type: 2}
-  unlocked: 1

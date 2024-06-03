@@ -19,9 +19,15 @@ public class ResourceToolTip : MonoBehaviour
     [SerializeField] GameObject CraftingRequirmentPrefab;
     List<GameObject> craftingRequirments = new();
 
-    private void Update()
+    private void Awake()
     {
         transform.position = Input.mousePosition;
+    }
+
+    Vector3 velocity = Vector3.zero;
+    private void Update()
+    {
+        transform.position = Vector3.SmoothDamp(transform.position, Input.mousePosition, ref velocity, 0.1f);
     }
 
     public void SetDetails(ResourceData resouce)
@@ -35,7 +41,7 @@ public class ResourceToolTip : MonoBehaviour
         machineName.text = resource.craftedIn.screenname;
         machineSprite.sprite = resource.craftedIn.sprite;
 
-        foreach (var cr in craftingRequirments)
+        /*foreach (var cr in craftingRequirments)
         {
             Destroy(cr.gameObject);
         }
@@ -47,6 +53,6 @@ public class ResourceToolTip : MonoBehaviour
             newCr.GetComponentInChildren<Image>().sprite = cr.resource.sprite;
             newCr.GetComponentInChildren<TMP_Text>().text = cr.quantity.ToString();
             craftingRequirments.Add(newCr);
-        }
+        }*/
     }
 }

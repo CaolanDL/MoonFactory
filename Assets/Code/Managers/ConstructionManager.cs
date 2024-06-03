@@ -5,6 +5,7 @@ using UnityEngine;
 using ExtensionMethods;
 using DataStructs;
 using static UnityEngine.EventSystems.EventTrigger;
+using Terrain;
 
 public class ConstructionManager
 {
@@ -25,16 +26,16 @@ public class ConstructionManager
     {
         _ghostRotation = 0;
         GhostStructureData = structureData;
-    }
+    }  
 
     public void PlaceGhost(double2 mousePosition)
     {
-        var ghostGridPosition = GetMouseGhostPosition();
+        var ghostGridPosition = GetMouseGhostPosition(); 
 
-        if(IsGhostBlocked(ghostGridPosition)) { return; }
+        if (IsGhostBlocked(ghostGridPosition)) { return; } 
+        if(!TutorialProxy.IsPlacementCorrect(ghostGridPosition, GhostRotation)) { PlayErrorSound(); return; }
 
-        var worldGrid = GameManager.Instance.GameWorld.worldGrid;
-
+        var worldGrid = GameManager.Instance.GameWorld.worldGrid; 
         StructureGhost newGhostStructure = new(GhostStructureData);
 
         if (worldGrid.TryAddEntity(newGhostStructure, ghostGridPosition, _ghostRotation) != null)
@@ -48,11 +49,10 @@ public class ConstructionManager
             } 
         }
 
-        if(GhostStructureData.name == "StaticDrill")
-        {
-            TutorialProxy.Action?.Invoke(TutorialEvent.StaticDrillPlaced);
-        }
+        if(GhostStructureData.name == "StaticDrill") TutorialProxy.Action?.Invoke(TutorialEvent.StaticDrillPlaced); 
     }
+
+    void PlayErrorSound() => AudioManager.Instance.PlaySound(AudioData.Instance.UI_Error); 
 
     public void RotateGhost(sbyte direction)
     {
@@ -186,6 +186,8 @@ public class ConstructionManager
     bool IsGhostBlocked(int2 ghostOrigin)
     {
         if (GameManager.Instance.GameWorld.worldGrid.IsEntityAt(ghostOrigin)) return true;
+
+        if (GameManager.Instance.GameWorld.floorGrid.IsEntityAt(ghostOrigin) && GameManager.Instance.GameWorld.floorGrid.GetEntityAt(ghostOrigin).GetType() == typeof(Crater)) return true;
 
         if (!GhostStructureData.size.Equals(singleTileSize))
         {

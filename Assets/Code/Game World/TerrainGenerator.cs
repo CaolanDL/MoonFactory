@@ -12,9 +12,7 @@ public class TerrainGenerator
         this.seed = seed;
     } 
 
-    public FloorTileData GenerateTileAt(int2 position)
-    { 
-        return TerrainGenerationData.Instance.displaceTile; 
-    }
+
 }
+
 */
