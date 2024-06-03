@@ -1,7 +1,9 @@
 ﻿using MoonFactory.Interfaces;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems; 
+using UnityEngine.EventSystems;
+
+
 
 #region Input Example Comment
 // Input Example:
@@ -31,7 +33,7 @@ public class PlayerInputManager : MonoBehaviour
 
     public bool isMouseOverUI = true;
 
-    [SerializeField] public CameraController cameraController;
+    [SerializeField] public CameraController3D cameraController;
 
     public PlayerInputActions inputActions; 
 
@@ -39,7 +41,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         inputActions = new PlayerInputActions(); 
 
-        cameraController = GetComponent<CameraController>();
+        cameraController = GetComponent<CameraController3D>();
     }
 
     void OnEnable()
@@ -80,7 +82,7 @@ public class PlayerInputManager : MonoBehaviour
 
         if (!isMouseOverUI)
         {
-            HandleCameraZoom();
+            HandleCamera();
             UpdateSpatialMousePosition();
         }
 
@@ -111,12 +113,14 @@ public class PlayerInputManager : MonoBehaviour
 
     public void HandleCameraMove()
     {
-        cameraController.InputMove();
+        cameraController.InputMove(inputActions.CameraControls.Move.ReadValue<Vector2>());
     }
 
-    public void HandleCameraZoom()
+    public void HandleCamera()
     {
-        cameraController.InputZoom();
+        cameraController.InputPan(inputActions.CameraControls.Pan.ReadValue<Vector2>());
+
+        cameraController.InputZoom(inputActions.CameraControls.Zoom.ReadValue<float>());
     }
 
     public void HandleHUDInputs()

@@ -56,7 +56,7 @@ public class BatchRenderer : MonoBehaviour
 
 public class TerrainDetailsRenderer
 {
-    private CameraController cameraController;
+    private CameraController3D cameraController;
     private Dictionary<ModelData, ChunkedMatrixArray> meteorMatrixArrays = new();
     private Dictionary<Mesh, ChunkedMatrixArray> craterMatrixArrays = new();
 
@@ -124,9 +124,9 @@ public class TerrainDetailsRenderer
 
         void ForIsometricRange(Action<int2> action)
         {
-            for (int x = VisibleRange.x - 12; x < VisibleRange.y + 12; x++)
+            for (int x = VisibleRange.x; x < VisibleRange.y; x++)
             {
-                for (int y = VisibleRange.x - 12; y < VisibleRange.y + 12; y++)
+                for (int y = VisibleRange.x; y < VisibleRange.y; y++)
                 {
                     for (int j = 0; j < 2; j++)
                     { 

@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
     public ItemRenderer ItemRenderer;
     public BatchRenderer BatchRenderer;
 
-    public CameraController CameraController;
+    public CameraController3D CameraController;
     public PlayerInputManager PlayerInputManager;
 
     public AudioManager AudioManager;
@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         MenuData.MakeSingleton();  
         AudioData.MakeSingleton();
 
-        CameraController = GetComponent<CameraController>();
+        CameraController = GetComponent<CameraController3D>();
         PlayerInputManager = GetComponent<PlayerInputManager>();
 
         FloorTileRenderer = GetComponent<FloorTileRenderer>();

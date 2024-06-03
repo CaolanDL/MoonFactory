@@ -12,13 +12,13 @@ public class FloorTileRenderer : MonoBehaviour
 
     public int tilesRenderedThisFrame = 0;
 
-    private CameraController cameraController;
+    private CameraController3D cameraController;
 
     RenderParams renderParams;
 
     private void Awake()
     {
-        cameraController = GetComponent<CameraController>();
+        cameraController = GameManager.Instance.CameraController;
 
         renderParams = new RenderParams(GameManager.Instance.GlobalData.TerrainMaterial);
     }

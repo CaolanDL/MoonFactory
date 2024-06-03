@@ -106,7 +106,7 @@ public class HUDManager : MonoBehaviour
 
     public void ViewPortClicked()
     {
-        GameManager.Instance.CameraController.SwapViews();
+        //GameManager.Instance.CameraController.SwapViews();
     }
 
     public void LanderButtonPressed()
