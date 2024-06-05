@@ -26,7 +26,7 @@ namespace RoverJobs
             // If the rover doesnt already have all the resources go find them.
             if(resourceToFind.quantity > 0)
             {
-                var manifest = SupplyFinder.GenerateManifestLoose(resourceToFind, rover.GridPosition);
+                var manifest = SupplyFinder.GenerateManifestLoose(resourceToFind, rover.GridPosition, destination);
                 if (manifest.Orders.Count == 0 && rover.Inventory.GetQuantityOf(resourceToFind.resource) == 0) { FailTask(); return; }
                 if(manifest.Orders.Count > 0)
                 {
@@ -59,7 +59,7 @@ namespace RoverJobs
         { 
             resourcesToFind = SupplyFinder.CullSearchByExistingInventory(resourcesToFind, rover.Inventory);
 
-            var manifest = SupplyFinder.GenerateManifestExact(resourcesToFind, rover.GridPosition);
+            var manifest = SupplyFinder.GenerateManifestExact(resourcesToFind, rover.GridPosition, destination);
 
             if (manifest.Orders.Count == 0) { FailTask(); return; }
 
@@ -300,17 +300,19 @@ namespace RoverJobs
 
     public static class SupplyFinder
     {
-        public static CollectionManifest GenerateManifestExact(IEnumerable<ResourceQuantity> resourcesToFind, int2 origin)
+        public static CollectionManifest GenerateManifestExact(IEnumerable<ResourceQuantity> resourcesToFind, int2 roverPosition, int2 destinationPosition)
         {
             List<SupplyPort> supplyPorts = FindAllPortsContaining(resourcesToFind);
-            supplyPorts = SortPortsByDistance(supplyPorts, origin);
+            supplyPorts = SortPortsByDistance(supplyPorts, roverPosition);
+            var self = supplyPorts.Find(x => x.parent.position.Equals(destinationPosition));
+            if(self != null) { supplyPorts.Remove(self); }  
 
             CollectionManifest manifest = new CollectionManifest();
             foreach (ResourceQuantity rq in resourcesToFind)
             {
                 SearchPortsAndFillManifest(supplyPorts, manifest, rq);
             }
-            manifest.SortPortsByDistance(origin);
+            manifest.SortPortsByDistance(roverPosition);
 
             foreach (var val in manifest.totalQuantities)
             {
@@ -319,10 +321,13 @@ namespace RoverJobs
             return manifest;
         }
 
-        public static CollectionManifest GenerateManifestLoose(ResourceQuantity resourceToFind, int2 origin)
+        public static CollectionManifest GenerateManifestLoose(ResourceQuantity resourceToFind, int2 origin, int2 destinationPosition)
         {
+            // Little bit of code duplication here. Cant be bothered to fix this rn.
             List<SupplyPort> supplyPorts = FindAllPortsContaining(resourceToFind);
             supplyPorts = SortPortsByDistance(supplyPorts, origin);
+            var self = supplyPorts.Find(x => x.parent.position.Equals(destinationPosition));
+            if (self != null) { supplyPorts.Remove(self); }
 
             CollectionManifest manifest = new CollectionManifest();
             SearchPortsAndFillManifest(supplyPorts, manifest, resourceToFind);

@@ -3627,23 +3627,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fab Plant
       objectReference: {fileID: 0}
+    - target: {fileID: 5673272836065439808, guid: 9c316bbcf67a26c49987620ef799d2fb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c316bbcf67a26c49987620ef799d2fb, type: 3}
---- !u!114 &1351541218397385233 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1525356117949007820, guid: 9c316bbcf67a26c49987620ef799d2fb,
-    type: 3}
-  m_PrefabInstance: {fileID: 570414389477127645}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1386d13a15360c24ea78292fa3e23049, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &2128270300125627793 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1901546341659488332, guid: 9c316bbcf67a26c49987620ef799d2fb,
@@ -7590,7 +7583,7 @@ PrefabInstance:
         type: 3}
       propertyPath: Connection
       value: 
-      objectReference: {fileID: 1351541218397385233}
+      objectReference: {fileID: 0}
     - target: {fileID: 4041861439163488220, guid: ecd5d07f429248e47b64a2615ca28759,
         type: 3}
       propertyPath: m_text
@@ -8430,6 +8423,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Battery Node
+      objectReference: {fileID: 0}
+    - target: {fileID: 5115399455850921260, guid: ecd5d07f429248e47b64a2615ca28759,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7545035983192474914, guid: ecd5d07f429248e47b64a2615ca28759,
         type: 3}

@@ -52,6 +52,8 @@ namespace Logistics
         // Add supply request port components
         public override void AddPorts()
         {
+            base.AddPorts();    
+
             RequestPort = new(this);
             RequestPort.AddInventory(storageInventory);
         }

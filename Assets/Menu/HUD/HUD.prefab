@@ -19425,14 +19425,14 @@ PrefabInstance:
     - target: {fileID: 742645914840476507, guid: db188a677968a194bb83b04a04df0162,
         type: 3}
       propertyPath: m_text
-      value: 'This <B>Interface</B> displays the <B>lander''s</b> inventory and onboard
-        crafting system
+      value: 'This <B>Interface</B> displays the <B>lander''s</b> inventory.
 
-        Try hovering over the resources to display more
-        information about them.
+        Try
+        right clicking a  resource to display more information about it.
 
-        This <B>Lander</b> comes equiped with its
-        own solar panels, and provides power to nearby machines.'
+        This
+        <B>Lander</b> comes equiped with its own solar panels, and provides power
+        to nearby machines.'
       objectReference: {fileID: 0}
     - target: {fileID: 742645914840476507, guid: db188a677968a194bb83b04a04df0162,
         type: 3}

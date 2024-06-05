@@ -102,6 +102,7 @@ public class CameraController3D : MonoBehaviour
     public void InputZoom(float input)
     {
         targetZoom += input * zoomSpeed; //zoomSpeed;    
+        //targetZoom += input * zoomSpeed * (1+(zoom/maxZoom*8)); //zoomSpeed;    
     }
 
     public void ResetPosition()
