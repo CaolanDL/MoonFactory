@@ -25,4 +25,9 @@ public class GraphicsPulse : MonoBehaviour
 
         transform.localScale = newScale;
     }
+
+    private void OnDisable()
+    {
+        transform.localScale = baseScale;
+    }
 }

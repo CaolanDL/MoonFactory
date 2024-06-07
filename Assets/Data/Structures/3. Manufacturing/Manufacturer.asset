@@ -15,7 +15,7 @@ MonoBehaviour:
   screenname: Manufacturer
   description: Manufactures stuff
   category: 3
-  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
+  sprite: {fileID: 21300000, guid: 465b162ef37ceda4da7ea0fe043a483f, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: 787a0f6ea7f58ec4abe1bf3d63b1641c,
     type: 3}
   size:

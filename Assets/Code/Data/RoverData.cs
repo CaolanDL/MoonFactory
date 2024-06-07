@@ -23,4 +23,6 @@ public class RoverData : ScriptableObject
     [Header("Prefabs")] 
     public GameObject RoverDisplayObject; 
     public GameObject WidgetDisplayObject;
+
+    public GameObject WidgetDropShip;
 }

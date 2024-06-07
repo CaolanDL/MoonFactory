@@ -40,6 +40,30 @@ public class Entity // 12 bytes
         return GameManager.Instance.GameWorld.worldGrid.GetEntityAt(position + rotation.Rotate(rotationFactor).ToInt2());
     }
 
+    static byte2 byte2_one = new(1, 1);
+    public Location[] GetNeighbors()
+    {
+        var grid = Grid.GetGrid(gridId);
+
+        if (size.Equals(byte2_one)) { return grid.GetLocationAt(position).GetNeighbors(); } 
+
+        (int2 xRange, int2 yRange) = GetOccupyingRegion(this);
+        List<Location> neighbors = new();
+
+        for(int y = yRange.x; y <= yRange.y; y++)
+        {
+            neighbors.Add(grid.GetLocationAt(new(xRange.x - 1, y)));
+            neighbors.Add(grid.GetLocationAt(new(xRange.y + 1, y)));
+        }
+        for (int x = xRange.x; x <= xRange.y; x++)
+        {
+            neighbors.Add(grid.GetLocationAt(new(yRange.x - 1, x)));
+            neighbors.Add(grid.GetLocationAt(new(yRange.y + 1, x)));
+        }
+
+        return neighbors.ToArray();
+    }
+
 
     public static (int2 xRange, int2 yRange) GetOccupyingRegion(Entity entity)
     {

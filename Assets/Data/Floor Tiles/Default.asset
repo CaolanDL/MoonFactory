@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 955f6eb5197a0244fa053c16e69f553f, type: 3}
   m_Name: Default
   m_EditorClassIdentifier: 
-  mesh: {fileID: 6125122955090766722, guid: cf121182f52cb894a8c05de538bcf4c1, type: 3}
+  mesh: {fileID: -1825348782843549862, guid: 39fa1aec1d8829d4ea5dfc58dc080e37, type: 3}
   chanceToSpawn: 1

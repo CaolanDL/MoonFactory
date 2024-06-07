@@ -305,7 +305,7 @@ namespace RoverJobs
             List<SupplyPort> supplyPorts = FindAllPortsContaining(resourcesToFind);
             supplyPorts = SortPortsByDistance(supplyPorts, roverPosition);
             var self = supplyPorts.Find(x => x.parent.position.Equals(destinationPosition));
-            if(self != null) { supplyPorts.Remove(self); }  
+            if(self != null) { supplyPorts.Remove(self); }
 
             CollectionManifest manifest = new CollectionManifest();
             foreach (ResourceQuantity rq in resourcesToFind)
@@ -390,11 +390,15 @@ namespace RoverJobs
             List<SupplyPort> foundPorts = new();
 
             foreach (SupplyPort supplyPort in SupplyPort.Pool)
+            {
+                if (supplyPort.enabled == false) { continue; }
                 foreach (ResourceQuantity rq in resourcesToFind)
                 {
+                    if (supplyPort.enabled == false) { continue; }
                     if (supplyPort.GetUnreservedQuantity(rq.resource) <= 0) continue;
                     if (!foundPorts.Contains(supplyPort)) foundPorts.Add(supplyPort);
                 }
+            }
             return foundPorts;
         }
 
@@ -404,6 +408,7 @@ namespace RoverJobs
 
             foreach (SupplyPort supplyPort in SupplyPort.Pool)
             {
+                if (supplyPort.enabled == false) { continue; }
                 if (supplyPort.GetUnreservedQuantity(resourceToFind.resource) <= 0) continue;
                 foundPorts.Add(supplyPort);
             }

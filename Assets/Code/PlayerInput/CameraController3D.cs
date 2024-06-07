@@ -12,7 +12,7 @@ public class CameraController3D : MonoBehaviour
 {
     [SerializeField] public Camera activeMainCamera;
     [SerializeField] public VolumeProfile postProcProfile;
-    [SerializeField] public DepthOfField dof;
+    [NonSerialized] public DepthOfField dof;
 
     [SerializeField] int renderDistance = 20;
 
@@ -43,7 +43,7 @@ public class CameraController3D : MonoBehaviour
     public float pitch
     {
         get { return _pitch; }
-        set { _pitch = Mathf.Clamp(value, minPitch + (zoom / 2), maxPitch); } // Arc the min tilt to compensate for zoom out
+        set { _pitch = Mathf.Clamp(value, minPitch + (zoom / maxZoom * 42), maxPitch); } // Arc the min tilt to compensate for zoom out
     }
 
     [Space]
@@ -75,7 +75,7 @@ public class CameraController3D : MonoBehaviour
         OrbitSpin.localRotation = Quaternion.Euler(0, spin, 0); // Set camera spin
         OrbitPitch.localRotation = Quaternion.Euler(pitch, 0, 0); // Set camera pitch
 
-        zoom = Mathf.SmoothDamp(zoom, targetZoom, ref zoomVelocity, 0.1f, 36f);
+        zoom = Mathf.SmoothDamp(zoom, targetZoom, ref zoomVelocity, 0.1f, 60f);
         OrbitOffset.localPosition = new Vector3(0, 0, -zoom); // Set Zoom
         dof.focusDistance.value = zoom;
 
@@ -101,8 +101,8 @@ public class CameraController3D : MonoBehaviour
 
     public void InputZoom(float input)
     {
-        targetZoom += input * zoomSpeed; //zoomSpeed;    
-        //targetZoom += input * zoomSpeed * (1+(zoom/maxZoom*8)); //zoomSpeed;    
+        //targetZoom += input * zoomSpeed; //zoomSpeed;    
+        targetZoom += input * zoomSpeed * (1+(zoom/maxZoom*15)); //zoomSpeed;    
     }
 
     public void ResetPosition()

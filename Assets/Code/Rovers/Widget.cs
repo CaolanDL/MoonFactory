@@ -2,10 +2,10 @@
 
 public class Widget : Rover
 {
-    static float _MoveSpeed = 1.6f;
+    static float _MoveSpeed = 2f;
     public override float MoveSpeed => _MoveSpeed;
 
-    static float _TurnSpeed = 4.2f;
+    static float _TurnSpeed = 4.5f;
     public override float TurnSpeed => _TurnSpeed;
 
 

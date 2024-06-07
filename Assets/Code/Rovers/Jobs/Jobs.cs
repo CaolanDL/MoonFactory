@@ -211,6 +211,10 @@ namespace RoverJobs
                 if (mustFindNewPath)
                 {
                     FindNewPath();
+                    if(path == null)
+                    {
+                        FailTask(); return;
+                    }
                 }
 
                 if (mustTurn) { return; }
@@ -226,6 +230,11 @@ namespace RoverJobs
         private void AdvanceNode()
         {
             currentNodeIndex++;
+
+            if (path == null)
+            {
+                FailTask(); return;
+            }
 
             if (currentNodeIndex + 1 == path.nodes.Length) { Finished(); finished = true; return; }
 

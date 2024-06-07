@@ -1,8 +1,11 @@
 using Logistics;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine; 
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class DebugUI : MonoBehaviour
 {
@@ -44,6 +47,11 @@ public class DebugUI : MonoBehaviour
     private void Update()
     {
         FPS = (int)(1.0f / Time.smoothDeltaTime);
+
+        if (Keyboard.current.periodKey.wasPressedThisFrame)
+        {
+            ToggleContent();
+        }
     }
 
     private void FixedUpdate()
@@ -66,10 +74,22 @@ public class DebugUI : MonoBehaviour
             tileOnScreenCount = GameManager.Instance.FloorTileRenderer.tilesRenderedThisFrame;
         }
         TileOnScreenCounter.text = $"Tiles rendered this frame: {tileOnScreenCount}";
-    }
+    } 
 
     public void ToggleContent()
     {
         Content.SetActive(!Content.activeSelf);
+    }
+
+    public void SpawnRover()
+    {
+        RoverManager.Instance.SpawnWidgetDropship();
+    }
+
+    [SerializeField] Slider timeSlider;
+    public void SetGameSpeed(Single value)
+    {
+        Time.fixedDeltaTime = 0.02f / timeSlider.value;
+        Time.timeScale = timeSlider.value;
     }
 }

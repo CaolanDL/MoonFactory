@@ -207,8 +207,15 @@ public static class PathFinder
     {
         _worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
+        Location[] neighbors = {};
+
         Location location = _worldGrid.GetLocationAt(destination);
-        Location[] neighbors = location.GetNeighbors().OrderBy(x => x.position.WeightedGridDistanceTo(origin)).ToArray();
+        if (location.entity != null)
+        {
+            neighbors = location.entity.GetNeighbors();
+        }
+        else neighbors = location.GetNeighbors().OrderBy(x => x.position.WeightedGridDistanceTo(origin)).ToArray();
+
         List<Location> validNeighbors = new();
         Path path = null;
 

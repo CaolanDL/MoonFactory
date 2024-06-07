@@ -40,6 +40,8 @@ public class Inventory // 56 bytes
 
     public Dictionary<ResourceData, int> reservedResources = new();
 
+    public Action InventoryUpdated;
+
     public int maxItems = 9999; // 4 bytes
     public int totalItems = 0; // 4 bytes
     public int maxWeight = 9999 ; // 4 bytes
@@ -190,6 +192,8 @@ public class Inventory // 56 bytes
         totalWeight += resource.Weight * quantity;
         totalItems += quantity;
 
+        InventoryUpdated?.Invoke();
+
         return true;
     }
 
@@ -213,6 +217,8 @@ public class Inventory // 56 bytes
             stacks.Remove(stack);
             totalTypes--;
         }
+
+        InventoryUpdated?.Invoke();
     }
 
     void TryAddStack(ResourceData resource)

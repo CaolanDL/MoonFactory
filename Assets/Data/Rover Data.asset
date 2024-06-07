@@ -25,3 +25,5 @@ MonoBehaviour:
     type: 3}
   WidgetDisplayObject: {fileID: 8158448350561381558, guid: bef058f0a29930a49ba2cdf6da5a3726,
     type: 3}
+  WidgetDropShip: {fileID: 2338194510469445383, guid: 25ab797fc81a09e4fbb5d2b43433d145,
+    type: 3}

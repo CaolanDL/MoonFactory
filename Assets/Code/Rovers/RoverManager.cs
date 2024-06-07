@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Unity.Mathematics;
+using Unity.Mathematics; 
 using UnityEngine; 
 
 public class RoverManager
@@ -39,7 +39,32 @@ public class RoverManager
         return newRover;
     }
 
-    public Widget SpawnWidget(int2 location)
+    public void SpawnWidgetDropship()
+    {
+        var worldGrid = GameManager.Instance.GameWorld.worldGrid;
+        int2 spawnLocation = new(0,0);
+        int range = 1;
+        while (SearchRange(range) == false) { range++; } 
+        bool SearchRange(int radius)
+        {
+            for (int x = -radius; x < radius; x++)
+            {
+                for (int y = -radius; y < radius; y++)
+                {
+                    if (worldGrid.IsEntityAt(new(x, y))) { continue; }
+                    spawnLocation = new(x, y);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        var dropship = Object.Instantiate(RoverData.WidgetDropShip);
+        dropship.transform.position = new Vector3(spawnLocation.x, 0 , spawnLocation.y);
+        dropship.GetComponentInChildren<DropShipSequence>().spawnPoint = spawnLocation;
+    }
+
+    public Widget SpawnNewWidget(int2 location)
     {
         var widget = new Widget();
 

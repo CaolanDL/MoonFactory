@@ -34,14 +34,14 @@ public class ResourceToolTip : MonoBehaviour
     { 
         this.resource = resouce;
          
-        tooltipSprite.sprite = resouce.sprite; 
+        //tooltipSprite.sprite = resouce.sprite; 
         tooltipName.text = resource.name;
 
-        quantityProduced.text = resource.quantityCrafted.ToString();
+        /*quantityProduced.text = resource.quantityCrafted.ToString();*/
         machineName.text = resource.craftedIn.screenname;
         machineSprite.sprite = resource.craftedIn.sprite;
 
-        /*foreach (var cr in craftingRequirments)
+        foreach (var cr in craftingRequirments)
         {
             Destroy(cr.gameObject);
         }
@@ -50,9 +50,9 @@ public class ResourceToolTip : MonoBehaviour
         foreach (var cr in resouce.requiredResources)
         {
             var newCr = Instantiate(CraftingRequirmentPrefab, RequirementsLayout.transform);
-            newCr.GetComponentInChildren<Image>().sprite = cr.resource.sprite;
-            newCr.GetComponentInChildren<TMP_Text>().text = cr.quantity.ToString();
+            newCr.GetComponent<ResourceIcon>().SetCount(cr.quantity);
+            newCr.GetComponent<ResourceIcon>().SetDetails(cr.resource);
             craftingRequirments.Add(newCr);
-        }*/
+        }
     }
 }

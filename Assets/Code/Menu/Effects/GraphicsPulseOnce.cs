@@ -35,12 +35,21 @@ public class GraphicsPulseOnce : MonoBehaviour
         transform.localScale = newScale; 
 
         if(t > 0.9) { isReceeding=true; }
-        if(isReceeding && t < 0.02f)
+        if(isReceeding && t < 0.01f)
         {
             transform.localScale = baseScale;
             Destroy(this); return;
         }
 
         ElapsedTime += Time.deltaTime;
+    }
+
+    private void OnDisable()
+    {
+        transform.localScale=baseScale;
+    }
+    private void OnDestroy()
+    {
+        transform.localScale = baseScale;
     }
 }

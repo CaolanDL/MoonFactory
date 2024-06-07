@@ -15,6 +15,11 @@ public class SingleStackInventoryElement : MonoBehaviour
     public Inventory inventory;
     public ResourceStack resourceStack;
 
+    private void Start()
+    {
+        inventory.InventoryUpdated += UpdateDisplay;
+    }
+
     public void UpdateDisplay()
     {
         if (icon == null) { return; }

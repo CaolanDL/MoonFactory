@@ -102,8 +102,9 @@ public class Port
 public class SupplyPort : Port
 {
     public static List<SupplyPort> Pool = new();
-
     public Structure parent;
+
+    public bool enabled = true;
 
     //public Dictionary<ResourceData, int> reservedResources;
 
@@ -147,7 +148,6 @@ public class SupplyPort : Port
             if (resourcesToFree.quantity <= 0) { return; }
         }
     }
-
 
     public void CollectResource(ResourceQuantity resourceQuantity)
     {

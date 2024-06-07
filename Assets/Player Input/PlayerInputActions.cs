@@ -531,17 +531,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""76ee54e3-85e7-4df7-924a-da8b0cef5ab5"",
-                    ""path"": ""<Keyboard>/backquote"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Science Menu"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""1ba85804-2135-4acd-8ae6-5eaa2d5ace91"",
                     ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",

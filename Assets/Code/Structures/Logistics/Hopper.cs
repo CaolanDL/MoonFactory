@@ -57,7 +57,6 @@ namespace Logistics
             RequestPort = new(this);
             RequestPort.AddInventory(storageInventory);
         }
-
         public override void OnDemolished()
         {
             pool.Remove(this);

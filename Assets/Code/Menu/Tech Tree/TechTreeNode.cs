@@ -1,40 +1,21 @@
-using System;
-using System.Collections.Generic;
-using TMPro;
+using TMPro; 
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TechTreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
-{
-    TechTreeController techTree;
-
+public class TechTreeNode : TreeNode
+{ 
     [Space]
     [SerializeField] public StructureData Tech;
-    [SerializeField] public int Cost;
-    [SerializeField] public TechTreeConnection Connection;
-    [SerializeField] public List<TechTreeNode> SubNodes;
-    TechTreeNode parentNode; 
-    bool isSubnode = false;
-
     [Space(24)]
-    [SerializeField] Image background;
-    [SerializeField] Button button;
+
     [SerializeField] Image techSprite;
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text costText;
 
     [SerializeField] GameObject ToolTipPrefab;
     GameObject tooltip;
-
-    [NonSerialized] public State state = State.Locked;
-
-    public enum State
-    {
-        Unlocked,
-        Available,
-        Locked
-    }
+/*
 
     private void Awake()
     {
@@ -47,9 +28,9 @@ public class TechTreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
             node.isSubnode = true;
             node.parentNode = this;
         }
-    }
+    }*/
 
-    void SetDetails()
+    public override void SetDetails()
     {
         if(Tech == null) { return; }
 
@@ -58,15 +39,15 @@ public class TechTreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         costText.text = Cost.ToString();
     }
 
-    public void OnPressed()
+/*    public override void OnPressed()
     {
         if(isSubnode) { parentNode.OnPressed(); return; }
         var success = TryUnlock();
         if (success && !isSubnode) AudioManager.Instance.PlaySound(AudioData.Instance.UI_ScienceNodeUnlocked);
         else;// Play failed to unlock sound 
-    }
-
-    public bool TryUnlock()
+    }*/
+/*
+    public override bool TryUnlock()
     {  
         if(state != State.Available) { return false; }
 
@@ -75,29 +56,36 @@ public class TechTreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         if (scienceManager.SciencePoints >= Cost)
         {
             scienceManager.RemovePoints(Cost); 
-            Tech.Unlock();
+
             Connection?.Unlock();
-            GameManager.Instance.HUDManager.UpdateConstructionMenu();
+            
 
             foreach (var node in SubNodes)
             {
                 node.TryUnlock();
             }
 
-            ChangeState(State.Unlocked);
-
-            if(TutorialProxy.IsActive && Tech.name == "Crusher")
-            {
-                TutorialProxy.Action?.Invoke(TutorialEvent.HopperUnlocked);
-            } 
-
+            ChangeState(State.Unlocked); 
             return true;    
         }
 
         return false;
-    } 
+    }*/
 
-    public void ChangeState(State state)
+    public override void OnUnlocked()
+    {
+        Tech.Unlock();
+        GameManager.Instance.HUDManager.UpdateConstructionMenu();
+
+        if (TutorialProxy.IsActive && Tech.name == "Crusher")
+        {
+            TutorialProxy.Action?.Invoke(TutorialEvent.HopperUnlocked);
+        }
+
+        costText.text = "Unlocked";
+    }
+
+/*    public override void ChangeState(State state)
     {
         foreach(var node in SubNodes)
         {
@@ -121,17 +109,17 @@ public class TechTreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
 
         this.state = state;
-    }
+    }*/
 
-    public void OnPointerEnter(PointerEventData eventData)
-    { 
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
         if (tooltip != null) return;
 
         tooltip = Instantiate(ToolTipPrefab, GameManager.Instance.HUDManager.transform);
         tooltip.GetComponent<StructureTooltip>().SetDetails(Tech);
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public override void OnPointerExit(PointerEventData eventData)
     {
         Destroy(tooltip);
     }

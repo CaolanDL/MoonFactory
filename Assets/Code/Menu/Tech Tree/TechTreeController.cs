@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TechTreeController : MonoBehaviour
 {
-    [SerializeField] TechTreeNode FirstNode;
+    [SerializeField] TreeNode FirstNode;
 
     [Header("Node Colors")]
     [SerializeField] public Color Unlocked;
@@ -15,21 +14,21 @@ public class TechTreeController : MonoBehaviour
     [SerializeField] public Color Unlocked_Connection; 
     [SerializeField] public Color Locked_Connection;
 
-    public Dictionary<TechTreeNode.State, Color> StateColors;
+    public Dictionary<TreeNode.State, Color> StateColors;
 
     private void Awake()
     {
         StateColors = new()
         {
-            { TechTreeNode.State.Unlocked, Unlocked },
-            { TechTreeNode.State.Available, Available },
-            { TechTreeNode.State.Locked, Locked }
+            { TreeNode.State.Unlocked, Unlocked },
+            { TreeNode.State.Available, Available },
+            { TreeNode.State.Locked, Locked }
         }; 
     }
 
     private void Start()
     {
-        FirstNode.ChangeState(TechTreeNode.State.Available);
+        FirstNode.ChangeState(TreeNode.State.Available);
         FirstNode.TryUnlock();
     }
 }

@@ -74,10 +74,15 @@ public class HopperInterface : StaticInterface
         if (resourceData == null)
         {
             hopper.isRequestor = false;
+            hopper.isSupplier = true;
+            hopper.SupplyPort.enabled = true;
+            hopper.RequestPort.SetRequest(null, 0);
         }
         else
         {
             hopper.RequestPort.SetRequest(resourceData, 10);
+            hopper.isSupplier = false;
+            hopper.SupplyPort.enabled = false;
             hopper.isRequestor = true;
 
             if (TutorialProxy.IsActive) TutorialProxy.Action?.Invoke(TutorialEvent.HopperDropdownItemSelected);

@@ -288,7 +288,7 @@ public class GameManager : MonoBehaviour
 
     public void DebugSpawnRover()
     {
-        RoverManager.SpawnWidget(new int2(roverSpawnOffset, 0));
+        RoverManager.SpawnNewWidget(new int2(roverSpawnOffset, 0));
         roverSpawnOffset++;
     }
 
