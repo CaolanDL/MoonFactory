@@ -14,6 +14,9 @@ public class ResourceInterface : MonoBehaviour
     [SerializeField] ResourceIcon resourceIcon;
     [SerializeField] TMP_Text craftTime;
 
+    [SerializeField] Image scienceIcon;
+    [SerializeField] TMP_Text scienceValue;
+
     [SerializeField] Image structureImage;
     [SerializeField] TMP_Text structureName;
 
@@ -41,7 +44,7 @@ public class ResourceInterface : MonoBehaviour
         resourceIcon.SetDetails(Resource);
         resourceIcon.SetCount(Resource.quantityCrafted);
 
-        foreach(var rq in Resource.requiredResources)
+        foreach (var rq in Resource.requiredResources)
         {
             var icon = Instantiate(RequirementResourceIcon, requirementsLayout);
             var iconComponent = icon.GetComponent<ResourceIcon>();
@@ -49,24 +52,31 @@ public class ResourceInterface : MonoBehaviour
             iconComponent.SetCount(rq.quantity);
         }
 
-        craftTime.text = (Resource.timeToCraft/50f).ToString();
+        craftTime.text = (Resource.timeToCraft / 50f).ToString();
+
+        if (GameManager.Instance.ScienceManager.IsResearchedIn(Resource, ScienceManager.Researcher.Analyser))
+        {
+            scienceValue.color = new Color(24, 24, 24);
+            scienceIcon.color = new Color(24, 24, 24);
+        }
+        scienceValue.text = Resource.ResearchValue.ToString();
 
         structureImage.sprite = Resource.craftedIn.sprite;
         structureName.text = Resource.craftedIn.name;
 
         foreach (var resource in GlobalData.Instance.Resources)
         {
-            if(resource.requiredResources.Exists(r => r.resource == Resource))
+            if (resource.requiredResources.Exists(r => r.resource == Resource))
             {
                 var icon = Instantiate(CraftsIntoResourceIcon, craftsIntoLayout);
                 var iconComponent = icon.GetComponent<ResourceIcon>();
-                iconComponent.SetDetails(resource); 
-            } 
+                iconComponent.SetDetails(resource);
+            }
         }
 
         foreach (var structure in GlobalData.Instance.Structures)
         {
-            if(structure.name == "Lander") { continue; }
+            if (structure.name == "Lander") { continue; }
             if (structure.requiredResources.Exists(r => r.resource == Resource))
             {
                 var icon = Instantiate(structureIcon, buildsIntoLayout);
@@ -78,6 +88,6 @@ public class ResourceInterface : MonoBehaviour
 
     public void Close()
     {
-        Destroy(gameObject); 
+        Destroy(gameObject);
     }
 }

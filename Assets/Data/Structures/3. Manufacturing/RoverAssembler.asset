@@ -15,16 +15,26 @@ MonoBehaviour:
   screenname: Rover Assembler
   description: Makes Rovers
   category: 3
-  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
+  sprite: {fileID: 21300000, guid: 162e2bb150774924792dfaed4bca6245, type: 3}
   displayObject: {fileID: 8149189864003149576, guid: 0267362693b1c844181ee682b87f795a,
     type: 3}
   size:
     x: 3
     y: 3
   requiredResources:
+  - resource: {fileID: 11400000, guid: 03aa95c2254ffdf49841024aa82555d2, type: 2}
+    quantity: 25
   - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
-    quantity: 50
-  timeToBuild: 50
+    quantity: 10
+  - resource: {fileID: 11400000, guid: f2a5b0aba6ea8aa4ab64fd045e7d22e6, type: 2}
+    quantity: 8
+  - resource: {fileID: 11400000, guid: 5133f1a46defeb14ca913447f5acd0f2, type: 2}
+    quantity: 2
+  - resource: {fileID: 11400000, guid: 75e6062a00713f44d87bd56180df6b1b, type: 2}
+    quantity: 1
+  - resource: {fileID: 11400000, guid: 55fcb95eb0f29eb45b5514ea2c1ee49f, type: 2}
+    quantity: 1
+  timeToBuild: 200
   CraftableResources: []
   inputs:
   - position:

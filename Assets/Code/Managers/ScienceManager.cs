@@ -26,9 +26,9 @@ public class ScienceManager
 
     Dictionary<Researcher, int> ResearchMultipliers = new()
     {
-        { Researcher.Analyser, 10 },
-        { Researcher.Rocket, 40 },
-        { Researcher.Railgun, 160 },
+        { Researcher.Analyser, 1 },
+        { Researcher.Rocket, 2 },
+        { Researcher.Railgun, 4 },
     };
 
     public ScienceManager()

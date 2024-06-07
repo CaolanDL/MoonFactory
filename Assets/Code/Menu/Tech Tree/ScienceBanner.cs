@@ -7,6 +7,9 @@ public class ScienceBanner : MonoBehaviour
 {
     [SerializeField] TMP_Text PointsText;
 
+    [SerializeField] Color ZeroColor;
+    [SerializeField] Color PositiveColor;
+
     private void Awake()
     {
         SubscribeToEvents();
@@ -36,6 +39,9 @@ public class ScienceBanner : MonoBehaviour
 
     void SetPoints(int points)
     {
+        if(points > 0) PointsText.color = PositiveColor; 
+        else PointsText.color = ZeroColor; 
+
         PointsText.text = points.ToString();
     }
 

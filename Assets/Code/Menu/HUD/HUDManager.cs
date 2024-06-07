@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
+    private Canvas canvas;
+
     [SerializeField] public GameObject OptionsMenu;
 
     [SerializeField] public GameObject ConstructionMenu;
@@ -40,6 +42,8 @@ public class HUDManager : MonoBehaviour
     {
         ConstructionMenu.GetComponent<PopOutMenu>()?.SetState(true);
         TechTree.GetComponent<PopOutMenu>()?.SetState(true);
+
+        GetComponent<Canvas>().worldCamera = GameManager.Instance.CameraController.activeMainCamera;
     } 
 
     void CreateNewResourceInterface(ResourceData resource)

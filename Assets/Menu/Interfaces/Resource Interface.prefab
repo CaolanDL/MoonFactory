@@ -66,6 +66,8 @@ MonoBehaviour:
   requirementsLayout: {fileID: 9019572479441941180}
   resourceIcon: {fileID: 4454823173522543485}
   craftTime: {fileID: 3729822287970000503}
+  scienceIcon: {fileID: 0}
+  scienceValue: {fileID: 0}
   structureImage: {fileID: 2169645079631971155}
   structureName: {fileID: 8679114228162322762}
   craftsIntoLayout: {fileID: 3520825479348851874}
@@ -360,8 +362,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4285070941
-  m_fontColor: {r: 0.3647059, g: 0.9960785, b: 0.40784317, a: 1}
+    rgba: 4294895104
+  m_fontColor: {r: 0, g: 0.90196085, b: 0.9960785, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -555,7 +557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.36320752, g: 1, b: 0.4032814, a: 1}
+  m_Color: {r: 0, g: 0.90196085, b: 0.9960785, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
