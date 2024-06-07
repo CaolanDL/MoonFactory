@@ -18,8 +18,10 @@ public class GraphicsPulse : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
-        var t = (Mathf.Sin(Time.time * frequency)+1)/2; // Sine 0 - 1
-        var s = 1 + (t * scale); 
+        var t = Time.time * frequency;
+
+        var s01 = (Mathf.Sin(t)+1)/2; // Sine 0 - 1
+        var s = 1 + (s01 * scale); 
 
         var newScale = baseScale * s;
 

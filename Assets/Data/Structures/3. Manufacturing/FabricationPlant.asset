@@ -23,7 +23,11 @@ MonoBehaviour:
     y: 2
   requiredResources:
   - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
-    quantity: 25
+    quantity: 20
+  - resource: {fileID: 11400000, guid: 03aa95c2254ffdf49841024aa82555d2, type: 2}
+    quantity: 4
+  - resource: {fileID: 11400000, guid: 2207201ae852304419ed7110fe777223, type: 2}
+    quantity: 4
   timeToBuild: 99
   CraftableResources:
   - {fileID: 11400000, guid: d32914b4c2ad4fa4b913ebeaad54a151, type: 2}

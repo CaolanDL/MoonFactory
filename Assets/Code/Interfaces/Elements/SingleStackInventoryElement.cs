@@ -26,6 +26,10 @@ public class SingleStackInventoryElement : MonoBehaviour
         if (icon.gameObject == null) { return; }
 
         maxItems.SetText(inventory.maxItems.ToString());
+        if(resourceStack == null && inventory.stacks.Count > 0)
+        { 
+            resourceStack = inventory.stacks[0];
+        }
         if (resourceStack == null)
         {
             icon.gameObject.SetActive(false);

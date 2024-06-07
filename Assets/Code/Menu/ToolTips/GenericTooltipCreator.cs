@@ -3,8 +3,8 @@ using UnityEngine.EventSystems;
 
 public class GenericTooltipCreator : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] string Header;
-    [SerializeField] string Content;
+    [SerializeField] public string Header;
+    [SerializeField] public string Content;
     [SerializeField] Vector2 Alignment;
 
     GameObject tooltip;

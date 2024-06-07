@@ -39,6 +39,8 @@ MonoBehaviour:
     type: 3}
   ArcadeInterface: {fileID: 151012457491988207, guid: 904626a6080e43245b41eb93c7222ac6,
     type: 3}
+  ResourceInterface: {fileID: 605619486977516479, guid: 273b0f4a9dcf9d342973a4e8b1721258,
+    type: 3}
   InventoryElement: {fileID: 5989839607907215971, guid: 20fb51a43e319da48b135c1fe96c623c,
     type: 3}
   ResourceIcon_DropdownElement: {fileID: 4251607146544866085, guid: 681fd1463dbb28340a36b8c0ba68817d,

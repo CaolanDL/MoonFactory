@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] Image sprite;
     [SerializeField] TMP_Text iconName;
@@ -29,6 +29,15 @@ public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         DestroyTooltip();
     }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            HUDManager.OpenResourceInterface?.Invoke(resource);
+        }
+    }
+
 
     private void OnDisable() => DestroyTooltip(); 
     private void OnDestroy() => DestroyTooltip(); 
@@ -74,9 +83,15 @@ public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         if(counter != null && this.count != count)
         {
-            counter.text = count.ToString();
+            counter.text = "x"+count.ToString();
             this.count = count;
-            gameObject.AddComponent<GraphicsPulseOnce>();
+            DoPulse();
         } 
     }
+
+    void DoPulse()
+    {
+        if(GetComponent<GraphicsPulseOnce>() != null) return;
+        gameObject.AddComponent<GraphicsPulseOnce>();
+    } 
 }

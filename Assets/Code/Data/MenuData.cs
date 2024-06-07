@@ -28,6 +28,8 @@ public class MenuData : ScriptableObject
     public GameObject StaticDrillInterface;
     public GameObject ArcadeInterface;
 
+    public GameObject ResourceInterface;
+
     [Header("Interfaces Elements")]
     public GameObject InventoryElement;
 
@@ -43,6 +45,8 @@ public class MenuData : ScriptableObject
 
 
     public static MenuData Instance;
+
+
 
     private void Awake()
     {

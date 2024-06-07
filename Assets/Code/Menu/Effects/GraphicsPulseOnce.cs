@@ -14,7 +14,7 @@ public class GraphicsPulseOnce : MonoBehaviour
     bool isReceeding = false;
 
     private void Awake()
-    {
+    { 
         baseScale = transform.localScale;
     } 
 
@@ -26,16 +26,16 @@ public class GraphicsPulseOnce : MonoBehaviour
 
     // Update is called once per frame
     public void Update()
-    { 
-        var t = (Mathf.Sin(ElapsedTime * frequency) + 1) / 2; // Sine 0 - 1
-        var s = 1 + (t * scale);
+    {
+        var t = ElapsedTime * frequency - (90 * Mathf.Deg2Rad);
+        var s01 = (Mathf.Sin(t) + 1) / 2; // Sine 0 - 1
+        var s = 1 + (s01 * scale);
 
         var newScale = baseScale * s;
 
-        transform.localScale = newScale; 
-
-        if(t > 0.9) { isReceeding=true; }
-        if(isReceeding && t < 0.01f)
+        transform.localScale = newScale;
+         
+        if(t > 270 * Mathf.Deg2Rad)
         {
             transform.localScale = baseScale;
             Destroy(this); return;

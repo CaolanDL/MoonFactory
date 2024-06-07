@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -19,10 +20,33 @@ public class HUDManager : MonoBehaviour
     [SerializeField] Transform interfaceParent;
     public StaticInterface openInterface;
 
+    public static Action<ResourceData> OpenResourceInterface;
+    private ResourceInterface activeResourceInterface;
+
+    private void OnEnable() => SubscribeActions();
+    private void OnDisable() => UnsubActions();
+
+    void SubscribeActions()
+    {
+        OpenResourceInterface += CreateNewResourceInterface;
+    }
+
+    void UnsubActions()
+    {
+        OpenResourceInterface -= CreateNewResourceInterface;
+    }
+
     private void Start()
     {
         ConstructionMenu.GetComponent<PopOutMenu>()?.SetState(true);
         TechTree.GetComponent<PopOutMenu>()?.SetState(true);
+    } 
+
+    void CreateNewResourceInterface(ResourceData resource)
+    {
+        activeResourceInterface?.Close();
+        activeResourceInterface = Instantiate(MenuData.Instance.ResourceInterface, interfaceParent).GetComponent<ResourceInterface>();
+        activeResourceInterface.SetResource(resource);
     }
 
     public bool OpenInterface(GameObject interfacePrefab, Entity entity, Vector3 screenPosition)
