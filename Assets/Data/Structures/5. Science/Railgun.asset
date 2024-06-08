@@ -15,8 +15,8 @@ MonoBehaviour:
   screenname: Rail Gun
   description: A giant railgun for rapidly launching RTO Research Rockets into orbit
   category: 4
-  sprite: {fileID: 21300000, guid: cd94b4ed35f4036478088d067f23cc38, type: 3}
-  displayObject: {fileID: 919132149155446097, guid: 681ff8ab2ed57404a92deb456d4073bd,
+  sprite: {fileID: 21300000, guid: 97e67e6ccbdacf24ebae75d61dd5e8d9, type: 3}
+  displayObject: {fileID: 8149189864003149576, guid: 5c6f2210e5785ad40ab7afc5ed0ed19e,
     type: 3}
   size:
     x: 2
@@ -37,7 +37,6 @@ MonoBehaviour:
     _rotation: -1
   outputs: []
   ports: []
-  ghostMesh: {fileID: -6161859482150698858, guid: d067fa762a5bae44e83197dda6ebcf40,
+  ghostMesh: {fileID: -4094202607312320450, guid: 681ff8ab2ed57404a92deb456d4073bd,
     type: 3}
   ghostModels: []
-  unlocked: 1

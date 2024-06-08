@@ -214,7 +214,9 @@ public static class PathFinder
         {
             neighbors = location.entity.GetNeighbors();
         }
-        else neighbors = location.GetNeighbors().OrderBy(x => x.position.WeightedGridDistanceTo(origin)).ToArray();
+        else neighbors = location.GetNeighbors();
+
+        neighbors = neighbors.OrderBy(x => x.position.WeightedGridDistanceTo(origin)).ToArray();
 
         List<Location> validNeighbors = new();
         Path path = null;

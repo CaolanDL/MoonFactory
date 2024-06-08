@@ -2,6 +2,15 @@ namespace Logistics
 {
     public class Merger : Machine
     {
+        public override void OnInitialise()
+        {
+            base.OnInitialise(); 
+        }
+
+        public override void AddPorts()
+        {
+        }
+
         public override void OnConstructed()
         {
             foreach (var inventory in InputInventories) inventory.maxItems = 1;
@@ -33,6 +42,15 @@ namespace Logistics
 
     public class Splitter : Machine
     {
+        public override void OnInitialise()
+        {
+            base.OnInitialise(); 
+        }
+
+        public override void AddPorts()
+        { 
+        }
+
         public override void OnConstructed()
         {
             foreach (var inventory in OutputInventories) inventory.maxItems = 1;

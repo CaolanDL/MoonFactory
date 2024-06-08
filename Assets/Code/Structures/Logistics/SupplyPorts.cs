@@ -111,7 +111,7 @@ public class SupplyPort : Port
     public SupplyPort(Structure parent)
     {
         Pool.Add(this);
-        this.parent = parent;
+        this.parent = parent; 
     }
 
     public void ReserveResource(ResourceQuantity resourcesToReserve)
@@ -152,7 +152,7 @@ public class SupplyPort : Port
     public void CollectResource(ResourceQuantity resourceQuantity)
     {
         //Debug.Log($"Collected:{resourceQuantity.quantity} {resourceQuantity.resource}s");
-
+        if(resourceQuantity.quantity == 0) return;
         if (GetReservedQuantity(resourceQuantity.resource) == 0) throw new System.Exception("Tried to collect a resource that doesnt exist");
 
         FreeResource(resourceQuantity, removeResources: true);
@@ -176,7 +176,7 @@ public class RequestPort : Port
     public RequestPort(Structure parent)
     {
         Pool.Add(this);
-        this.parent = parent;
+        this.parent = parent; 
     }
 
     public void SetRequest(ResourceData resource, int quantity)
@@ -234,6 +234,7 @@ public class RequestPort : Port
     public override void Delete()
     {
         base.Delete();
+        ManagedTask.CancelTask();
         Pool.Remove(this);
     }
 }

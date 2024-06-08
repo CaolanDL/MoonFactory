@@ -254,6 +254,9 @@ public class Inventory // 56 bytes
         reservedResources.Clear();
         totalItems = 0;
         totalWeight = 0;
+        totalTypes = 0;
+
+        InventoryUpdated?.Invoke();
     }
 
 /*    public void ClearInventory(ResourceData resource, int quantity)

@@ -302,7 +302,7 @@ namespace Logistics
 
         public void RemoveConveyor(Conveyor conveyor)
         {
-            Debug.Log("Removed Conveyor");
+            //Debug.Log("Removed Conveyor");
 
             DeleteItemsOnConveyor(conveyor); 
 
@@ -312,10 +312,12 @@ namespace Logistics
                 {
                     item.distance -= Conveyor.Length;
                 }
+                if(conveyors.Count > 1) { conveyors[1].lastConveyor = null; }
                 conveyors.Remove(conveyor);
             }
             else if (conveyors.IndexOf(conveyor) == conveyors.Count - 1)
             {
+                if (conveyors.Count > 1) { conveyors[conveyors.Count - 2].nextConveyor = null; }
                 conveyors.Remove(conveyor);
             }
             else Split(conveyor); 
@@ -386,6 +388,8 @@ namespace Logistics
 
         public void MergeWith(Chain otherChain, bool isChainInfront)
         {
+            //Debug.Log("Doing merge");
+
             if (isChainInfront)
             {
                 conveyors.AddRange(otherChain.conveyors);

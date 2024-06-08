@@ -139,4 +139,21 @@ public class CraftingMachineInterface : StaticInterface
             return;
         }  
     }
+
+    public void ClearInputs()
+    {
+        foreach(var inv in machine.InputInventories)
+        {
+            inv.DumpToLander();
+        }
+        machine.isCrafting = false; 
+    }
+
+    public void ClearOutputs()
+    {
+        foreach (var inv in machine.OutputInventories)
+        {
+            inv.DumpToLander();
+        }
+    }
 }
