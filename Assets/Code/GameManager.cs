@@ -141,9 +141,10 @@ public class GameManager : MonoBehaviour
         FloorTileRenderer.Render();
         BatchRenderer.Render();
         ItemRenderer.Tick(); 
-
-        // Call Frame Update on Structures
+         
+        // Call frame updates
         Structure.FrameUpdateAllStructures();
+        RoverManager.FrameUpdateRovers();
     }
 
     private void FixedUpdate()
@@ -202,12 +203,29 @@ public class GameManager : MonoBehaviour
          
     }
 
-    void ExitToMenu()
+    public void ExitToMenu()
     {
-        // Save game to file
+        // Save game to file 
+
         // Unload gameworld
+        GameWorld = null; 
+        GameLighting.SetActive(false);
+
+        ScienceManager = null;
+        ConstructionManager = null;
+        TaskManager = null;
+        RoverManager = null;
+        ElectricalSystemManager = null;
+
         // Destroy HUD
+        Destroy(HUDManager.gameObject);
+        HUDManager = null;
+
+        // Call exit action
+        OnGameExit?.Invoke();
+
         // Load main menu scene
+        OpenMainMenu();
     }
 
     public void PlaySplashScreen()

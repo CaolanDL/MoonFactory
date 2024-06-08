@@ -17,7 +17,10 @@ public class SingleStackInventoryElement : MonoBehaviour
 
     private void Start()
     {
-        inventory.InventoryUpdated += UpdateDisplay;
+        if (inventory != null) 
+        {
+            inventory.InventoryUpdated += UpdateDisplay;
+        } 
     }
 
     public void UpdateDisplay()

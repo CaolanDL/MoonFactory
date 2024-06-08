@@ -6,6 +6,7 @@ using UnityEngine;
 public class ScienceBanner : MonoBehaviour
 {
     [SerializeField] TMP_Text PointsText;
+    [SerializeField] GraphicsPulse Pulser;
 
     [SerializeField] Color ZeroColor;
     [SerializeField] Color PositiveColor;
@@ -39,8 +40,18 @@ public class ScienceBanner : MonoBehaviour
 
     void SetPoints(int points)
     {
-        if(points > 0) PointsText.color = PositiveColor; 
-        else PointsText.color = ZeroColor; 
+        if (points > 0)
+        {
+            PointsText.color = PositiveColor;
+            Pulser.enabled = true;
+            
+        }
+        else
+        {
+            PointsText.color = ZeroColor;
+            Pulser.enabled = false;
+            Pulser.gameObject.transform.localScale = Vector3.one;
+        }
 
         PointsText.text = points.ToString();
     }

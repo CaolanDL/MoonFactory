@@ -4,17 +4,27 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler//, IPointerClickHandler
 {
     [SerializeField] Image sprite;
     [SerializeField] TMP_Text iconName;
     [SerializeField] TMP_Text counter;
+
+    private Button parentButton;
 
     GameObject tooltip;
     [SerializeField] GameObject ToolTipPrefab;
 
     [NonSerialized] public ResourceData resource;
     [NonSerialized] public int count;
+
+    bool isMouseOver = false;
+
+    private void Awake()
+    {
+        parentButton = GetComponent<Button>();
+        if (parentButton == null) { parentButton = gameObject.GetComponentInParent<Button>(); }
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -23,21 +33,33 @@ public class ResourceIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
         tooltip = Instantiate(ToolTipPrefab, GameManager.Instance.HUDManager.transform);
         tooltip.GetComponent<ResourceToolTip>().SetDetails(resource);
+
+        isMouseOver = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         DestroyTooltip();
+
+        isMouseOver = false;
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    private void Update()
     {
-        if (eventData.button == PointerEventData.InputButton.Right)
+        if (isMouseOver && GameManager.Instance.PlayerInputManager.inputActions.UIControls.RightClick.WasPressedThisFrame())
         {
             HUDManager.OpenResourceInterface?.Invoke(resource);
         }
     }
 
+/*    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            HUDManager.OpenResourceInterface?.Invoke(resource);
+        }
+        if (parentButton != null) { parentButton.OnPointerClick(eventData); } 
+    }*/
 
     private void OnDisable() => DestroyTooltip(); 
     private void OnDestroy() => DestroyTooltip(); 

@@ -3706,6 +3706,11 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 8503371012895791468, guid: 45bda334fff54ec4bbb73ce5b6220b73,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8765591075822072304, guid: 45bda334fff54ec4bbb73ce5b6220b73,
         type: 3}
       propertyPath: m_Name

@@ -361,6 +361,15 @@
                     "processors": "Scale(factor=0.0005)",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "RightClick",
+                    "type": "Button",
+                    "id": "9d78cc83-febf-422f-9efd-04a6cb285761",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -427,6 +436,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Scroll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2a340461-957d-4993-b7dd-8924f641e871",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

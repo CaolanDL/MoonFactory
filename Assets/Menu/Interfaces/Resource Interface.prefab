@@ -66,8 +66,8 @@ MonoBehaviour:
   requirementsLayout: {fileID: 9019572479441941180}
   resourceIcon: {fileID: 4454823173522543485}
   craftTime: {fileID: 3729822287970000503}
-  scienceIcon: {fileID: 0}
-  scienceValue: {fileID: 0}
+  scienceIcon: {fileID: 2822182946365887427}
+  scienceValue: {fileID: 3270244998115974737}
   structureImage: {fileID: 2169645079631971155}
   structureName: {fileID: 8679114228162322762}
   craftsIntoLayout: {fileID: 3520825479348851874}

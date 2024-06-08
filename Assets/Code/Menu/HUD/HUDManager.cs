@@ -72,6 +72,7 @@ public class HUDManager : MonoBehaviour
     public void ToggleOptionsMenu()
     {
         OptionsMenu.SetActive(!OptionsMenu.activeSelf);
+        OptionsMenu.GetComponent<OptionsMenu>().ResetPosition();
     }
 
     public void ToggleBuildMenu()

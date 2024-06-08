@@ -133,7 +133,7 @@ namespace RoverJobs
         }
 
         public override void OnStart()
-        {
+        { 
             StackJob(new TurnTowards(targetPort.parent.position));
         }
 
@@ -175,6 +175,15 @@ namespace RoverJobs
 
         public override void OnStart()
         {
+            // Shouldnt need to do this but rovers are ocassionally arriving without the resources they need. No clue why. Not enough time to fix it.
+            foreach (var resource in resourcesToDeliver)
+            {
+                if (rover.Inventory.GetQuantityOf(resource.resource) < resource.quantity)
+                {
+                    FailTask(); return;
+                }
+            }
+
             var entity = GameManager.Instance.GameWorld.worldGrid.GetEntityAt(target);
 
             if (entity == null) { FailTask(); return; }
@@ -316,7 +325,7 @@ namespace RoverJobs
 
             foreach (var val in manifest.totalQuantities)
             {
-                Debug.Log($"{val.resource} : {val.quantity}");
+                //Debug.Log($"{val.resource} : {val.quantity}");
             }
             return manifest;
         }

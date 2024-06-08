@@ -383,6 +383,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": ""Scale(factor=0.0005)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""RightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d78cc83-febf-422f-9efd-04a6cb285761"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -449,6 +458,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2a340461-957d-4993-b7dd-8924f641e871"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -762,6 +782,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UIControls_Point = m_UIControls.FindAction("Point", throwIfNotFound: true);
         m_UIControls_PointDelta = m_UIControls.FindAction("PointDelta", throwIfNotFound: true);
         m_UIControls_Scroll = m_UIControls.FindAction("Scroll", throwIfNotFound: true);
+        m_UIControls_RightClick = m_UIControls.FindAction("RightClick", throwIfNotFound: true);
         // HUD Controls
         m_HUDControls = asset.FindActionMap("HUD Controls", throwIfNotFound: true);
         m_HUDControls_BuildMenu = m_HUDControls.FindAction("Build Menu", throwIfNotFound: true);
@@ -973,6 +994,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UIControls_Point;
     private readonly InputAction m_UIControls_PointDelta;
     private readonly InputAction m_UIControls_Scroll;
+    private readonly InputAction m_UIControls_RightClick;
     public struct UIControlsActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -981,6 +1003,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Point => m_Wrapper.m_UIControls_Point;
         public InputAction @PointDelta => m_Wrapper.m_UIControls_PointDelta;
         public InputAction @Scroll => m_Wrapper.m_UIControls_Scroll;
+        public InputAction @RightClick => m_Wrapper.m_UIControls_RightClick;
         public InputActionMap Get() { return m_Wrapper.m_UIControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1002,6 +1025,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Scroll.started += instance.OnScroll;
             @Scroll.performed += instance.OnScroll;
             @Scroll.canceled += instance.OnScroll;
+            @RightClick.started += instance.OnRightClick;
+            @RightClick.performed += instance.OnRightClick;
+            @RightClick.canceled += instance.OnRightClick;
         }
 
         private void UnregisterCallbacks(IUIControlsActions instance)
@@ -1018,6 +1044,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Scroll.started -= instance.OnScroll;
             @Scroll.performed -= instance.OnScroll;
             @Scroll.canceled -= instance.OnScroll;
+            @RightClick.started -= instance.OnRightClick;
+            @RightClick.performed -= instance.OnRightClick;
+            @RightClick.canceled -= instance.OnRightClick;
         }
 
         public void RemoveCallbacks(IUIControlsActions instance)
@@ -1219,6 +1248,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnPoint(InputAction.CallbackContext context);
         void OnPointDelta(InputAction.CallbackContext context);
         void OnScroll(InputAction.CallbackContext context);
+        void OnRightClick(InputAction.CallbackContext context);
     }
     public interface IHUDControlsActions
     {

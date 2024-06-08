@@ -15,8 +15,15 @@ public class LanderSequence : MonoBehaviour
 
     private void Awake()
     {
+        GameManager.OnGameExit += DestroySelf;
+
         Animator = GetComponent<Animator>();
     }
+
+    private void OnDestroy() => GameManager.OnGameExit -= DestroySelf;
+    private void OnDisable() => GameManager.OnGameExit -= DestroySelf;
+
+    void DestroySelf() => Destroy(transform.parent.gameObject);
 
     private void Update()
     {

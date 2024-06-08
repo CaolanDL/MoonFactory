@@ -24,6 +24,14 @@ public class RoverManager
         }
     }
 
+    public static void FrameUpdateRovers()
+    {
+        foreach (var rover in Rovers)
+        {
+            rover.OnFrameUpdate();
+        }
+    }
+
     public Rover SpawnNewRover(int2 location)
     {
         var newRover = new Rover();

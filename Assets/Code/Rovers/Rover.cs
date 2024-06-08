@@ -99,7 +99,28 @@ public class Rover : Entity
         VisualPosition = position; 
     }
 
-    public void OnFrameUpdate() { }
+    public void OnFrameUpdate()
+    {
+        if(Inventory.stacks.Count > 0)
+        {
+            var r = Inventory.stacks[0].resource;
+            var trs = Matrix4x4.TRS(
+                DisplayObject.itemRenderPoint.transform.position,
+               DisplayObject.itemRenderPoint.transform.rotation,
+               Vector3.one * 0.8f);
+            Graphics.DrawMesh(r.mesh, trs, r.material, 0);
+        }
+
+        if (Inventory.stacks.Count > 1)
+        {
+            var r = Inventory.stacks[1].resource;
+            var trs = Matrix4x4.TRS(
+                DisplayObject.itemRenderPoint_Secondary.transform.position,
+               DisplayObject.itemRenderPoint_Secondary.transform.rotation,
+               Vector3.one * 0.8f);
+            Graphics.DrawMesh(r.mesh, trs, r.material, 0);
+        }
+    }
 
     public void Tick()
     {
@@ -223,6 +244,8 @@ public class Rover : Entity
         }
 
         if (DebugEnabled) Debug.Log($"Rover Failed Task");
+
+        Inventory.DumpToLander();
 
         ClearTask(); 
         TaskWasFailed = true; 

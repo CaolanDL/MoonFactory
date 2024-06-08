@@ -15,6 +15,8 @@ public class DisplayObject : MonoBehaviour
 
     public Animator animator;
     public Transform wireConnectionPoint;
+    public Transform itemRenderPoint;
+    public Transform itemRenderPoint_Secondary;
 
     public AudioSource audioSource;
          
@@ -22,6 +24,8 @@ public class DisplayObject : MonoBehaviour
 
     private void Awake()
     {
+        GameManager.OnGameExit += DestroySelf;
+
         if(GetComponent<AudioSource>() == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
@@ -58,6 +62,10 @@ public class DisplayObject : MonoBehaviour
             component.gameObject.SetActive(false);
         }
     }
+
+    private void OnDestroy() => GameManager.OnGameExit -= DestroySelf;
+
+    void DestroySelf() => Destroy(gameObject);
 
     public void DemolishAnimation()
     {

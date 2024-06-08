@@ -9,8 +9,13 @@ public class DropShipSequence : MonoBehaviour
 
     private void Awake()
     {
+        GameManager.OnGameExit += DestroySelf; 
         GameManager.Instance.HUDManager.ToggleScienceMenu();
     }
+
+    private void OnDestroy() => GameManager.OnGameExit -= DestroySelf; 
+
+    void DestroySelf() => Destroy(gameObject); 
 
     public void Finished()
     {

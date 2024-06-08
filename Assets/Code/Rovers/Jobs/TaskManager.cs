@@ -18,7 +18,8 @@ public class TaskManager
 
     void OnGameExit()
     {
-        ClearAllTasks(); 
+        ClearAllTasks();
+        CategoryManagers.Clear();
         GameManager.OnGameExit -= OnGameExit;
     }
     

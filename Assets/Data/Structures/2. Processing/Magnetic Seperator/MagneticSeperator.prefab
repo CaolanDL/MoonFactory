@@ -9691,6 +9691,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3961696203431634886}
   - {fileID: 37717458779009961}
   - {fileID: 4556941794618811521}
   - {fileID: 6025450953296578796}
@@ -9712,7 +9713,9 @@ MonoBehaviour:
   - {fileID: 6401131414476575318}
   additiveModels: []
   animator: {fileID: 0}
-  wireConnectionPoint: {fileID: 0}
+  wireConnectionPoint: {fileID: 3961696203431634886}
+  itemRenderPoint: {fileID: 0}
+  itemRenderPoint_Secondary: {fileID: 0}
   audioSource: {fileID: -8791735128744281729}
 --- !u!82 &-8791735128744281729
 AudioSource:
@@ -9829,6 +9832,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &8838502809705650161
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3961696203431634886}
+  m_Layer: 0
+  m_Name: WirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3961696203431634886
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8838502809705650161}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.2617, y: 0.6816, z: -0.3591}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4834109678323069399}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &13547673983117682
 PrefabInstance:
   m_ObjectHideFlags: 0

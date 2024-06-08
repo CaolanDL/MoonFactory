@@ -246,6 +246,16 @@ public class Inventory // 56 bytes
         return stacks.Find(i => i.resource == resource);
     } 
 
+    public void DumpToLander()
+    {
+        foreach (var stack in stacks)
+            GameManager.Instance.Lander?.inventory.TryAddResource(new ResourceQuantity(stack.resource, stack.quantity));
+        stacks.Clear();
+        reservedResources.Clear();
+        totalItems = 0;
+        totalWeight = 0;
+    }
+
 /*    public void ClearInventory(ResourceData resource, int quantity)
     {
 

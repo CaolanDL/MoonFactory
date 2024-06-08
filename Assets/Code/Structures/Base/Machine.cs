@@ -39,8 +39,7 @@ public class Machine : Structure
         void DumpToLander(Inventory[] inventories)
         {
             foreach (Inventory inventory in inventories)
-                foreach (var stack in inventory.stacks)
-                    GameManager.Instance.Lander?.inventory.TryAddResource(new ResourceQuantity(stack.resource, stack.quantity));
+                inventory.DumpToLander();
         }
     }
 

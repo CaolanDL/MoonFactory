@@ -88,6 +88,7 @@ public class ResourceInterface : MonoBehaviour
 
     public void Close()
     {
+        if(gameObject != null)
         Destroy(gameObject);
     }
 }
