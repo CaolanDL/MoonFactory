@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Lander : Structure
 {
-    public float powerProduction = 50f;   
+    public float powerProduction = 500f;   
     //public Electrical.Relay ElectricalRelay; 
     public Inventory inventory = new Inventory();
 

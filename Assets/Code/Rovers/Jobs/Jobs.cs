@@ -257,8 +257,8 @@ namespace RoverJobs
         private void EvaluatePathInterruption(Structure structure)
         {
             if (path == null) { mustFindNewPath = false; }
-            if (structure == null) { mustFindNewPath = false; }
-            if (path.nodes.Contains(structure.position)) mustFindNewPath = true;
+            else if (structure == null) { mustFindNewPath = false; }
+            else if (path.nodes.Contains(structure.position)) mustFindNewPath = true;
             else mustFindNewPath = false;
         }
 

@@ -65,7 +65,7 @@ namespace RoverJobs
 
             var rtfList = resourcesToFind.ToList();
             foreach (var rq in manifest.totalQuantities)
-                if (rtfList.Exists(x => x.resource == rq.resource && x.quantity == rq.quantity) == false) { FailTask(); Debug.Log("Failed to generate manifest"); return; }
+                if (rtfList.Exists(x => x.resource == rq.resource && x.quantity == rq.quantity) == false) { FailTask(); return; }
 
             PopJob();
             StackJob(new ExcecuteCollectAndDeliver(manifest, destination));

@@ -13,7 +13,7 @@ public class ItemRenderer : MonoBehaviour
 
     ChunkedMatrixArray _matrixArray; 
 
-    private float VerticalOffset = 0.205f;
+    private float VerticalOffset = 0.21f;
 
     private CameraController cameraController;
 
