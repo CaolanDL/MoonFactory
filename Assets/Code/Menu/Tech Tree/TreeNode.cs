@@ -38,7 +38,7 @@ public class TreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private void Awake()
     {
         techTree = GetComponentInParent<TechTreeController>();
-        Debug.Log(techTree);
+        //Debug.Log(techTree);
         SetDetails();
         ChangeState(State.Locked);
 

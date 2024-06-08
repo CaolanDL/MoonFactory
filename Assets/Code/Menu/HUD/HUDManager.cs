@@ -48,7 +48,7 @@ public class HUDManager : MonoBehaviour
 
     void CreateNewResourceInterface(ResourceData resource)
     {
-        activeResourceInterface?.Close();
+        if(activeResourceInterface != null) { activeResourceInterface.Close(); } 
         activeResourceInterface = Instantiate(MenuData.Instance.ResourceInterface, interfaceParent).GetComponent<ResourceInterface>();
         activeResourceInterface.SetResource(resource);
     }

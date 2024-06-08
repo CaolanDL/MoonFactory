@@ -673,6 +673,12 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
+    - target: {fileID: 6156054648721789221, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
+        type: 3}
+      propertyPath: Mixer
+      value: 
+      objectReference: {fileID: 24100000, guid: d6d2bada458d0124882b7887e4203938,
+        type: 2}
     - target: {fileID: 7577564672604919665, guid: 69a5ee85e8dcd2c459a95afb50f90ce6,
         type: 3}
       propertyPath: maxZoom

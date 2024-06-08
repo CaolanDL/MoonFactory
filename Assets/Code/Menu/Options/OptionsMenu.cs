@@ -18,11 +18,23 @@ public class OptionsMenu : MonoBehaviour
     {
         if(active)
         {
-            GameManager.Instance.AudioManager.StartMusic();
+            GameManager.Instance.AudioManager.EnableMusic(true);
         }
         if (!active)
         {
-            GameManager.Instance.AudioManager.StopMusic();
+            GameManager.Instance.AudioManager.EnableMusic(false);
+        }
+    }
+
+    public void SetSoundActive(bool active)
+    {
+        if (active)
+        {
+            GameManager.Instance.AudioManager.EnableSFX(true);
+        }
+        if (!active)
+        {
+            GameManager.Instance.AudioManager.EnableSFX(false);
         }
     }
 
