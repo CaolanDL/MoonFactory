@@ -57,8 +57,8 @@ public class Entity // 12 bytes
         }
         for (int x = xRange.x; x <= xRange.y; x++)
         {
-            neighbors.Add(grid.GetLocationAt(new(yRange.x - 1, x)));
-            neighbors.Add(grid.GetLocationAt(new(yRange.y + 1, x)));
+            neighbors.Add(grid.GetLocationAt(new(x, yRange.x - 1)));
+            neighbors.Add(grid.GetLocationAt(new(x, yRange.y + 1)));
         }
 
         return neighbors.ToArray();

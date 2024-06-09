@@ -158,6 +158,11 @@ namespace Logistics
     {
         public static List<Chain> chains = new();
 
+        public ChainManager()
+        {
+            GameManager.OnGameExit += () => chains.Clear();
+        }
+
         public static void UpdateChains()
         {
             foreach (Chain chain in chains)

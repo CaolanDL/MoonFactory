@@ -49,6 +49,8 @@ public class Rover : Entity
     public int MemoryClearDelay = 50 * 5;
     public int MemoryClearTimer = 0;
 
+    public CollectionManifest collectionManifest;
+
     public static float maxPowerLevel = 1f;
     public float powerLevel = maxPowerLevel;
     static float taskPowerConsumption = maxPowerLevel / 5;
@@ -241,6 +243,12 @@ public class Rover : Entity
             TaskManager.QueueTask(taskToFail);
             ActiveTask.rover = null;
             taskToFail.OnFailed?.Invoke();
+        }
+
+        if(collectionManifest != null)
+        {
+            collectionManifest.UnreserveResources();
+            collectionManifest = null;
         }
 
         if (DebugEnabled) Debug.Log($"Rover Failed Task");

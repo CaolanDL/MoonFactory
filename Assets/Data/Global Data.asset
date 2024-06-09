@@ -36,6 +36,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6b04b98578fc8ae4bb6db77aa10d8742, type: 2}
   - {fileID: 11400000, guid: 628a6d177ba2013448fd0c779bbe8a51, type: 2}
   - {fileID: 11400000, guid: 43ec48b8a40aa884cba14388b2cf134b, type: 2}
+  - {fileID: 11400000, guid: dcdec8d0a3941b444bbe5f6ae58b6316, type: 2}
   Resources:
   - {fileID: 11400000, guid: 6b69c6f6414452d4aa62a2714012c379, type: 2}
   - {fileID: 11400000, guid: 1684389b2533c524a86b74105a78ab63, type: 2}

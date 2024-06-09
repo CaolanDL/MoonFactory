@@ -89,7 +89,7 @@ public class ConstructionManager
     /// <summary>
     /// Force a structure to spawn at a location. Development use only.
     /// </summary> 
-    public void ForceSpawnStructure(int2 position, sbyte rotation, StructureData structureData)
+    public Structure ForceSpawnStructure(int2 position, sbyte rotation, StructureData structureData)
     {
         var worldGrid = GameManager.Instance.GameWorld.worldGrid;
 
@@ -100,6 +100,8 @@ public class ConstructionManager
         worldGrid.TryAddEntity(newStructure, position, rotation);
 
         newStructure.Constructed();
+
+        return newStructure;
     } 
 
     public void DrawGhosts()

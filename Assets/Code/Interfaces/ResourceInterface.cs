@@ -52,7 +52,7 @@ public class ResourceInterface : MonoBehaviour
             iconComponent.SetCount(rq.quantity);
         }
 
-        craftTime.text = (Resource.timeToCraft / 50f).ToString();
+        craftTime.text = (Resource.timeToCraft / 50f).ToString()+"s";
 
         if (GameManager.Instance.ScienceManager.IsResearchedIn(Resource, ScienceManager.Researcher.Analyser))
         {

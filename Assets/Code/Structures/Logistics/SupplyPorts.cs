@@ -114,20 +114,21 @@ public class SupplyPort : Port
         this.parent = parent; 
     }
 
-    public void ReserveResource(ResourceQuantity resourcesToReserve)
+    public int ReserveResource(ResourceQuantity resourcesToReserve) // return the remainder
     {
         foreach (Inventory inventory in LinkedInventories)
         {
             int freeQuantity = inventory.GetUnreservedQuantityOf(resourcesToReserve.resource);
 
-            if (freeQuantity == 0) continue;
+            if (freeQuantity == 0) throw new System.Exception("Tried to reserve a resource that doenst exist ");
             var quantityToReserve = Mathf.Clamp(freeQuantity, 0, resourcesToReserve.quantity);
 
             inventory.ReserveResource(new ResourceQuantity(resourcesToReserve.resource, quantityToReserve));
 
             resourcesToReserve.quantity -= quantityToReserve;
-            if (resourcesToReserve.quantity <= 0) { return; }
+            if (resourcesToReserve.quantity <= 0) { return 0; }
         }
+        return resourcesToReserve.quantity;
     }
 
     //? There is a bug where rovers will sometimes fail to free resources
@@ -136,7 +137,10 @@ public class SupplyPort : Port
     {
         foreach (Inventory inventory in LinkedInventories)
         {
-            int reservedQuantity = inventory.reservedResources[resourcesToFree.resource];
+            int reservedQuantity;
+            if (inventory.reservedResources.ContainsKey(resourcesToFree.resource))
+                reservedQuantity = inventory.reservedResources[resourcesToFree.resource];
+            else reservedQuantity = 0;
 
             if (reservedQuantity == 0) continue;
             var quantityToFree = Mathf.Clamp(resourcesToFree.quantity, 0, reservedQuantity);

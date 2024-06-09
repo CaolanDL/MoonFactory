@@ -46,7 +46,12 @@ public class ItemRenderer : MonoBehaviour
 
     void RenderVisibleItems()
     {
-        (xVisibleRange, yVisibleRange) = cameraController.GetIsometricVisibleRange();
+        var visibleRange = GameManager.Instance.CameraController.GetLocalVisibleRange();
+        int2 camGridPos = GameManager.Instance.CameraController.CameraGridPosition;
+
+        xVisibleRange = new int2(camGridPos.x + visibleRange.x, camGridPos.x + visibleRange.y);
+        yVisibleRange = new int2(camGridPos.y + visibleRange.x, camGridPos.y + visibleRange.y);
+         
         itemsRenderedThisFrame = 0;
 
         // Loop through each conveyor chain and identify if any part of the chain is within the visible area
@@ -55,7 +60,7 @@ public class ItemRenderer : MonoBehaviour
         // The existing implementation is performant enough, only make this change if you start to experience slow downs with large scale game worlds.
         foreach (Chain chain in ChainManager.chains)
         {
-            bool shouldRender = false;
+            bool shouldRender = true;
             foreach (Conveyor conveyor in chain.conveyors) // Check to see if any conveyor within the chain is within the visible range
             {
                 if (conveyor.position.x.WithinRange(xVisibleRange) && conveyor.position.y.WithinRange(yVisibleRange))

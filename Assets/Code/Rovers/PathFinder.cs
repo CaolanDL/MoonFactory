@@ -216,6 +216,17 @@ public static class PathFinder
         }
         else neighbors = location.GetNeighbors();
 
+        List<Location> realNeighbors = new();
+        foreach (Location neighbor in neighbors)
+        {
+            if(neighbor != null)
+            {
+                realNeighbors.Add(neighbor);
+            }
+        }
+        neighbors = realNeighbors.ToArray();
+
+        if(neighbors != null || neighbors.Length != 0)
         neighbors = neighbors.OrderBy(x => x.position.WeightedGridDistanceTo(origin)).ToArray();
 
         List<Location> validNeighbors = new();

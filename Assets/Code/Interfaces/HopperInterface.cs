@@ -80,7 +80,7 @@ public class HopperInterface : StaticInterface
         }
         else
         {
-            hopper.RequestPort.SetRequest(resourceData, 10);
+            hopper.RequestPort.SetRequest(resourceData, 16);
             hopper.isSupplier = false;
             hopper.SupplyPort.enabled = false;
             hopper.isRequestor = true;

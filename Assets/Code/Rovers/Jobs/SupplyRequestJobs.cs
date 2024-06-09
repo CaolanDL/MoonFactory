@@ -13,6 +13,7 @@ namespace RoverJobs
     {
         ResourceQuantity resourceToFind;
         int2 destination;
+        CollectionManifest manifest;
 
         public CollectAndDeliverAsManyAsPossible(ResourceQuantity resourceToFind, int2 destination)
         {
@@ -26,17 +27,23 @@ namespace RoverJobs
             // If the rover doesnt already have all the resources go find them.
             if(resourceToFind.quantity > 0)
             {
-                var manifest = SupplyFinder.GenerateManifestLoose(resourceToFind, rover.GridPosition, destination);
+                manifest = SupplyFinder.GenerateManifestLoose(resourceToFind, rover.GridPosition, destination);
                 if (manifest.Orders.Count == 0 && rover.Inventory.GetQuantityOf(resourceToFind.resource) == 0) { FailTask(); return; }
                 if(manifest.Orders.Count > 0)
                 {
                     PopJob();
+
+                    rover.collectionManifest = manifest;
+                    var success = manifest.ReserveResources();
+                    if (success == false) { FailTask(); return; }
+
                     StackJob(new ExcecuteCollectAndDeliver(manifest, destination));
                     return;
                 } 
             }
-            // If the rover has the resources already then go deliver them
-            StackJob(new GotoNeighbor(destination));
+            // If the rover has the resources already then go deliver them 
+
+            StackJob(new GotoNeighbor(destination)); 
             var quantityToDeliver = Mathf.Clamp(rover.Inventory.GetQuantityOf(resourceToFind.resource), 0, resourceToFind.quantity);
             var resourcesToDeliver = new List<ResourceQuantity>() { new(resourceToFind.resource, quantityToDeliver) };
             StackJob(new DeliverResources(destination, resourcesToDeliver));
@@ -63,9 +70,16 @@ namespace RoverJobs
 
             if (manifest.Orders.Count == 0) { FailTask(); return; }
 
-            var rtfList = resourcesToFind.ToList();
+/*            var rtfList = resourcesToFind;
             foreach (var rq in manifest.totalQuantities)
                 if (rtfList.Exists(x => x.resource == rq.resource && x.quantity == rq.quantity) == false) { FailTask(); return; }
+*/
+            if(manifest.VerifyManifest(resourcesToFind) == false ) { FailTask(); return; }  
+
+
+            rover.collectionManifest = manifest;
+            var success = manifest.ReserveResources();
+            if(success == false) { FailTask(); return; }    
 
             PopJob();
             StackJob(new ExcecuteCollectAndDeliver(manifest, destination));
@@ -90,11 +104,13 @@ namespace RoverJobs
         {
             base.OnStart();
 
+            if (manifest.SupplyPorts.Count == 0) { FailTask(); return; }
+
             superPath = PathFinder.FindSuperPath(rover, rover.GridPosition, manifest.SupplyPorts.Select(p => p.parent.position).ToArray());
             if (superPath == null || superPath.Count == 0) { FailTask(); return; }
             superPath.AddLast(PathFinder.FindPathToAnyFreeNeighbor(rover, superPath.Last().nodes.Last(), destination));
 
-            manifest.ReserveResources();
+            //manifest.ReserveResources();
         }
 
         public override void OnTick()
@@ -291,7 +307,7 @@ namespace RoverJobs
             SupplyPorts = SupplyFinder.SortPortsByDistance(SupplyPorts, origin);
         }
 
-        public void ReserveResources()
+        public bool ReserveResources()
         {
             foreach (var order in Orders)
             {
@@ -300,9 +316,36 @@ namespace RoverJobs
 
                 foreach (ResourceQuantity rq in resources)
                 {
-                    supplyPort.ReserveResource(rq);
+                    var remainder = supplyPort.ReserveResource(rq);
+                    if (remainder > 0) return false;
                 }
             }
+
+            return true;
+        }
+
+        public void UnreserveResources()
+        {
+            foreach (var order in Orders)
+            {
+                SupplyPort supplyPort = order.Key;
+                List<ResourceQuantity> resources = order.Value;
+
+                foreach (ResourceQuantity rq in resources)
+                {
+                    supplyPort.FreeResource(rq);
+                }
+            }
+        }
+
+        public bool VerifyManifest(List<ResourceQuantity> resourceQuantities)
+        {
+            foreach(var r in resourceQuantities)
+            { 
+                if (totalQuantities.Contains(r)) continue;
+                return false;
+            }
+            return true;
         }
     }
 
@@ -317,10 +360,7 @@ namespace RoverJobs
             if(self != null) { supplyPorts.Remove(self); }
 
             CollectionManifest manifest = new CollectionManifest();
-            foreach (ResourceQuantity rq in resourcesToFind)
-            {
-                SearchPortsAndFillManifest(supplyPorts, manifest, rq);
-            }
+            foreach (ResourceQuantity rq in resourcesToFind) SearchPortsAndFillManifest(supplyPorts, manifest, rq); 
             manifest.SortPortsByDistance(roverPosition);
 
             foreach (var val in manifest.totalQuantities)
@@ -383,7 +423,8 @@ namespace RoverJobs
             {
                 int quantityAvailable = supplyPort.GetUnreservedQuantity(resourceQuantity.resource);
                 if (quantityAvailable <= 0) continue;
-                var quantityTakeable = Mathf.Clamp(quantityAvailable, 0, remaining);
+                var quantityTakeable = Mathf.Clamp(remaining, 0, quantityAvailable);
+                if(quantityTakeable == 0) continue;
 
                 var newRQ = new ResourceQuantity(resourceQuantity.resource, quantityTakeable);
                 manifestToFill.Add(supplyPort, newRQ);

@@ -17,7 +17,7 @@ MonoBehaviour:
     factories.
   category: 0
   sprite: {fileID: 21300000, guid: d11b3580c2c19cf4aad59a8eeb690abb, type: 3}
-  displayObject: {fileID: 919132149155446097, guid: b472c7b23e548b94abfc74c112b29335,
+  displayObject: {fileID: 8149189864003149576, guid: 28f56735f65975348ae0c1e5a4d51871,
     type: 3}
   size:
     x: 1

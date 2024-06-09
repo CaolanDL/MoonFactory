@@ -273,33 +273,78 @@ public class GameManager : MonoBehaviour
     }
 
     // DEVELOPMENT // 
-      
+
     public void DebugBuildBenchmark()
     {
-        int width = 126; 
-        int offset = 12;
+        int width = 512;
+        int offset = 32;
 
-        StructureData debugOutput = GetStructureData("DebugOutput");
+        GameWorld.GenerateRegion(new(0 - offset, width*2 + offset), new(0, 80 + offset));
 
-        StructureData conveyor = GetStructureData("Conveyor");
+        StructureData drill = GetStructureData("StaticDrill"); 
+        StructureData conveyor = GetStructureData("Conveyor"); 
+        StructureData crusher = GetStructureData("Crusher"); 
+        StructureData magSep = GetStructureData("ElectrostaticSeperator"); 
+        StructureData hopper = GetStructureData("Hopper"); 
+        StructureData pylon = GetStructureData("PowerPylon");
+        StructureData solarpanel = GetStructureData("SolarPanel");
+        StructureData dbugoutput = GetStructureData("DebugOutput");
 
-        StructureData crusher = GetStructureData("Crusher");
+        StructureData GetStructureData(string name) { return GlobalData.Structures.Find(structure => structure.name == name); }
 
-        StructureData magSep = GetStructureData("MagneticSeperator");
-
-        StructureData hopper = GetStructureData("Hopper");
-
-        StructureData GetStructureData(string name) { return GlobalData.Structures.Find(structure => structure.name == name); } 
+        var position = new int2(0, 0);
+        Structure SpawnStructure(StructureData structure)
+        {
+            return ConstructionManager.ForceSpawnStructure(position, 0, structure); 
+        }
 
         for (int x = 0; x < width; x += 2)
         {
-            var y = offset;
-            var position = new int2(x, y);
+            position.x = x;
+            position.y = offset;
 
-            ConstructionManager.ForceSpawnStructure(position, 0, debugOutput); position.y++; 
-            ConstructionManager.ForceSpawnStructure(position, 0, conveyor); position.y++; 
-            ConstructionManager.ForceSpawnStructure(position, 0, hopper); position.y++; 
+            position.y -= 1; SpawnStructure(solarpanel); position.y += 1;
+
+ 
+            SpawnStructure(dbugoutput);
+            position.y += 1;
+            var h = SpawnStructure(hopper);
+            ((Hopper)h).QueueRequest(GlobalData.Resources.Find(r => r.name == "Regolith"));
+
+            position.x += 1; SpawnStructure(pylon); position.x -= 1;
+            position.y += 1;
+
+            for (int i = 0; i < 4; i++)
+            {
+                SpawnStructure(conveyor); position.y += 1;
+            }
+            position.x += 1; position.y -= 1; SpawnStructure(pylon); position.y += 1; position.x -= 1;
+            SpawnStructure(crusher); position.y += 1; 
+
+            for (int i = 0; i < 16; i++)
+            {
+                SpawnStructure(conveyor); position.y += 1;
+            }
+            SpawnStructure(hopper); position.y += 1;
+
+            for (int i = 0; i < 16; i++)
+            {
+                SpawnStructure(conveyor); position.y += 1;
+            }
+            SpawnStructure(hopper); position.y += 1;
+
+            for (int i = 0; i < 16; i++)
+            {
+                SpawnStructure(conveyor); position.y += 1;
+            }
+            SpawnStructure(hopper); position.y += 1;
+
         }
+/*
+        for (int s = 0; s < width/2; s++)
+        {
+            DebugSpawnRover();
+        }*/
     }
 
     static int roverSpawnOffset = 0;

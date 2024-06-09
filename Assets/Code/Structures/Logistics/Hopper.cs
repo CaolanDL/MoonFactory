@@ -46,7 +46,7 @@ namespace Logistics
             if (TutorialProxy.IsActive)
             {
                 TutorialProxy.Action?.Invoke(TutorialEvent.HopperBuilt);
-            }
+            } 
         }
 
         // Add supply request port components
@@ -55,8 +55,9 @@ namespace Logistics
             base.AddPorts();    
 
             RequestPort = new(this);
-            RequestPort.AddInventory(storageInventory);
-        }
+            RequestPort.AddInventory(storageInventory); 
+        } 
+
         public override void OnDemolished()
         {
             pool.Remove(this);
@@ -65,8 +66,22 @@ namespace Logistics
         int timer = 0;
         int timerMax = 30;
 
+        int lifespan = 0;
         public override void OnTick()
         {
+            if(lifespan == 0)
+            {
+                lifespan += 1;
+
+                if (queuedResourse != null)
+                {
+                    RequestPort.SetRequest(queuedResourse, 1);
+                    isRequestor = true;
+                    isSupplier = false;
+                    SupplyPort.enabled = false;
+                }
+            }
+
             timer++;
             if (timer > timerMax)
             {
@@ -132,7 +147,14 @@ namespace Logistics
             /*if (!isRequestor || requestTask.taskExists) return;
 
             requestTask.TryCreateTask(new SoftRequestResourceTask(requestResource, 1));*/
-        } 
+        }
+
+        ResourceData queuedResourse;
+        public void QueueRequest(ResourceData resource) // Used for debug spawning
+        {
+            if(resource == null) { Debug.Log("no resource"); }
+            queuedResourse = resource;
+        }
     }
 
     public class Silo : Hopper

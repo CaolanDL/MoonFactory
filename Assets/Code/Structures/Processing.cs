@@ -46,13 +46,13 @@ public class Crusher : Machine
 
     public override void OnBeginCrafting()
     {
-        DisplayObject.PlayAnimation("Crushing");
+        //DisplayObject.PlayAnimation("Crushing");
         DisplayObject.PlayParticleEffect("CrushingParticles");
     }
 
     public override void OnStopCrafting() 
     {
-        DisplayObject.PlayAnimation("Idle");
+        //DisplayObject.PlayAnimation("Idle");
         DisplayObject.StopParticleEffect("CrushingParticles");
     }
 }
