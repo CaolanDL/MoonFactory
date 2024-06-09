@@ -9,9 +9,9 @@ namespace Logistics
 {
     public class Item
     {
-        public ResourceData data;
+        public ResourceData data; //8 bytes
 
-        public int distance = 1;
+        public int distance = 1; //4 bytes
 
         public static int Size = Conveyor.Length / 5;
 

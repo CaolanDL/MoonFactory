@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 public static class DevFlags
 {
 #if UNITY_EDITOR
-    public static bool SkipMainMenu = true;
+    public static bool SkipMainMenu = false;
 #else
     public static bool SkipMainMenu = false;
 #endif
