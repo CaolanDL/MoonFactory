@@ -24,8 +24,8 @@ MonoBehaviour:
   requiredResources:
   - resource: {fileID: 11400000, guid: 7166ec9037e41314ea4164683bc32b79, type: 2}
     quantity: 8
-  - resource: {fileID: 11400000, guid: f2a5b0aba6ea8aa4ab64fd045e7d22e6, type: 2}
-    quantity: 1
+  - resource: {fileID: 11400000, guid: 03aa95c2254ffdf49841024aa82555d2, type: 2}
+    quantity: 8
   timeToBuild: 99
   CraftableResources:
   - {fileID: 11400000, guid: 1684389b2533c524a86b74105a78ab63, type: 2}

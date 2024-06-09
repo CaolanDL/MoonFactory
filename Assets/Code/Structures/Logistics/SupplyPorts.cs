@@ -153,13 +153,14 @@ public class SupplyPort : Port
         }
     }
 
-    public void CollectResource(ResourceQuantity resourceQuantity)
+    public bool CollectResource(ResourceQuantity resourceQuantity)
     {
         //Debug.Log($"Collected:{resourceQuantity.quantity} {resourceQuantity.resource}s");
-        if(resourceQuantity.quantity == 0) return;
-        if (GetReservedQuantity(resourceQuantity.resource) == 0) throw new System.Exception("Tried to collect a resource that doesnt exist");
+        if(resourceQuantity.quantity == 0) return true;
+        if (GetReservedQuantity(resourceQuantity.resource) == 0) return false;
 
         FreeResource(resourceQuantity, removeResources: true);
+        return true;
     }
 
     public override void Delete()

@@ -33,7 +33,10 @@ public class LanderInterface : StaticInterface
     {
         base.UpdateUI();
 
-        inventory.UpdateDetails();
+        if(inventory != null)
+        {
+            inventory.UpdateDetails();
+        } 
     }
 
     public override void OnCloseInterface()

@@ -166,7 +166,7 @@ namespace RoverJobs
                 foreach (var rq in resourcesToCollect)
                 {
                     if (rover.Inventory.TryAddResource(rq) == false) { throw new Exception("Rover attempted to exceed inventory capacity"); }
-                    targetPort.CollectResource(rq);
+                    if(targetPort.CollectResource(rq) == false) { FailTask(); return; }
                 }
 
                 PopJob();
