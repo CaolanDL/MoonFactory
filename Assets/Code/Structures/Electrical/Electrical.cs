@@ -37,7 +37,7 @@ public class SolarPanel : Structure
 
     public override void OnTick()
     {
-        ElectricalInput.Production = ElectricalInput.MaxProduction * Mathf.PerlinNoise1D(Time.fixedTime);
+        ElectricalInput.Production = ElectricalInput.MaxProduction;
     }
 
     public override void OnClicked(Vector3 mousePosition)

@@ -25,6 +25,12 @@ public class DraggableBar : UIMouseHover
         canvas = rectTransform.GetComponentInParent<Canvas>();
     }
 
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        isDragging = false;
+    }
+
     private void Update()
     {
         if (draggable != null)

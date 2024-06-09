@@ -27,5 +27,10 @@ public class UIMouseHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerMove(PointerEventData pointerEventData)
     {
         pointerPosition = pointerEventData.position;
-    }  
+    }
+
+    public virtual void OnDisable()
+    {
+        IsMouseOver = false;
+    }
 }
