@@ -1,4 +1,4 @@
-﻿public class MechanicalAssembler : Machine
+﻿public class MechanicalAssembler : GenericMachine
 {
 
 } 
